@@ -1,0 +1,37 @@
+{
+  "name": "music-theory-data",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "description": "A TypeScript library for representing musical data, including labels for notes, scales, chords, and arpeggios.",
+  "scripts": {
+    "test": "npx jest",
+    "build": "npx tsc"
+  },
+  "keywords": [
+    "music",
+    "theory",
+    "notes",
+    "scales",
+    "chords",
+    "arpeggios",
+    "intervals",
+    "keys",
+    "modes",
+    "triads",
+    "sevenths",
+    "extensions",
+    "alterations",
+    "labels",
+    "musical",
+    "notation"
+  ],
+  "author": "Conor Dowdall",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.3.0",
+    "typescript": "^5.8.2"
+  }
+}

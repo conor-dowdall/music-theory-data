@@ -1,0 +1,344 @@
+// MELODIC MINOR MODES
+[
+  {
+    "names": [
+      "Melodic Minor",
+      "Jazz Minor",
+      "Ascending Melodic Minor Scale",
+      "Minor Ionian",
+      "Ionian ♭3",
+      "Ionian Flat Third",
+      "Dorian Major 7",
+      "Dorian Major Seventh"
+    ],
+    "metadata": [
+      "melodic",
+      "jazz",
+      "ascending",
+      "ionian",
+      "dorian",
+      "minor",
+      "mode",
+      "scale",
+      "first mode",
+      "melodic minor mode",
+      "whole, half, whole, whole, whole, whole, half",
+      "W-H-W-W-W-W-H",
+      "1, 2, ♭3, 4, 5, 6, 7, 8"
+    ],
+    "sequence": [0, 2, 3, 5, 7, 9, 11]
+  },
+  {
+    "names": ["Dorian ♭2", "Phrygian ♮6"],
+    "metadata": ["melodic", "minor", "mode", "scale", "H-W-W-W-W-H-W "],
+    "sequence": [0, 1, 3, 5, 7, 9, 10]
+  },
+  {
+    "names": ["Lydian Augmented / Lydian ♯5"],
+    "metadata": ["melodic", "minor", "mode", "scale"],
+    "sequence": [0, 2, 4, 6, 8, 9, 11],
+    "labelsOverride": {
+      "quality": { "6": "A4", "8": "A5" },
+      "relative": { "6": "♯4", "8": "♯5" },
+      "extension": { "6": "♯11", "8": "♯5" }
+    }
+  },
+  {
+    "names": ["Lydian Dominant / Mixolydian ♯4"],
+    "metadata": ["melodic", "minor", "mode", "scale"],
+    "sequence": [0, 2, 4, 6, 7, 9, 10],
+    "labelsOverride": {
+      "quality": { "6": "A4" },
+      "relative": { "6": "♯4" },
+      "extension": { "6": "♯11" }
+    }
+  },
+  {
+    "names": ["Mixolydian ♭6"],
+    "metadata": ["melodic", "minor", "mode", "scale"],
+    "sequence": [0, 2, 4, 5, 7, 8, 10]
+  },
+  {
+    "names": ["Aeolian ♭5 / Locrian ♮2 / Locrian ♮9 / Half Diminished"],
+    "metadata": ["melodic", "minor", "mode", "scale"],
+    "sequence": [0, 2, 3, 5, 6, 8, 10]
+  },
+  {
+    "names": ["Super Locrian / Altered"],
+    "metadata": ["melodic", "minor", "mode", "scale"],
+    "sequence": [0, 1, 3, 4, 6, 8, 10],
+    "labelsOverride": {
+      "quality": { "4": "d4" },
+      "relative": { "4": "♭4" },
+      "extension": { "3": "♯9", "6": "♯11" }
+    }
+  }
+]
+
+
+// MINOR VARIANTS
+export default [
+  {
+    name: "m / Minor",
+    category: "Minor",
+    sequence: [0, 3, 7],
+  },
+  {
+    name: "m6 / Minor  Major 6th",
+    category: "Minor",
+    sequence: [0, 3, 7, 9],
+  },
+  {
+    name: "m7 / Minor 7th",
+    category: "Minor",
+    sequence: [0, 3, 7, 10],
+  },
+  {
+    name: "m9 / Minor 9th",
+    category: "Minor",
+    sequence: [0, 2, 3, 7, 10],
+    labels: {
+      Quality: { 2: "M9" },
+      Relative: { 2: "9" },
+    },
+  },
+  {
+    name: "m(add9) / Minor add 9",
+    category: "Minor",
+    sequence: [0, 2, 3, 7],
+    labels: {
+      Quality: { 2: "M9" },
+      Relative: { 2: "9" },
+    },
+  },
+  {
+    name: "m6/9 / Minor 6/9",
+    category: "Minor",
+    sequence: [0, 2, 3, 7, 9],
+    labels: {
+      Quality: { 2: "M9" },
+      Relative: { 2: "9" },
+    },
+  },
+];
+
+
+// PENTATONIC
+export default [
+  {
+    name: "Major Pentatonic",
+    category: "Pentatonic",
+    sequence: [0, 2, 4, 7, 9],
+  },
+  {
+    name: "Suspended Pentatonic",
+    category: "Pentatonic",
+    sequence: [0, 2, 5, 7, 10],
+  },
+  {
+    name: "Blues Minor Pentatonic",
+    category: "Pentatonic",
+    sequence: [0, 3, 5, 8, 10],
+  },
+  {
+    name: "Blues Major Pentatonic",
+    category: "Pentatonic",
+    sequence: [0, 2, 5, 7, 9],
+  },
+  {
+    name: "Minor Pentatonic",
+    category: "Pentatonic",
+    sequence: [0, 3, 5, 7, 10],
+  },
+  {
+    name: "Dominant Pentatonic",
+    category: "Pentatonic",
+    sequence: [0, 2, 4, 7, 10],
+  },
+];
+
+
+// OTHER
+export default [
+  // Diminished
+  {
+    name: "dim / o / Diminished Triad",
+    category: "Diminished",
+    sequence: [0, 3, 6],
+  },
+  {
+    name: "dim7 / o7 / Diminished 7th",
+    category: "Diminished",
+    sequence: [0, 3, 6, 9],
+    labels: {
+      Quality: { 9: "d7" },
+      Relative: { 9: "♭♭7" },
+      Extension: { 9: "♭♭7" },
+    },
+  },
+  {
+    name: "m7♭5 / ø7 / Half Diminished 7th",
+    category: "Diminished",
+    sequence: [0, 3, 6, 10],
+  },
+  {
+    name: "Whole Half Diminished",
+    category: "Diminished",
+    sequence: [0, 2, 3, 5, 6, 8, 9, 11],
+    labels: {
+      Quality: { 8: "A5" },
+      Relative: { 8: "♯5" },
+      Extension: { 8: "♯5" },
+    },
+  },
+  {
+    name: "Half Whole / Dominant Diminished",
+    category: "Diminished",
+    sequence: [0, 1, 3, 4, 6, 7, 9, 10],
+    labels: {
+      Quality: { 3: "A2", 6: "A4" },
+      Relative: { 3: "♯2", 6: "♯4" },
+      Extension: { 3: "♯9", 6: "♯11" },
+    },
+  },
+  // Augmented
+  {
+    name: "aug / + / Augmented Triad",
+    category: "Augmented",
+    sequence: [0, 4, 8],
+    labels: {
+      Quality: { 8: "A5" },
+      Relative: { 8: "♯5" },
+      Extension: { 8: "♯5" },
+    },
+  },
+  {
+    name: "It+6 / Italian 6th",
+    category: "Augmented",
+    sequence: [0, 4, 10],
+    labels: {
+      Quality: { 10: "A6" },
+      Relative: { 10: "♯6" },
+      Extension: { 10: "♯13" },
+    },
+  },
+  {
+    name: "Fr+6 / French 6th",
+    category: "Augmented",
+    sequence: [0, 4, 6, 10],
+    labels: {
+      Quality: { 10: "A6" },
+      Relative: { 10: "♯6" },
+      Extension: { 10: "♯13" },
+    },
+  },
+  {
+    name: "Ger+6 / German 6th",
+    category: "Augmented",
+    sequence: [0, 4, 7, 10],
+    labels: {
+      Quality: { 10: "A6" },
+      Relative: { 10: "♯6" },
+      Extension: { 10: "♯13" },
+    },
+  },
+  {
+    name: "aug7 / +7 / 7♯5 / Augmented Seventh",
+    category: "Augmented",
+    sequence: [0, 4, 8, 10],
+    labels: {
+      Quality: { 8: "A5" },
+      Relative: { 8: "♯5" },
+      Extension: { 8: "♯5" },
+    },
+  },
+  // Melodic Minor
+
+  // Harmonic Minor
+  {
+    name: "Harmonic Minor",
+    category: "Harmonic Minor",
+    sequence: [0, 2, 3, 5, 7, 8, 11],
+  },
+  {
+    name: "Locrian ♯6",
+    category: "Harmonic Minor",
+    sequence: [0, 1, 3, 5, 6, 9, 10],
+  },
+  {
+    name: "Ionian ♯5",
+    category: "Harmonic Minor",
+    sequence: [0, 2, 4, 5, 8, 9, 11],
+    labels: {
+      Quality: { 8: "A5" },
+      Relative: { 8: "♯5" },
+      Extension: { 8: "♯5" },
+    },
+  },
+  {
+    name: "Dorian ♯4",
+    category: "Harmonic Minor",
+    sequence: [0, 2, 3, 6, 7, 9, 10],
+    labels: {
+      Quality: { 6: "A4" },
+      Relative: { 6: "♯4" },
+      Extension: { 6: "♯11" },
+    },
+  },
+  {
+    name: "Phrygian Dominant",
+    category: "Harmonic Minor",
+    sequence: [0, 1, 4, 5, 7, 8, 10],
+  },
+  {
+    name: "Lydian ♯2",
+    category: "Harmonic Minor",
+    sequence: [0, 3, 4, 6, 7, 9, 11],
+    labels: {
+      Quality: { 3: "A2", 6: "A4" },
+      Relative: { 3: "♯2", 6: "♯4" },
+      Extension: { 3: "♯9", 6: "♯11" },
+    },
+  },
+  {
+    name: "Super Locrian ♭♭7",
+    category: "Harmonic Minor",
+    sequence: [0, 1, 3, 4, 6, 8, 9],
+    labels: {
+      Quality: { 4: "d4", 9: "d7" },
+      Relative: { 4: "♭4", 9: "♭♭7" },
+      Extension: { 4: "♭11", 9: "♭♭7" },
+    },
+  },
+  // Other
+  {
+    name: "R / Root",
+    category: "Other",
+    sequence: [0],
+  },
+  {
+    name: "Chromatic",
+    category: "Other",
+    sequence: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+  },
+  {
+    name: "Blank",
+    category: "Other",
+    sequence: [],
+  },
+  {
+    name: "Root and 5th",
+    category: "Other",
+    sequence: [0, 7],
+  },
+  {
+    name: "Blues",
+    category: "Other",
+    sequence: [0, 3, 5, 6, 7, 10],
+  },
+  {
+    name: "Whole Tone",
+    category: "Other",
+    sequence: [0, 2, 4, 6, 8, 10],
+  },
+];
