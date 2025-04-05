@@ -1,4 +1,4 @@
-import { MajorVariants } from "../../types/major-variants";
+import { MajorVariants } from "../../types/major-variants.d.ts";
 
 export const majorVariants: MajorVariants = {
   major: {
