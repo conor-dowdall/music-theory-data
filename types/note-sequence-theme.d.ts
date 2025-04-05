@@ -1,4 +1,4 @@
-import { PitchInteger } from "./pitch-integer";
+import { PitchInteger } from "./pitch-integer.d.ts";
 
 /**
  * Represents a musical-sequence theme, such as a chord, scale, or mode.
