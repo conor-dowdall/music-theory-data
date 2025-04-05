@@ -1,4 +1,4 @@
-import { NoteSequenceTheme } from "./note-sequence-theme";
+import type { NoteSequenceTheme } from "./note-sequence-theme.d.ts";
 
 export interface MajorVariants {
   major: NoteSequenceTheme;
