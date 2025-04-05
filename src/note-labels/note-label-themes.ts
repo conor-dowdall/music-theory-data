@@ -1,4 +1,4 @@
-import { NoteLabelThemes } from "../../types/note-labels";
+import type { NoteLabelThemes } from "../../types/note-labels.d.ts";
 
 /**
  * An object containing different themes for labeling musical notes and intervals,

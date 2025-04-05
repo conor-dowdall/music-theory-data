@@ -1,4 +1,4 @@
-import { DiatonicModes } from "../../types/diatonic-modes";
+import type { DiatonicModes } from "../../types/diatonic-modes.d.ts";
 
 export const diatonicModes: DiatonicModes = {
   ionian: {

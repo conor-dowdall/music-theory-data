@@ -1,4 +1,4 @@
-import { DominantVariants } from "../../types/dominant-variants";
+import type { DominantVariants } from "../../types/dominant-variants.d.ts";
 
 export const dominantVariants: DominantVariants = {
   dominant7: {
