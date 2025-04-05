@@ -1,9 +1,3 @@
-// import {
-//   enharmonicNotesAlt,
-//   enharmonicNotesUnicode,
-// } from "../note-labels/enharmonic-notes";
-// import { EnharmonicNotes, NoteName } from "../../types/note-labels";
-// import { PitchInteger } from "../../types/pitch-integer";
 import type { EnharmonicNotes, NoteName } from "../../types/note-labels.d.ts";
 import type { PitchInteger } from "../../types/pitch-integer.d.ts";
 import {
