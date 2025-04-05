@@ -1,4 +1,4 @@
-import { assertEquals } from "jsr:@std/assert";
+import { assertEquals } from "@std/assert";
 import { getIntegerNotation } from "../src/utils/music-theory-data-utils.ts";
 
 Deno.test("natural notes", () => {
