@@ -22,7 +22,7 @@ export type EnharmonicNotes = [
   NoteNameGroup,
   NoteNameGroup,
   NoteNameGroup,
-  NoteNameGroup
+  NoteNameGroup,
 ];
 
 /**
@@ -46,7 +46,7 @@ export interface NoteLabelTheme {
     NoteName,
     NoteName,
     NoteName,
-    NoteName
+    NoteName,
   ];
 }
 
@@ -81,7 +81,7 @@ export interface NoteLabelThemes {
   /**
    * Can be overwritten in a specific NoteSequenceTheme using labelsOverride.
    * e.g. "I", "ii", "V", ...
-   * */
+   */
   romanTriad: NoteLabelTheme;
   /**
    * Can be overwritten in a specific NoteSequenceTheme using labelsOverride.
