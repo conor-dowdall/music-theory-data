@@ -2,7 +2,7 @@ import type { NoteLabelThemes } from "../../types/note-labels.d.ts";
 
 /**
  * An object containing different themes for labeling musical notes and intervals,
- * such as sharp notes, flat notes, and various interval representations.
+ * such as sharp notes, flat notes, and various other representations.
  */
 export const noteLabelThemes: NoteLabelThemes = {
   flat: {
@@ -11,18 +11,21 @@ export const noteLabelThemes: NoteLabelThemes = {
     isRelative: false,
     labels: ["C", "D♭", "D", "E♭", "E", "F", "G♭", "G", "A♭", "A", "B♭", "B"],
   },
+
   sharp: {
     name: "Sharp Notes",
     shortName: "Sharp",
     isRelative: false,
     labels: ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B"],
   },
+
   relative: {
     name: "Relative Intervals",
     shortName: "Relative",
     isRelative: true,
     labels: ["1", "♭2", "2", "♭3", "3", "4", "♭5", "5", "♭6", "6", "♭7", "7"],
   },
+
   quality: {
     name: "Relative Interval Qualities",
     shortName: "Quality",
@@ -42,6 +45,7 @@ export const noteLabelThemes: NoteLabelThemes = {
       "M7",
     ],
   },
+
   extension: {
     name: "Relative Interval Extensions",
     shortName: "Extension",
@@ -61,6 +65,7 @@ export const noteLabelThemes: NoteLabelThemes = {
       "7",
     ],
   },
+
   fixedDoFlat: {
     name: "Solfege Fixed Do Flat Notes",
     shortName: "Fixed Do Flat",
@@ -80,6 +85,7 @@ export const noteLabelThemes: NoteLabelThemes = {
       "si",
     ],
   },
+
   fixedDoSharp: {
     name: "Solfege Fixed Do Sharp Notes",
     shortName: "Fixed Do Sharp",
@@ -99,6 +105,7 @@ export const noteLabelThemes: NoteLabelThemes = {
       "si",
     ],
   },
+
   movableDo: {
     name: "Solfege Movable Do Notes",
     shortName: "Movable Do",
@@ -118,6 +125,7 @@ export const noteLabelThemes: NoteLabelThemes = {
       "ti",
     ],
   },
+
   movableLa: {
     name: "Solfege Movable La Notes",
     shortName: "Movable La",
@@ -136,5 +144,33 @@ export const noteLabelThemes: NoteLabelThemes = {
       "sol",
       "si",
     ],
+  },
+
+  triad: {
+    name: "Triad Chords",
+    shortName: "Triad",
+    isRelative: true,
+    labels: ["", "", "", "", "", "", "", "", "", "", "", ""],
+  },
+
+  romanTriad: {
+    name: "Roman Numeral Triad Chords",
+    shortName: "Roman Triad",
+    isRelative: true,
+    labels: ["", "", "", "", "", "", "", "", "", "", "", ""],
+  },
+
+  seventh: {
+    name: "Seventh Chords",
+    shortName: "Seventh",
+    isRelative: true,
+    labels: ["", "", "", "", "", "", "", "", "", "", "", ""],
+  },
+
+  romanSeventh: {
+    name: "Roman Numeral Seventh Chords",
+    shortName: "Roman Seventh",
+    isRelative: true,
+    labels: ["", "", "", "", "", "", "", "", "", "", "", ""],
   },
 };
