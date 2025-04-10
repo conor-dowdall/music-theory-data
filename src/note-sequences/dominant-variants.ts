@@ -1,6 +1,8 @@
-import type { DominantVariants } from "../../types/dominant-variants.d.ts";
+import type { NoteSequenceTheme } from "../../types/note-sequences.d.ts";
 
-export const dominantVariants: DominantVariants = {
+export type DominantVariants = typeof dominantVariants;
+
+export const dominantVariants = {
   dominant7: {
     primaryName: "7",
     names: ["7", "Dominant 7th"],
@@ -32,4 +34,4 @@ export const dominantVariants: DominantVariants = {
       relative: new Map([[2, "9"]]),
     },
   },
-};
+} satisfies Record<string, NoteSequenceTheme>;
