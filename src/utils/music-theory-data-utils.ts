@@ -1,6 +1,7 @@
 import type {
   LabelsOverride,
   LabelsOverrideMap,
+  NoteSequenceTheme,
   PitchInteger,
 } from "../../types/note-sequences.d.ts";
 import type {
@@ -13,6 +14,7 @@ import {
   type NoteLabelThemeName,
 } from "../note-labels/note-label-themes.ts";
 import {
+  NoteSequenceThemeGroup,
   noteSequenceThemes,
   type NoteSequenceThemeName,
 } from "../note-sequences/note-sequences.ts";
@@ -54,26 +56,26 @@ export function getSequenceNoteLabels(
   noteSequenceThemeName: NoteSequenceThemeName,
   noteLabelThemeName: NoteLabelThemeName
 ): NoteLabelGroup | undefined {
-  const noteSequenceTheme = noteSequenceThemes[noteSequenceThemeName];
+  // Find the theme by searching through all note-sequence-theme groups
+  const noteSequenceTheme = Object.values(noteSequenceThemes)
+    // For each group object, gets its entries as [key, value] pairs
+    .flatMap((themeGroupValues) => Object.entries(themeGroupValues))
+    // Destructure each entry to get just the key (themeName)
+    .find(([themeName]) => themeName === noteSequenceThemeName)?.[1] as
+    | NoteSequenceTheme
+    | undefined;
   if (!noteSequenceTheme) return undefined;
 
   const noteLabelTheme = noteLabelThemes[noteLabelThemeName];
   if (!noteLabelTheme) return undefined;
 
-  let labels = [...noteLabelTheme.labels] as NoteLabelGroup;
+  const labels = noteLabelTheme.labels;
+  if (!("labelsOverride" in noteSequenceTheme)) return labels;
 
-  if ("labelsOverride" in noteSequenceTheme) {
-    labels = labels.map((label, index) => {
-      const labelsOverride = noteSequenceTheme.labelsOverride as LabelsOverride;
-      if (noteLabelThemeName in labelsOverride) {
-        const labelsOverrideMap = labelsOverride[
-          noteLabelThemeName
-        ] as LabelsOverrideMap;
-        return labelsOverrideMap.get(index as PitchInteger) ?? label;
-      }
-      return label;
-    }) as NoteLabelGroup;
-  }
+  const overrideMap = noteSequenceTheme.labelsOverride?.[noteLabelThemeName];
+  if (!overrideMap) return labels;
 
-  return labels;
+  return labels.map(
+    (label, index) => overrideMap.get(index as PitchInteger) ?? label
+  ) as NoteLabelGroup;
 }
