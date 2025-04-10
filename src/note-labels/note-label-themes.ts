@@ -1,10 +1,21 @@
-import type { NoteLabelThemes } from "../../types/note-labels.d.ts";
+import type { NoteLabelTheme } from "../../types/note-labels.d.ts";
 
 /**
- * An object containing different themes for labeling musical notes and intervals,
- * such as sharp notes, flat notes, and various other representations.
+ * Defines a type that represents the available note label themes.
  */
-export const noteLabelThemes: NoteLabelThemes = {
+export type NoteLabelThemes = typeof noteLabelThemes;
+
+/**
+ * Defines a type that represents the names of the available
+ * note label themes.
+ */
+export type NoteLabelThemeName = keyof NoteLabelThemes;
+
+/**
+ * An object containing the available note label themes,
+ * such as flat notes, sharp notes, and various other representations.
+ */
+export const noteLabelThemes = {
   flat: {
     name: "Flat Notes",
     shortName: "Flat",
@@ -146,6 +157,10 @@ export const noteLabelThemes: NoteLabelThemes = {
     ],
   },
 
+  /**
+   * Can be overwritten in a specific NoteSequenceTheme using labelsOverride.
+   * e.g. "M", "m", "o", "+", ...
+   */
   triad: {
     name: "Triad Chords",
     shortName: "Triad",
@@ -153,6 +168,10 @@ export const noteLabelThemes: NoteLabelThemes = {
     labels: ["", "", "", "", "", "", "", "", "", "", "", ""],
   },
 
+  /**
+   * Can be overwritten in a specific NoteSequenceTheme using labelsOverride.
+   * e.g. "I", "ii", "V", ...
+   */
   romanTriad: {
     name: "Roman Numeral Triad Chords",
     shortName: "Roman Triad",
@@ -160,6 +179,10 @@ export const noteLabelThemes: NoteLabelThemes = {
     labels: ["", "", "", "", "", "", "", "", "", "", "", ""],
   },
 
+  /**
+   * Can be overwritten in a specific NoteSequenceTheme using labelsOverride.
+   * e.g. "M7", "m7", "7", ...
+   */
   seventh: {
     name: "Seventh Chords",
     shortName: "Seventh",
@@ -167,10 +190,14 @@ export const noteLabelThemes: NoteLabelThemes = {
     labels: ["", "", "", "", "", "", "", "", "", "", "", ""],
   },
 
+  /**
+   * Can be overwritten in a specific NoteSequenceTheme using labelsOverride.
+   * e.g. "IM7", "iim7", "V7", ...
+   */
   romanSeventh: {
     name: "Roman Numeral Seventh Chords",
     shortName: "Roman Seventh",
     isRelative: true,
     labels: ["", "", "", "", "", "", "", "", "", "", "", ""],
   },
-};
+} satisfies Record<string, NoteLabelTheme>;
