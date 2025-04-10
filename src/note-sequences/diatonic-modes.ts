@@ -1,6 +1,8 @@
-import type { DiatonicModes } from "../../types/diatonic-modes.d.ts";
+import type { NoteSequenceTheme } from "../../types/note-sequences.d.ts";
 
-export const diatonicModes: DiatonicModes = {
+export type DiatonicModes = typeof diatonicModes;
+
+export const diatonicModes = {
   ionian: {
     primaryName: "Major",
     names: ["Major", "Ionian", "Major Scale", "Ionian Mode"],
@@ -514,4 +516,4 @@ export const diatonicModes: DiatonicModes = {
       ]),
     },
   },
-};
+} satisfies Record<string, NoteSequenceTheme>;
