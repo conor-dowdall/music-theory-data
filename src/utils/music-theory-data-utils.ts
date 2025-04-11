@@ -8,8 +8,8 @@ import type {
   NoteName,
 } from "../../types/note-labels.d.ts";
 import {
-  noteLabelThemes,
   type NoteLabelThemeName,
+  noteLabelThemes,
 } from "../note-labels/note-label-themes.ts";
 import {
   flatNoteSequenceThemes,
@@ -28,16 +28,16 @@ import {
  * @returns The pitch integer (0-11) if found, otherwise undefined.
  */
 export function getIntegerNotation(
-  noteName: NoteName
+  noteName: NoteName,
 ): PitchInteger | undefined {
   const lowerCaseNoteName = noteName.toLowerCase();
 
   const checkEnharmonicNotes = (
-    enharmonicNotes: EnharmonicNotes
+    enharmonicNotes: EnharmonicNotes,
   ): PitchInteger | undefined => {
     for (let index = 0; index < enharmonicNotes.length; index++) {
       const containsNote = enharmonicNotes[index].some(
-        (n) => n.toLowerCase() === lowerCaseNoteName
+        (n) => n.toLowerCase() === lowerCaseNoteName,
       );
       if (containsNote) return index as PitchInteger;
     }
@@ -61,7 +61,7 @@ export function getIntegerNotation(
  */
 export function getSequenceNoteLabels(
   noteSequenceThemeName: NoteSequenceThemeName,
-  noteLabelThemeName: NoteLabelThemeName
+  noteLabelThemeName: NoteLabelThemeName,
 ): NoteLabelGroup | undefined {
   const noteSequenceTheme = flatNoteSequenceThemes[noteSequenceThemeName] as
     | NoteSequenceTheme
@@ -78,6 +78,6 @@ export function getSequenceNoteLabels(
   if (!overrideMap) return labels;
 
   return labels.map(
-    (label, index) => overrideMap.get(index as PitchInteger) ?? label
+    (label, index) => overrideMap.get(index as PitchInteger) ?? label,
   ) as NoteLabelGroup;
 }
