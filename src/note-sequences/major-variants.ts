@@ -1,8 +1,6 @@
 import type { NoteSequenceTheme } from "../../types/note-sequences.d.ts";
 
-export type MajorVariants = typeof majorVariants;
-
-export const majorVariants = {
+export const majorVariants: Record<string, NoteSequenceTheme> = {
   major: {
     primaryName: "M",
     names: ["M", "Major"],
@@ -90,4 +88,6 @@ export const majorVariants = {
       relative: new Map([[2, "9"]]),
     },
   },
-} satisfies Record<string, NoteSequenceTheme>;
+};
+
+export type MajorVariants = typeof majorVariants;

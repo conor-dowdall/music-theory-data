@@ -1,21 +1,10 @@
 import type { NoteLabelTheme } from "../../types/note-labels.d.ts";
 
 /**
- * Defines a type that represents the available note label themes.
- */
-export type NoteLabelThemes = typeof noteLabelThemes;
-
-/**
- * Defines a type that represents the names of the available
- * note label themes.
- */
-export type NoteLabelThemeName = keyof NoteLabelThemes;
-
-/**
  * An object containing the available note label themes,
  * such as flat notes, sharp notes, and various other representations.
  */
-export const noteLabelThemes = {
+export const noteLabelThemes: Record<string, NoteLabelTheme> = {
   flat: {
     name: "Flat Notes",
     shortName: "Flat",
@@ -200,4 +189,15 @@ export const noteLabelThemes = {
     isRelative: true,
     labels: ["", "", "", "", "", "", "", "", "", "", "", ""],
   },
-} satisfies Record<string, NoteLabelTheme>;
+};
+
+/**
+ * Defines a type that represents the available note label themes.
+ */
+export type NoteLabelThemes = typeof noteLabelThemes;
+
+/**
+ * Defines a type that represents the names of the available
+ * note label themes.
+ */
+export type NoteLabelThemeName = keyof NoteLabelThemes;
