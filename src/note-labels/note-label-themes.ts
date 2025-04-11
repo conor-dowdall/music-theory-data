@@ -1,4 +1,4 @@
-import type { NoteLabelTheme } from "../../types/note-labels.d.ts";
+import type { NoteLabelTheme } from "../types/note-labels.d.ts";
 
 /**
  * An object containing the available note label themes,

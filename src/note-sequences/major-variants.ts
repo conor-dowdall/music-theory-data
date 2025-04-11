@@ -1,4 +1,4 @@
-import type { NoteSequenceTheme } from "../../types/note-sequences.d.ts";
+import type { NoteSequenceTheme } from "../types/note-sequences.d.ts";
 
 export const majorVariants: Record<string, NoteSequenceTheme> = {
   major: {

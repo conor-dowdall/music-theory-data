@@ -1,8 +1,8 @@
-import type { NoteLabelGroup } from "../../types/note-labels.d.ts";
+import type { NoteLabelGroup } from "../types/note-labels.d.ts";
 import type {
   NoteSequenceTheme,
   PitchInteger,
-} from "../../types/note-sequences.d.ts";
+} from "../types/note-sequences.d.ts";
 import {
   type NoteLabelThemeName,
   noteLabelThemes,

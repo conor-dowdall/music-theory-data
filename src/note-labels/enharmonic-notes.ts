@@ -1,4 +1,4 @@
-import type { EnharmonicNotes } from "../../types/note-labels.d.ts";
+import type { EnharmonicNotes } from "../types/note-labels.d.ts";
 
 /**
  * A 2D array, where each inner array contains enharmonically equivalent

@@ -1,2 +1,2 @@
-export * from "./getIntegerNotation.ts";
-export * from "./getNoteSequenceLabels.ts";
+export { getIntegerNotation } from "./getIntegerNotation.ts";
+export { getNoteSequenceLabels } from "./getNoteSequenceLabels.ts";

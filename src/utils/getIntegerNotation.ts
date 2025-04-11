@@ -1,5 +1,5 @@
-import type { EnharmonicNotes, NoteName } from "../../types/note-labels.d.ts";
-import type { PitchInteger } from "../../types/note-sequences.d.ts";
+import type { EnharmonicNotes, NoteName } from "../types/note-labels.d.ts";
+import type { PitchInteger } from "../types/note-sequences.d.ts";
 import {
   enharmonicNotesAlt,
   enharmonicNotesUnicode,
