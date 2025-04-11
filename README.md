@@ -1,6 +1,7 @@
 # Music Theory Data
 
-A comprehensive collection of music theory data structures and utilities for working with modes, scales, arpeggios, and chords.
+A comprehensive collection of music theory data structures and utilities for
+working with modes, scales, arpeggios, and chords.
 
 ## Features
 
@@ -76,7 +77,8 @@ const customTheme: NoteSequenceTheme = {
 
 ### Note Labels
 
-- `noteLabelThemes`: Different labeling systems (sharp, flat, triads, roman numerals, etc.)
+- `noteLabelThemes`: Different labeling systems (sharp, flat, triads, roman
+  numerals, etc.)
 - `enharmonicNotes`: Alternative note name spellings
 
 ### Utilities
@@ -99,7 +101,8 @@ deno check mod.ts
 
 ## License
 
-This project is licensed under The Unlicense - see the [UNLICENSE](UNLICENSE) file for details.
+This project is licensed under The Unlicense - see the [UNLICENSE](UNLICENSE)
+file for details.
 
 ## Contributing
 
