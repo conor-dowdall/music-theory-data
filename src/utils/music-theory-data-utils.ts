@@ -1,6 +1,4 @@
 import type {
-  LabelsOverride,
-  LabelsOverrideMap,
   NoteSequenceTheme,
   PitchInteger,
 } from "../../types/note-sequences.d.ts";
@@ -14,8 +12,7 @@ import {
   type NoteLabelThemeName,
 } from "../note-labels/note-label-themes.ts";
 import {
-  NoteSequenceThemeGroup,
-  noteSequenceThemes,
+  flatNoteSequenceThemes,
   type NoteSequenceThemeName,
 } from "../note-sequences/note-sequences.ts";
 import {
@@ -56,12 +53,7 @@ export function getSequenceNoteLabels(
   noteSequenceThemeName: NoteSequenceThemeName,
   noteLabelThemeName: NoteLabelThemeName
 ): NoteLabelGroup | undefined {
-  // Find the theme by searching through all note-sequence-theme groups
-  const noteSequenceTheme = Object.values(noteSequenceThemes)
-    // For each group object, gets its entries as [key, value] pairs
-    .flatMap((themeGroupValues) => Object.entries(themeGroupValues))
-    // Destructure each entry to get just the key (themeName)
-    .find(([themeName]) => themeName === noteSequenceThemeName)?.[1] as
+  const noteSequenceTheme = flatNoteSequenceThemes[noteSequenceThemeName] as
     | NoteSequenceTheme
     | undefined;
   if (!noteSequenceTheme) return undefined;
