@@ -2,8 +2,17 @@ import { diatonicModes } from "./diatonic-modes.ts";
 import { dominantVariants } from "./dominant-variants.ts";
 import { majorVariants } from "./major-variants.ts";
 
-/*
- * A collection of all note sequence themes
+/**
+ * A flattened collection of all note sequence themes for direct access
+ */
+export const flatNoteSequenceThemes = {
+  ...diatonicModes,
+  ...dominantVariants,
+  ...majorVariants,
+} as const;
+
+/**
+ * A grouped collection of all note sequence themes
  */
 export const noteSequenceThemes = {
   diatonicModes,
