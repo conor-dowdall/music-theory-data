@@ -49,6 +49,16 @@ export function getIntegerNotation(
   return checkEnharmonicNotes(enharmonicNotesUnicode);
 }
 
+/**
+ * Gets the array of 12 note labels for a given note sequence theme and note label theme.
+ * The note sequence can have an optional labelsOverride property, which updates the labels
+ * in the original note label theme.
+ *
+ * @param noteSequenceThemeName The name of the note sequence theme.
+ * @param noteLabelThemeName The name of the note label theme.
+ * @returns The note labels array, or undefined if not found.
+ *          The array is of type NoteLabelGroup, which is an array of 12 strings.
+ */
 export function getSequenceNoteLabels(
   noteSequenceThemeName: NoteSequenceThemeName,
   noteLabelThemeName: NoteLabelThemeName
