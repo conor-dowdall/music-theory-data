@@ -1,5 +1,8 @@
 import type { NoteSequenceTheme } from "../types/note-sequences.d.ts";
 
+/**
+ * Diatonic modes are seven musical modes derived from the major scale.
+ */
 export const diatonicModes: Record<string, NoteSequenceTheme> = {
   ionian: {
     primaryName: "Major",

@@ -1,5 +1,8 @@
 import type { NoteSequenceTheme } from "../types/note-sequences.d.ts";
 
+/**
+ * These are variants of the major-style chord.
+ */
 export const majorVariants: Record<string, NoteSequenceTheme> = {
   major: {
     primaryName: "M",

@@ -1,5 +1,8 @@
 import type { NoteSequenceTheme } from "../types/note-sequences.d.ts";
 
+/**
+ * These are variants of the dominant-style chord.
+ */
 export const dominantVariants: Record<string, NoteSequenceTheme> = {
   dominant7: {
     primaryName: "7",
