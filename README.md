@@ -33,10 +33,10 @@ console.log(ionianMode.characteristics); // ["bright", "happy", "stable", ...]
 ### Using Note Labels
 
 ```typescript
-import { getSequenceNoteLabels } from "jsr:@musodojo/music-theory-data/utils";
+import { getNoteSequenceLabels } from "jsr:@musodojo/music-theory-data/utils";
 
 // Get chord labels for a mode
-const labels = getSequenceNoteLabels("ionian", "triad");
+const labels = getNoteSequenceLabels("ionian", "triad");
 // Returns: [
 //     "M",
 //     "",
@@ -83,7 +83,7 @@ const customTheme: NoteSequenceTheme = {
 
 ### Utilities
 
-- `getSequenceNoteLabels`: Get labels for a given sequence and theme
+- `getNoteSequenceLabels`: Get labels for a given sequence and theme
 - `getIntegerNotation`: Convert note names to pitch class integers
 
 ## Development
