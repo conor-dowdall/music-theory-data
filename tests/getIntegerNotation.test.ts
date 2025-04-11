@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert";
-import { getIntegerNotation } from "../src/utils/music-theory-data-utils.ts";
+import { getIntegerNotation } from "../src/utils/getIntegerNotation.ts";
 
 Deno.test("natural notes", () => {
   assertEquals(getIntegerNotation("C"), 0);
