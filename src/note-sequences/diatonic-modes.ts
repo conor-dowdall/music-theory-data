@@ -1,3 +1,20 @@
+/**
+ * Diatonic modes are the seven traditional church modes, each starting on a different
+ * degree of the major scale. These modes form the foundation of Western music theory
+ * and are still widely used in modern music composition.
+ *
+ * Each mode has its own unique interval pattern and characteristic sound:
+ * - Ionian (Major): The familiar major scale
+ * - Dorian: Minor scale with raised 6th
+ * - Phrygian: Minor scale with lowered 2nd
+ * - Lydian: Major scale with raised 4th
+ * - Mixolydian: Major scale with lowered 7th
+ * - Aeolian (Natural Minor): The natural minor scale
+ * - Locrian: Minor scale with lowered 2nd and 5th
+ *
+ * @module
+ */
+
 import type { NoteSequenceTheme } from "../types/note-sequences.d.ts";
 
 /**
@@ -519,4 +536,20 @@ export const diatonicModes: Record<string, NoteSequenceTheme> = {
   },
 };
 
+/**
+ * Type representing all available diatonic modes.
+ * Provides type-safe access to mode properties and ensures
+ * all modes follow the NoteSequenceTheme structure.
+ *
+ * @example
+ * ```ts
+ * // Type-safe mode access
+ * function getDiatonicMode(name: keyof DiatonicModes) {
+ *   return diatonicModes[name];
+ * }
+ *
+ * const ionianMode = getMode("ionian");    // Valid
+ * const invalid = getMode("chromatic");    // Type error
+ * ```
+ */
 export type DiatonicModes = typeof diatonicModes;

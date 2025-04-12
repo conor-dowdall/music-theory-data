@@ -1,3 +1,29 @@
+/**
+ * Aggregates and exports all note sequence collections with their associated types.
+ * This module serves as the main entry point for accessing note sequences,
+ * providing both flat and grouped access patterns.
+ *
+ * Features:
+ * - Flat access to all sequences via `flatNoteSequenceThemes`
+ * - Grouped access via `noteSequenceThemes`
+ * - Type-safe access through TypeScript types
+ *
+ * Example Usage:
+ * ```ts
+ * // Flat access
+ * const ionian = flatNoteSequenceThemes.ionian;
+ * const major7 = flatNoteSequenceThemes.major7;
+ *
+ * // Grouped access
+ * const modes = noteSequenceThemes.diatonicModes;
+ * const majors = noteSequenceThemes.majorVariants;
+ * const ionian = noteSequenceThemes.diatonicModes.ionian;
+ * const major7 = noteSequenceThemes.majorVariants.major7;
+ * ```
+ *
+ * @module
+ */
+
 import { diatonicModes } from "./diatonic-modes.ts";
 import { dominantVariants } from "./dominant-variants.ts";
 import { majorVariants } from "./major-variants.ts";

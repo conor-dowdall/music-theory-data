@@ -1,3 +1,28 @@
+/**
+ * Collection of note labeling systems used in music theory and composition.
+ * Provides various ways to represent musical pitches and harmonies.
+ *
+ * Features:
+ * - Accidental styles (sharp ♯, flat ♭)
+ * - Interval qualities (perfect, major, minor)
+ * - Solfege systems (fixed do, movable do)
+ * - Chord symbols (triads, sevenths)
+ * - Roman numeral analysis
+ *
+ * Example Usage:
+ * ```ts
+ * import { noteLabelThemes } from "@musodojo/music-theory-data/note-labels";
+ *
+ * // Get flat note names
+ * const flatLabels = noteLabelThemes.flat.labels;  // ["C", "D♭", "D", ...]
+ *
+ * // Get relative interval qualities
+ * const qualities = noteLabelThemes.quality.labels;  // ["P1", "m2", "M2", ...]
+ * ```
+ *
+ * @module
+ */
+
 import type { NoteLabelTheme } from "../types/note-labels.d.ts";
 
 /**

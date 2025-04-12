@@ -1,3 +1,17 @@
+/**
+ * Collection of major chord and arpeggio variants commonly used in music.
+ * These patterns build upon the basic major triad (1-3-5) by adding extensions
+ * like 6ths, 7ths, and 9ths to create richer harmonic structures.
+ *
+ * Key variants include:
+ * - Major Triad: The basic major chord
+ * - Major 6th: Adds major 6th to triad
+ * - Major 7th: Adds major 7th to triad
+ * - ...
+ *
+ * @module
+ */
+
 import type { NoteSequenceTheme } from "../types/note-sequences.d.ts";
 
 /**
@@ -93,4 +107,20 @@ export const majorVariants: Record<string, NoteSequenceTheme> = {
   },
 };
 
+/**
+ * Type representing all available major chord variants.
+ * Provides type-safe access to chord properties and ensures
+ * all variants follow the NoteSequenceTheme structure.
+ *
+ * @example
+ * ```ts
+ * // Type-safe chord variant access
+ * function getMajorChord(type: keyof MajorVariants) {
+ *   return majorVariants[type];
+ * }
+ *
+ * const maj7 = getMajorChord("major7");     // Valid
+ * const invalid = getMajorChord("minor7");   // Type error
+ * ```
+ */
 export type MajorVariants = typeof majorVariants;

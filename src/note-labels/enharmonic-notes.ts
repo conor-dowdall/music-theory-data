@@ -1,3 +1,27 @@
+/**
+ * Provides collections of enharmonic note spellings for the 12 pitch classes.
+ * Enharmonic notes are different ways of writing the same musical pitch.
+ *
+ * Features:
+ * - Unicode version using proper musical symbols (♯, ♭, ♮)
+ * - ASCII version using standard characters (#, b)
+ * - All common enharmonic spellings for each pitch class
+ * - Both simple and double accidentals
+ *
+ * Example Usage:
+ * ```ts
+ * // Unicode accidentals
+ * const cPitchClass = enharmonicNotesUnicode[0];  // ["C", "C♮", "D♭♭", "B♯"]
+ *
+ * // ASCII accidentals
+ * const fSharp = enharmonicNotesAlt[6];  // ["Gb", "F#", "E##"]
+ * ```
+ *
+ * Note: Each top-level array index represents a pitch class from C (0) to B (11).
+ *
+ * @module enharmonic-notes
+ */
+
 import type { EnharmonicNotes } from "../types/note-labels.d.ts";
 
 /**

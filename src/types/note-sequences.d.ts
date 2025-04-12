@@ -1,3 +1,31 @@
+/**
+ * Type definitions for musical note sequences like scales, modes, and chords.
+ * Provides TypeScript types for consistent representation of musical patterns.
+ *
+ * Key Types:
+ * - PitchInteger: Numbers 0-11 representing pitch classes
+ * - NoteSequenceTheme: Complete definition of a musical pattern
+ * - LabelsOverride: Custom labeling for specific contexts
+ *
+ * Example Usage:
+ * ```ts
+ * import type { NoteSequenceTheme, PitchInteger } from "@musodojo/music-theory-data/types";
+ *
+ * // Define a custom scale
+ * const customScale: NoteSequenceTheme = {
+ *   primaryName: "Custom Scale",
+ *   sequence: [0, 2, 4, 5, 7, 9, 11],
+ *   // ...other required properties
+ * };
+ *
+ * // Type-safe pitch class
+ * const root: PitchInteger = 0;  // C
+ * const invalid: PitchInteger = 12;  // Type error
+ * ```
+ *
+ * @module
+ */
+
 import type { NoteLabelThemeName } from "../note-labels/note-label-themes.ts";
 
 /** Represents the pitch class in integer notation - a number between 0 (C) and 11 (B). */
