@@ -61,8 +61,14 @@ export const dominantVariants: Record<string, NoteSequenceTheme> = {
     degrees: ["1", "3", "5", "♭7", "9", "11"],
     exampleNotes: ["C", "E", "G", "B♭", "D", "F"],
     labelsOverride: {
-      quality: new Map([[2, "M9"]]),
-      relative: new Map([[2, "9"]]),
+      quality: new Map([
+        [2, "M9"],
+        [5, "M11"],
+      ]),
+      relative: new Map([
+        [2, "9"],
+        [5, "11"],
+      ]),
     },
   },
   dominant13: {
@@ -83,8 +89,16 @@ export const dominantVariants: Record<string, NoteSequenceTheme> = {
     degrees: ["1", "3", "5", "♭7", "9", "11", "13"],
     exampleNotes: ["C", "E", "G", "B♭", "D", "F", "A"],
     labelsOverride: {
-      quality: new Map([[2, "M9"]]),
-      relative: new Map([[2, "9"]]),
+      quality: new Map([
+        [2, "M9"],
+        [5, "M11"],
+        [9, "M13"],
+      ]),
+      relative: new Map([
+        [2, "9"],
+        [5, "11"],
+        [9, "13"],
+      ]),
     },
   },
 };
