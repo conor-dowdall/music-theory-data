@@ -50,7 +50,7 @@ export type EnharmonicNotes = [
   EnharmonicGroup,
   EnharmonicGroup,
   EnharmonicGroup,
-  EnharmonicGroup
+  EnharmonicGroup,
 ];
 
 /*
@@ -69,7 +69,7 @@ export type NoteLabelGroup = [
   NoteName,
   NoteName,
   NoteName,
-  NoteName
+  NoteName,
 ];
 
 /**
