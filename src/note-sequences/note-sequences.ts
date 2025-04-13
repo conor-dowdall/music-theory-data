@@ -27,6 +27,7 @@
 import { diatonicModes } from "./diatonic-modes.ts";
 import { dominantVariants } from "./dominant-variants.ts";
 import { majorVariants } from "./major-variants.ts";
+import { melodicMinorModes } from "./melodic-minor-modes.ts";
 
 /**
  * A flattened collection of all note sequence themes for direct access
@@ -35,6 +36,7 @@ export const flatNoteSequenceThemes = {
   ...diatonicModes,
   ...dominantVariants,
   ...majorVariants,
+  ...melodicMinorModes,
 } as const;
 
 /**
@@ -44,6 +46,7 @@ export const noteSequenceThemes = {
   diatonicModes,
   dominantVariants,
   majorVariants,
+  melodicMinorModes,
 } as const;
 
 /*
@@ -90,4 +93,9 @@ export const noteSequenceThemeGroupMetadata: Record<
     description:
       "Chord structures based on the major triad, including sixth and major seventh harmonies.",
   },
-} as const;
+  melodicMinorModes: {
+    displayName: "Melodic Minor Modes",
+    description:
+      "Seven-note scales derived from the melodic minor scale, each starting on a different scale degree.",
+  } as const,
+};
