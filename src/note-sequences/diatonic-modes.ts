@@ -92,7 +92,7 @@ export const diatonicModes: Record<string, NoteSequenceTheme> = {
     names: [
       "Dorian",
       "Minor ♮6",
-      "Minor Raised 6th",
+      "Minor Raised Sixth",
       "Jazz Minor Variant",
       "Dorian Mode",
     ],
