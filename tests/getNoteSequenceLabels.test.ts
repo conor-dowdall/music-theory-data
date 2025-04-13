@@ -76,3 +76,20 @@ Deno.test("major chord triad chords", () => {
 // Deno.test("non-existent label theme", () => {
 //   assertEquals(getNoteSequenceLabels("ionian", "non-existent"), undefined);
 // });
+
+Deno.test("lydian augmented scale sharp notes", () => {
+  assertEquals(getNoteSequenceLabels("lydianAugmented", "sharp"), [
+    "C",
+    "C♯",
+    "D",
+    "D♯",
+    "E",
+    "F",
+    "F♯",
+    "G",
+    "G♯",
+    "A",
+    "A♯",
+    "B",
+  ]);
+});
