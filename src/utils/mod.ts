@@ -9,7 +9,8 @@
  * ```ts
  * import {
  *   getIntegerNotation,
- *   getNoteSequenceLabels
+ *   getNoteSequenceLabels,
+ *  searchNoteSequenceThemes,
  * } from "@musodojo/music-theory-data/utils";
  *
  * // Convert notes to integers
@@ -17,6 +18,9 @@
  *
  * // Get sequence labels
  * const labels = getNoteSequenceLabels("ionian", "flat");
+ *
+ * // Search for minor keyword in all note sequence themes
+ * const themes = searchNoteSequenceThemes("minor");
  * ```
  *
  * @module
@@ -24,3 +28,4 @@
 
 export { getIntegerNotation } from "./getIntegerNotation.ts";
 export { getNoteSequenceLabels } from "./getNoteSequenceLabels.ts";
+export { searchNoteSequenceThemes } from "./searchNoteSequenceThemes.ts";
