@@ -52,7 +52,7 @@ import {
  */
 export function getNoteSequenceLabels(
   noteSequenceThemeName: NoteSequenceThemeName,
-  noteLabelThemeName: NoteLabelThemeName
+  noteLabelThemeName: NoteLabelThemeName,
 ): NoteLabelGroup | undefined {
   const noteSequenceTheme = flatNoteSequenceThemes[noteSequenceThemeName] as
     | NoteSequenceTheme
@@ -69,6 +69,6 @@ export function getNoteSequenceLabels(
   if (!overrideMap) return labels;
 
   return labels.map(
-    (label, index) => overrideMap.get(index as PitchInteger) ?? label
+    (label, index) => overrideMap.get(index as PitchInteger) ?? label,
   ) as NoteLabelGroup;
 }
