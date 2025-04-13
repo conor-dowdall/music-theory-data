@@ -62,5 +62,32 @@ export type NoteSequenceThemeGroup = keyof NoteSequenceThemes;
  * note sequence themes.
  */
 export type NoteSequenceThemeName = {
-  [K in keyof NoteSequenceThemes]: keyof NoteSequenceThemes[K];
+  [K in NoteSequenceThemeGroup]: keyof NoteSequenceThemes[K];
 }[keyof NoteSequenceThemes];
+
+/**
+ * Metadata describing each note sequence theme group.
+ */
+export const noteSequenceThemeGroupMetadata: Record<
+  NoteSequenceThemeGroup,
+  {
+    displayName: string;
+    description: string;
+  }
+> = {
+  diatonicModes: {
+    displayName: "Diatonic Modes",
+    description:
+      "Traditional seven-note scales derived from the major scale, each starting on a different scale degree.",
+  },
+  dominantVariants: {
+    displayName: "Dominant Variants",
+    description:
+      "Chord structures based on the dominant seventh chord, including extended harmonies (9ths, 11ths, 13ths).",
+  },
+  majorVariants: {
+    displayName: "Major Variants",
+    description:
+      "Chord structures based on the major triad, including sixth and major seventh harmonies.",
+  },
+} as const;
