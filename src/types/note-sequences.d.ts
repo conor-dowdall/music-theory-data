@@ -12,6 +12,7 @@
  * import type { NoteSequenceTheme, PitchInteger } from "@musodojo/music-theory-data/types";
  *
  * // Define a custom scale
+ * // @ts-expect-error properties missing from NoteSequenceTheme
  * const customScale: NoteSequenceTheme = {
  *   primaryName: "Custom Scale",
  *   sequence: [0, 2, 4, 5, 7, 9, 11],
@@ -20,6 +21,7 @@
  *
  * // Type-safe pitch class
  * const root: PitchInteger = 0;  // C
+ * // @ts-expect-error 12 is not a valid pitch class
  * const invalid: PitchInteger = 12;  // Type error
  * ```
  *
