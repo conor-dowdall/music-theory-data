@@ -1,6 +1,40 @@
+/**
+ * Melodic minor modes.
+ * Each mode is derived from the melodic minor scale and has its own unique characteristics.
+ * These modes are often used in jazz and fusion genres.
+ *
+ *  * @example
+ * ```ts
+ * // Example usage of the melodicMinorModes type
+ * import { melodicMinorModes } from "@musodojo/music-theory-data/note-sequences";
+ *
+ * // Accessing a specific melodic minor mode
+ * const melodicMinor = melodicMinorModes.melodicMinor;
+ * console.log(melodicMinor.primaryName);  // "Melodic Minor"
+ * console.log(melodicMinor.sequence);     // [0, 2, 3, 5, 7, 9, 11]
+ * ```
+ *
+ * @module
+ */
+
 import type { NoteSequenceTheme } from "../types/note-sequences.d.ts";
 
-export const melodicMinorModes: Record<string, NoteSequenceTheme> = {
+/**
+ * Type representing all available melodic minor modes.
+ * Provides type-safe access to properties.
+ */
+export type MelodicMinorMode =
+  | "melodicMinor"
+  | "dorianFlat2"
+  | "lydianAugmented"
+  | "lydianDominant";
+
+/**
+ * These are variants of the melodic minor modes.
+ * Each mode is derived from the melodic minor scale and has its own unique characteristics.
+ * These modes are often used in jazz and fusion genres.
+ */
+export const melodicMinorModes: Record<MelodicMinorMode, NoteSequenceTheme> = {
   melodicMinor: {
     primaryName: "Melodic Minor",
     names: [
@@ -135,4 +169,4 @@ export const melodicMinorModes: Record<string, NoteSequenceTheme> = {
       extension: new Map([[6, "♯11"]]),
     },
   },
-};
+} as const;
