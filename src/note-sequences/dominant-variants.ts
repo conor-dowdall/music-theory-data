@@ -1,17 +1,38 @@
 /**
  * Collection of dominant chord and scale variants.
  * These are based on the dominant seventh chord structure (major triad with minor seventh).
+ *
+ *  * @example
+ * ```ts
+ * // Example usage of the dominantVariants
+ * import { dominantVariants } from "@musodojo/music-theory-data/note-sequences";
+ *
+ * // Accessing a specific dominant variant
+ * const dominant7 = dominantVariants.dominant7;
+ * console.log(dominant7.primaryName);  // "7"
+ * console.log(dominant7.sequence);     // [0, 4, 7, 10]
+ * ```
+ *
  * @module
  */
 
 import type { NoteSequenceTheme } from "../types/note-sequences.d.ts";
 
 /**
+ * Type representing all available dominant variant themes
+ */
+export type DominantVariant =
+  | "dominant7"
+  | "dominant9"
+  | "dominant11"
+  | "dominant13";
+
+/**
  * Dominant chord/arpeggio variants.
  * Each variant represents a different form of dominant harmony,
  * from basic dominant seventh to extended dominant structures.
  */
-export const dominantVariants: Record<string, NoteSequenceTheme> = {
+export const dominantVariants: Record<DominantVariant, NoteSequenceTheme> = {
   dominant7: {
     primaryName: "7",
     names: ["7", "Dominant 7th"],
@@ -101,23 +122,4 @@ export const dominantVariants: Record<string, NoteSequenceTheme> = {
       ]),
     },
   },
-};
-
-/**
- * Type representing all available dominant variant themes
- * @example
- * ```ts
- * // Type-safe access to dominant variants
- * function getDominantChordSequence(type: keyof DominantVariants) {
- *   return dominantVariants[type].sequence;
- * }
- *
- * // TypeScript knows these are valid
- * const dom7 = getDominantChord("dominant7");  // [0, 4, 7, 10]
- * const dom9 = getDominantChord("dominant9");  // [0, 2, 4, 7, 10]
- *
- * // TypeScript error: not a valid dominant variant
- * const invalid = getDominantChord("major7");  // Error!
- * ```
- */
-export type DominantVariants = typeof dominantVariants;
+} as const;
