@@ -69,13 +69,14 @@ Deno.test("major chord triad chords", () => {
   ]);
 });
 
-// Deno.test("non-existent sequence theme", () => {
-//   assertEquals(getNoteSequenceLabels("non-existent", "flat"), undefined);
-// });
+Deno.test("non-existent sequence theme", () => {
+  // @ts-expect-error non-existent theme
+  assertEquals(getNoteSequenceLabels("non-existent", "flat"), undefined);
+});
 
-// Deno.test("non-existent label theme", () => {
-//   assertEquals(getNoteSequenceLabels("ionian", "non-existent"), undefined);
-// });
+Deno.test("non-existent label theme", () => {
+  assertEquals(getNoteSequenceLabels("ionian", "non-existent"), undefined);
+});
 
 Deno.test("lydian augmented scale sharp notes", () => {
   assertEquals(getNoteSequenceLabels("lydianAugmented", "sharp"), [
