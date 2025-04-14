@@ -13,7 +13,7 @@ working with modes, scales, arpeggios, and chords.
 
 ## Installation
 
-```typescript
+```ts
 import { noteSequenceThemes } from "jsr:@musodojo/music-theory-data";
 ```
 
@@ -21,7 +21,7 @@ import { noteSequenceThemes } from "jsr:@musodojo/music-theory-data";
 
 ### Working with Note Sequences
 
-```typescript
+```ts
 import { diatonicModes } from "jsr:@musodojo/music-theory-data/note-sequences";
 
 // Get information about the Ionian mode
@@ -32,48 +32,20 @@ console.log(ionianMode.characteristics); // ["bright", "happy", "stable", ...]
 
 ### Using Note Labels
 
-```typescript
+```ts
 import { getNoteSequenceLabels } from "jsr:@musodojo/music-theory-data/utils";
 
-// Get chord labels for a mode
+// Get the triad chord labels for ionian mode
 const labels = getNoteSequenceLabels("ionian", "triad");
-// Returns: [
-//     "M",
-//     "",
-//     "m",
-//     "",
-//     "m",
-//     "M",
-//     "",
-//     "M",
-//     "",
-//     "m",
-//     "",
-//     "o",
-//   ]
+// Returns: ["M", "", "m", "", "m", "M", "", "M", "", "m", "", "o"]
 ```
-
-### Type Support
-
-```typescript
-import type { NoteSequenceTheme } from "jsr:@musodojo/music-theory-data/types";
-
-// Define a custom theme
-const customTheme: NoteSequenceTheme = {
-  primaryName: "Custom Scale",
-  names: ["Custom Scale", "My Scale"],
-  sequence: [0, 2, 4, 5, 7, 9, 11],
-  // ...other required properties
-};
-```
-
-## API Reference
 
 ### Note Sequences
 
 - `diatonicModes`: The seven traditional church modes
 - `majorVariants`: Major chord/arpeggio variations
 - `dominantVariants`: Dominant chord/arpeggio variations
+- `melodicMinorModes`: The seven modes of the melodic minor scale
 
 ### Note Labels
 
@@ -84,20 +56,8 @@ const customTheme: NoteSequenceTheme = {
 ### Utilities
 
 - `getNoteSequenceLabels`: Get labels for a given sequence and theme
-- `getIntegerNotation`: Convert note names to pitch class integers
-
-## Development
-
-```bash
-# Install dependencies
-deno cache mod.ts
-
-# Run tests
-deno test
-
-# Check types
-deno check mod.ts
-```
+- `getIntegerNotation`: Convert note names to pitch class integers (0-11)
+- `searchNoteSequenceThemes`: Search sequences by names and characteristics
 
 ## License
 
