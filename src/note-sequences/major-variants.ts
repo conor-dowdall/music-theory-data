@@ -15,9 +15,33 @@
 import type { NoteSequenceTheme } from "../types/note-sequences.d.ts";
 
 /**
+ * Type representing all available major variants.
+ * Provides type-safe access to properties.
+ *
+ * @example
+ * ```ts
+ * // Type-safe chord variant access
+ * function getMajorChord(type: MajorVariant) {
+ *   return majorVariants[type];
+ * }
+ *
+ * const maj7 = getMajorChord("major7");     // Valid
+ * // @ts-expect-error bad major variant name
+ * const invalid = getMajorChord("minor7");   // Type error
+ * ```
+ */
+export type MajorVariant =
+  | "major"
+  | "major6"
+  | "major7"
+  | "major9"
+  | "majorAdd9"
+  | "major6Add9";
+
+/**
  * These are variants of the major-style chord.
  */
-export const majorVariants: Record<string, NoteSequenceTheme> = {
+export const majorVariants: Record<MajorVariant, NoteSequenceTheme> = {
   major: {
     primaryName: "M",
     names: ["M", "Major"],
@@ -105,22 +129,4 @@ export const majorVariants: Record<string, NoteSequenceTheme> = {
       relative: new Map([[2, "9"]]),
     },
   },
-};
-
-/**
- * Type representing all available major chord variants.
- * Provides type-safe access to chord properties and ensures
- * all variants follow the NoteSequenceTheme structure.
- *
- * @example
- * ```ts
- * // Type-safe chord variant access
- * function getMajorChord(type: keyof MajorVariants) {
- *   return majorVariants[type];
- * }
- *
- * const maj7 = getMajorChord("major7");     // Valid
- * const invalid = getMajorChord("minor7");   // Type error
- * ```
- */
-export type MajorVariants = typeof majorVariants;
+} as const;
