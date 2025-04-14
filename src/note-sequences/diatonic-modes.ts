@@ -18,9 +18,37 @@
 import type { NoteSequenceTheme } from "../types/note-sequences.d.ts";
 
 /**
+ * Type representing all available diatonic modes.
+ * Provides type-safe access to mode properties and ensures
+ * all modes follow the NoteSequenceTheme structure.
+ *
+ * @example
+ * ```ts
+ * import { diatonicModes, type DiatonicMode } from "@musodojo/music-theory-data/note-sequences";
+ *
+ * // Type-safe mode access
+ * function getDiatonicMode(id: DiatonicMode) {
+ *   return diatonicModes[id];
+ * }
+ *
+ * const ionianMode = getDiatonicMode("ionian");    // Valid
+ * // @ts-expect-error non-existent mode
+ * const invalid = getDiatonicMode("non-existent"); // Type error
+ * ```
+ */
+export type DiatonicMode =
+  | "ionian"
+  | "dorian"
+  | "phrygian"
+  | "lydian"
+  | "mixolydian"
+  | "aeolian"
+  | "locrian";
+
+/**
  * Diatonic modes are seven musical modes derived from the major scale.
  */
-export const diatonicModes: Record<string, NoteSequenceTheme> = {
+export const diatonicModes: Record<DiatonicMode, NoteSequenceTheme> = {
   ionian: {
     primaryName: "Major",
     names: ["Major", "Ionian", "Major Scale", "Ionian Mode"],
@@ -541,22 +569,4 @@ export const diatonicModes: Record<string, NoteSequenceTheme> = {
       ]),
     },
   },
-};
-
-/**
- * Type representing all available diatonic modes.
- * Provides type-safe access to mode properties and ensures
- * all modes follow the NoteSequenceTheme structure.
- *
- * @example
- * ```ts
- * // Type-safe mode access
- * function getDiatonicMode(name: keyof DiatonicModes) {
- *   return diatonicModes[name];
- * }
- *
- * const ionianMode = getMode("ionian");    // Valid
- * const invalid = getMode("chromatic");    // Type error
- * ```
- */
-export type DiatonicModes = typeof diatonicModes;
+} as const;
