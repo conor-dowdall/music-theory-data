@@ -10,15 +10,15 @@
  *
  * Example Usage:
  * ```ts
- * // Flat access
- * const ionian = flatNoteSequenceThemes.ionian;
- * const major7 = flatNoteSequenceThemes.major7;
- *
  * // Grouped access
  * const modes = noteSequenceThemes.diatonicModes;
  * const majors = noteSequenceThemes.majorVariants;
  * const ionian = noteSequenceThemes.diatonicModes.ionian;
  * const major7 = noteSequenceThemes.majorVariants.major7;
+ *
+ * // Flat access
+ * const ionianFromFlat = flatNoteSequenceThemes.ionian;
+ * const major7FromFlat = flatNoteSequenceThemes.major7;
  * ```
  *
  * @module
@@ -50,23 +50,16 @@ export const noteSequenceThemes = {
 } as const;
 
 /*
- * Defines a type that represents the available note sequence themes.
+ * Defines a type that represents the names of the available
+ * note sequence themes.
  */
-export type NoteSequenceThemes = typeof noteSequenceThemes;
+export type NoteSequenceThemeName = keyof typeof flatNoteSequenceThemes;
 
 /*
  * Defines a type that represents the names of the available
  * note sequence theme groups.
  */
-export type NoteSequenceThemeGroup = keyof NoteSequenceThemes;
-
-/*
- * Defines a type that represents the names of the available
- * note sequence themes.
- */
-export type NoteSequenceThemeName = {
-  [K in NoteSequenceThemeGroup]: keyof NoteSequenceThemes[K];
-}[keyof NoteSequenceThemes];
+export type NoteSequenceThemeGroup = keyof typeof noteSequenceThemes;
 
 /**
  * Metadata describing each note sequence theme group.
