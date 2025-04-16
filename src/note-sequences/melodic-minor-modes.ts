@@ -27,7 +27,10 @@ export type MelodicMinorMode =
   | "melodicMinor"
   | "dorianFlat2"
   | "lydianAugmented"
-  | "lydianDominant";
+  | "lydianDominant"
+  | "mixolydianFlat6"
+  | "aeolianFlat5"
+  | "altered";
 
 /**
  * These are variants of the melodic minor modes.
@@ -172,6 +175,111 @@ export const melodicMinorModes: Record<MelodicMinorMode, NoteSequenceTheme> = {
       quality: new Map([[6, "A4"]]),
       relative: new Map([[6, "♯4"]]),
       extension: new Map([[6, "♯11"]]),
+    },
+  },
+  mixolydianFlat6: {
+    primaryName: "Mixolydian ♭6",
+    names: [
+      "Mixolydian ♭6",
+      "Mixolydian b6",
+      "Mixolydian Flat Sixth",
+      "Mixolydian ♭13",
+      "Mixolydian b13",
+      "Mixolydian Flat Thirteenth",
+    ],
+    sequence: [0, 2, 4, 5, 7, 8, 10],
+    type: [
+      "melodic minor mode",
+      "mixolydian",
+      "dominant",
+      "mode",
+      "scale",
+      "fifth mode",
+    ],
+    characteristics: [
+      "dominant tonality",
+      "jazz and fusion genres",
+      "used in jazz improvisation",
+      "can be used over dominant chords",
+      "used in modal jazz compositions",
+    ],
+    pattern: ["whole", "whole", "half", "whole", "half", "whole", "whole"],
+    patternShort: ["W", "W", "H", "W", "H", "W", "W"],
+    degrees: ["1", "2", "3", "4", "5", "♭6", "♭7", "8"],
+    exampleNotes: ["A", "B", "C♯", "D", "E", "F", "G", "A"],
+  },
+  aeolianFlat5: {
+    primaryName: "Aeolian ♭5",
+    names: [
+      "Aeolian ♭5",
+      "Aeolian b5",
+      "Aeolian Flat Fifth",
+      "Locrian ♮2",
+      "Locrian ♯2",
+      "Locrian #2",
+      "Locrian Raised Second",
+      "Half-Diminished Scale",
+      "Half Diminished",
+    ],
+    sequence: [0, 2, 3, 5, 6, 8, 10],
+    type: [
+      "melodic minor mode",
+      "aeolian",
+      "minor",
+      "mode",
+      "scale",
+      "sixth mode",
+    ],
+    characteristics: [
+      "minor tonality",
+      "jazz and fusion genres",
+      "used in jazz improvisation",
+      "can be used over minor chords",
+      "used in modal jazz compositions",
+    ],
+    pattern: ["whole", "half", "whole", "half", "whole", "whole", "whole"],
+    patternShort: ["W", "H", "W", "H", "W", "W", "W"],
+    degrees: ["1", "2", "♭3", "4", "♭5", "♭6", "♭7", "8"],
+    exampleNotes: ["A", "B", "C", "D", "E♭", "F", "G", "A"],
+  },
+  altered: {
+    primaryName: "Altered Scale",
+    names: [
+      "Altered Scale",
+      "Super Locrian",
+      "Altered Dominant",
+      "Locrian ♭4",
+      "Locrian b4",
+      "Locrian Flat Fourth",
+    ],
+    sequence: [0, 1, 3, 4, 6, 8, 10],
+    type: [
+      "melodic minor mode",
+      "altered",
+      "dominant",
+      "mode",
+      "scale",
+      "seventh mode",
+    ],
+    characteristics: [
+      "altered tonality",
+      "jazz and fusion genres",
+      "used in jazz improvisation",
+      "can be used over dominant chords",
+      "used in modal jazz compositions",
+      "altered dominant chords",
+    ],
+    pattern: ["half", "whole", "half", "whole", "whole", "whole", "whole"],
+    patternShort: ["H", "W", "H", "W", "W", "W", "W"],
+    degrees: ["1", "♭2", "♭3", "♭4", "♭5", "♭7", "8"],
+    exampleNotes: ["A", "B♭", "C", "D♭", "E♭", "F", "G"],
+    labelsOverride: {
+      quality: new Map([[4, "d4"]]),
+      relative: new Map([[4, "♭4"]]),
+      extension: new Map([
+        [3, "♯9"],
+        [6, "♯11"],
+      ]),
     },
   },
 } as const;
