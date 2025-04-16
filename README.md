@@ -19,10 +19,24 @@ import { noteSequenceThemes } from "jsr:@musodojo/music-theory-data";
 
 ## Usage Examples
 
-### Working with Note Sequences
+### General Usage:
 
 ```ts
-import { diatonicModes } from "jsr:@musodojo/music-theory-data/note-sequences";
+import * as music_theory_data from "jsr:@musodojo/music-theory-data";
+
+// const majorScale: music_theory_data.PitchInteger[]
+const majorScale = music_theory_data.diatonicModes.ionian.sequence;
+console.log("Major Scale Note Sequence", majorScale);
+
+// const melodicMinorTheme: music_theory_data.NoteSequenceTheme
+const melodicMinorTheme = music_theory_data.flatNoteSequenceThemes.melodicMinor;
+console.log("Melodic Minor Note Sequence Theme", melodicMinorTheme);
+```
+
+### Working with Diatonic Note Sequences
+
+```ts
+import { diatonicModes } from "jsr:@musodojo/music-theory-data";
 
 // Get information about the Ionian mode
 const ionianMode = diatonicModes.ionian;
@@ -33,7 +47,7 @@ console.log(ionianMode.characteristics); // ["bright", "happy", "stable", ...]
 ### Using Note Labels
 
 ```ts
-import { getNoteSequenceLabels } from "jsr:@musodojo/music-theory-data/utils";
+import { getNoteSequenceLabels } from "jsr:@musodojo/music-theory-data";
 
 // Get the triad chord labels for ionian mode
 const labels = getNoteSequenceLabels("ionian", "triad");
