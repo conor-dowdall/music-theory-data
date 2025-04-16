@@ -40,6 +40,8 @@ export type MajorVariant =
 
 /**
  * These are variants of the major-style chord.
+ * @see {@link MajorVariant} for the type of each variant.
+ * @see {@link NoteSequenceTheme} for the structure of each variant.
  */
 export const majorVariants: Record<MajorVariant, NoteSequenceTheme> = {
   major: {

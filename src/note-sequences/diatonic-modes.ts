@@ -47,6 +47,8 @@ export type DiatonicMode =
 
 /**
  * Diatonic modes are seven musical modes derived from the major scale.
+ * @see {@link DiatonicMode} for the type of each mode.
+ * @see {@link NoteSequenceTheme} for the structure of each mode.
  */
 export const diatonicModes: Record<DiatonicMode, NoteSequenceTheme> = {
   ionian: {
@@ -195,6 +197,7 @@ export const diatonicModes: Record<DiatonicMode, NoteSequenceTheme> = {
     names: [
       "Phrygian",
       "Minor ♭2",
+      "Minor b2",
       "Minor Flat Second",
       "Spanish Gypsy Scale",
       "Phrygian Mode",
@@ -274,6 +277,7 @@ export const diatonicModes: Record<DiatonicMode, NoteSequenceTheme> = {
     names: [
       "Lydian",
       "Major ♯4",
+      "Major #4",
       "Major Raised Fourth",
       "Bright Major",
       "Lydian Mode",
@@ -350,6 +354,7 @@ export const diatonicModes: Record<DiatonicMode, NoteSequenceTheme> = {
     names: [
       "Mixolydian",
       "Major ♭7",
+      "Major b7",
       "Major Flat Seventh",
       "Dominant Scale",
       "Mixolydian Mode",
@@ -502,7 +507,8 @@ export const diatonicModes: Record<DiatonicMode, NoteSequenceTheme> = {
     names: [
       "Locrian",
       "Minor ♭2 ♭5",
-      "Minor Flat Second and Flat Fifth",
+      "Minor b2 b5",
+      "Minor Flat Second Flat Fifth",
       "Half-Diminished Scale",
       "Locrian Mode",
     ],

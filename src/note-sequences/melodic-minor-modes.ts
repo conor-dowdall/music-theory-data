@@ -33,6 +33,8 @@ export type MelodicMinorMode =
  * These are variants of the melodic minor modes.
  * Each mode is derived from the melodic minor scale and has its own unique characteristics.
  * These modes are often used in jazz and fusion genres.
+ * @see {@link MelodicMinorMode} for the type of each mode.
+ * @see {@link NoteSequenceTheme} for the structure of each mode.
  */
 export const melodicMinorModes: Record<MelodicMinorMode, NoteSequenceTheme> = {
   melodicMinor: {
@@ -43,6 +45,7 @@ export const melodicMinorModes: Record<MelodicMinorMode, NoteSequenceTheme> = {
       "Ascending Melodic Minor Scale",
       "Minor Ionian",
       "Ionian ♭3",
+      "Ionian b3",
       "Ionian Flat Third",
       "Dorian Major 7",
       "Dorian Major Seventh",
@@ -97,7 +100,7 @@ export const melodicMinorModes: Record<MelodicMinorMode, NoteSequenceTheme> = {
   },
   lydianAugmented: {
     primaryName: "Lydian Augmented",
-    names: ["Lydian Augmented", "Lydian ♯5", "Lydian Sharp Fifth"],
+    names: ["Lydian Augmented", "Lydian ♯5", "Lydian #5", "Lydian Sharp Fifth"],
     sequence: [0, 2, 4, 6, 8, 9, 11],
     type: [
       "melodic minor mode",
@@ -138,8 +141,10 @@ export const melodicMinorModes: Record<MelodicMinorMode, NoteSequenceTheme> = {
     names: [
       "Lydian Dominant",
       "Lydian ♭7",
+      "Lydian b7",
       "Lydian Flat Seventh",
       "Mixolydian ♯4",
+      "Mixolydian #4",
       "Mixolydian Sharp Fourth",
       "Mixolydian Augmented Fourth",
     ],

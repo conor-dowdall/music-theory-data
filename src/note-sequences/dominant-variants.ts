@@ -31,6 +31,8 @@ export type DominantVariant =
  * Dominant chord/arpeggio variants.
  * Each variant represents a different form of dominant harmony,
  * from basic dominant seventh to extended dominant structures.
+ * @see {@link DominantVariant} for the type of each variant.
+ * @see {@link NoteSequenceTheme} for the structure of each variant.
  */
 export const dominantVariants: Record<DominantVariant, NoteSequenceTheme> = {
   dominant7: {
