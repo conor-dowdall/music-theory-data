@@ -278,7 +278,7 @@ export const diatonicModes: Record<DiatonicMode, NoteSequenceTheme> = {
       "Lydian",
       "Major ♯4",
       "Major #4",
-      "Major Raised Fourth",
+      "Major Sharp Fourth",
       "Bright Major",
       "Lydian Mode",
     ],
