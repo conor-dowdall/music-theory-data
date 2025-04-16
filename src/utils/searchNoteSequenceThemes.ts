@@ -1,5 +1,5 @@
 /**
- * Utility functions for searching note sequence themes by various criteria.
+ * Utility functions for searching {@link flatNoteSequenceThemes} by various criteria.
  *
  * Features:
  * - Case-insensitive searching
@@ -22,7 +22,7 @@ import type { NoteSequenceTheme } from "../types/note-sequences.d.ts";
 import { flatNoteSequenceThemes } from "../note-sequences/note-sequences.ts";
 
 /**
- * Searches note sequence themes by matching the query string against various fields.
+ * Searches all {@link flatNoteSequenceThemes} by matching the query string against various fields.
  * Returns theme themes that match any of these fields, in order of these fields:
  * - primaryName
  * - names
@@ -30,7 +30,7 @@ import { flatNoteSequenceThemes } from "../note-sequences/note-sequences.ts";
  * - characteristics
  *
  * @param query The search term to look for
- * @returns Array of matching (using above matching order) note sequence themes,
+ * @returns Array of matching {@link NoteSequenceTheme} (using above matching order) ,
  * with no duplicates
  */
 export function searchNoteSequenceThemes(query: string): NoteSequenceTheme[] {
@@ -51,14 +51,14 @@ export function searchNoteSequenceThemes(query: string): NoteSequenceTheme[] {
     }
   }
 
-  // Search types
+  // Search type properties
   for (const theme of Object.values(flatNoteSequenceThemes)) {
     if (theme.type.some((type) => type.toLowerCase().includes(searchTerm))) {
       results.add(theme);
     }
   }
 
-  // Search characteristics
+  // Search characteristics properties
   for (const theme of Object.values(flatNoteSequenceThemes)) {
     if (
       theme.characteristics.some((char) =>
