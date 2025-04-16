@@ -8,14 +8,30 @@
  * - Type definitions
  *
  * Example Usage:
+ * ```bash
+ * deno add jsr:@musodojo/music-theory-data
+ * ```
  * ```ts
- * import { diatonicModes } from "@musodojo/music-theory-data/note-sequences";
- * import { enharmonicNotesUnicode } from "@musodojo/music-theory-data/note-labels";
- * import { getIntegerNotation } from "@musodojo/music-theory-data/utils";
- * import type { NoteSequenceTheme } from "@musodojo/music-theory-data/types";
+ * import * as music_theory_data from "@musodojo/music-theory-data";
+ * // ...
+ * ```
+ * ---- OR ----
  *
- * // Get major scale pattern
- * const majorScale = diatonicModes.ionian.sequence;  // [0, 2, 4, 5, 7, 9, 11]
+ * ```ts
+ * import * as music_theory_data from "jsr:@musodojo/music-theory-data";
+ * // ...
+ * ```
+ *
+ * ```ts
+ * import * as music_theory_data from "jsr:@musodojo/music-theory-data";
+ * // const majorScale: music_theory_data.PitchInteger[]
+ * const majorScale = music_theory_data.diatonicModes.ionian.sequence;
+ * console.log("Major Scale Note Sequence", majorScale);
+ *
+ * // const melodicMinorTheme: music_theory_data.NoteSequenceTheme
+ * const melodicMinorTheme =
+ * music_theory_data.flatNoteSequenceThemes.melodicMinor;
+ * console.log("Melodic Minor Note Sequence Theme", melodicMinorTheme);
  * ```
  *
  * @module
