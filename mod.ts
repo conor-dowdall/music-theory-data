@@ -23,6 +23,24 @@
  *
  * ---- OR ----
  *
+ * Using More Specific Module Imports
+ *  * ```ts
+ * // Import specific modules
+ * import { diatonicModes } from "@musodojo/music-theory-data/note-sequences";
+ * import { getNoteSequenceLabels } from "@musodojo/music-theory-data/utils";
+ *
+ * // Get major scale pattern, with autocompleted types
+ * const majorScale = diatonicModes.ionian.sequence;
+ * console.log("Major Scale:", majorScale); // [0, 2, 4, 5, 7, 9, 11]
+ *
+ * // Get note sequence labels, with autocompleted types
+ * const majorScaleLabels = getNoteSequenceLabels("ionian", "flat");
+ * console.log("Major Scale Labels:", majorScaleLabels);
+ * // ["C", "D♭", "D", "E♭", "E", "F", "G♭", "G", "A♭", "A", "B♭", "B"]
+ * ```
+ *
+ * ---- OR ----
+ *
  *  * ```bash
  * deno add jsr:@musodojo/music-theory-data
  * ```

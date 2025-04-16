@@ -3,7 +3,7 @@
  * Each mode is derived from the melodic minor scale and has its own unique characteristics.
  * These modes are often used in jazz and fusion genres.
  *
- *  * @example
+ * @example
  * ```ts
  * // Example usage of the melodicMinorModes type
  * import { melodicMinorModes } from "@musodojo/music-theory-data/note-sequences";

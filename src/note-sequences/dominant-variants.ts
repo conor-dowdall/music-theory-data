@@ -2,7 +2,7 @@
  * Collection of dominant chord and scale variants.
  * These are based on the dominant seventh chord structure (major triad with minor seventh).
  *
- *  * @example
+ * @example
  * ```ts
  * // Example usage of the dominantVariants
  * import { dominantVariants } from "@musodojo/music-theory-data/note-sequences";
