@@ -64,6 +64,7 @@ export interface NoteSequenceTheme {
   /**
    * An array of numerical semitone intervals from the root
    * (e.g., [0, 2, 4, 5, 7, 9, 11]).
+   * @see {@link PitchInteger}
    */
   sequence: PitchInteger[];
   /**
