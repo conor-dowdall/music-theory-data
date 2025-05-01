@@ -5,9 +5,10 @@
  * Features:
  * - Accidental styles (sharp ♯, flat ♭)
  * - Interval qualities (perfect, major, minor)
+ * - Relative and Extension Notes (6, 13)
  * - Solfege systems (fixed do, movable do)
  * - Chord symbols (triads, sevenths)
- * - Roman numeral analysis
+ * - Roman numeral chords
  *
  * Example Usage:
  * ```ts

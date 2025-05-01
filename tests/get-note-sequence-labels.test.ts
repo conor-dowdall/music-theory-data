@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert";
-import { getNoteSequenceLabels } from "../src/utils/getNoteSequenceLabels.ts";
+import { getNoteSequenceLabels } from "../src/utils/get-note-sequence-labels.ts";
 
 Deno.test("ionian scale flat notes", () => {
   assertEquals(getNoteSequenceLabels("ionian", "flat"), [

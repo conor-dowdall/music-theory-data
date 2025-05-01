@@ -1,4 +1,4 @@
-import { searchNoteSequenceThemes } from "../src/utils/searchNoteSequenceThemes.ts";
+import { searchNoteSequenceThemes } from "../src/utils/search-note-sequence-themes.ts";
 
 // Deno.test("search note sequences - debug", () => {
 //   const query: string = "minor";

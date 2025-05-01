@@ -1,20 +1,16 @@
 /**
  * Utility functions for working with note sequences and labels.
  *
- * Available utilities:
- * - getIntegerNotation: Convert note names to pitch classes (0-11)
- * - getNoteSequenceLabels: Get labels for note sequences with overrides
- *
- * Example Usage:
+ * @example
  * ```ts
  * import {
- *   getIntegerNotation,
+ *   pitchStepToPitchInteger,
  *   getNoteSequenceLabels,
- *  searchNoteSequenceThemes,
+ *   searchNoteSequenceThemes,
  * } from "@musodojo/music-theory-data/utils";
  *
  * // Convert notes to integers
- * const pitchClass = getIntegerNotation("C♯");  // 1
+ * const pitchClass = pitchStepToPitchInteger("C", 1);  // 1
  *
  * // Get sequence labels
  * const labels = getNoteSequenceLabels("ionian", "flat");
@@ -23,9 +19,17 @@
  * const themes = searchNoteSequenceThemes("minor");
  * ```
  *
+ * @example
+ * ```ts
+ * import { pitchStepToMidiNoteNumber } from "@musodojo/music-theory-data/utils"
+ *
+ * // Get middle C as a midi note number
+ * const middleC = pitchStepToMidiNoteNumber("C", 0, 4); // 60
+ * ```
+ *
  * @module
  */
 
-export { getIntegerNotation } from "./getIntegerNotation.ts";
-export { getNoteSequenceLabels } from "./getNoteSequenceLabels.ts";
-export { searchNoteSequenceThemes } from "./searchNoteSequenceThemes.ts";
+export * from "./note-conversions.ts";
+export { getNoteSequenceLabels } from "./get-note-sequence-labels.ts";
+export { searchNoteSequenceThemes } from "./search-note-sequence-themes.ts";

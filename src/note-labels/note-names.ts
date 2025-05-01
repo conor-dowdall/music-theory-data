@@ -4,32 +4,28 @@
  *
  * Features:
  * - Unicode version using proper musical symbols (♯, ♭, ♮)
- * - ASCII version using standard characters (#, b)
  * - All common enharmonic spellings for each pitch class
  * - Both simple and double accidentals
  *
  * Example Usage:
  * ```ts
- * // Unicode accidentals
- * const cPitchClass = enharmonicNotesUnicode[0];  // ["C", "C♮", "D♭♭", "B♯"]
- *
- * // ASCII accidentals
- * const fSharp = enharmonicNotesAlt[6];  // ["Gb", "F#", "E##"]
+ * const cPitchClass = enharmonicNotes[0];  // ["C", "C♮", "D♭♭", "B♯"]
  * ```
  *
- * Note: Each top-level array index represents a pitch class from C (0) to B (11).
+ * Note: Each top-level-array index represents a pitch class from C (0) to B (11).
  *
- * @module enharmonic-notes
+ * @module
  */
 
-import type { EnharmonicNotes } from "../types/note-labels.d.ts";
+import type { EnharmonicNotes, PitchStep } from "../types/note-labels.d.ts";
+import type { PitchInteger } from "../types/note-sequences.d.ts";
 
 /**
  * A 2D array, where each inner array contains enharmonically equivalent
  * representations of one of the 12 pitch classes.
  * '♯' and '♭' are used instead of '#' and 'b'.
  */
-export const enharmonicNotesUnicode: EnharmonicNotes = [
+export const enharmonicNotes: EnharmonicNotes = [
   ["C", "C♮", "D♭♭", "B♯"], // B♯ is enharmonic with C
   ["D♭", "C♯", "B♯♯"],
   ["D", "D♮", "E♭♭", "C♯♯"],
@@ -44,22 +40,19 @@ export const enharmonicNotesUnicode: EnharmonicNotes = [
   ["B", "B♮", "C♭", "A♯♯"],
 ];
 
-/**
- * A 2D array, where each inner array contains enharmonically equivalent
- * representations of one of the 12 pitch classes.
- * '#' and 'b' are used instead of '♯' and '♭'.
- */
-export const enharmonicNotesAlt: EnharmonicNotes = [
-  ["Dbb", "B#"],
-  ["Db", "C#", "B##"],
-  ["Ebb", "C##"],
-  ["Eb", "Fbb", "D#"],
-  ["Fb", "D##"],
-  ["Gbb", "E#"],
-  ["Gb", "F#", "E##"],
-  ["Abb", "F##"],
-  ["Ab", "G#"],
-  ["Bbb", "G##"],
-  ["Bb", "Cbb", "A#"],
-  ["Cb", "A##"],
-];
+export const pitchSteps: Record<PitchStep, PitchInteger> = {
+  C: 0,
+  c: 0,
+  D: 2,
+  d: 2,
+  E: 4,
+  e: 4,
+  F: 5,
+  f: 5,
+  G: 7,
+  g: 7,
+  A: 9,
+  a: 9,
+  B: 11,
+  b: 11,
+};

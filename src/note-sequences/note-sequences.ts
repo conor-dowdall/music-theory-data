@@ -8,7 +8,7 @@
  * - Grouped access via `noteSequenceThemes`
  * - Type-safe access through TypeScript types
  *
- * Example Usage:
+ * @example
  * ```ts
  * // Grouped access
  * const modes = noteSequenceThemes.diatonicModes;

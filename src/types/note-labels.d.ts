@@ -4,35 +4,28 @@
  * and their various formats.
  *
  * Key Types:
- * - NoteName: String representation of a note (e.g., "C", "D♭")
  * - EnharmonicGroup: Array of equivalent note spellings
  * - NoteLabelGroup: Fixed set of 12 note names
  * - NoteLabelTheme: Complete labeling system definition
  *
- * Example Usage:
+ * @example
  * ```ts
- * import type { NoteName, NoteLabelTheme } from "@musodojo/music-theory-data/types";
- *
- * // Type-safe note name
- * const note: NoteName = "C♯";
+ * import type {  NoteLabelTheme } from "@musodojo/music-theory-data/types";
  *
  * // Define a custom labeling theme
  * const customTheme: NoteLabelTheme = {
- *   name: "Custom",
- *   shortName: "cst",
+ *   name: "Sharp Notes Ascii Theme",
+ *   shortName: "sharp ascii",
  *   isRelative: false,
- *   labels: ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B"]
+ *   labels: ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
  * };
  * ```
  *
  * @module
  */
 
-/** Represents the string value of a musical note name (e.g., "C", "D♭", "E♮", "F♯",). */
-export type NoteName = string;
-
-/** Represents an array of enharmonically equivalent NoteNames. */
-export type EnharmonicGroup = NoteName[];
+/** Represents an array of enharmonically equivalent note name strings. */
+export type EnharmonicGroup = string[];
 
 /**
  * Represents an array of 12 EnharmonicGroups, where each group contains
@@ -54,22 +47,22 @@ export type EnharmonicNotes = [
 ];
 
 /*
- * Represents a group of 12 NoteNames, where each name corresponds to a
+ * Represents a group of 12 note name strings, where each name corresponds to a
  * specific pitch class (e.g., "C", "D♭", "D", etc.).
  */
 export type NoteLabelGroup = [
-  NoteName,
-  NoteName,
-  NoteName,
-  NoteName,
-  NoteName,
-  NoteName,
-  NoteName,
-  NoteName,
-  NoteName,
-  NoteName,
-  NoteName,
-  NoteName,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
 ];
 
 /**
@@ -83,3 +76,45 @@ export interface NoteLabelTheme {
   isRelative: boolean;
   labels: NoteLabelGroup;
 }
+
+export type PitchStep =
+  | "C"
+  | "c"
+  | "D"
+  | "d"
+  | "E"
+  | "e"
+  | "F"
+  | "f"
+  | "G"
+  | "g"
+  | "A"
+  | "a"
+  | "B"
+  | "b";
+
+export type PitchAlter =
+  | -11
+  | -10
+  | -9
+  | -8
+  | -7
+  | -6
+  | -5
+  | -4
+  | -3
+  | -2
+  | -1
+  | -0
+  | 0
+  | 1
+  | 2
+  | 3
+  | 4
+  | 5
+  | 6
+  | 7
+  | 8
+  | 9
+  | 10
+  | 11;
