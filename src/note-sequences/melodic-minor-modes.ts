@@ -23,7 +23,7 @@ import type { NoteSequenceTheme } from "../types/note-sequences.d.ts";
  * Type representing all available melodic minor modes.
  * Provides type-safe access to properties.
  */
-export type MelodicMinorMode =
+export type MelodicMinorModeName =
   | "melodicMinor"
   | "dorianFlat2"
   | "lydianAugmented"
@@ -36,10 +36,13 @@ export type MelodicMinorMode =
  * These are variants of the melodic minor modes.
  * Each mode is derived from the melodic minor scale and has its own unique characteristics.
  * These modes are often used in jazz and fusion genres.
- * @see {@link MelodicMinorMode} for the type of each mode.
+ * @see {@link MelodicMinorModeName} for the name of each mode.
  * @see {@link NoteSequenceTheme} for the structure of each mode.
  */
-export const melodicMinorModes: Record<MelodicMinorMode, NoteSequenceTheme> = {
+export const melodicMinorModes: Record<
+  MelodicMinorModeName,
+  NoteSequenceTheme
+> = {
   melodicMinor: {
     primaryName: "Melodic Minor",
     names: [

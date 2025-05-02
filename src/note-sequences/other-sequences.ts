@@ -1,6 +1,8 @@
 import type { NoteSequenceTheme } from "../types/note-sequences.d.ts";
 
-export const otherSequences: Record<string, NoteSequenceTheme> = {
+export type OtherSequenceName = "chromatic";
+
+export const otherSequences: Record<OtherSequenceName, NoteSequenceTheme> = {
   chromatic: {
     primaryName: "Chromatic",
     names: ["Chromatic", "Twelve Tone Scale"],

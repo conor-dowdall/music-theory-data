@@ -21,7 +21,7 @@ import type { NoteSequenceTheme } from "../types/note-sequences.d.ts";
  * @example
  * ```ts
  * // Type-safe chord variant access
- * function getMajorChord(type: MajorVariant) {
+ * function getMajorChord(type: MajorVariantName) {
  *   return majorVariants[type];
  * }
  *
@@ -30,7 +30,7 @@ import type { NoteSequenceTheme } from "../types/note-sequences.d.ts";
  * const invalid = getMajorChord("minor7");   // Type error
  * ```
  */
-export type MajorVariant =
+export type MajorVariantName =
   | "major"
   | "major6"
   | "major7"
@@ -40,10 +40,10 @@ export type MajorVariant =
 
 /**
  * These are variants of the major-style chord.
- * @see {@link MajorVariant} for the type of each variant.
+ * @see {@link MajorVariantName} for the type of each variant.
  * @see {@link NoteSequenceTheme} for the structure of each variant.
  */
-export const majorVariants: Record<MajorVariant, NoteSequenceTheme> = {
+export const majorVariants: Record<MajorVariantName, NoteSequenceTheme> = {
   major: {
     primaryName: "M",
     names: ["M", "Major"],

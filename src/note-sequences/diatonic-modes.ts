@@ -24,10 +24,10 @@ import type { NoteSequenceTheme } from "../types/note-sequences.d.ts";
  *
  * @example
  * ```ts
- * import { diatonicModes, type DiatonicMode } from "@musodojo/music-theory-data/note-sequences";
+ * import { diatonicModes, type DiatonicModeName } from "@musodojo/music-theory-data/note-sequences";
  *
  * // Type-safe mode access
- * function getDiatonicMode(id: DiatonicMode) {
+ * function getDiatonicMode(id: DiatonicModeName) {
  *   return diatonicModes[id];
  * }
  *
@@ -36,7 +36,7 @@ import type { NoteSequenceTheme } from "../types/note-sequences.d.ts";
  * const invalid = getDiatonicMode("non-existent"); // Type error
  * ```
  */
-export type DiatonicMode =
+export type DiatonicModeName =
   | "ionian"
   | "dorian"
   | "phrygian"
@@ -47,10 +47,10 @@ export type DiatonicMode =
 
 /**
  * Diatonic modes are seven musical modes derived from the major scale.
- * @see {@link DiatonicMode} for the type of each mode.
+ * @see {@link DiatonicModeName} for the name of each mode.
  * @see {@link NoteSequenceTheme} for the structure of each mode.
  */
-export const diatonicModes: Record<DiatonicMode, NoteSequenceTheme> = {
+export const diatonicModes: Record<DiatonicModeName, NoteSequenceTheme> = {
   ionian: {
     primaryName: "Major",
     names: ["Major", "Ionian", "Major Scale", "Ionian Mode"],

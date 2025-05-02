@@ -59,13 +59,13 @@ export type NoteSequenceThemeName = keyof typeof flatNoteSequenceThemes;
  * Defines a type that represents the names of the available
  * note sequence theme groups.
  */
-export type NoteSequenceThemeGroup = keyof typeof noteSequenceThemes;
+export type NoteSequenceThemeGroupName = keyof typeof noteSequenceThemes;
 
 /**
  * Metadata describing each note sequence theme group.
  */
 export const noteSequenceThemeGroupMetadata: Record<
-  NoteSequenceThemeGroup,
+  NoteSequenceThemeGroupName,
   {
     displayName: string;
     description: string;
@@ -90,5 +90,5 @@ export const noteSequenceThemeGroupMetadata: Record<
     displayName: "Melodic Minor Modes",
     description:
       "Seven-note scales derived from the melodic minor scale, each starting on a different scale degree.",
-  } as const,
-};
+  },
+} as const;
