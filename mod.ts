@@ -7,7 +7,7 @@
  * - Music theory utilities
  * - Type definitions
  *
- * Example Usage:
+ * @example
  * ```ts
  * import * as music_theory_data from "jsr:@musodojo/music-theory-data";
  *
@@ -21,10 +21,9 @@
  * console.log("Melodic Minor Note Sequence Theme", melodicMinorTheme);
  * ```
  *
- * ---- OR ----
- *
+ * @example
  * Using More Specific Module Imports
- *  * ```ts
+ * ```ts
  * // Import specific modules
  * import { diatonicModes } from "@musodojo/music-theory-data/note-sequences";
  * import { getNoteSequenceLabels } from "@musodojo/music-theory-data/utils";
@@ -39,9 +38,8 @@
  * // ["C", "D♭", "D", "E♭", "E", "F", "G♭", "G", "A♭", "A", "B♭", "B"]
  * ```
  *
- * ---- OR ----
- *
- *  * ```bash
+ * @example
+ * ```bash
  * deno add jsr:@musodojo/music-theory-data
  * ```
  * ```ts
