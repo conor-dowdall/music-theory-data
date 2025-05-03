@@ -9,7 +9,7 @@
  *
  * Example Usage:
  * ```ts
- * const cPitchClass = enharmonicNotes[0];  // ["C", "C♮", "D♭♭", "B♯"]
+ * const cPitchClass = enharmonicNotes[0];  // ["C", "C♮", "D𝄫", "B♯"]
  * ```
  *
  * Note: Each top-level-array index represents a pitch class from C (0) to B (11).
@@ -26,18 +26,18 @@ import type { PitchInteger } from "../types/note-sequences.d.ts";
  * '♯' and '♭' are used instead of '#' and 'b'.
  */
 export const enharmonicNotes: EnharmonicNotes = [
-  ["C", "C♮", "D♭♭", "B♯"], // B♯ is enharmonic with C
-  ["D♭", "C♯", "B♯♯"],
-  ["D", "D♮", "E♭♭", "C♯♯"],
-  ["E♭", "F♭♭", "D♯"],
-  ["E", "E♮", "F♭", "D♯♯"],
-  ["F", "F♮", "G♭♭", "E♯"],
-  ["G♭", "F♯", "E♯♯"],
-  ["G", "G♮", "A♭♭", "F♯♯"],
+  ["C", "C♮", "D𝄫", "B♯"], // B♯ is enharmonic with C
+  ["D♭", "C♯", "B𝄪"],
+  ["D", "D♮", "E𝄫", "C𝄪"],
+  ["E♭", "F𝄫", "D♯"],
+  ["E", "E♮", "F♭", "D𝄪"],
+  ["F", "F♮", "G𝄫", "E♯"],
+  ["G♭", "F♯", "E𝄪"],
+  ["G", "G♮", "A𝄫", "F𝄪"],
   ["A♭", "G♯"],
-  ["A", "A♮", "B♭♭", "G♯♯"],
-  ["B♭", "C♭♭", "A♯"],
-  ["B", "B♮", "C♭", "A♯♯"],
+  ["A", "A♮", "B𝄫", "G𝄪"],
+  ["B♭", "C𝄫", "A♯"],
+  ["B", "B♮", "C♭", "A𝄪"],
 ];
 
 export const pitchSteps: Record<PitchStep, PitchInteger> = {
