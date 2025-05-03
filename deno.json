@@ -7,7 +7,7 @@
     "./note-sequences": "./src/note-sequences/mod.ts",
     "./note-labels": "./src/note-labels/mod.ts",
     "./utils": "./src/utils/mod.ts",
-    "./types": "./src/types/mod.ts"
+    "./types": "./src/types/mod.d.ts"
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@^1.0.13"

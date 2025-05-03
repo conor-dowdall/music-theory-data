@@ -8,5 +8,5 @@
  * @module
  */
 
-export * from "./note-labels.d.ts";
-export * from "./note-sequences.d.ts";
+export type * from "./note-labels.d.ts";
+export type * from "./note-sequences.d.ts";
