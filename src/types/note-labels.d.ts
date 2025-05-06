@@ -4,7 +4,7 @@
  * and their various formats.
  *
  * Key Types:
- * - EnharmonicGroup: Array of equivalent note spellings
+ * - EnharmonicNoteGroup: Array of equivalent note spellings
  * - NoteLabelGroup: Fixed set of 12 note names
  * - NoteLabelTheme: Complete labeling system definition
  *
@@ -24,26 +24,29 @@
  * @module
  */
 
+/* Represents the name of an individual note as a string. */
+export type NoteName = string;
+
 /** Represents an array of enharmonically equivalent note name strings. */
-export type EnharmonicGroup = string[];
+export type EnharmonicNoteGroup = NoteName[];
 
 /**
- * Represents an array of 12 EnharmonicGroups, where each group contains
+ * Represents an array of 12 EnharmonicNoteGroups, where each group contains
  * enharmonic equivalents for a specific pitch class.
  */
 export type EnharmonicNotes = [
-  EnharmonicGroup,
-  EnharmonicGroup,
-  EnharmonicGroup,
-  EnharmonicGroup,
-  EnharmonicGroup,
-  EnharmonicGroup,
-  EnharmonicGroup,
-  EnharmonicGroup,
-  EnharmonicGroup,
-  EnharmonicGroup,
-  EnharmonicGroup,
-  EnharmonicGroup,
+  EnharmonicNoteGroup,
+  EnharmonicNoteGroup,
+  EnharmonicNoteGroup,
+  EnharmonicNoteGroup,
+  EnharmonicNoteGroup,
+  EnharmonicNoteGroup,
+  EnharmonicNoteGroup,
+  EnharmonicNoteGroup,
+  EnharmonicNoteGroup,
+  EnharmonicNoteGroup,
+  EnharmonicNoteGroup,
+  EnharmonicNoteGroup
 ];
 
 /*
@@ -51,18 +54,18 @@ export type EnharmonicNotes = [
  * specific pitch class (e.g., "C", "D♭", "D", etc.).
  */
 export type NoteLabelGroup = [
-  string,
-  string,
-  string,
-  string,
-  string,
-  string,
-  string,
-  string,
-  string,
-  string,
-  string,
-  string,
+  NoteName,
+  NoteName,
+  NoteName,
+  NoteName,
+  NoteName,
+  NoteName,
+  NoteName,
+  NoteName,
+  NoteName,
+  NoteName,
+  NoteName,
+  NoteName
 ];
 
 /**
