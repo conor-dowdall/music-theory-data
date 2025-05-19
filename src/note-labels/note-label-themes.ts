@@ -10,7 +10,7 @@
  * - Chord symbols (triads, sevenths)
  * - Roman numeral chords
  *
- * Example Usage:
+ * @example
  * ```ts
  * import { noteLabelThemes } from "@musodojo/music-theory-data/note-labels";
  *
@@ -218,12 +218,7 @@ export const noteLabelThemes: Record<string, NoteLabelTheme> = {
 };
 
 /**
- * Defines a type that represents the available note label themes.
- */
-export type NoteLabelThemes = typeof noteLabelThemes;
-
-/**
- * Defines a type that represents the names of the available
+ * Defines a type that represents the names/keys of the available
  * note label themes.
  */
-export type NoteLabelThemeName = keyof NoteLabelThemes;
+export type NoteLabelThemeKey = keyof typeof noteLabelThemes;

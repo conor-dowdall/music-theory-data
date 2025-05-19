@@ -7,7 +7,7 @@
  * - All common enharmonic spellings for each pitch class
  * - Both simple and double accidentals
  *
- * Example Usage:
+ * @example
  * ```ts
  * const cPitchClass = enharmonicNotes[0];  // ["C", "C♮", "D𝄫", "B♯"]
  * ```

@@ -2,7 +2,7 @@
  * Utility for getting note labels from note sequences with optional overrides.
  * Combines note label themes with sequence-specific label customizations.
  *
- * Example Usage:
+ * @example
  * ```ts
  * import { getNoteSequenceLabels } from "@musodojo/music-theory-data/utils";
  *
@@ -32,12 +32,12 @@ import type {
   PitchInteger,
 } from "../types/note-sequences.d.ts";
 import {
-  type NoteLabelThemeName,
+  type NoteLabelThemeKey,
   noteLabelThemes,
 } from "../note-labels/note-label-themes.ts";
 import {
-  flatNoteSequenceThemes,
-  type NoteSequenceThemeName,
+  allNoteSequenceThemes,
+  type NoteSequenceThemeKey,
 } from "../note-sequences/note-sequences.ts";
 
 /**
@@ -45,27 +45,27 @@ import {
  * The note sequence can have an optional labelsOverride property, which updates the labels
  * in the original note label theme.
  *
- * @param noteSequenceThemeName The name of the note sequence theme.
- * @param noteLabelThemeName The name of the note label theme.
+ * @param noteSequenceThemeKey The name/key of the note sequence theme.
+ * @param noteLabelThemeKey The name/key of the note label theme.
  * @returns The note labels array, or undefined if not found.
  *          The array is of type NoteLabelGroup, which is an array of 12 strings.
  */
 export function getNoteSequenceLabels(
-  noteSequenceThemeName: NoteSequenceThemeName,
-  noteLabelThemeName: NoteLabelThemeName,
+  noteSequenceThemeKey: NoteSequenceThemeKey,
+  noteLabelThemeKey: NoteLabelThemeKey,
 ): NoteLabelGroup | undefined {
-  const noteSequenceTheme = flatNoteSequenceThemes[noteSequenceThemeName] as
+  const noteSequenceTheme = allNoteSequenceThemes[noteSequenceThemeKey] as
     | NoteSequenceTheme
     | undefined;
   if (!noteSequenceTheme) return undefined;
 
-  const noteLabelTheme = noteLabelThemes[noteLabelThemeName];
+  const noteLabelTheme = noteLabelThemes[noteLabelThemeKey];
   if (!noteLabelTheme) return undefined;
 
   const labels = noteLabelTheme.labels;
   if (!("labelsOverride" in noteSequenceTheme)) return labels;
 
-  const overrideMap = noteSequenceTheme.labelsOverride?.[noteLabelThemeName];
+  const overrideMap = noteSequenceTheme.labelsOverride?.[noteLabelThemeKey];
   if (!overrideMap) return labels;
 
   return labels.map(

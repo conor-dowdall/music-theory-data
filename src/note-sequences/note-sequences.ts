@@ -4,7 +4,7 @@
  * providing both flat and grouped access patterns.
  *
  * Features:
- * - Flat access to all sequences via `flatNoteSequenceThemes`
+ * - Flat access to all sequences via `allNoteSequenceThemes`
  * - Grouped access via `noteSequenceThemes`
  * - Type-safe access through TypeScript types
  *
@@ -17,8 +17,8 @@
  * const major7 = noteSequenceThemes.majorVariants.major7;
  *
  * // Flat access
- * const ionianFromFlat = flatNoteSequenceThemes.ionian;
- * const major7FromFlat = flatNoteSequenceThemes.major7;
+ * const ionianFromAll = allNoteSequenceThemes.ionian;
+ * const major7FromAll = allNoteSequenceThemes.major7;
  * ```
  *
  * @module
@@ -28,15 +28,17 @@ import { diatonicModes } from "./diatonic-modes.ts";
 import { dominantVariants } from "./dominant-variants.ts";
 import { majorVariants } from "./major-variants.ts";
 import { melodicMinorModes } from "./melodic-minor-modes.ts";
+import { otherSequences } from "./other-sequences.ts";
 
 /**
  * A flattened collection of all note sequence themes for direct access
  */
-export const flatNoteSequenceThemes = {
+export const allNoteSequenceThemes = {
   ...diatonicModes,
   ...dominantVariants,
   ...majorVariants,
   ...melodicMinorModes,
+  ...otherSequences,
 } as const;
 
 /**
@@ -47,25 +49,26 @@ export const noteSequenceThemes = {
   dominantVariants,
   majorVariants,
   melodicMinorModes,
+  otherSequences,
 } as const;
 
 /*
- * Defines a type that represents the names of the available
+ * Defines a type that represents the names/keys of the available
  * note sequence themes.
  */
-export type NoteSequenceThemeName = keyof typeof flatNoteSequenceThemes;
+export type NoteSequenceThemeKey = keyof typeof allNoteSequenceThemes;
 
 /*
- * Defines a type that represents the names of the available
+ * Defines a type that represents the names/keys of the available
  * note sequence theme groups.
  */
-export type NoteSequenceThemeGroupName = keyof typeof noteSequenceThemes;
+export type NoteSequenceThemeGroupKey = keyof typeof noteSequenceThemes;
 
 /**
  * Metadata describing each note sequence theme group.
  */
 export const noteSequenceThemeGroupMetadata: Record<
-  NoteSequenceThemeGroupName,
+  NoteSequenceThemeGroupKey,
   {
     displayName: string;
     description: string;
@@ -90,5 +93,10 @@ export const noteSequenceThemeGroupMetadata: Record<
     displayName: "Melodic Minor Modes",
     description:
       "Seven-note scales derived from the melodic minor scale, each starting on a different scale degree.",
+  },
+  otherSequences: {
+    displayName: "Other",
+    description:
+      "Other note sequences that don't fall into a specific category.",
   },
 } as const;

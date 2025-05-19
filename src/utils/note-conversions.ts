@@ -19,16 +19,16 @@ import { pitchSteps } from "../note-labels/mod.ts";
  * @returns The pitch integer (0-11) representing the pitch.
  *
  * @example
+ * ```ts
  * // Returns 0 (C)
  * pitchStepToPitchInteger("C", 0);
  *
- * @example
  * // Returns 1 (C# or Db)
  * pitchStepToPitchInteger("C", 1);
  *
- * @example
  * // Returns 11 (B)
  * pitchStepToPitchInteger("B", 0);
+ * ```
  */
 export function pitchStepToPitchInteger(
   pitchStep: PitchStep,
@@ -48,16 +48,16 @@ export function pitchStepToPitchInteger(
  * @returns The MIDI note number.
  *
  * @example
+ * ```ts
  * // Returns 12 (MIDI note number for C0)
  * pitchStepToMidiNoteNumber("c", 0, 0);
  *
- * @example
  * // Returns 60 (MIDI note number for middle C = C4)
  * pitchStepToMidiNoteNumber("C", 0, 4);
  *
- * @example
  * // Returns 61 (MIDI note number for C#4)
  * pitchStepToMidiNoteNumber("C", 1, 4);
+ * ```
  */
 export function pitchStepToMidiNoteNumber(
   pitchStep: PitchStep,

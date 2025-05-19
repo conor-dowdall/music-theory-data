@@ -46,7 +46,7 @@ export type EnharmonicNotes = [
   EnharmonicNoteGroup,
   EnharmonicNoteGroup,
   EnharmonicNoteGroup,
-  EnharmonicNoteGroup
+  EnharmonicNoteGroup,
 ];
 
 /*
@@ -65,7 +65,7 @@ export type NoteLabelGroup = [
   NoteName,
   NoteName,
   NoteName,
-  NoteName
+  NoteName,
 ];
 
 /**

@@ -7,7 +7,7 @@
  * - NoteSequenceTheme: Complete definition of a musical pattern
  * - LabelsOverride: Custom labeling for specific contexts
  *
- * Example Usage:
+ * @example
  * ```ts
  * import type { NoteSequenceTheme, PitchInteger } from "@musodojo/music-theory-data/types";
  *
@@ -28,7 +28,7 @@
  * @module
  */
 
-import type { NoteLabelThemeName } from "../note-labels/note-label-themes.ts";
+import type { NoteLabelThemeKey } from "../note-labels/note-label-themes.ts";
 
 /** Represents the pitch class in integer notation - a number between 0 (C) and 11 (B). */
 export type PitchInteger = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
@@ -44,7 +44,7 @@ export type LabelsOverrideMap = Map<PitchInteger, string>;
  * This allows for partial overrides of the labels in a specific NoteSequenceTheme.
  */
 export type LabelsOverride = Partial<
-  Record<NoteLabelThemeName, LabelsOverrideMap>
+  Record<NoteLabelThemeKey, LabelsOverrideMap>
 >;
 
 /**

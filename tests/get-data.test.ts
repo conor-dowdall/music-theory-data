@@ -7,6 +7,6 @@ Deno.test("get data - debug", () => {
 
   // const melodicMinorTheme: music_theory_data.NoteSequenceTheme
   const melodicMinorTheme =
-    music_theory_data.flatNoteSequenceThemes.melodicMinor;
+    music_theory_data.allNoteSequenceThemes.melodicMinor;
   console.log("Melodic Minor Note Sequence Theme", melodicMinorTheme);
 });

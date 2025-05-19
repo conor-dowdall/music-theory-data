@@ -17,13 +17,13 @@
  *
  * // const melodicMinorTheme: music_theory_data.NoteSequenceTheme
  * const melodicMinorTheme =
- * music_theory_data.flatNoteSequenceThemes.melodicMinor;
+ * music_theory_data.allNoteSequenceThemes.melodicMinor;
  * console.log("Melodic Minor Note Sequence Theme", melodicMinorTheme);
  * ```
  *
  * @example
- * Using More Specific Module Imports
  * ```ts
+ * // Using More Specific Module Imports
  * // Import specific modules
  * import { diatonicModes } from "@musodojo/music-theory-data/note-sequences";
  * import { getNoteSequenceLabels } from "@musodojo/music-theory-data/utils";
@@ -38,14 +38,6 @@
  * // ["C", "D♭", "D", "E♭", "E", "F", "G♭", "G", "A♭", "A", "B♭", "B"]
  * ```
  *
- * @example
- * ```bash
- * deno add jsr:@musodojo/music-theory-data
- * ```
- * ```ts
- * import * as music_theory_data from "@musodojo/music-theory-data";
- * // ...
- * ```
  * @module
  */
 
