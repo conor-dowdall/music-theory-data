@@ -67,7 +67,7 @@ export type NoteSequenceThemeGroupKey = keyof typeof noteSequenceThemes;
 /**
  * Metadata describing each note sequence theme group.
  */
-export const noteSequenceThemeGroupMetadata: Record<
+export const noteSequenceThemeGroupsMetadata: Record<
   NoteSequenceThemeGroupKey,
   {
     displayName: string;
