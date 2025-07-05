@@ -1,9 +1,9 @@
 {
   "name": "@musodojo/music-theory-data",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "license": "unlicense",
   "exports": {
-    ".": "./mod.ts",
+    ".": "./src/mod.ts",
     "./note-sequences": "./src/note-sequences/mod.ts",
     "./note-labels": "./src/note-labels/mod.ts",
     "./utils": "./src/utils/mod.ts",

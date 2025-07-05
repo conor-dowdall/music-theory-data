@@ -1,4 +1,4 @@
-import * as music_theory_data from "jsr:@musodojo/music-theory-data";
+import * as music_theory_data from "../src/mod.ts";
 
 Deno.test("get data - debug", () => {
   // const majorScale: music_theory_data.PitchInteger[]
