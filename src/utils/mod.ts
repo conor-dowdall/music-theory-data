@@ -4,13 +4,13 @@
  * @example
  * ```ts
  * import {
- *   pitchStepToPitchInteger,
+ *   noteLetterToInteger,
  *   getNoteSequenceLabels,
  *   searchNoteSequenceThemes,
  * } from "@musodojo/music-theory-data/utils";
  *
  * // Convert notes to integers
- * const pitchClass = pitchStepToPitchInteger("C", 1);  // 1
+ * const pitchClass = noteLetterToInteger("C", 1);  // 1
  *
  * // Get sequence labels
  * const labels = getNoteSequenceLabels("ionian", "flat");
@@ -21,10 +21,10 @@
  *
  * @example
  * ```ts
- * import { pitchStepToMidiNoteNumber } from "@musodojo/music-theory-data/utils"
+ * import { noteLetterToMidiNoteNumber } from "@musodojo/music-theory-data/utils"
  *
  * // Get middle C as a midi note number
- * const middleC = pitchStepToMidiNoteNumber("C", 0, 4); // 60
+ * const middleC = noteLetterToMidiNoteNumber("C", 0, 4); // 60
  * ```
  *
  * @module

@@ -26,11 +26,8 @@
  * @module
  */
 
-import type { NoteLabelGroup } from "../types/note-labels.d.ts";
-import type {
-  NoteSequenceTheme,
-  PitchInteger,
-} from "../types/note-sequences.d.ts";
+import type { NoteInteger, NoteLabelGroup } from "../types/note-labels.d.ts";
+import type { NoteSequenceTheme } from "../types/note-sequences.d.ts";
 import {
   type NoteLabelThemeKey,
   noteLabelThemes,
@@ -69,6 +66,6 @@ export function getNoteSequenceLabels(
   if (!overrideMap) return labels;
 
   return labels.map(
-    (label, index) => overrideMap.get(index as PitchInteger) ?? label,
+    (label, index) => overrideMap.get(index as NoteInteger) ?? label,
   ) as NoteLabelGroup;
 }

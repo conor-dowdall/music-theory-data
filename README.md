@@ -65,15 +65,11 @@ const labels = getNoteSequenceLabels("ionian", "triad");
 
 - `noteLabelThemes`: Different labeling systems (sharp, flat, triads, roman
   numerals, etc.)
-- `enharmonicNotes`: Alternative note name spellings
+- `enharmonicNoteNameGroups`: Alternative note name spellings
 
 ### Utilities
 
-- `getNoteSequenceLabels`: Get labels for a given sequence and theme
-- `pitchStepToPitchInteger`: Convert note to pitch integer (0-11)
-- `pitchStepToMidiNoteNumber`: Convert note to MIDI number
-- `noteNameToPitchInteger`: Convert note names to pitch class integers (0-11)
-- `searchNoteSequenceThemes`: Search sequences by names and characteristics
+- various handy utilities
 
 ## License
 

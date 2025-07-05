@@ -215,7 +215,7 @@ export const noteLabelThemes: Record<string, NoteLabelTheme> = {
     isRelative: true,
     labels: ["", "", "", "", "", "", "", "", "", "", "", ""],
   },
-};
+} as const;
 
 /**
  * Defines a type that represents the names/keys of the available
