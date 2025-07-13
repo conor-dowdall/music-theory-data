@@ -1,19 +1,14 @@
 /**
- * Collection of dominant chord and scale variants.
- * These are based on the dominant seventh chord structure (major triad with minor seventh).
- *
- * @example
- * ```ts
- * // Example usage of the dominantVariants
- * import { dominantVariants } from "@musodojo/music-theory-data/note-sequences";
- *
- * // Accessing a specific dominant variant
- * const dominant7 = dominantVariants.dominant7;
- * console.log(dominant7.primaryName);  // "7"
- * console.log(dominant7.sequence);     // [0, 4, 7, 10]
- * ```
- *
  * @module
+ *
+ * This file defines a collection of dominant chord and arpeggio variants.
+ * Dominant chords are built on the fifth degree of a scale and have a strong
+ * tendency to resolve to the tonic. They are characterized by a major triad
+ * with a minor seventh.
+ *
+ * The variants include the basic dominant 7th chord and its extensions (9th,
+ * 11th, 13th). These are typically used as arpeggios or chords, so the
+ * `intervals` array for each theme does *not* include the octave ("8").
  */
 
 import type {
@@ -22,11 +17,23 @@ import type {
 } from "../types/note-sequences.d.ts";
 
 /**
- * Dominant chord/arpeggio variants.
- * Each variant represents a different form of dominant harmony,
- * from basic dominant seventh to extended dominant structures.
- * @see {@link DominantVariantKey} for the name of each variant.
- * @see {@link NoteSequenceTheme} for the structure of each variant.
+ * A record containing various dominant chord and arpeggio structures.
+ * Each variant is a `NoteSequenceTheme` that describes its musical properties.
+ *
+ * The keys of this record are `DominantVariantKey`s, providing type-safe
+ * access to each dominant chord definition.
+ *
+ * @example
+ * ```ts
+ * import { dominantVariants } from "@musodojo/music-theory-data/note-sequences";
+ *
+ * const dominant9th = dominantVariants.dominant9;
+ * console.log(dominant9th.primaryName); // "9"
+ * console.log(dominant9th.intervals);   // ["1", "3", "5", "♭7", "9"]
+ * ```
+ *
+ * @see {@link NoteSequenceTheme} for the structure of each variant definition.
+ * @see {@link DominantVariantKey} for the available variant keys.
  */
 export const dominantVariants: Record<DominantVariantKey, NoteSequenceTheme> = {
   dominant7: {
@@ -35,13 +42,7 @@ export const dominantVariants: Record<DominantVariantKey, NoteSequenceTheme> = {
     intervals: ["1", "3", "5", "♭7"],
     sequence: [0, 4, 7, 10],
     type: ["dominant", "major", "chord", "arpeggio"],
-    characteristics: [
-      "unstable",
-      "bluesy",
-      "flat seventh",
-      "jazzy",
-      "authentic cadence",
-    ],
+    characteristics: ["unstable", "bluesy", "tense", "jazzy"],
     pattern: ["major third", "minor third", "minor third"],
     patternShort: ["M3", "m3", "m3"],
     exampleNotes: ["C", "E", "G", "B♭"],
@@ -52,7 +53,7 @@ export const dominantVariants: Record<DominantVariantKey, NoteSequenceTheme> = {
     intervals: ["1", "3", "5", "♭7", "9"],
     sequence: [0, 2, 4, 7, 10],
     type: ["dominant", "major", "chord", "arpeggio"],
-    characteristics: ["unstable", "bluesy", "flat seventh", "jazzy"],
+    characteristics: ["unstable", "bluesy", "tense", "jazzy", "rich"],
     pattern: ["major third", "minor third", "minor third", "major third"],
     patternShort: ["M3", "m3", "m3", "M3"],
     exampleNotes: ["C", "E", "G", "B♭", "D"],
@@ -67,7 +68,7 @@ export const dominantVariants: Record<DominantVariantKey, NoteSequenceTheme> = {
     intervals: ["1", "3", "5", "♭7", "9", "11"],
     sequence: [0, 2, 4, 5, 7, 10],
     type: ["dominant", "major", "chord", "arpeggio"],
-    characteristics: ["unstable", "bluesy", "flat seventh", "jazzy"],
+    characteristics: ["unstable", "bluesy", "tense", "jazzy", "rich", "complex"],
     pattern: [
       "major third",
       "minor third",
@@ -94,7 +95,15 @@ export const dominantVariants: Record<DominantVariantKey, NoteSequenceTheme> = {
     intervals: ["1", "3", "5", "♭7", "9", "11", "13"],
     sequence: [0, 2, 4, 5, 7, 9, 10],
     type: ["dominant", "major", "chord", "arpeggio"],
-    characteristics: ["unstable", "bluesy", "flat seventh", "jazzy"],
+    characteristics: [
+      "unstable",
+      "bluesy",
+      "tense",
+      "jazzy",
+      "rich",
+      "complex",
+      "lush",
+    ],
     pattern: [
       "major third",
       "minor third",

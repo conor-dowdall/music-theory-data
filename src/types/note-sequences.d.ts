@@ -1,15 +1,19 @@
 /**
- * Type definitions for musical note sequences like scales, modes, and chords.
- * Provides TypeScript types for consistent representation of musical patterns.
+ * @module
+ *
+ * This module provides the core type definitions for musical sequences such as
+ * scales, modes, and chords. The central type is `NoteSequenceTheme`, which
+ * encapsulates all the necessary data to describe a musical pattern.
  *
  * @example
  * ```ts
  * import type { NoteSequenceTheme, NoteInteger } from "@musodojo/music-theory-data/types";
  *
- * // Define a custom scale
+ * // Define a custom scale (partially)
  * const customScale: Partial<NoteSequenceTheme> = {
  *   primaryName: "Custom Scale",
- *   sequence: [0, 2, 4, 5, 7, 9, 11],
+ *   sequence: [0, 2, 4, 5, 7, 9, 11], // e.g., a major scale
+ *   type: ["scale"],
  * };
  *
  * // Type-safe pitch class
@@ -17,8 +21,6 @@
  * // @ts-expect-error 12 is not a valid pitch class
  * const invalid: NoteInteger = 12;  // Type error
  * ```
- *
- * @module
  */
 
 import type {
@@ -62,37 +64,43 @@ export interface NoteSequenceTheme {
   primaryName: string;
   /** An array of alternative names and synonyms (e.g., ["Ionian", "Major"]). */
   names: string[];
-  /** An array of interval names relative to the root (e.g., ["1", "2", "3", "4", "5", "6", "7", "8"]). */
+  /**
+   * An array of interval names relative to the root. For scales and modes,
+   * this typically includes the octave ("8"). For chords and arpeggios, it usually does not.
+   * @example ["1", "2", "3", "4", "5", "6", "7", "8"] // Ionian Mode
+   * @example ["1", "3", "5", "♭7"] // Dominant 7th Chord
+   */
   intervals: Interval[];
   /**
    * An array of `NoteInteger`s representing the sequence of semitone intervals
    * from the root (e.g., `[0, 2, 4, 5, 7, 9, 11]` for a major scale).
+   * This sequence does *not* include the octave.
    * @see {@link NoteInteger}
    */
   sequence: NoteInteger[];
-  /** A list of classifications for the theme (e.g., ["major", "mode", "scale"]). */
+  /**
+   * A list of classifications for the theme. This metadata is crucial for
+   * applying conventional logic, such as whether to include the octave in a
+   * generated sequence.
+   * @example ["major", "mode", "scale"]
+   * @example ["dominant", "chord", "arpeggio"]
+   */
   type: string[];
   /** A list of subjective or descriptive characteristics (e.g., ["bright", "happy"]). */
   characteristics: string[];
-  /** The pattern of whole and half steps as full words. Usually "whole", "half", etc. for scales and modes,
-   * and "major third", "minor third", etc. for chords and arpeggios
-   * @example
-   * pattern: ["whole", "whole", "half", "whole", "whole", "whole", "half"], // major scale
-   * @example
-   * pattern: ["major third", "minor third", "minor third"], // dominant seventh chord or arpeggio
+  /**
+   * The pattern of intervals as full words.
+   * @example ["whole", "whole", "half", ...] // For a scale
+   * @example ["major third", "minor third", ...] // For a chord
    */
   pattern: string[];
-  /** The pattern of whole and half steps as single letters (e.g., ["W", "W", "H"]) for scales and modes and
-   * the pattern as "M3", "m3", etc. for chords and arpeggios.
-   * @example
-   * patternShort: ["W", "W", "H", "W", "W", "W", "H"], // major scale
-   * @example
-   * patternShort: ["M3", "m3", "m3"], // dominant seventh chord or arpeggio
+  /**
+   * A short-hand representation of the interval pattern.
+   * @example ["W", "W", "H", ...] // For a scale
+   * @example ["M3", "m3", ...] // For a chord
    */
   patternShort: string[];
-  /** An example of the theme's notes, typically starting on C or A for minor
-   * (e.g., ["C", "D", "E", "F", "G", "A", "B"]).
-   */
+  /** An example of the theme's notes, typically starting on C. */
   exampleNotes: NoteName[];
   /**
    * Optional overrides for note labels in different `NoteLabelTheme` contexts.

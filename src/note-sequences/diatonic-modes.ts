@@ -1,18 +1,22 @@
 /**
- * Diatonic modes are the seven traditional church modes, each starting on a different
- * degree of the major scale. These modes form the foundation of Western music theory
- * and are still widely used in modern music composition.
- *
- * Each mode has its own unique interval pattern and characteristic sound:
- * - Ionian (Major): The familiar major scale
- * - Dorian: Minor scale with raised 6th
- * - Phrygian: Minor scale with lowered 2nd
- * - Lydian: Major scale with raised 4th
- * - Mixolydian: Major scale with lowered 7th
- * - Aeolian (Natural Minor): The natural minor scale
- * - Locrian: Minor scale with lowered 2nd and 5th
- *
  * @module
+ *
+ * This file contains the definitions for the seven diatonic modes, also known
+ * as the church modes or Greek modes. These scales are fundamental to Western
+ * music theory and are derived from the major scale.
+ *
+ * Each mode has a unique intervallic structure and a distinct emotional quality.
+ * The modes are presented in their traditional order:
+ * 1. Ionian (the major scale)
+ * 2. Dorian
+ * 3. Phrygian
+ * 4. Lydian
+ * 5. Mixolydian
+ * 6. Aeolian (the natural minor scale)
+ * 7. Locrian
+ *
+ * The `intervals` array for each mode includes the octave ("8"), which is
+ * characteristic for scales and modes.
  */
 
 import type {
@@ -21,30 +25,24 @@ import type {
 } from "../types/note-sequences.d.ts";
 
 /**
- * Type representing all available diatonic modes.
- * Provides type-safe access to mode properties and ensures
- * all modes follow the NoteSequenceTheme structure.
+ * A comprehensive record of the seven diatonic modes. Each mode is defined
+ * as a `NoteSequenceTheme`, providing its names, intervals, type classifications,
+ * and other musical properties.
+ *
+ * The keys of this record are `DiatonicModeKey`s, allowing for type-safe
+ * access to each mode.
  *
  * @example
  * ```ts
  * import { diatonicModes } from "@musodojo/music-theory-data/note-sequences";
- * import type { DiatonicModeKey } from "@musodojo/music-theory-data/types";
  *
- * // Type-safe mode access
- * function getDiatonicMode(id: DiatonicModeKey) {
- *   return diatonicModes[id];
- * }
- *
- * const ionianMode = getDiatonicMode("ionian");    // Valid
- * // @ts-expect-error non-existent mode
- * const invalid = getDiatonicMode("non-existent"); // Type error
+ * const dorian = diatonicModes.dorian;
+ * console.log(dorian.primaryName); // "Dorian"
+ * console.log(dorian.intervals);   // ["1", "2", "♭3", "4", "5", "6", "♭7", "8"]
  * ```
- */
-
-/**
- * Diatonic modes are seven musical modes derived from the major scale.
- * @see {@link DiatonicModeKey} for the name of each mode.
- * @see {@link NoteSequenceTheme} for the structure of each mode.
+ *
+ * @see {@link NoteSequenceTheme} for the structure of each mode definition.
+ * @see {@link DiatonicModeKey} for the available mode keys.
  */
 export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
   ionian: {
@@ -59,8 +57,6 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
       "scale",
       "church mode",
       "diatonic mode",
-      "first mode",
-      "do mode",
     ],
     characteristics: [
       "bright",
@@ -69,8 +65,6 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
       "uplifting",
       "consonant",
       "western",
-      "commonly used western scale",
-      "major tonality",
     ],
     pattern: ["whole", "whole", "half", "whole", "whole", "whole", "half"],
     patternShort: ["W", "W", "H", "W", "W", "W", "H"],
@@ -116,36 +110,11 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
   },
   dorian: {
     primaryName: "Dorian",
-    names: [
-      "Dorian",
-      "Minor ♮6",
-      "Minor Raised Sixth",
-      "Jazz Minor Variant",
-      "Dorian Mode",
-    ],
+    names: ["Dorian", "Minor ♮6", "Dorian Mode"],
     intervals: ["1", "2", "♭3", "4", "5", "6", "♭7", "8"],
     sequence: [0, 2, 3, 5, 7, 9, 10],
-    type: [
-      "minor",
-      "dorian",
-      "mode",
-      "scale",
-      "church mode",
-      "diatonic mode",
-      "second mode",
-      "re mode",
-    ],
-    characteristics: [
-      "soulful",
-      "funky",
-      "jazzy",
-      "hopeful",
-      "celtic",
-      "folk",
-      "medieval",
-      "minor feel with a hopeful twist",
-      "minor tonality",
-    ],
+    type: ["minor", "dorian", "mode", "scale", "church mode", "diatonic mode"],
+    characteristics: ["soulful", "funky", "jazzy", "hopeful", "celtic", "folk"],
     pattern: ["whole", "half", "whole", "whole", "whole", "half", "whole"],
     patternShort: ["W", "H", "W", "W", "W", "H", "W"],
     exampleNotes: ["D", "E", "F", "G", "A", "B", "C", "D"],
@@ -190,41 +159,17 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
   },
   phrygian: {
     primaryName: "Phrygian",
-    names: [
-      "Phrygian",
-      "Minor ♭2",
-      "Minor b2",
-      "Minor Flat Second",
-      "Spanish Gypsy Scale",
-      "Phrygian Mode",
-    ],
+    names: ["Phrygian", "Minor ♭2", "Spanish Gypsy Scale", "Phrygian Mode"],
     intervals: ["1", "♭2", "♭3", "4", "5", "♭6", "♭7", "8"],
     sequence: [0, 1, 3, 5, 7, 8, 10],
-    type: [
-      "minor",
-      "phrygian",
-      "mode",
-      "scale",
-      "church mode",
-      "diatonic mode",
-      "third mode",
-      "mi mode",
-    ],
+    type: ["minor", "phrygian", "mode", "scale", "church mode", "diatonic mode"],
     characteristics: [
       "exotic",
       "spanish",
-      "middle eastern",
-      "gypsy",
       "flamenco",
       "tense",
-      "tension",
-      "mysterious",
-      "intense",
       "dark",
       "dramatic",
-      "mysterious",
-      "darker emotional tones",
-      "minor tonality",
     ],
     pattern: ["half", "whole", "whole", "whole", "half", "whole", "whole"],
     patternShort: ["H", "W", "W", "W", "H", "W", "W"],
@@ -270,36 +215,11 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
   },
   lydian: {
     primaryName: "Lydian",
-    names: [
-      "Lydian",
-      "Major ♯4",
-      "Major #4",
-      "Major Sharp Fourth",
-      "Bright Major",
-      "Lydian Mode",
-    ],
+    names: ["Lydian", "Major ♯4", "Lydian Mode"],
     intervals: ["1", "2", "3", "♯4", "5", "6", "7", "8"],
     sequence: [0, 2, 4, 6, 7, 9, 11],
-    type: [
-      "major",
-      "lydian",
-      "mode",
-      "scale",
-      "church mode",
-      "diatonic mode",
-      "fourth mode",
-      "fa mode",
-    ],
-    characteristics: [
-      "dreamy",
-      "floating",
-      "ethereal",
-      "cinematic",
-      "expansive",
-      "film scores",
-      "soundscapes",
-      "bright major tonality",
-    ],
+    type: ["major", "lydian", "mode", "scale", "church mode", "diatonic mode"],
+    characteristics: ["dreamy", "floating", "ethereal", "cinematic", "bright"],
     pattern: ["whole", "whole", "whole", "half", "whole", "whole", "half"],
     patternShort: ["W", "W", "W", "H", "W", "W", "H"],
     exampleNotes: ["F", "G", "A", "B", "C", "D", "E", "F"],
@@ -347,14 +267,7 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
   },
   mixolydian: {
     primaryName: "Mixolydian",
-    names: [
-      "Mixolydian",
-      "Major ♭7",
-      "Major b7",
-      "Major Flat Seventh",
-      "Dominant Scale",
-      "Mixolydian Mode",
-    ],
+    names: ["Mixolydian", "Major ♭7", "Dominant Scale", "Mixolydian Mode"],
     intervals: ["1", "2", "3", "4", "5", "6", "♭7", "8"],
     sequence: [0, 2, 4, 5, 7, 9, 10],
     type: [
@@ -365,21 +278,8 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
       "scale",
       "church mode",
       "diatonic mode",
-      "fifth mode",
-      "sol mode",
     ],
-    characteristics: [
-      "folk",
-      "bluesy",
-      "dominant",
-      "funky",
-      "rock",
-      "energetic",
-      "playful",
-      "major feel",
-      "twist of tension",
-      "major tonality",
-    ],
+    characteristics: ["bluesy", "dominant", "funky", "rock", "energetic"],
     pattern: ["whole", "whole", "half", "whole", "whole", "half", "whole"],
     patternShort: ["W", "W", "H", "W", "W", "H", "W"],
     exampleNotes: ["G", "A", "B", "C", "D", "E", "F", "G"],
@@ -424,38 +324,19 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
   },
   aeolian: {
     primaryName: "Minor",
-    names: [
-      "Minor",
-      "Aeolian",
-      "Natural Minor Scale",
-      "Minor Scale",
-      "Aeolian Mode",
-      "Descending Melodic Minor Scale",
-    ],
+    names: ["Minor", "Aeolian", "Natural Minor Scale", "Aeolian Mode"],
     intervals: ["1", "2", "♭3", "4", "5", "♭6", "♭7", "8"],
     sequence: [0, 2, 3, 5, 7, 8, 10],
     type: [
-      "minor ",
+      "minor",
       "aeolian",
       "natural",
       "mode",
       "scale",
       "church mode",
       "diatonic mode",
-      "sixth mode",
-      "la mode",
     ],
-    characteristics: [
-      "melancholic",
-      "sad",
-      "somber",
-      "introspective",
-      "reflective",
-      "default minor",
-      "commonly used minor scale",
-      "minor tonality",
-      "dark",
-    ],
+    characteristics: ["melancholic", "sad", "somber", "introspective", "dark"],
     pattern: ["whole", "half", "whole", "whole", "half", "whole", "whole"],
     patternShort: ["W", "H", "W", "W", "H", "W", "W"],
     exampleNotes: ["A", "B", "C", "D", "E", "F", "G", "A"],
@@ -500,14 +381,7 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
   },
   locrian: {
     primaryName: "Locrian",
-    names: [
-      "Locrian",
-      "Minor ♭2 ♭5",
-      "Minor b2 b5",
-      "Minor Flat Second Flat Fifth",
-      "Half-Diminished Scale",
-      "Locrian Mode",
-    ],
+    names: ["Locrian", "Minor ♭2 ♭5", "Half-Diminished Scale", "Locrian Mode"],
     intervals: ["1", "♭2", "♭3", "4", "♭5", "♭6", "♭7", "8"],
     sequence: [0, 1, 3, 5, 6, 8, 10],
     type: [
@@ -517,18 +391,8 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
       "scale",
       "church mode",
       "diatonic mode",
-      "seventh mode",
-      "ti mode",
     ],
-    characteristics: [
-      "unsettling",
-      "tense",
-      "dark",
-      "unstable",
-      "dissonant",
-      "eerie",
-      "rarely used standalone",
-    ],
+    characteristics: ["unsettling", "tense", "dark", "unstable", "dissonant"],
     pattern: ["half", "whole", "whole", "half", "whole", "whole", "whole"],
     patternShort: ["H", "W", "W", "H", "W", "W", "W"],
     exampleNotes: ["B", "C", "D", "E", "F", "G", "A", "B"],

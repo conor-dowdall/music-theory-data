@@ -156,6 +156,7 @@ export function rootMidiAndIntervalToMidi(
   return rootNoteMidi + IntervalIntegers[interval] as MidiNoteNumber;
 }
 
+// TODO: make this accept a root note - currently it assumes C
 export function midiNoteSequenceToIntervals(
   midiNoteSequence: MidiNoteSequence,
   noteLabelThemeKey: NoteLabelThemeKey,
