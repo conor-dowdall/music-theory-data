@@ -87,7 +87,7 @@ function createLabelMap(
   return map;
 }
 
-function generateRomanNumerals(
+function generateRomanChords(
   qualities: (TriadQuality | SeventhQuality)[],
 ): (RomanTriad | RomanSeventh)[] {
   const baseNumerals: RomanNumeral[] = [
@@ -145,8 +145,8 @@ function generateLabels(
   const rotatedTriads = rotate(triadPattern, rotation);
   const rotatedSevenths = rotate(seventhPattern, rotation);
 
-  const romanTriads = generateRomanNumerals(rotatedTriads);
-  const romanSevenths = generateRomanNumerals(rotatedSevenths);
+  const romanTriads = generateRomanChords(rotatedTriads);
+  const romanSevenths = generateRomanChords(rotatedSevenths);
 
   return {
     triad: createLabelMap(integers, rotatedTriads),
