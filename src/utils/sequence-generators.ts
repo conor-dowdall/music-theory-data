@@ -37,7 +37,7 @@ import { rootMidiAndIntervalToMidi } from "./note-conversions.ts";
  * - `ascending-descending`: Ascends and then descends back to the start.
  * - `descending-ascending`: Descends and then ascends back to the start.
  */
-export type ExerciseDirection =
+export type MidiNoteSequenceDirection =
   | "ascending"
   | "descending"
   | "ascending-descending"
@@ -54,7 +54,7 @@ export interface GenerateMidiNoteSequenceOptions {
   /** An array of `Interval` strings that define the pattern (e.g., ["1", "3", "5"] for a triad). */
   intervals: Interval[];
   /** The direction of the sequence. */
-  direction: ExerciseDirection;
+  direction: MidiNoteSequenceDirection;
   /** The index of the `intervals` array to start the sequence from. Defaults to 0. */
   startFromIndex?: number;
   /**
