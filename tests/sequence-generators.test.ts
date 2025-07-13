@@ -7,8 +7,9 @@ Deno.test("generateMidiNoteSequence - debug", () => {
   let exercise = generateMidiNoteSequence({
     rootNoteMidi: 60,
     intervals: diatonicModes.ionian.intervals,
-    direction: "descending-ascending",
+    direction: "ascending-descending",
     numOctaves: 2,
+    numNotes: 4,
   });
   console.log(
     JSON.stringify(midiNoteSequenceToIntervals(exercise, "relative")),

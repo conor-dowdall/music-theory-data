@@ -64,9 +64,19 @@ export interface GenerateMidiNoteSequenceOptions {
    * typically include the octave, and chords and arpeggios, which do not.
    */
   includeOctaveIntervals?: boolean;
-  /** The total number of notes to generate for the monotonic part of the sequence. If provided, this overrides `numOctaves` and `extraNotes`. */
+  /**
+   * The total number of notes to generate for the monotonic part of the sequence.
+   * If provided, this overrides `numOctaves` and `extraNotes`.
+   * If not provided, the sequence length is determined by `numOctaves` and `extraNotes`.
+   * Applies to the initial monotonic part of the sequence: "ascending" or "descending" only.
+   * "ascending-descending" and "descending-ascending" simply reverse and slice the monotonic part,
+   * which is of length numNotes, if provided.
+   */
   numNotes?: number;
-  /** The number of octaves to generate for the sequence. Defaults to 1. */
+  /**
+   * The number of octaves to generate for the sequence. Defaults to 1.
+   * If `numOctaves` is set to 0, the sequence will be the length of the `intervals` array.
+   */
   numOctaves?: number;
   /** The number of extra notes to add after the full octaves are generated. Defaults to 0. */
   extraNotes?: number;
@@ -166,6 +176,7 @@ export function generateMidiNoteSequence(
   if (fundamentalIntervals.length === 0) return [];
 
   // Calculate the total number of notes for the (first) monotonic part of the sequence.
+  // This is simply reversed and sliced to create the ascending-descending or descending-ascending sequences.
   // numOctaves = 0: fundamentalIntervals.length
   // numOctaves = 1: fundamentalIntervals.length + 1
   // numOctaves = 2: 2 * fundamentalIntervals.length + 1
