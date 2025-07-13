@@ -1,6 +1,6 @@
 import { diatonicModes } from "../src/note-sequences/diatonic-modes.ts";
 import { dominantVariants } from "../src/note-sequences/dominant-variants.ts";
-import { generateMidiNoteSequence } from "../src/utils/sequence-generators.ts";
+import { generateMidiNoteSequence } from "../src/utils/midi-sequence-generators.ts";
 import { midiNoteSequenceToIntervals } from "../src/utils/note-conversions.ts";
 
 Deno.test("generateMidiNoteSequence - debug", () => {
