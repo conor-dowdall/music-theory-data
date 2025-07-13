@@ -162,7 +162,14 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
     names: ["Phrygian", "Minor ♭2", "Spanish Gypsy Scale", "Phrygian Mode"],
     intervals: ["1", "♭2", "♭3", "4", "5", "♭6", "♭7", "8"],
     sequence: [0, 1, 3, 5, 7, 8, 10],
-    type: ["minor", "phrygian", "mode", "scale", "church mode", "diatonic mode"],
+    type: [
+      "minor",
+      "phrygian",
+      "mode",
+      "scale",
+      "church mode",
+      "diatonic mode",
+    ],
     characteristics: [
       "exotic",
       "spanish",

@@ -68,7 +68,14 @@ export const dominantVariants: Record<DominantVariantKey, NoteSequenceTheme> = {
     intervals: ["1", "3", "5", "♭7", "9", "11"],
     sequence: [0, 2, 4, 5, 7, 10],
     type: ["dominant", "major", "chord", "arpeggio"],
-    characteristics: ["unstable", "bluesy", "tense", "jazzy", "rich", "complex"],
+    characteristics: [
+      "unstable",
+      "bluesy",
+      "tense",
+      "jazzy",
+      "rich",
+      "complex",
+    ],
     pattern: [
       "major third",
       "minor third",
