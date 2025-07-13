@@ -12,8 +12,8 @@
  * import * as music_theory_data from "jsr:@musodojo/music-theory-data";
  *
  * // const majorScale: music_theory_data.PitchInteger[]
- * const majorScale = music_theory_data.diatonicModes.ionian.sequence;
- * console.log("Major Scale Note Sequence", majorScale);
+ * const majorScale = music_theory_data.diatonicModes.ionian.integers;
+ * console.log("Major Scale Note Integer Sequence", majorScale);
  *
  * // const melodicMinorTheme: music_theory_data.NoteSequenceTheme
  * const melodicMinorTheme =
@@ -29,7 +29,7 @@
  * import { getNoteSequenceLabels } from "@musodojo/music-theory-data/utils";
  *
  * // Get major scale pattern, with autocompleted types
- * const majorScale = diatonicModes.ionian.sequence;
+ * const majorScale = diatonicModes.ionian.integers;
  * console.log("Major Scale:", majorScale); // [0, 2, 4, 5, 7, 9, 11]
  *
  * // Get note sequence labels, with autocompleted types

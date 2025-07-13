@@ -25,7 +25,7 @@ import { noteSequenceThemes } from "jsr:@musodojo/music-theory-data";
 import * as music_theory_data from "jsr:@musodojo/music-theory-data";
 
 // const majorScale: music_theory_data.PitchInteger[]
-const majorScale = music_theory_data.diatonicModes.ionian.sequence;
+const majorScale = music_theory_data.diatonicModes.ionian.integers;
 console.log("Major Scale Note Sequence", majorScale);
 
 // const melodicMinorTheme: music_theory_data.NoteSequenceTheme
@@ -40,7 +40,7 @@ import { diatonicModes } from "jsr:@musodojo/music-theory-data";
 
 // Get information about the Ionian mode
 const ionianMode = diatonicModes.ionian;
-console.log(ionianMode.sequence); // [0, 2, 4, 5, 7, 9, 11]
+console.log(ionianMode.integers); // [0, 2, 4, 5, 7, 9, 11]
 console.log(ionianMode.characteristics); // ["bright", "happy", "stable", ...]
 ```
 

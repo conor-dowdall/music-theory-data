@@ -31,5 +31,7 @@
  */
 
 export * from "./note-conversions.ts";
+export * from "./label-generators.ts";
+export * from "./sequence-generators.ts";
 export { getNoteSequenceLabels } from "./get-note-sequence-labels.ts";
 export { searchNoteSequenceThemes } from "./search-note-sequence-themes.ts";

@@ -11,7 +11,7 @@
  * // Accessing a specific melodic minor mode
  * const melodicMinor = melodicMinorModes.melodicMinor;
  * console.log(melodicMinor.primaryName);  // "Melodic Minor"
- * console.log(melodicMinor.sequence);     // [0, 2, 3, 5, 7, 9, 11]
+ * console.log(melodicMinor.integers);     // [0, 2, 3, 5, 7, 9, 11]
  * ```
  *
  * @module
@@ -45,7 +45,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
         "Dorian Major Seventh",
       ],
       intervals: ["1", "2", "♭3", "4", "5", "6", "7", "8"],
-      sequence: [0, 2, 3, 5, 7, 9, 11],
+      integers: [0, 2, 3, 5, 7, 9, 11],
       type: ["melodic minor mode", "minor", "mode", "scale", "first mode"],
       characteristics: [
         "minor tonality",
@@ -72,7 +72,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
         "Phrygian Raised Sixth",
       ],
       intervals: ["1", "♭2", "♭3", "4", "5", "6", "♭7", "8"],
-      sequence: [0, 1, 3, 5, 7, 9, 10],
+      integers: [0, 1, 3, 5, 7, 9, 10],
       type: [
         "melodic minor mode",
         "dorian",
@@ -102,7 +102,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
         "Lydian Sharp Fifth",
       ],
       intervals: ["1", "2", "3", "♯4", "♯5", "6", "7", "8"],
-      sequence: [0, 2, 4, 6, 8, 9, 11],
+      integers: [0, 2, 4, 6, 8, 9, 11],
       type: [
         "melodic minor mode",
         "lydian",
@@ -151,7 +151,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
         "Mixolydian Augmented Fourth",
       ],
       intervals: ["1", "2", "3", "♯4", "5", "6", "♭7", "8"],
-      sequence: [0, 2, 4, 6, 7, 9, 10],
+      integers: [0, 2, 4, 6, 7, 9, 10],
       type: [
         "melodic minor mode",
         "lydian",
@@ -193,7 +193,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
         "Mixolydian Flat Thirteenth",
       ],
       intervals: ["1", "2", "3", "4", "5", "♭6", "♭7", "8"],
-      sequence: [0, 2, 4, 5, 7, 8, 10],
+      integers: [0, 2, 4, 5, 7, 8, 10],
       type: [
         "melodic minor mode",
         "mixolydian",
@@ -228,7 +228,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
         "Half Diminished",
       ],
       intervals: ["1", "2", "♭3", "4", "♭5", "♭6", "♭7", "8"],
-      sequence: [0, 2, 3, 5, 6, 8, 10],
+      integers: [0, 2, 3, 5, 6, 8, 10],
       type: [
         "melodic minor mode",
         "aeolian",
@@ -259,7 +259,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
         "Locrian Flat Fourth",
       ],
       intervals: ["1", "♭2", "♭3", "♭4", "♭5", "♭7", "8"],
-      sequence: [0, 1, 3, 4, 6, 8, 10],
+      integers: [0, 1, 3, 4, 6, 8, 10],
       type: [
         "melodic minor mode",
         "altered",

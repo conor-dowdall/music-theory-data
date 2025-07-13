@@ -12,7 +12,7 @@
  * // Define a custom scale (partially)
  * const customScale: Partial<NoteSequenceTheme> = {
  *   primaryName: "Custom Scale",
- *   sequence: [0, 2, 4, 5, 7, 9, 11], // e.g., a major scale
+ *   integers: [0, 2, 4, 5, 7, 9, 11], // e.g., a major scale
  *   type: ["scale"],
  * };
  *
@@ -72,16 +72,21 @@ export interface NoteSequenceTheme {
    */
   intervals: Interval[];
   /**
-   * An array of `NoteInteger`s representing the sequence of semitone intervals
-   * from the root (e.g., `[0, 2, 4, 5, 7, 9, 11]` for a major scale).
-   * This sequence does *not* include the octave.
+   * An array of `NoteInteger`s (0-11) representing the unique pitch classes
+   * of the theme, sorted in ascending order. This provides a canonical
+   * "fingerprint" of the note collection, independent of melodic or harmonic
+   * voicing. It is useful for analysis, comparison, and searching.
+   *
+   * This array should *not* include the octave (which would be a duplicate of
+   * the root note, 0).
+   *
+   * @example [0, 2, 4, 5, 7, 9, 11] // For a major scale.
+   * @example [0, 4, 7, 10] // For a dominant 7th chord.
    * @see {@link NoteInteger}
    */
-  sequence: NoteInteger[];
+  integers: NoteInteger[];
   /**
-   * A list of classifications for the theme. This metadata is crucial for
-   * applying conventional logic, such as whether to include the octave in a
-   * generated sequence.
+   * A list of classifications for the theme.
    * @example ["major", "mode", "scale"]
    * @example ["dominant", "chord", "arpeggio"]
    */

@@ -22,7 +22,7 @@ export const otherSequences: Record<OtherSequenceKey, NoteSequenceTheme> = {
       "7",
       "8",
     ],
-    sequence: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    integers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
     type: ["chromatic", "scale", "non diatonic"],
     characteristics: ["all twelve pitches in an octave", "no tonal center"],
     pattern: [
@@ -66,7 +66,7 @@ export const otherSequences: Record<OtherSequenceKey, NoteSequenceTheme> = {
   //     "Whole Tone Descending Scale",
   //   ],
   //   intervals: ["1", "2", "3", "4", "5", "6", "7"],
-  //   sequence: [0, 2, 4, 6, 8, 10],
+  //   integers: [0, 2, 4, 6, 8, 10],
   //   type: ["whole tone", "scale", "first mode"],
   //   characteristics: [
   //     "six pitches in an octave",
