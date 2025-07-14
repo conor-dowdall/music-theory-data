@@ -14,7 +14,7 @@ import type {
   RomanTriad,
   SeventhQuality,
   TriadQuality,
-} from "../types/chord-qualities.d.ts";
+} from "../types/chord-labels.d.ts";
 
 // --- Base Patterns ---
 const DIATONIC_TRIADS: TriadQuality[] = ["M", "m", "m", "M", "M", "m", "°"];
