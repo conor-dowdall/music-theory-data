@@ -105,7 +105,12 @@ export interface NoteSequenceTheme {
    * @example ["M3", "m3", ...] // For a chord
    */
   patternShort: string[];
-  /** An example of the theme's notes, typically starting on C. */
+  /** An example of the theme's notes.
+   * Typically chords start on C for major and A for minor.
+   * diatonicModes has them ascending through C, D, E, F, G, A, B to match each
+   * diatonic mode's notes with only natural notes.
+   * melodic-and-harmonic minor start on A because they are based on minor.
+   */
   exampleNotes: NoteName[];
   /**
    * Optional overrides for note labels in different `NoteLabelTheme` contexts.
