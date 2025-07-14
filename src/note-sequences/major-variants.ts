@@ -1,15 +1,13 @@
 /**
- * Collection of major chord and arpeggio variants commonly used in music.
- * These patterns build upon the basic major triad (1-3-5) by adding extensions
- * like 6ths, 7ths, and 9ths to create richer harmonic structures.
- *
- * Key variants include:
- * - Major Triad: The basic major chord
- * - Major 6th: Adds major 6th to triad
- * - Major 7th: Adds major 7th to triad
- * - ...
- *
  * @module
+ *
+ * This file contains a collection of major chord and arpeggio variants commonly
+ * used in music. These patterns build upon the basic major triad (1-3-5) by
+ * adding extensions like 6ths, 7ths, and 9ths to create richer harmonic
+ * structures.
+ *
+ * As these are chord-based structures, the `intervals` array for each theme
+ * does not include the octave ("8").
  */
 
 import type {
@@ -18,38 +16,37 @@ import type {
 } from "../types/note-sequences.d.ts";
 
 /**
- * Type representing all available major variant names/keys.
- * Provides type-safe access to properties.
+ * A record containing various major chord and arpeggio structures.
+ * Each variant is a `NoteSequenceTheme` that describes its musical properties.
+ *
+ * The keys of this record are `MajorVariantKey`s, providing type-safe
+ * access to each major chord definition.
  *
  * @example
  * ```ts
- * import { majorVariants } from "./major-variants.ts";
- * import type { MajorVariantKey } from "../types/note-sequences.d.ts";
+ * import { majorVariants } from "@musodojo/music-theory-data/note-sequences";
  *
- * // Type-safe chord variant access
- * function getMajorChord(type: MajorVariantKey) {
- *   return majorVariants[type];
- * }
- *
- * const maj7 = getMajorChord("major7");     // Valid
- * // @ts-expect-error bad major variant name
- * const invalid = getMajorChord("minor7");   // Type error
+ * const major7th = majorVariants.major7;
+ * console.log(major7th.primaryName); // "M7"
+ * console.log(major7th.intervals);   // ["1", "3", "5", "7"]
  * ```
- */
-
-/**
- * These are variants of the major-style chord.
- * @see {@link MajorVariantKey} for the type of each variant.
- * @see {@link NoteSequenceTheme} for the structure of each variant.
+ *
+ * @see {@link NoteSequenceTheme} for the structure of each variant definition.
+ * @see {@link MajorVariantKey} for the available variant keys.
  */
 export const majorVariants: Record<MajorVariantKey, NoteSequenceTheme> = {
   major: {
     primaryName: "M",
-    names: ["M", "Major"],
+    names: ["M", "Major", "Major Triad"],
     intervals: ["1", "3", "5"],
     integers: [0, 4, 7],
-    type: ["major", "chord", "arpeggio"],
-    characteristics: ["stable", "happy", "bright"],
+    type: ["major", "chord", "arpeggio", "triad"],
+    characteristics: [
+      "stable",
+      "happy",
+      "bright",
+      "the most basic major chord",
+    ],
     pattern: ["major third", "minor third"],
     patternShort: ["M3", "m3"],
     exampleNotes: ["C", "E", "G"],
@@ -59,30 +56,53 @@ export const majorVariants: Record<MajorVariantKey, NoteSequenceTheme> = {
     names: ["M6", "6", "Major 6th"],
     intervals: ["1", "3", "5", "6"],
     integers: [0, 4, 7, 9],
-    type: ["major", "chord", "arpeggio"],
-    characteristics: ["stable", "happy", "bright", "sweet", "melodic"],
+    type: ["major", "chord", "arpeggio", "tetrad"],
+    characteristics: [
+      "stable",
+      "happy",
+      "bright",
+      "sweet",
+      "melodic",
+      "less tension than a major 7th",
+      "common in early jazz and pop",
+    ],
     pattern: ["major third", "minor third", "major second"],
     patternShort: ["M3", "m3", "M2"],
     exampleNotes: ["C", "E", "G", "A"],
   },
   major7: {
     primaryName: "M7",
-    names: ["M7", "7", "Major 7th"],
+    names: ["M7", "maj7", "Major 7th"],
     intervals: ["1", "3", "5", "7"],
     integers: [0, 4, 7, 11],
-    type: ["major", "chord", "arpeggio"],
-    characteristics: ["stable", "happy", "bright", "sophisticated", "lush"],
+    type: ["major", "chord", "arpeggio", "tetrad"],
+    characteristics: [
+      "stable",
+      "happy",
+      "bright",
+      "sophisticated",
+      "lush",
+      "jazzy and sophisticated",
+    ],
     pattern: ["major third", "minor third", "major third"],
     patternShort: ["M3", "m3", "M3"],
     exampleNotes: ["C", "E", "G", "B"],
   },
   major9: {
     primaryName: "M9",
-    names: ["M9", "9", "Major 9th"],
+    names: ["M9", "maj9", "Major 9th"],
     intervals: ["1", "3", "5", "7", "9"],
     integers: [0, 2, 4, 7, 11],
-    type: ["major", "chord", "arpeggio"],
-    characteristics: ["stable", "happy", "bright", "colorful", "rich", "airy"],
+    type: ["major", "chord", "arpeggio", "pentad"],
+    characteristics: [
+      "stable",
+      "happy",
+      "bright",
+      "colorful",
+      "rich",
+      "airy",
+      "adds a layer of complexity and color",
+    ],
     pattern: ["major third", "minor third", "major third", "minor third"],
     patternShort: ["M3", "m3", "M3", "m3"],
     exampleNotes: ["C", "E", "G", "B", "D"],
@@ -93,11 +113,19 @@ export const majorVariants: Record<MajorVariantKey, NoteSequenceTheme> = {
   },
   majorAdd9: {
     primaryName: "add9",
-    names: ["add9", "Major add 9"],
+    names: ["add9", "M(add9)", "Major add 9"],
     intervals: ["1", "3", "5", "9"],
     integers: [0, 2, 4, 7],
-    type: ["major", "chord", "arpeggio"],
-    characteristics: ["stable", "happy", "bright", "colorful", "open", "airy"],
+    type: ["major", "chord", "arpeggio", "tetrad"],
+    characteristics: [
+      "stable",
+      "happy",
+      "bright",
+      "colorful",
+      "open",
+      "airy",
+      "different from a major 9th as it lacks the 7th",
+    ],
     pattern: ["major third", "minor third", "perfect fifth"],
     patternShort: ["M3", "m3", "P5"],
     exampleNotes: ["C", "E", "G", "D"],
@@ -107,11 +135,11 @@ export const majorVariants: Record<MajorVariantKey, NoteSequenceTheme> = {
     },
   },
   major6Add9: {
-    primaryName: "6add9",
-    names: ["6add9", "Major 6 add 9", "6/9", "Major 6/9"],
+    primaryName: "6/9",
+    names: ["6/9", "M6/9", "Major 6/9", "6add9"],
     intervals: ["1", "3", "5", "6", "9"],
     integers: [0, 2, 4, 7, 9],
-    type: ["major", "chord", "arpeggio"],
+    type: ["major", "chord", "arpeggio", "pentad"],
     characteristics: [
       "stable",
       "happy",
@@ -121,6 +149,8 @@ export const majorVariants: Record<MajorVariantKey, NoteSequenceTheme> = {
       "colorful",
       "rich",
       "open",
+      "very lush and rich",
+      "popular in jazz piano voicings",
     ],
     pattern: ["major third", "minor third", "major second", "perfect fourth"],
     patternShort: ["M3", "m3", "M2", "P4"],

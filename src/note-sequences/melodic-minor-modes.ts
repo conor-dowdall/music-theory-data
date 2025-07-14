@@ -1,20 +1,13 @@
 /**
- * Melodic minor modes.
- * Each mode is derived from the melodic minor scale and has its own unique characteristics.
- * These modes are often used in jazz and fusion genres.
- *
- * @example
- * ```ts
- * // Example usage of the melodicMinorModes type
- * import { melodicMinorModes } from "@musodojo/music-theory-data/note-sequences";
- *
- * // Accessing a specific melodic minor mode
- * const melodicMinor = melodicMinorModes.melodicMinor;
- * console.log(melodicMinor.primaryName);  // "Melodic Minor"
- * console.log(melodicMinor.integers);     // [0, 2, 3, 5, 7, 9, 11]
- * ```
- *
  * @module
+ *
+ * This file defines the seven modes of the Melodic Minor scale. These modes are a
+ * cornerstone of modern jazz and fusion harmony, offering a rich palette of sounds
+ * for improvisation and composition. Each mode is derived by starting the
+ * Melodic Minor scale on a different degree.
+ *
+ * As these are scales, the `intervals` array for each mode includes the
+ * octave ("8").
  */
 
 import type {
@@ -23,11 +16,23 @@ import type {
 } from "../types/note-sequences.d.ts";
 
 /**
- * These are variants of the melodic minor modes.
- * Each mode is derived from the melodic minor scale and has its own unique characteristics.
- * These modes are often used in jazz and fusion genres.
- * @see {@link MelodicMinorModeKey} for the name of each mode.
- * @see {@link NoteSequenceTheme} for the structure of each mode.
+ * A record containing the seven modes of the Melodic Minor scale.
+ * Each mode is a `NoteSequenceTheme` with detailed musical properties.
+ *
+ * The keys of this record are `MelodicMinorModeKey`s, providing type-safe
+ * access to each mode definition.
+ *
+ * @example
+ * ```ts
+ * import { melodicMinorModes } from "@musodojo/music-theory-data/note-sequences";
+ *
+ * const lydianAugmented = melodicMinorModes.lydianAugmented;
+ * console.log(lydianAugmented.primaryName); // "Lydian Augmented"
+ * console.log(lydianAugmented.intervals);   // ["1", "2", "3", "♯4", "♯5", "6", "7", "8"]
+ * ```
+ *
+ * @see {@link NoteSequenceTheme} for the structure of each mode definition.
+ * @see {@link MelodicMinorModeKey} for the available mode keys.
  */
 export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
   {
@@ -37,26 +42,17 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
         "Melodic Minor",
         "Jazz Minor",
         "Ascending Melodic Minor Scale",
-        "Minor Ionian",
-        "Ionian ♭3",
-        "Ionian b3",
-        "Ionian Flat Third",
-        "Dorian Major 7",
-        "Dorian Major Seventh",
+        "Jazz Minor Scale",
       ],
       intervals: ["1", "2", "♭3", "4", "5", "6", "7", "8"],
       integers: [0, 2, 3, 5, 7, 9, 11],
-      type: ["melodic minor mode", "minor", "mode", "scale", "first mode"],
+      type: ["melodic minor mode", "minor", "mode", "scale", "heptatonic"],
       characteristics: [
         "minor tonality",
-        "minor scale start, major scale finish",
-        "jazz and classical music",
-        "classical: raised 6th and 7th degrees when ascending",
-        "classical: natural minor / aeolian mode when descending",
-        "jazz: raised 6th and 7th degrees in both directions",
-        "used in jazz improvisation",
-        "common in jazz and fusion genres",
-        "can be used over minor chords",
+        "bright",
+        "jazzy",
+        "classical and jazz harmony",
+        "a staple of jazz improvisation",
       ],
       pattern: ["whole", "half", "whole", "whole", "whole", "whole", "half"],
       patternShort: ["W", "H", "W", "W", "W", "W", "H"],
@@ -64,30 +60,16 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
     },
     dorianFlat2: {
       primaryName: "Dorian ♭2",
-      names: [
-        "Dorian ♭2",
-        "Dorian b2",
-        "Dorian Flat Second",
-        "Phrygian ♮6",
-        "Phrygian Raised Sixth",
-      ],
+      names: ["Dorian ♭2", "Phrygian Natural 6", "Phrygian ♮6"],
       intervals: ["1", "♭2", "♭3", "4", "5", "6", "♭7", "8"],
       integers: [0, 1, 3, 5, 7, 9, 10],
-      type: [
-        "melodic minor mode",
-        "dorian",
-        "minor",
-        "mode",
-        "scale",
-        "second mode",
-      ],
+      type: ["melodic minor mode", "minor", "mode", "scale", "heptatonic"],
       characteristics: [
-        "minor tonality",
-        "jazz and fusion genres",
-        "used in jazz improvisation",
-        "can be used over minor chords",
-        "used in modal jazz compositions",
-        "Assyrian music",
+        "exotic",
+        "mysterious",
+        "jazzy",
+        "dark but hopeful",
+        "exotic and mysterious sound",
       ],
       pattern: ["half", "whole", "whole", "whole", "whole", "half", "whole"],
       patternShort: ["H", "W", "W", "W", "W", "H", "W"],
@@ -95,28 +77,23 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
     },
     lydianAugmented: {
       primaryName: "Lydian Augmented",
-      names: [
-        "Lydian Augmented",
-        "Lydian ♯5",
-        "Lydian #5",
-        "Lydian Sharp Fifth",
-      ],
+      names: ["Lydian Augmented", "Lydian ♯5"],
       intervals: ["1", "2", "3", "♯4", "♯5", "6", "7", "8"],
       integers: [0, 2, 4, 6, 8, 9, 11],
       type: [
         "melodic minor mode",
-        "lydian",
         "augmented",
         "mode",
         "scale",
-        "third mode",
+        "heptatonic",
+        "synthetic scale",
       ],
       characteristics: [
-        "major tonality",
-        "jazz and fusion genres",
-        "used in jazz improvisation",
-        "can be used over major chords",
-        "used in modal jazz compositions",
+        "dreamy",
+        "unsettling",
+        "ethereal",
+        "sci-fi",
+        "used over major 7th sharp 5 chords",
       ],
       pattern: ["whole", "whole", "whole", "whole", "half", "whole", "half"],
       patternShort: ["W", "W", "W", "W", "H", "W", "H"],
@@ -142,30 +119,17 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
         "Lydian Dominant",
         "Acoustic Scale",
         "Overtone Scale",
-        "Lydian ♭7",
-        "Lydian b7",
-        "Lydian Flat Seventh",
         "Mixolydian ♯4",
-        "Mixolydian #4",
-        "Mixolydian Sharp Fourth",
-        "Mixolydian Augmented Fourth",
       ],
       intervals: ["1", "2", "3", "♯4", "5", "6", "♭7", "8"],
       integers: [0, 2, 4, 6, 7, 9, 10],
-      type: [
-        "melodic minor mode",
-        "lydian",
-        "dominant",
-        "mode",
-        "scale",
-        "fourth mode",
-      ],
+      type: ["melodic minor mode", "dominant", "mode", "scale", "heptatonic"],
       characteristics: [
-        "dominant tonality",
-        "jazz and fusion genres",
-        "used in jazz improvisation",
-        "can be used over dominant chords",
-        "used in modal jazz compositions",
+        "bright",
+        "quirky",
+        "bluesy",
+        "jazzy",
+        "a very common scale in jazz for non-resolving dominant chords",
       ],
       pattern: ["whole", "whole", "whole", "half", "whole", "half", "whole"],
       patternShort: ["W", "W", "W", "H", "W", "H", "W"],
@@ -178,36 +142,15 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
     },
     mixolydianFlat6: {
       primaryName: "Mixolydian ♭6",
-      names: [
-        "Mixolydian ♭6",
-        "Mixolydian b6",
-        "Mixolydian Flat Sixth",
-        "Aeolian Dominant",
-        "Aeolian ♯3",
-        "Aeolian #3",
-        "Aeolian Sharp Third",
-        "Descending Melodic Major",
-        "Hindu Scale",
-        "Mixolydian ♭13",
-        "Mixolydian b13",
-        "Mixolydian Flat Thirteenth",
-      ],
+      names: ["Mixolydian ♭6", "Aeolian Dominant"],
       intervals: ["1", "2", "3", "4", "5", "♭6", "♭7", "8"],
       integers: [0, 2, 4, 5, 7, 8, 10],
-      type: [
-        "melodic minor mode",
-        "mixolydian",
-        "dominant",
-        "mode",
-        "scale",
-        "fifth mode",
-      ],
+      type: ["melodic minor mode", "dominant", "mode", "scale", "heptatonic"],
       characteristics: [
-        "dominant tonality",
-        "jazz and fusion genres",
-        "used in jazz improvisation",
-        "can be used over dominant chords",
-        "used in modal jazz compositions",
+        "bluesy",
+        "dark",
+        "tense",
+        "often used over dominant chords resolving to a minor chord",
       ],
       pattern: ["whole", "whole", "half", "whole", "half", "whole", "whole"],
       patternShort: ["W", "W", "H", "W", "H", "W", "W"],
@@ -215,34 +158,15 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
     },
     aeolianFlat5: {
       primaryName: "Aeolian ♭5",
-      names: [
-        "Aeolian ♭5",
-        "Aeolian b5",
-        "Aeolian Flat Fifth",
-        "Locrian ♮2",
-        "Locrian Raised Second",
-        "Locrian ♯2",
-        "Locrian #2",
-        "Locrian Sharp Second",
-        "Half-Diminished Scale",
-        "Half Diminished",
-      ],
+      names: ["Aeolian ♭5", "Locrian Natural 2", "Locrian ♮2"],
       intervals: ["1", "2", "♭3", "4", "♭5", "♭6", "♭7", "8"],
       integers: [0, 2, 3, 5, 6, 8, 10],
-      type: [
-        "melodic minor mode",
-        "aeolian",
-        "minor",
-        "mode",
-        "scale",
-        "sixth mode",
-      ],
+      type: ["melodic minor mode", "minor", "mode", "scale", "heptatonic"],
       characteristics: [
-        "minor tonality",
-        "jazz and fusion genres",
-        "used in jazz improvisation",
-        "can be used over minor chords",
-        "used in modal jazz compositions",
+        "dark",
+        "tense",
+        "half-diminished",
+        "used over half-diminished chords",
       ],
       pattern: ["whole", "half", "whole", "half", "whole", "whole", "whole"],
       patternShort: ["W", "H", "W", "H", "W", "W", "W"],
@@ -250,31 +174,16 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
     },
     altered: {
       primaryName: "Altered Scale",
-      names: [
-        "Altered Scale",
-        "Super Locrian",
-        "Altered Dominant",
-        "Locrian ♭4",
-        "Locrian b4",
-        "Locrian Flat Fourth",
-      ],
+      names: ["Altered Scale", "Super Locrian", "Altered Dominant Scale"],
       intervals: ["1", "♭2", "♭3", "♭4", "♭5", "♭7", "8"],
       integers: [0, 1, 3, 4, 6, 8, 10],
-      type: [
-        "melodic minor mode",
-        "altered",
-        "dominant",
-        "mode",
-        "scale",
-        "seventh mode",
-      ],
+      type: ["melodic minor mode", "dominant", "mode", "scale", "heptatonic"],
       characteristics: [
-        "altered tonality",
-        "jazz and fusion genres",
-        "used in jazz improvisation",
-        "can be used over dominant chords",
-        "used in modal jazz compositions",
-        "altered dominant chords",
+        "tense",
+        "dissonant",
+        "jazzy",
+        "maximum tension over a dominant chord",
+        "contains many altered extensions (b9, #9, b5, #5)",
       ],
       pattern: ["half", "whole", "half", "whole", "whole", "whole", "whole"],
       patternShort: ["H", "W", "H", "W", "W", "W", "W"],

@@ -125,6 +125,7 @@ export type NoteSequenceThemeGroupKey =
   | "dominantVariants"
   | "majorVariants"
   | "melodicMinorModes"
+  | "harmonicMinorModes"
   | "otherSequences";
 
 /** A key for one of the seven diatonic modes. */
@@ -163,6 +164,16 @@ export type MelodicMinorModeKey =
   | "aeolianFlat5"
   | "altered";
 
+/** A key for one of the seven modes of the harmonic minor scale. */
+export type HarmonicMinorModeKey =
+  | "harmonicMinor"
+  | "locrianSharp6"
+  | "ionianSharp5"
+  | "dorianSharp4"
+  | "phrygianDominant"
+  | "lydianSharp2"
+  | "superLocrianDoubleFlat7";
+
 /** A key for other miscellaneous sequences. */
 export type OtherSequenceKey = "chromatic";
 
@@ -175,4 +186,5 @@ export type NoteSequenceThemeKey =
   | DominantVariantKey
   | MajorVariantKey
   | MelodicMinorModeKey
+  | HarmonicMinorModeKey
   | OtherSequenceKey;

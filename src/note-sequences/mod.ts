@@ -22,4 +22,6 @@ export * from "./diatonic-modes.ts";
 export * from "./dominant-variants.ts";
 export * from "./major-variants.ts";
 export * from "./melodic-minor-modes.ts";
+export * from "./harmonic-minor-modes.ts";
+export * from "./other-sequences.ts";
 export * from "./note-sequences.ts";

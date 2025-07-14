@@ -1,0 +1,211 @@
+/**
+ * @module
+ *
+ * This file contains the definitions for the seven modes of the Harmonic Minor scale.
+ * This scale is characterized by a raised seventh degree, which creates a distinctive
+ * augmented second interval and a strong pull to the tonic. These modes are
+ * prominent in classical, neoclassical metal, jazz, and various styles of
+ * Eastern European and Middle Eastern music.
+ *
+ * As these are scales, the `intervals` array for each mode includes the
+ * octave ("8").
+ */
+
+import type {
+  HarmonicMinorModeKey,
+  NoteSequenceTheme,
+} from "../types/note-sequences.d.ts";
+
+/**
+ * A record containing the seven modes of the Harmonic Minor scale.
+ * Each mode is a `NoteSequenceTheme` with detailed musical properties.
+ *
+ * The keys of this record are `HarmonicMinorModeKey`s, providing type-safe
+ * access to each mode definition.
+ *
+ * @example
+ * ```ts
+ * import { harmonicMinorModes } from "@musodojo/music-theory-data/note-sequences";
+ *
+ * const phrygianDominant = harmonicMinorModes.phrygianDominant;
+ * console.log(phrygianDominant.primaryName); // "Phrygian Dominant"
+ * console.log(phrygianDominant.intervals);   // ["1", "♭2", "3", "4", "5", "♭6", "♭7", "8"]
+ * ```
+ *
+ * @see {@link NoteSequenceTheme} for the structure of each mode definition.
+ * @see {@link HarmonicMinorModeKey} for the available mode keys.
+ */
+export const harmonicMinorModes: Record<
+  HarmonicMinorModeKey,
+  NoteSequenceTheme
+> = {
+  harmonicMinor: {
+    primaryName: "Harmonic Minor",
+    names: ["Harmonic Minor", "Aeolian ♯7"],
+    intervals: ["1", "2", "♭3", "4", "5", "♭6", "7", "8"],
+    integers: [0, 2, 3, 5, 7, 8, 11],
+    type: ["harmonic minor mode", "minor", "scale", "heptatonic"],
+    characteristics: [
+      "dark",
+      "tense",
+      "exotic",
+      "classical",
+      "neo-classical",
+      "middle-eastern",
+    ],
+    pattern: [
+      "whole",
+      "half",
+      "whole",
+      "whole",
+      "half",
+      "augmented second",
+      "half",
+    ],
+    patternShort: ["W", "H", "W", "W", "H", "A2", "H"],
+    exampleNotes: ["A", "B", "C", "D", "E", "F", "G♯", "A"],
+  },
+  locrianSharp6: {
+    primaryName: "Locrian ♯6",
+    names: ["Locrian ♯6", "Locrian Natural 6"],
+    intervals: ["1", "♭2", "♭3", "4", "♭5", "6", "♭7", "8"],
+    integers: [0, 1, 3, 5, 6, 9, 10],
+    type: ["harmonic minor mode", "diminished", "scale", "heptatonic"],
+    characteristics: ["dark", "unstable", "jazzy", "exotic"],
+    pattern: [
+      "half",
+      "whole",
+      "whole",
+      "half",
+      "augmented second",
+      "half",
+      "whole",
+    ],
+    patternShort: ["H", "W", "W", "H", "A2", "H", "W"],
+    exampleNotes: ["B", "C", "D", "E", "F", "G♯", "A", "B"],
+  },
+  ionianSharp5: {
+    primaryName: "Ionian ♯5",
+    names: ["Ionian ♯5", "Ionian Augmented"],
+    intervals: ["1", "2", "3", "4", "♯5", "6", "7", "8"],
+    integers: [0, 2, 4, 5, 8, 9, 11],
+    type: ["harmonic minor mode", "major", "augmented", "scale", "heptatonic"],
+    characteristics: ["bright", "dreamy", "unsettling", "magical"],
+    pattern: [
+      "whole",
+      "whole",
+      "half",
+      "augmented second",
+      "half",
+      "whole",
+      "whole",
+    ],
+    patternShort: ["W", "W", "H", "A2", "H", "W", "W"],
+    exampleNotes: ["C", "D", "E", "F", "G♯", "A", "B", "C"],
+    labelsOverride: {
+      quality: new Map([[8, "A5"]]),
+      relative: new Map([[8, "♯5"]]),
+      extension: new Map([[8, "♯5"]]),
+    },
+  },
+  dorianSharp4: {
+    primaryName: "Dorian ♯4",
+    names: ["Dorian ♯4", "Ukrainian Dorian", "Romanian Minor"],
+    intervals: ["1", "2", "♭3", "♯4", "5", "6", "♭7", "8"],
+    integers: [0, 2, 3, 6, 7, 9, 10],
+    type: ["harmonic minor mode", "minor", "scale", "heptatonic"],
+    characteristics: ["exotic minor", "eastern european folk", "gypsy"],
+    pattern: [
+      "whole",
+      "half",
+      "augmented second",
+      "half",
+      "whole",
+      "whole",
+      "half",
+    ],
+    patternShort: ["W", "H", "A2", "H", "W", "W", "H"],
+    exampleNotes: ["D", "E", "F", "G♯", "A", "B", "C", "D"],
+    labelsOverride: {
+      quality: new Map([[6, "A4"]]),
+      relative: new Map([[6, "♯4"]]),
+      extension: new Map([[6, "♯11"]]),
+    },
+  },
+  phrygianDominant: {
+    primaryName: "Phrygian Dominant",
+    names: [
+      "Phrygian Dominant",
+      "Spanish Gypsy Scale",
+      "Freygish",
+      "Phrygian Major",
+    ],
+    intervals: ["1", "♭2", "3", "4", "5", "♭6", "♭7", "8"],
+    integers: [0, 1, 4, 5, 7, 8, 10],
+    type: ["harmonic minor mode", "dominant", "scale", "heptatonic"],
+    characteristics: [
+      "very exotic",
+      "spanish",
+      "flamenco",
+      "klezmer",
+      "middle-eastern",
+      "tense",
+    ],
+    pattern: [
+      "half",
+      "augmented second",
+      "half",
+      "whole",
+      "half",
+      "whole",
+      "whole",
+    ],
+    patternShort: ["H", "A2", "H", "W", "H", "W", "W"],
+    exampleNotes: ["E", "F", "G♯", "A", "B", "C", "D", "E"],
+  },
+  lydianSharp2: {
+    primaryName: "Lydian ♯2",
+    names: ["Lydian ♯2"],
+    intervals: ["1", "♯2", "3", "♯4", "5", "6", "7", "8"],
+    integers: [0, 3, 4, 6, 7, 9, 11],
+    type: ["harmonic minor mode", "major", "scale", "heptatonic"],
+    characteristics: ["very bright", "unusual", "double augmented", "exotic"],
+    pattern: [
+      "augmented second",
+      "half",
+      "whole",
+      "half",
+      "whole",
+      "whole",
+      "whole",
+    ],
+    patternShort: ["A2", "H", "W", "H", "W", "W", "W"],
+    exampleNotes: ["F", "G♯", "A", "B", "C", "D", "E", "F"],
+    labelsOverride: {
+      quality: new Map([[3, "A2"], [6, "A4"]]),
+      relative: new Map([[3, "♯2"], [6, "♯4"]]),
+      extension: new Map([[3, "♯9"], [6, "♯11"]]),
+    },
+  },
+  superLocrianDoubleFlat7: {
+    primaryName: "Super Locrian 𝄫7",
+    names: ["Super Locrian 𝄫7", "Altered Diminished", "Altered 𝄫7"],
+    intervals: ["1", "♭2", "♭3", "♭4", "♭5", "♭6", "𝄫7", "8"],
+    integers: [0, 1, 3, 4, 6, 8, 9],
+    type: ["harmonic minor mode", "diminished", "scale", "heptatonic"],
+    characteristics: [
+      "extremely tense",
+      "highly dissonant",
+      "altered",
+      "theoretical",
+    ],
+    pattern: ["half", "whole", "half", "whole", "whole", "half", "whole"],
+    patternShort: ["H", "W", "H", "W", "W", "H", "W"],
+    exampleNotes: ["G♯", "A", "B", "C", "D", "E", "F", "G♯"],
+    labelsOverride: {
+      quality: new Map([[4, "d4"], [9, "d7"]]),
+      relative: new Map([[4, "♭4"], [9, "𝄫7"]]),
+      extension: new Map([[4, "♭11"], [9, "𝄫7"]]),
+    },
+  },
+} as const;

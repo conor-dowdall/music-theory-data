@@ -1,12 +1,25 @@
+/**
+ * @module
+ *
+ * This file contains definitions for miscellaneous sequences that do not fit into
+ * the other categories, such as the Chromatic scale.
+ */
+
 import type {
   NoteSequenceTheme,
   OtherSequenceKey,
 } from "../types/note-sequences.d.ts";
 
+/**
+ * A record containing miscellaneous musical sequences.
+ *
+ * @see {@link NoteSequenceTheme} for the structure of each sequence definition.
+ * @see {@link OtherSequenceKey} for the available sequence keys.
+ */
 export const otherSequences: Record<OtherSequenceKey, NoteSequenceTheme> = {
   chromatic: {
     primaryName: "Chromatic",
-    names: ["Chromatic", "Twelve Tone Scale"],
+    names: ["Chromatic", "Twelve-Tone Scale"],
     intervals: [
       "1",
       "♭2",
@@ -23,8 +36,14 @@ export const otherSequences: Record<OtherSequenceKey, NoteSequenceTheme> = {
       "8",
     ],
     integers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    type: ["chromatic", "scale", "non diatonic"],
-    characteristics: ["all twelve pitches in an octave", "no tonal center"],
+    type: ["chromatic", "scale", "non-diatonic", "dodecaphonic"],
+    characteristics: [
+      "atonal",
+      "dissonant",
+      "no tonal center",
+      "contains all 12 pitches",
+      "used for passing tones and creating tension",
+    ],
     pattern: [
       "half",
       "half",
@@ -55,28 +74,4 @@ export const otherSequences: Record<OtherSequenceKey, NoteSequenceTheme> = {
       "C",
     ],
   },
-  // wholeTone: {
-  //   primaryName: "Whole Tone Scale",
-  //   names: [
-  //     "Whole Tone Scale",
-  //     "Whole Tone",
-  //     "Whole Tone Ascending",
-  //     "Whole Tone Descending",
-  //     "Whole Tone Ascending Scale",
-  //     "Whole Tone Descending Scale",
-  //   ],
-  //   intervals: ["1", "2", "3", "4", "5", "6", "7"],
-  //   integers: [0, 2, 4, 6, 8, 10],
-  //   type: ["whole tone", "scale", "first mode"],
-  //   characteristics: [
-  //     "six pitches in an octave",
-  //     "no tonal center",
-  //     "used in impressionistic music",
-  //     "creates a dreamy or ethereal sound",
-  //     "often used in film scores",
-  //     "associated with composers like Debussy and Ravel",
-  //   ],
-  //   pattern: ["whole", "whole", "whole", "whole", "whole"],
-  //   patternShort: ["W", "W", "W", "W", "W"],
-  // },
-};
+} as const;

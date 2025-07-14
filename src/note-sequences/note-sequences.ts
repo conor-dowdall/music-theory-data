@@ -29,6 +29,7 @@ import { diatonicModes } from "./diatonic-modes.ts";
 import { dominantVariants } from "./dominant-variants.ts";
 import { majorVariants } from "./major-variants.ts";
 import { melodicMinorModes } from "./melodic-minor-modes.ts";
+import { harmonicMinorModes } from "./harmonic-minor-modes.ts";
 import { otherSequences } from "./other-sequences.ts";
 
 /**
@@ -39,6 +40,7 @@ export const allNoteSequenceThemes = {
   ...dominantVariants,
   ...majorVariants,
   ...melodicMinorModes,
+  ...harmonicMinorModes,
   ...otherSequences,
 } as const;
 
@@ -50,6 +52,7 @@ export const noteSequenceThemes = {
   dominantVariants,
   majorVariants,
   melodicMinorModes,
+  harmonicMinorModes,
   otherSequences,
 } as const;
 
@@ -82,6 +85,11 @@ export const noteSequenceThemeGroupsMetadata: Record<
     displayName: "Melodic Minor Modes",
     description:
       "Seven-note scales derived from the melodic minor scale, each starting on a different scale degree.",
+  },
+  harmonicMinorModes: {
+    displayName: "Harmonic Minor Modes",
+    description:
+      "Seven-note scales derived from the harmonic minor scale, each starting on a different scale degree.",
   },
   otherSequences: {
     displayName: "Other",
