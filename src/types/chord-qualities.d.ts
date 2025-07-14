@@ -20,9 +20,12 @@ export type TriadQuality = "M" | "m" | "°" | "+";
  * - `M7`: Major Seventh
  * - `m7`: Minor Seventh
  * - `7`: Dominant Seventh
- * - `ø7`: Half-Diminished Seventh (m7♭5)
+ * - `ø7`: Half-Diminished Seventh
+ * - `m7♭5`: Minor Seventh with Flat Fifth
  * - `°7`: Diminished Seventh
  * - `m(M7)`: Minor-Major Seventh
+ * - `+M7`: Augmented Major Seventh
+ * - `M7♯5`: Major Seventh with Sharp Fifth
  */
 export type SeventhQuality =
   | "M7"

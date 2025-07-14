@@ -10,10 +10,10 @@ import type {
   Interval,
   MidiNoteNumber,
   MidiNoteSequence,
-  NoteAlterInteger,
   NoteInteger,
   NoteLabelThemeKey,
   NoteLetter,
+  NoteName,
   OctaveNumber,
 } from "../types/note-labels.d.ts";
 import {
@@ -23,84 +23,83 @@ import {
 import { noteLabelThemes } from "../note-labels/note-label-themes.ts";
 
 /**
- * Converts a note letter and note alteration (number of semitones) to a note integer (0-11).
+ * Converts a note name and alteration to a note integer (0-11).
  *
- * @param noteLetter The note letter {@link NoteLetter}.
- * @param noteAlterInteger The number of semitones to alter the note
+ * @param noteName The note name {@link NoteName}.
+ * @param alteration The number of semitones to alter the note
  * (e.g., 1 for sharp, -1 for flat). Defaults to 0.
  * @returns The note integer (0-11) representing the note.
  *
  * @example
  * ```ts
  * // Returns 0
- * noteLetterToInteger("C", 0);
+ * noteNameToInteger("C", 0);
  *
  * // Returns 1
- * noteLetterToInteger("C", 1);
+ * noteNameToInteger("C", 1);
  *
  * // Returns 11
- * noteLetterToInteger("B", 0);
+ * noteNameToInteger("B", 0);
  * ```
  */
-export function noteLetterToInteger(
-  noteLetter: NoteLetter,
-  NoteAlterInteger: NoteAlterInteger = 0,
+export function noteNameToInteger(
+  noteName: NoteName,
+  alteration: number = 0,
 ): NoteInteger {
-  const noteInteger = (noteNameIntegers[noteLetter] + NoteAlterInteger + 12) %
-    12;
-  return noteInteger as NoteInteger;
+  const noteValue = noteNameIntegers[noteName] + alteration;
+  return (noteValue % 12 + 12) % 12 as NoteInteger;
 }
 
 /**
- * Converts a note letter, alteration, and octave to a MIDI note number.
+ * Converts a note name, alteration, and octave to a MIDI note number.
  * Follows "scientific pitch notation" conventions.
  *
- * @param noteLetter The note letter {@link NoteLetter}.
- * @param noteAlterInteger The number of semitones to alter the note letter.
+ * @param noteName The note name {@link NoteName}.
+ * @param alteration The number of semitones to alter the note name.
  * @param noteOctave The octave number (e.g., 4 for middle C).
  * @returns The MIDI note number.
  *
  * @example
  * ```ts
  * // Returns 12 (MIDI note number for C0)
- * noteLetterToMidi("C", 0, 0);
+ * noteNameToMidi("C", 0, 0);
  *
  * // Returns 60 (MIDI note number for middle C = C4)
- * noteLetterToMidi("C", 0, 4);
+ * noteNameToMidi("C", 0, 4);
  *
  * // Returns 61 (MIDI note number for C#4)
- * noteLetterToMidi("C", 1, 4);
+ * noteNameToMidi("C", 1, 4);
  * ```
  */
-export function noteLetterToMidi(
-  noteLetter: NoteLetter,
-  noteAlterInteger: NoteAlterInteger,
-  noteOctave: number,
+export function noteNameToMidi(
+  noteName: NoteName,
+  octaveNumber: OctaveNumber,
+  alteration: number = 0,
 ): MidiNoteNumber {
-  return (
-    noteLetterToInteger(noteLetter, noteAlterInteger) +
-    (noteOctave + 1) * 12 as MidiNoteNumber
-  );
+  const noteValue = noteNameIntegers[noteName] + alteration;
+  return noteValue + (octaveNumber + 1) * 12 as MidiNoteNumber;
 }
 
 /**
- * Converts a musical note name string (e.g., "C#", "Bb", "E") to its
- * corresponding note integer (0-11).
+ * Converts a musical note name string including ASCII sharps and flats
+ * (e.g., "C#", "Bb", "E") to its corresponding note integer (0-11).
  *
  * The note name should start with a letter from A to G (case-insensitive),
- * optionally followed by one or more sharp ('#' or '♯') or flat ('b' or '♭') symbols.
+ * optionally followed by one or more sharp symbols ('#', '♯', 'x', or '𝄪'), which add 1 or 2 to the value,
+ * or flat ('b' or '♭') or double flat ('𝄫') symbols, which subtract 1 or 2.
  * Any other characters after the initial note letter, that are not valid accidentals,
  * will be considered invalid.
+ * Alterations should be less than 12 semitones away in total.
  *
  * @param noteName The musical note name string to convert.
  * @returns The note integer (0-11) representing the note,
  * or `undefined` if the input is invalid.
  */
-export function simpleNoteNameToInteger(
+export function noteNameStringToInteger(
   noteName: string,
 ): NoteInteger | undefined {
   const noteLetterRegex = /^[A-Ga-g]/;
-  const accidentalRegex = /([#♯]+)|([b♭]+)/g;
+  const accidentalRegex = /([#♯x𝄪]+)|([b♭𝄫]+)/gu; // u for unicode support
 
   // Extract the note letter part of the note name
   const noteLetterMatch = noteName.match(noteLetterRegex);
@@ -119,13 +118,17 @@ export function simpleNoteNameToInteger(
   for (const match of accidentalString.matchAll(accidentalRegex)) {
     const sharps = match[1];
     if (sharps) {
-      noteAlterInteger += sharps.length;
+      for (const char of sharps) {
+        noteAlterInteger += char === "x" || char === "𝄪" ? 2 : 1;
+      }
       validAccidentalLength += sharps.length;
     }
 
     const flats = match[2];
     if (flats) {
-      noteAlterInteger -= flats.length;
+      for (const char of flats) {
+        noteAlterInteger -= char === "𝄫" ? 2 : 1;
+      }
       validAccidentalLength += flats.length;
     }
   }

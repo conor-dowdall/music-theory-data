@@ -21,6 +21,7 @@ import type {
   EnharmonicNoteNameGroups,
   Interval,
   IntervalQuality,
+  NoteAccidental,
   NoteExtensionInteger,
   NoteInteger,
   NoteName,
@@ -45,6 +46,22 @@ export const enharmonicNoteNameGroups: EnharmonicNoteNameGroups = [
   ["B♭", "A♯", "C𝄫"],
   ["B", "B♮", "C♭", "A𝄪"],
 ] as const;
+
+/**
+ * Maps note accidentals to their corresponding alteration integers.
+ * - `𝄫` (double flat) is -2
+ * - `♭` (flat) is -1
+ * - `♮` (natural) is 0
+ * - `♯` (sharp) is 1
+ * - `𝄪` (double sharp) is 2
+ */
+export const noteAccidentalIntegers: Record<NoteAccidental, number> = {
+  "𝄫": -2,
+  "♭": -1,
+  "♮": 0,
+  "♯": 1,
+  "𝄪": 2,
+} as const;
 
 export const noteNameIntegers: Record<NoteName, NoteInteger> = {
   "C𝄫": 10,
