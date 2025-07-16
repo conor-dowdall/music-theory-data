@@ -74,4 +74,25 @@ export const otherSequences: Record<OtherSequenceKey, NoteSequenceTheme> = {
       "C",
     ],
   },
+  wholeTone: {
+    primaryName: "Whole Tone Scale",
+    names: [
+      "Whole Tone Scale",
+    ],
+    intervals: ["1", "2", "3", "♯4", "♯5", "♯6", "8"],
+    integers: [0, 2, 4, 6, 8, 10],
+    type: ["whole tone", "scale", "symmetrical", "hexatonic"],
+    characteristics: [
+      "six pitches in an octave",
+      "no tonal center",
+      "no leading tone and because all tones are the same distance apart",
+      "used in impressionistic music",
+      "creates a dreamy or ethereal sound",
+      "often used in film scores",
+      "associated with composers like Debussy and Ravel",
+    ],
+    pattern: ["whole", "whole", "whole", "whole", "whole"],
+    patternShort: ["W", "W", "W", "W", "W"],
+    exampleNotes: ["C", "D", "E", "F♯", "G♯", "A♯", "C"],
+  },
 } as const;

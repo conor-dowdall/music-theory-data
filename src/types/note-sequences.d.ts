@@ -175,7 +175,7 @@ export type HarmonicMinorModeKey =
   | "superLocrianDoubleFlat7";
 
 /** A key for other miscellaneous sequences. */
-export type OtherSequenceKey = "chromatic";
+export type OtherSequenceKey = "chromatic" | "wholeTone";
 
 /**
  * A comprehensive key that includes all available `NoteSequenceTheme` keys.
