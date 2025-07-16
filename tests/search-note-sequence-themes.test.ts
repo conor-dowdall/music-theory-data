@@ -14,11 +14,12 @@ Deno.test("search note sequences - debug", () => {
   const query: string = "minor";
   console.group(`\nSearch results for: "${query}"`);
 
-  const results = searchNoteSequenceThemes(query);
+  const results = searchNoteSequenceThemes({ query });
   results.forEach((result) => {
-    console.log(`\n• ${result.primaryName}`);
-    console.log(`  Names: ${result.names.join(", ")}`);
-    console.log(`  Type: ${result.type.join(", ")}`);
+    console.log(`\n• ${JSON.stringify(result)}`);
+    // console.log(`\n• ${result.primaryName}`);
+    // console.log(`  Names: ${result.names.join(", ")}`);
+    // console.log(`  Type: ${result.type.join(", ")}`);
   });
 
   console.groupEnd();

@@ -38,7 +38,7 @@ import type {
 export const dominantVariants: Record<DominantVariantKey, NoteSequenceTheme> = {
   dominant7: {
     primaryName: "7",
-    names: ["7", "Dominant 7th"],
+    names: ["7", "dom7", "Dominant 7th", "Dominant Seventh"],
     intervals: ["1", "3", "5", "♭7"],
     integers: [0, 4, 7, 10],
     type: ["dominant", "major", "chord", "arpeggio", "tetrad"],
@@ -47,8 +47,13 @@ export const dominantVariants: Record<DominantVariantKey, NoteSequenceTheme> = {
       "bluesy",
       "tense",
       "jazzy",
+      "major with flat 7th",
+      "minor 7th",
+      "the most common dominant chord",
+      "used in blues, jazz, and rock",
       "foundational dominant chord",
       "creates strong tension and resolution",
+      "used in an authentic cadence",
     ],
     pattern: ["major third", "minor third", "minor third"],
     patternShort: ["M3", "m3", "m3"],
@@ -56,7 +61,7 @@ export const dominantVariants: Record<DominantVariantKey, NoteSequenceTheme> = {
   },
   dominant9: {
     primaryName: "9",
-    names: ["9", "Dominant 9th"],
+    names: ["9", "dom9", "Dominant 9th", "Dominant Ninth"],
     intervals: ["1", "3", "5", "♭7", "9"],
     integers: [0, 2, 4, 7, 10],
     type: ["dominant", "major", "chord", "arpeggio", "pentad"],
@@ -66,7 +71,7 @@ export const dominantVariants: Record<DominantVariantKey, NoteSequenceTheme> = {
       "tense",
       "jazzy",
       "rich",
-      "richer than a 7th",
+      "richer than a 7th chord",
       "common in jazz and R&B",
     ],
     pattern: ["major third", "minor third", "minor third", "major third"],
@@ -79,7 +84,7 @@ export const dominantVariants: Record<DominantVariantKey, NoteSequenceTheme> = {
   },
   dominant11: {
     primaryName: "11",
-    names: ["11", "Dominant 11th"],
+    names: ["11", "dom11", "Dominant 11th", "Dominant Eleventh"],
     intervals: ["1", "3", "5", "♭7", "9", "11"],
     integers: [0, 2, 4, 5, 7, 10],
     type: ["dominant", "major", "chord", "arpeggio", "hexad"],
@@ -90,7 +95,8 @@ export const dominantVariants: Record<DominantVariantKey, NoteSequenceTheme> = {
       "jazzy",
       "rich",
       "complex",
-      "often voiced without the 3rd",
+      "dissonant 3rd",
+      "can be voiced without the 3rd and 5th",
       "can be dissonant",
     ],
     pattern: [
@@ -115,7 +121,7 @@ export const dominantVariants: Record<DominantVariantKey, NoteSequenceTheme> = {
   },
   dominant13: {
     primaryName: "13",
-    names: ["13", "Dominant 13th"],
+    names: ["13", "dom13", "Dominant 13th", "Dominant Thirteenth"],
     intervals: ["1", "3", "5", "♭7", "9", "11", "13"],
     integers: [0, 2, 4, 5, 7, 9, 10],
     type: ["dominant", "major", "chord", "arpeggio", "heptad"],

@@ -37,7 +37,7 @@ import type {
 export const majorVariants: Record<MajorVariantKey, NoteSequenceTheme> = {
   major: {
     primaryName: "M",
-    names: ["M", "Major", "Major Triad"],
+    names: ["M", "maj", "Major", "Major Triad", "Δ"],
     intervals: ["1", "3", "5"],
     integers: [0, 4, 7],
     type: ["major", "chord", "arpeggio", "triad"],
@@ -52,8 +52,8 @@ export const majorVariants: Record<MajorVariantKey, NoteSequenceTheme> = {
     exampleNotes: ["C", "E", "G"],
   },
   major6: {
-    primaryName: "M6",
-    names: ["M6", "6", "Major 6th"],
+    primaryName: "6",
+    names: ["6", "M6", "maj6", "Major 6th", "Major Sixth"],
     intervals: ["1", "3", "5", "6"],
     integers: [0, 4, 7, 9],
     type: ["major", "chord", "arpeggio", "tetrad"],
@@ -72,7 +72,7 @@ export const majorVariants: Record<MajorVariantKey, NoteSequenceTheme> = {
   },
   major7: {
     primaryName: "M7",
-    names: ["M7", "maj7", "Major 7th"],
+    names: ["M7", "maj7", "Major 7th", "Major Seventh", "Δ7"],
     intervals: ["1", "3", "5", "7"],
     integers: [0, 4, 7, 11],
     type: ["major", "chord", "arpeggio", "tetrad"],
@@ -90,7 +90,7 @@ export const majorVariants: Record<MajorVariantKey, NoteSequenceTheme> = {
   },
   major9: {
     primaryName: "M9",
-    names: ["M9", "maj9", "Major 9th"],
+    names: ["M9", "maj9", "Major 9th", "Major Ninth", "Δ9"],
     intervals: ["1", "3", "5", "7", "9"],
     integers: [0, 2, 4, 7, 11],
     type: ["major", "chord", "arpeggio", "pentad"],
@@ -113,7 +113,7 @@ export const majorVariants: Record<MajorVariantKey, NoteSequenceTheme> = {
   },
   majorAdd9: {
     primaryName: "add9",
-    names: ["add9", "M(add9)", "Major add 9"],
+    names: ["add9", "maj(add9)", "M(add9)", "Major add 9"],
     intervals: ["1", "3", "5", "9"],
     integers: [0, 2, 4, 7],
     type: ["major", "chord", "arpeggio", "tetrad"],
@@ -136,7 +136,7 @@ export const majorVariants: Record<MajorVariantKey, NoteSequenceTheme> = {
   },
   major6Add9: {
     primaryName: "6/9",
-    names: ["6/9", "M6/9", "Major 6/9", "6add9"],
+    names: ["6/9", "M6/9", "maj6/9", "Major 6/9", "6add9", "Major add6 add9"],
     intervals: ["1", "3", "5", "6", "9"],
     integers: [0, 2, 4, 7, 9],
     type: ["major", "chord", "arpeggio", "pentad"],
@@ -150,6 +150,7 @@ export const majorVariants: Record<MajorVariantKey, NoteSequenceTheme> = {
       "rich",
       "open",
       "very lush and rich",
+      "alternative to a major 7th chord",
       "popular in jazz piano voicings",
     ],
     pattern: ["major third", "minor third", "major second", "perfect fourth"],

@@ -58,7 +58,7 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
       "church mode",
       "diatonic mode",
       "heptatonic",
-      "first mode",
+      "first diatonic mode",
       "do mode",
     ],
     characteristics: [
@@ -72,6 +72,7 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
       "simple",
       "pop music",
       "major tonality",
+      "commonly used western scale",
     ],
     pattern: ["whole", "whole", "half", "whole", "whole", "whole", "half"],
     patternShort: ["W", "W", "H", "W", "W", "W", "H"],
@@ -121,8 +122,6 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
       "Dorian",
       "Minor ♮6",
       "Dorian Mode",
-      "Minor Raised Sixth",
-      "Jazz Minor Variant",
     ],
     intervals: ["1", "2", "♭3", "4", "5", "6", "♭7", "8"],
     integers: [0, 2, 3, 5, 7, 9, 10],
@@ -134,7 +133,7 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
       "church mode",
       "diatonic mode",
       "heptatonic",
-      "second mode",
+      "second diatonic mode",
       "re mode",
     ],
     characteristics: [
@@ -147,6 +146,8 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
       "minor tonality",
       "versatile",
       "used in folk, jazz, and rock",
+      "medieval",
+      "minor feel with a hopeful twist",
     ],
     pattern: ["whole", "half", "whole", "whole", "whole", "half", "whole"],
     patternShort: ["W", "H", "W", "W", "W", "H", "W"],
@@ -195,9 +196,7 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
     names: [
       "Phrygian",
       "Minor ♭2",
-      "Spanish Gypsy Scale",
       "Phrygian Mode",
-      "Minor Flat Second",
     ],
     intervals: ["1", "♭2", "♭3", "4", "5", "♭6", "♭7", "8"],
     integers: [0, 1, 3, 5, 7, 8, 10],
@@ -209,7 +208,7 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
       "church mode",
       "diatonic mode",
       "heptatonic",
-      "third mode",
+      "third diatonic mode",
       "mi mode",
     ],
     characteristics: [
@@ -267,7 +266,7 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
   },
   lydian: {
     primaryName: "Lydian",
-    names: ["Lydian", "Major ♯4", "Lydian Mode", "Major Sharp Fourth"],
+    names: ["Lydian", "Major ♯4", "Lydian Mode"],
     intervals: ["1", "2", "3", "♯4", "5", "6", "7", "8"],
     integers: [0, 2, 4, 6, 7, 9, 11],
     type: [
@@ -278,7 +277,7 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
       "church mode",
       "diatonic mode",
       "heptatonic",
-      "fourth mode",
+      "fourth diatonic mode",
       "fa mode",
     ],
     characteristics: [
@@ -342,7 +341,6 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
       "Major ♭7",
       "Dominant Scale",
       "Mixolydian Mode",
-      "Major Flat Seventh",
     ],
     intervals: ["1", "2", "3", "4", "5", "6", "♭7", "8"],
     integers: [0, 2, 4, 5, 7, 9, 10],
@@ -355,7 +353,7 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
       "church mode",
       "diatonic mode",
       "heptatonic",
-      "fifth mode",
+      "fifth diatonic mode",
       "sol mode",
     ],
     characteristics: [
@@ -411,7 +409,13 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
   },
   aeolian: {
     primaryName: "Minor",
-    names: ["Minor", "Aeolian", "Natural Minor Scale", "Aeolian Mode"],
+    names: [
+      "Minor",
+      "Aeolian",
+      "Natural Minor Scale",
+      "Aeolian Mode",
+      "Descending Melodic Minor Scale",
+    ],
     intervals: ["1", "2", "♭3", "4", "5", "♭6", "♭7", "8"],
     integers: [0, 2, 3, 5, 7, 8, 10],
     type: [
@@ -423,7 +427,7 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
       "church mode",
       "diatonic mode",
       "heptatonic",
-      "sixth mode",
+      "sixth diatonic mode",
       "la mode",
     ],
     characteristics: [
@@ -482,9 +486,7 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
     names: [
       "Locrian",
       "Minor ♭2 ♭5",
-      "Half-Diminished Scale",
       "Locrian Mode",
-      "Minor Flat Second Flat Fifth",
     ],
     intervals: ["1", "♭2", "♭3", "4", "♭5", "♭6", "♭7", "8"],
     integers: [0, 1, 3, 5, 6, 8, 10],
@@ -496,7 +498,7 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
       "church mode",
       "diatonic mode",
       "heptatonic",
-      "seventh mode",
+      "seventh diatonic mode",
       "ti mode",
     ],
     characteristics: [
