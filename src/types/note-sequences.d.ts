@@ -167,7 +167,7 @@ export type MelodicMinorModeKey =
 /** A key for one of the seven modes of the harmonic minor scale. */
 export type HarmonicMinorModeKey =
   | "harmonicMinor"
-  | "locrianSharp6"
+  | "locrianNatural6"
   | "ionianSharp5"
   | "dorianSharp4"
   | "phrygianDominant"

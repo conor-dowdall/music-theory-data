@@ -41,10 +41,10 @@ export const harmonicMinorModes: Record<
 > = {
   harmonicMinor: {
     primaryName: "Harmonic Minor",
-    names: ["Harmonic Minor", "Aeolian ♯7"],
+    names: ["Harmonic Minor", "Aeolian ♮7"],
     intervals: ["1", "2", "♭3", "4", "5", "♭6", "7", "8"],
     integers: [0, 2, 3, 5, 7, 8, 11],
-    type: ["harmonic minor mode", "minor", "scale", "heptatonic"],
+    type: ["harmonic minor mode", "minor", "scale", "mode", "heptatonic"],
     characteristics: [
       "dark",
       "tense",
@@ -52,6 +52,7 @@ export const harmonicMinorModes: Record<
       "classical",
       "neo-classical",
       "middle-eastern",
+      "first mode of harmonic minor",
     ],
     pattern: [
       "whole",
@@ -65,13 +66,19 @@ export const harmonicMinorModes: Record<
     patternShort: ["W", "H", "W", "W", "H", "A2", "H"],
     exampleNotes: ["A", "B", "C", "D", "E", "F", "G♯", "A"],
   },
-  locrianSharp6: {
-    primaryName: "Locrian ♯6",
-    names: ["Locrian ♯6", "Locrian Natural 6"],
+  locrianNatural6: {
+    primaryName: "Locrian ♮6",
+    names: ["Locrian ♮6", "Locrian Natural Sixth", "Locrian Raised Sixth"],
     intervals: ["1", "♭2", "♭3", "4", "♭5", "6", "♭7", "8"],
     integers: [0, 1, 3, 5, 6, 9, 10],
-    type: ["harmonic minor mode", "diminished", "scale", "heptatonic"],
-    characteristics: ["dark", "unstable", "jazzy", "exotic"],
+    type: ["harmonic minor mode", "diminished", "scale", "mode", "heptatonic"],
+    characteristics: [
+      "dark",
+      "unstable",
+      "jazzy",
+      "exotic",
+      "second mode of harmonic minor",
+    ],
     pattern: [
       "half",
       "whole",
@@ -82,15 +89,33 @@ export const harmonicMinorModes: Record<
       "whole",
     ],
     patternShort: ["H", "W", "W", "H", "A2", "H", "W"],
-    exampleNotes: ["B", "C", "D", "E", "F", "G♯", "A", "B"],
+    exampleNotes: ["A", "B♭", "C", "D", "E♭", "F♯", "G", "A"],
   },
   ionianSharp5: {
     primaryName: "Ionian ♯5",
-    names: ["Ionian ♯5", "Ionian Augmented"],
+    names: [
+      "Ionian ♯5",
+      "Ionian Sharp Fifth",
+      "Augmented Major",
+      "Ionian Augmented",
+    ],
     intervals: ["1", "2", "3", "4", "♯5", "6", "7", "8"],
     integers: [0, 2, 4, 5, 8, 9, 11],
-    type: ["harmonic minor mode", "major", "augmented", "scale", "heptatonic"],
-    characteristics: ["bright", "dreamy", "unsettling", "magical"],
+    type: [
+      "harmonic minor mode",
+      "major",
+      "augmented",
+      "scale",
+      "mode",
+      "heptatonic",
+    ],
+    characteristics: [
+      "bright",
+      "dreamy",
+      "unsettling",
+      "magical",
+      "third mode of harmonic minor",
+    ],
     pattern: [
       "whole",
       "whole",
