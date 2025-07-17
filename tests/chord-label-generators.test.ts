@@ -1,24 +1,24 @@
 import { diatonicModes } from "../src/note-sequences/diatonic-modes.ts";
 import { harmonicMinorModes } from "../src/note-sequences/harmonic-minor-modes.ts";
 import {
-  generateDiatonicLabels,
-  generateHarmonicMinorLabels,
+  generateDiatonicChordLabels,
+  generateHarmonicMinorChordLabels,
 } from "../src/utils/chord-label-generators.ts";
 import { assertEquals } from "@std/assert";
 
-Deno.test("generateDiatonicLabels - debug", () => {
+Deno.test("generateDiatonicChordLabels - debug", () => {
   console.log("---- HARMONIC MINOR ----");
   const harmonicMinorIntegers = harmonicMinorModes.harmonicMinor.integers;
-  console.log(generateHarmonicMinorLabels(harmonicMinorIntegers, 0));
+  console.log(generateHarmonicMinorChordLabels(harmonicMinorIntegers, 0));
 
   console.log("---- DIATONIC MODES ----");
   const ionianIntegers = diatonicModes.ionian.integers;
-  console.log(generateDiatonicLabels(ionianIntegers, 0));
+  console.log(generateDiatonicChordLabels(ionianIntegers, 0));
 });
 
-Deno.test("generateDiatonicLabels - Ionian (rotation 0)", () => {
+Deno.test("generateDiatonicChordLabels - Ionian (rotation 0)", () => {
   const ionianIntegers = diatonicModes.ionian.integers;
-  const labels = generateDiatonicLabels(ionianIntegers, 0);
+  const labels = generateDiatonicChordLabels(ionianIntegers, 0);
 
   const expectedTriads = new Map([
     [0, "M"],
@@ -66,9 +66,9 @@ Deno.test("generateDiatonicLabels - Ionian (rotation 0)", () => {
   assertEquals(labels.romanSeventh, expectedRomanSevenths);
 });
 
-Deno.test("generateDiatonicLabels - Dorian (rotation 1)", () => {
+Deno.test("generateDiatonicChordLabels - Dorian (rotation 1)", () => {
   const dorianIntegers = diatonicModes.dorian.integers;
-  const labels = generateDiatonicLabels(dorianIntegers, 1);
+  const labels = generateDiatonicChordLabels(dorianIntegers, 1);
 
   const expectedTriads = new Map([
     [0, "m"],
@@ -116,9 +116,9 @@ Deno.test("generateDiatonicLabels - Dorian (rotation 1)", () => {
   assertEquals(labels.romanSeventh, expectedRomanSevenths);
 });
 
-Deno.test("generateDiatonicLabels - Locrian (rotation 6)", () => {
+Deno.test("generateDiatonicChordLabels - Locrian (rotation 6)", () => {
   const locrianIntegers = diatonicModes.locrian.integers;
-  const labels = generateDiatonicLabels(locrianIntegers, 6);
+  const labels = generateDiatonicChordLabels(locrianIntegers, 6);
 
   const expectedTriads = new Map([
     [0, "°"],

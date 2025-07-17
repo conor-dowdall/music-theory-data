@@ -31,7 +31,7 @@ Deno.test("ionian scale triad chords", () => {
     "",
     "m",
     "",
-    "o",
+    "°",
   ]);
 });
 
