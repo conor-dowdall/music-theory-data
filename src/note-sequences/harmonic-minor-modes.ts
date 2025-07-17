@@ -11,6 +11,7 @@
  * octave ("8").
  */
 
+import { generateHarmonicMinorLabels } from "../utils/chord-label-generators.ts";
 import type {
   HarmonicMinorModeKey,
   NoteSequenceTheme,
@@ -41,7 +42,12 @@ export const harmonicMinorModes: Record<
 > = {
   harmonicMinor: {
     primaryName: "Harmonic Minor",
-    names: ["Harmonic Minor", "Aeolian ♮7"],
+    names: [
+      "Harmonic Minor",
+      "Aeolian ♮7",
+      "Aeolian Natural Seventh",
+      "Aeolian Raised Seventh",
+    ],
     intervals: ["1", "2", "♭3", "4", "5", "♭6", "7", "8"],
     integers: [0, 2, 3, 5, 7, 8, 11],
     type: ["harmonic minor mode", "minor", "scale", "mode", "heptatonic"],
@@ -126,7 +132,7 @@ export const harmonicMinorModes: Record<
       "whole",
     ],
     patternShort: ["W", "W", "H", "A2", "H", "W", "W"],
-    exampleNotes: ["C", "D", "E", "F", "G♯", "A", "B", "C"],
+    exampleNotes: ["A", "B", "C♯", "D", "E♯", "F♯", "G♯", "A"],
     labelsOverride: {
       quality: new Map([[8, "A5"]]),
       relative: new Map([[8, "♯5"]]),
@@ -135,7 +141,14 @@ export const harmonicMinorModes: Record<
   },
   dorianSharp4: {
     primaryName: "Dorian ♯4",
-    names: ["Dorian ♯4", "Ukrainian Dorian", "Romanian Minor"],
+    names: [
+      "Dorian ♯4",
+      "Dorian Sharp Fourth",
+      "Dorian ♯11",
+      "Dorian Sharp Eleventh",
+      "Ukrainian Dorian",
+      "Romanian Minor",
+    ],
     intervals: ["1", "2", "♭3", "♯4", "5", "6", "♭7", "8"],
     integers: [0, 2, 3, 6, 7, 9, 10],
     type: ["harmonic minor mode", "minor", "scale", "heptatonic"],
@@ -150,7 +163,7 @@ export const harmonicMinorModes: Record<
       "half",
     ],
     patternShort: ["W", "H", "A2", "H", "W", "W", "H"],
-    exampleNotes: ["D", "E", "F", "G♯", "A", "B", "C", "D"],
+    exampleNotes: ["A", "B", "C", "D♯", "E", "F♯", "G", "A"],
     labelsOverride: {
       quality: new Map([[6, "A4"]]),
       relative: new Map([[6, "♯4"]]),
@@ -161,9 +174,13 @@ export const harmonicMinorModes: Record<
     primaryName: "Phrygian Dominant",
     names: [
       "Phrygian Dominant",
+      "Phrygian ♮3",
+      "Phrygian Natural Third",
+      "Phrygian Raised Third",
       "Spanish Gypsy Scale",
-      "Freygish",
+      "Freygish Scale",
       "Phrygian Major",
+      "Harmonic Dominant",
     ],
     intervals: ["1", "♭2", "3", "4", "5", "♭6", "♭7", "8"],
     integers: [0, 1, 4, 5, 7, 8, 10],
@@ -173,6 +190,7 @@ export const harmonicMinorModes: Record<
       "spanish",
       "flamenco",
       "klezmer",
+      "arabic",
       "middle-eastern",
       "tense",
     ],
@@ -186,11 +204,16 @@ export const harmonicMinorModes: Record<
       "whole",
     ],
     patternShort: ["H", "A2", "H", "W", "H", "W", "W"],
-    exampleNotes: ["E", "F", "G♯", "A", "B", "C", "D", "E"],
+    exampleNotes: ["A", "B♭", "C♯", "D", "E", "F", "G", "A"],
   },
   lydianSharp2: {
     primaryName: "Lydian ♯2",
-    names: ["Lydian ♯2"],
+    names: [
+      "Lydian ♯2",
+      "Lydian Sharp Second",
+      "Lydian ♯9",
+      "Lydian Sharp Ninth",
+    ],
     intervals: ["1", "♯2", "3", "♯4", "5", "6", "7", "8"],
     integers: [0, 3, 4, 6, 7, 9, 11],
     type: ["harmonic minor mode", "major", "scale", "heptatonic"],
@@ -205,7 +228,7 @@ export const harmonicMinorModes: Record<
       "whole",
     ],
     patternShort: ["A2", "H", "W", "H", "W", "W", "W"],
-    exampleNotes: ["F", "G♯", "A", "B", "C", "D", "E", "F"],
+    exampleNotes: ["A", "B♯", "C♯", "D♯", "E", "F♯", "G♯", "A"],
     labelsOverride: {
       quality: new Map([[3, "A2"], [6, "A4"]]),
       relative: new Map([[3, "♯2"], [6, "♯4"]]),
@@ -214,7 +237,12 @@ export const harmonicMinorModes: Record<
   },
   superLocrianDoubleFlat7: {
     primaryName: "Super Locrian 𝄫7",
-    names: ["Super Locrian 𝄫7", "Altered Diminished", "Altered 𝄫7"],
+    names: [
+      "Super Locrian 𝄫7",
+      "Super Locrian Diminished 7",
+      "Altered Diminished",
+      "Altered 𝄫7",
+    ],
     intervals: ["1", "♭2", "♭3", "♭4", "♭5", "♭6", "𝄫7", "8"],
     integers: [0, 1, 3, 4, 6, 8, 9],
     type: ["harmonic minor mode", "diminished", "scale", "heptatonic"],
@@ -226,7 +254,7 @@ export const harmonicMinorModes: Record<
     ],
     pattern: ["half", "whole", "half", "whole", "whole", "half", "whole"],
     patternShort: ["H", "W", "H", "W", "W", "H", "W"],
-    exampleNotes: ["G♯", "A", "B", "C", "D", "E", "F", "G♯"],
+    exampleNotes: ["A", "B♭", "C", "D♭", "E♭", "F", "G♭", "A"],
     labelsOverride: {
       quality: new Map([[4, "d4"], [9, "d7"]]),
       relative: new Map([[4, "♭4"], [9, "𝄫7"]]),

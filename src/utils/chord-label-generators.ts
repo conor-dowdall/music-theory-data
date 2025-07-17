@@ -6,7 +6,10 @@
  * musical modes by rotating base patterns.
  */
 
-import type { LabelsOverride } from "../types/note-sequences.d.ts";
+import type {
+  LabelsOverride,
+  LabelsOverrideMap,
+} from "../types/note-sequences.d.ts";
 import type { NoteInteger } from "../types/note-labels.d.ts";
 import type {
   RomanNumeral,
@@ -76,10 +79,10 @@ function rotate<T>(array: T[], times: number): T[] {
   return result;
 }
 
-function createLabelMap(
+function createLabelsOverrideMap(
   integers: NoteInteger[],
   pattern: string[],
-): Map<NoteInteger, string> {
+): LabelsOverrideMap {
   const map = new Map<NoteInteger, string>();
   for (let i = 0; i < integers.length; i++) {
     map.set(integers[i], pattern[i]);
@@ -136,38 +139,43 @@ function generateRomanChords(
 
 // --- Public API ---
 
-function generateLabels(
+function generateChordLabels(
   integers: NoteInteger[],
   rotation: number,
-  triadPattern: TriadQuality[],
-  seventhPattern: SeventhQuality[],
+  triadQualities: TriadQuality[],
+  seventhQualities: SeventhQuality[],
 ): LabelsOverride {
-  const rotatedTriads = rotate(triadPattern, rotation);
-  const rotatedSevenths = rotate(seventhPattern, rotation);
+  const rotatedTriads = rotate(triadQualities, rotation);
+  const rotatedSevenths = rotate(seventhQualities, rotation);
 
   const romanTriads = generateRomanChords(rotatedTriads);
   const romanSevenths = generateRomanChords(rotatedSevenths);
 
   return {
-    triad: createLabelMap(integers, rotatedTriads),
-    romanTriad: createLabelMap(integers, romanTriads),
-    seventh: createLabelMap(integers, rotatedSevenths),
-    romanSeventh: createLabelMap(integers, romanSevenths),
+    triad: createLabelsOverrideMap(integers, rotatedTriads),
+    romanTriad: createLabelsOverrideMap(integers, romanTriads),
+    seventh: createLabelsOverrideMap(integers, rotatedSevenths),
+    romanSeventh: createLabelsOverrideMap(integers, romanSevenths),
   };
 }
 
-export function generateDiatonicLabels(
+export function generateDiatonicChordLabels(
   integers: NoteInteger[],
   rotation: number,
 ): LabelsOverride {
-  return generateLabels(integers, rotation, DIATONIC_TRIADS, DIATONIC_SEVENTHS);
+  return generateChordLabels(
+    integers,
+    rotation,
+    DIATONIC_TRIADS,
+    DIATONIC_SEVENTHS,
+  );
 }
 
-export function generateHarmonicMinorLabels(
+export function generateHarmonicMinorChordLabels(
   integers: NoteInteger[],
   rotation: number,
 ): LabelsOverride {
-  return generateLabels(
+  return generateChordLabels(
     integers,
     rotation,
     HARMONIC_MINOR_TRIADS,
@@ -175,11 +183,11 @@ export function generateHarmonicMinorLabels(
   );
 }
 
-export function generateMelodicMinorLabels(
+export function generateMelodicMinorChordLabels(
   integers: NoteInteger[],
   rotation: number,
 ): LabelsOverride {
-  return generateLabels(
+  return generateChordLabels(
     integers,
     rotation,
     MELODIC_MINOR_TRIADS,

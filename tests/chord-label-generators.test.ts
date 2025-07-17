@@ -1,6 +1,20 @@
 import { diatonicModes } from "../src/note-sequences/diatonic-modes.ts";
-import { generateDiatonicLabels } from "../src/utils/label-generators.ts";
+import { harmonicMinorModes } from "../src/note-sequences/harmonic-minor-modes.ts";
+import {
+  generateDiatonicLabels,
+  generateHarmonicMinorLabels,
+} from "../src/utils/chord-label-generators.ts";
 import { assertEquals } from "@std/assert";
+
+Deno.test("generateDiatonicLabels - debug", () => {
+  console.log("---- HARMONIC MINOR ----");
+  const harmonicMinorIntegers = harmonicMinorModes.harmonicMinor.integers;
+  console.log(generateHarmonicMinorLabels(harmonicMinorIntegers, 0));
+
+  console.log("---- DIATONIC MODES ----");
+  const ionianIntegers = diatonicModes.ionian.integers;
+  console.log(generateDiatonicLabels(ionianIntegers, 0));
+});
 
 Deno.test("generateDiatonicLabels - Ionian (rotation 0)", () => {
   const ionianIntegers = diatonicModes.ionian.integers;

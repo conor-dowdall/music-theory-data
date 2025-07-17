@@ -14,6 +14,7 @@ import type {
   MelodicMinorModeKey,
   NoteSequenceTheme,
 } from "../types/note-sequences.d.ts";
+import { generateMelodicMinorChordLabels } from "../utils/chord-label-generators.ts";
 
 /**
  * A record containing the seven modes of the Melodic Minor scale.
@@ -66,6 +67,10 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
       pattern: ["whole", "half", "whole", "whole", "whole", "whole", "half"],
       patternShort: ["W", "H", "W", "W", "W", "W", "H"],
       exampleNotes: ["A", "B", "C", "D", "E", "F♯", "G♯", "A"],
+      labelsOverride: generateMelodicMinorChordLabels(
+        [0, 2, 3, 5, 7, 9, 11],
+        0,
+      ),
     },
     dorianFlat2: {
       primaryName: "Dorian ♭2",
@@ -90,6 +95,10 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
       pattern: ["half", "whole", "whole", "whole", "whole", "half", "whole"],
       patternShort: ["H", "W", "W", "W", "W", "H", "W"],
       exampleNotes: ["A", "B♭", "C", "D", "E", "F♯", "G", "A"],
+      labelsOverride: generateMelodicMinorChordLabels(
+        [0, 1, 3, 5, 7, 9, 10],
+        1,
+      ),
     },
     lydianAugmented: {
       primaryName: "Lydian Augmented",
