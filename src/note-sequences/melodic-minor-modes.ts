@@ -10,6 +10,7 @@
  * octave ("8").
  */
 
+import type { NoteInteger } from "../types/note-labels.d.ts";
 import type {
   MelodicMinorModeKey,
   NoteSequenceTheme,
@@ -35,6 +36,15 @@ import { generateMelodicMinorChordLabels } from "../utils/chord-label-generators
  * @see {@link NoteSequenceTheme} for the structure of each mode definition.
  * @see {@link MelodicMinorModeKey} for the available mode keys.
  */
+
+const melodicMinorIntegers: NoteInteger[] = [0, 2, 3, 5, 7, 9, 11];
+const dorianFlat2Integers: NoteInteger[] = [0, 1, 3, 5, 7, 9, 10];
+const lydianAugmentedIntegers: NoteInteger[] = [0, 2, 4, 6, 8, 9, 11];
+const lydianDominantIntegers: NoteInteger[] = [0, 2, 4, 6, 7, 9, 10];
+const mixolydianFlat6Integers: NoteInteger[] = [0, 2, 4, 5, 7, 8, 10];
+const aeolianFlat5Integers: NoteInteger[] = [0, 2, 3, 5, 6, 8, 10];
+const alteredIntegers: NoteInteger[] = [0, 1, 3, 4, 6, 8, 10];
+
 export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
   {
     melodicMinor: {
@@ -51,7 +61,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
         "Dorian Major 7",
       ],
       intervals: ["1", "2", "♭3", "4", "5", "6", "7", "8"],
-      integers: [0, 2, 3, 5, 7, 9, 11],
+      integers: melodicMinorIntegers,
       type: ["melodic minor mode", "minor", "mode", "scale", "heptatonic"],
       characteristics: [
         "minor tonality",
@@ -68,7 +78,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
       patternShort: ["W", "H", "W", "W", "W", "W", "H"],
       exampleNotes: ["A", "B", "C", "D", "E", "F♯", "G♯", "A"],
       labelsOverride: generateMelodicMinorChordLabels(
-        [0, 2, 3, 5, 7, 9, 11],
+        melodicMinorIntegers,
         0,
       ),
     },
@@ -82,7 +92,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
         "Phrygian Raised Sixth",
       ],
       intervals: ["1", "♭2", "♭3", "4", "5", "6", "♭7", "8"],
-      integers: [0, 1, 3, 5, 7, 9, 10],
+      integers: dorianFlat2Integers,
       type: ["melodic minor mode", "minor", "mode", "scale", "heptatonic"],
       characteristics: [
         "exotic",
@@ -96,7 +106,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
       patternShort: ["H", "W", "W", "W", "W", "H", "W"],
       exampleNotes: ["A", "B♭", "C", "D", "E", "F♯", "G", "A"],
       labelsOverride: generateMelodicMinorChordLabels(
-        [0, 1, 3, 5, 7, 9, 10],
+        dorianFlat2Integers,
         1,
       ),
     },
@@ -104,7 +114,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
       primaryName: "Lydian Augmented",
       names: ["Lydian Augmented", "Lydian ♯5", "Lydian Sharp Fifth"],
       intervals: ["1", "2", "3", "♯4", "♯5", "6", "7", "8"],
-      integers: [0, 2, 4, 6, 8, 9, 11],
+      integers: lydianAugmentedIntegers,
       type: [
         "melodic minor mode",
         "augmented",
@@ -137,6 +147,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
           [6, "♯11"],
           [8, "♯5"],
         ]),
+        ...generateMelodicMinorChordLabels(lydianAugmentedIntegers, 2),
       },
     },
     lydianDominant: {
@@ -152,7 +163,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
         "Mixolydian Augmented Fourth",
       ],
       intervals: ["1", "2", "3", "♯4", "5", "6", "♭7", "8"],
-      integers: [0, 2, 4, 6, 7, 9, 10],
+      integers: lydianDominantIntegers,
       type: ["melodic minor mode", "dominant", "mode", "scale", "heptatonic"],
       characteristics: [
         "bright",
@@ -170,6 +181,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
         quality: new Map([[6, "A4"]]),
         relative: new Map([[6, "♯4"]]),
         extension: new Map([[6, "♯11"]]),
+        ...generateMelodicMinorChordLabels(lydianDominantIntegers, 3),
       },
     },
     mixolydianFlat6: {
@@ -184,7 +196,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
         "Hindu Scale",
       ],
       intervals: ["1", "2", "3", "4", "5", "♭6", "♭7", "8"],
-      integers: [0, 2, 4, 5, 7, 8, 10],
+      integers: mixolydianFlat6Integers,
       type: ["melodic minor mode", "dominant", "mode", "scale", "heptatonic"],
       characteristics: [
         "bluesy",
@@ -196,6 +208,10 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
       pattern: ["whole", "whole", "half", "whole", "half", "whole", "whole"],
       patternShort: ["W", "W", "H", "W", "H", "W", "W"],
       exampleNotes: ["A", "B", "C♯", "D", "E", "F", "G", "A"],
+      labelsOverride: generateMelodicMinorChordLabels(
+        mixolydianFlat6Integers,
+        4,
+      ),
     },
     aeolianFlat5: {
       primaryName: "Aeolian ♭5",
@@ -208,7 +224,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
         "Half-Diminished Scale",
       ],
       intervals: ["1", "2", "♭3", "4", "♭5", "♭6", "♭7", "8"],
-      integers: [0, 2, 3, 5, 6, 8, 10],
+      integers: aeolianFlat5Integers,
       type: ["melodic minor mode", "minor", "mode", "scale", "heptatonic"],
       characteristics: [
         "dark",
@@ -221,6 +237,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
       pattern: ["whole", "half", "whole", "half", "whole", "whole", "whole"],
       patternShort: ["W", "H", "W", "H", "W", "W", "W"],
       exampleNotes: ["A", "B", "C", "D", "E♭", "F", "G", "A"],
+      labelsOverride: generateMelodicMinorChordLabels(aeolianFlat5Integers, 5),
     },
     altered: {
       primaryName: "Altered Scale",
@@ -232,7 +249,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
         "Locrian Flat Fourth",
       ],
       intervals: ["1", "♭2", "♭3", "♭4", "♭5", "♭7", "8"],
-      integers: [0, 1, 3, 4, 6, 8, 10],
+      integers: alteredIntegers,
       type: ["melodic minor mode", "dominant", "mode", "scale", "heptatonic"],
       characteristics: [
         "tense",
@@ -252,6 +269,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
           [3, "♯9"],
           [6, "♯11"],
         ]),
+        ...generateMelodicMinorChordLabels(alteredIntegers, 6),
       },
     },
   } as const;
