@@ -11,7 +11,7 @@
  * octave ("8").
  */
 
-import { generateHarmonicMinorChordLabels } from "../utils/chord-label-generators.ts";
+import { generateHarmonicMinorLabelsOverrideChords } from "../utils/chord-label-generators.ts";
 import type {
   HarmonicMinorModeKey,
   NoteSequenceTheme,
@@ -81,7 +81,10 @@ export const harmonicMinorModes: Record<
     ],
     patternShort: ["W", "H", "W", "W", "H", "A2", "H"],
     exampleNotes: ["A", "B", "C", "D", "E", "F", "G♯", "A"],
-    labelsOverride: generateHarmonicMinorChordLabels(harmonicMinorIntegers, 0),
+    labelsOverride: generateHarmonicMinorLabelsOverrideChords(
+      harmonicMinorIntegers,
+      0,
+    ),
   },
   locrianNatural6: {
     primaryName: "Locrian ♮6",
@@ -107,7 +110,7 @@ export const harmonicMinorModes: Record<
     ],
     patternShort: ["H", "W", "W", "H", "A2", "H", "W"],
     exampleNotes: ["A", "B♭", "C", "D", "E♭", "F♯", "G", "A"],
-    labelsOverride: generateHarmonicMinorChordLabels(
+    labelsOverride: generateHarmonicMinorLabelsOverrideChords(
       locrianNatural6Integers,
       1,
     ),
@@ -152,7 +155,7 @@ export const harmonicMinorModes: Record<
       quality: new Map([[8, "A5"]]),
       relative: new Map([[8, "♯5"]]),
       extension: new Map([[8, "♯5"]]),
-      ...generateHarmonicMinorChordLabels(ionianSharp5Integers, 2),
+      ...generateHarmonicMinorLabelsOverrideChords(ionianSharp5Integers, 2),
     },
   },
   dorianSharp4: {
@@ -184,7 +187,7 @@ export const harmonicMinorModes: Record<
       quality: new Map([[6, "A4"]]),
       relative: new Map([[6, "♯4"]]),
       extension: new Map([[6, "♯11"]]),
-      ...generateHarmonicMinorChordLabels(dorianSharp4Integers, 3),
+      ...generateHarmonicMinorLabelsOverrideChords(dorianSharp4Integers, 3),
     },
   },
   phrygianDominant: {
@@ -222,7 +225,7 @@ export const harmonicMinorModes: Record<
     ],
     patternShort: ["H", "A2", "H", "W", "H", "W", "W"],
     exampleNotes: ["A", "B♭", "C♯", "D", "E", "F", "G", "A"],
-    labelsOverride: generateHarmonicMinorChordLabels(
+    labelsOverride: generateHarmonicMinorLabelsOverrideChords(
       phrygianDominantIntegers,
       4,
     ),
@@ -254,7 +257,7 @@ export const harmonicMinorModes: Record<
       quality: new Map([[3, "A2"], [6, "A4"]]),
       relative: new Map([[3, "♯2"], [6, "♯4"]]),
       extension: new Map([[3, "♯9"], [6, "♯11"]]),
-      ...generateHarmonicMinorChordLabels(lydianSharp2Integers, 5),
+      ...generateHarmonicMinorLabelsOverrideChords(lydianSharp2Integers, 5),
     },
   },
   superLocrianDoubleFlat7: {
@@ -281,7 +284,10 @@ export const harmonicMinorModes: Record<
       quality: new Map([[4, "d4"], [9, "d7"]]),
       relative: new Map([[4, "♭4"], [9, "𝄫7"]]),
       extension: new Map([[4, "♭11"], [9, "𝄫7"]]),
-      ...generateHarmonicMinorChordLabels(superLocrianDoubleFlat7Integers, 6),
+      ...generateHarmonicMinorLabelsOverrideChords(
+        superLocrianDoubleFlat7Integers,
+        6,
+      ),
     },
   },
 } as const;

@@ -15,7 +15,7 @@ import type {
   MelodicMinorModeKey,
   NoteSequenceTheme,
 } from "../types/note-sequences.d.ts";
-import { generateMelodicMinorChordLabels } from "../utils/chord-label-generators.ts";
+import { generateMelodicMinorLabelsOverrideChords } from "../utils/chord-label-generators.ts";
 
 /**
  * A record containing the seven modes of the Melodic Minor scale.
@@ -77,7 +77,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
       pattern: ["whole", "half", "whole", "whole", "whole", "whole", "half"],
       patternShort: ["W", "H", "W", "W", "W", "W", "H"],
       exampleNotes: ["A", "B", "C", "D", "E", "F♯", "G♯", "A"],
-      labelsOverride: generateMelodicMinorChordLabels(
+      labelsOverride: generateMelodicMinorLabelsOverrideChords(
         melodicMinorIntegers,
         0,
       ),
@@ -105,7 +105,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
       pattern: ["half", "whole", "whole", "whole", "whole", "half", "whole"],
       patternShort: ["H", "W", "W", "W", "W", "H", "W"],
       exampleNotes: ["A", "B♭", "C", "D", "E", "F♯", "G", "A"],
-      labelsOverride: generateMelodicMinorChordLabels(
+      labelsOverride: generateMelodicMinorLabelsOverrideChords(
         dorianFlat2Integers,
         1,
       ),
@@ -147,7 +147,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
           [6, "♯11"],
           [8, "♯5"],
         ]),
-        ...generateMelodicMinorChordLabels(lydianAugmentedIntegers, 2),
+        ...generateMelodicMinorLabelsOverrideChords(lydianAugmentedIntegers, 2),
       },
     },
     lydianDominant: {
@@ -181,7 +181,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
         quality: new Map([[6, "A4"]]),
         relative: new Map([[6, "♯4"]]),
         extension: new Map([[6, "♯11"]]),
-        ...generateMelodicMinorChordLabels(lydianDominantIntegers, 3),
+        ...generateMelodicMinorLabelsOverrideChords(lydianDominantIntegers, 3),
       },
     },
     mixolydianFlat6: {
@@ -208,7 +208,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
       pattern: ["whole", "whole", "half", "whole", "half", "whole", "whole"],
       patternShort: ["W", "W", "H", "W", "H", "W", "W"],
       exampleNotes: ["A", "B", "C♯", "D", "E", "F", "G", "A"],
-      labelsOverride: generateMelodicMinorChordLabels(
+      labelsOverride: generateMelodicMinorLabelsOverrideChords(
         mixolydianFlat6Integers,
         4,
       ),
@@ -237,7 +237,10 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
       pattern: ["whole", "half", "whole", "half", "whole", "whole", "whole"],
       patternShort: ["W", "H", "W", "H", "W", "W", "W"],
       exampleNotes: ["A", "B", "C", "D", "E♭", "F", "G", "A"],
-      labelsOverride: generateMelodicMinorChordLabels(aeolianFlat5Integers, 5),
+      labelsOverride: generateMelodicMinorLabelsOverrideChords(
+        aeolianFlat5Integers,
+        5,
+      ),
     },
     altered: {
       primaryName: "Altered Scale",
@@ -269,7 +272,7 @@ export const melodicMinorModes: Record<MelodicMinorModeKey, NoteSequenceTheme> =
           [3, "♯9"],
           [6, "♯11"],
         ]),
-        ...generateMelodicMinorChordLabels(alteredIntegers, 6),
+        ...generateMelodicMinorLabelsOverrideChords(alteredIntegers, 6),
       },
     },
   } as const;

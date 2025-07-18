@@ -19,7 +19,7 @@
  * characteristic for scales and modes.
  */
 
-import { generateDiatonicChordLabels } from "../utils/chord-label-generators.ts";
+import { generateDiatonicLabelsOverrideChords } from "../utils/chord-label-generators.ts";
 import type {
   DiatonicModeKey,
   NoteSequenceTheme,
@@ -88,7 +88,7 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
     pattern: ["whole", "whole", "half", "whole", "whole", "whole", "half"],
     patternShort: ["W", "W", "H", "W", "W", "W", "H"],
     exampleNotes: ["C", "D", "E", "F", "G", "A", "B", "C"],
-    labelsOverride: generateDiatonicChordLabels(ionianIntegers, 0),
+    labelsOverride: generateDiatonicLabelsOverrideChords(ionianIntegers, 0),
   },
   dorian: {
     primaryName: "Dorian",
@@ -126,7 +126,7 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
     pattern: ["whole", "half", "whole", "whole", "whole", "half", "whole"],
     patternShort: ["W", "H", "W", "W", "W", "H", "W"],
     exampleNotes: ["D", "E", "F", "G", "A", "B", "C", "D"],
-    labelsOverride: generateDiatonicChordLabels(dorianIntegers, 1),
+    labelsOverride: generateDiatonicLabelsOverrideChords(dorianIntegers, 1),
   },
   phrygian: {
     primaryName: "Phrygian",
@@ -162,7 +162,7 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
     pattern: ["half", "whole", "whole", "whole", "half", "whole", "whole"],
     patternShort: ["H", "W", "W", "W", "H", "W", "W"],
     exampleNotes: ["E", "F", "G", "A", "B", "C", "D", "E"],
-    labelsOverride: generateDiatonicChordLabels(phrygianIntegers, 2),
+    labelsOverride: generateDiatonicLabelsOverrideChords(phrygianIntegers, 2),
   },
   lydian: {
     primaryName: "Lydian",
@@ -196,7 +196,7 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
       quality: new Map([[6, "A4"]]),
       relative: new Map([[6, "♯4"]]),
       extension: new Map([[6, "♯11"]]),
-      ...generateDiatonicChordLabels(lydianIntegers, 3),
+      ...generateDiatonicLabelsOverrideChords(lydianIntegers, 3),
     },
   },
   mixolydian: {
@@ -233,7 +233,7 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
     pattern: ["whole", "whole", "half", "whole", "whole", "half", "whole"],
     patternShort: ["W", "W", "H", "W", "W", "H", "W"],
     exampleNotes: ["G", "A", "B", "C", "D", "E", "F", "G"],
-    labelsOverride: generateDiatonicChordLabels(mixolydianIntegers, 4),
+    labelsOverride: generateDiatonicLabelsOverrideChords(mixolydianIntegers, 4),
   },
   aeolian: {
     primaryName: "Minor",
@@ -270,7 +270,7 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
     pattern: ["whole", "half", "whole", "whole", "half", "whole", "whole"],
     patternShort: ["W", "H", "W", "W", "H", "W", "W"],
     exampleNotes: ["A", "B", "C", "D", "E", "F", "G", "A"],
-    labelsOverride: generateDiatonicChordLabels(aeolianIntegers, 5),
+    labelsOverride: generateDiatonicLabelsOverrideChords(aeolianIntegers, 5),
   },
   locrian: {
     primaryName: "Locrian",
@@ -304,6 +304,6 @@ export const diatonicModes: Record<DiatonicModeKey, NoteSequenceTheme> = {
     pattern: ["half", "whole", "whole", "half", "whole", "whole", "whole"],
     patternShort: ["H", "W", "W", "H", "W", "W", "W"],
     exampleNotes: ["B", "C", "D", "E", "F", "G", "A", "B"],
-    labelsOverride: generateDiatonicChordLabels(locrianIntegers, 6),
+    labelsOverride: generateDiatonicLabelsOverrideChords(locrianIntegers, 6),
   },
 } as const;

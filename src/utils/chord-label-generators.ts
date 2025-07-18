@@ -139,7 +139,7 @@ function generateRomanChords(
 
 // --- Public API ---
 
-function generateChordLabels(
+export function generateLabelsOverrideChords(
   integers: NoteInteger[],
   rotation: number,
   triadQualities: TriadQuality[],
@@ -159,11 +159,11 @@ function generateChordLabels(
   };
 }
 
-export function generateDiatonicChordLabels(
+export function generateDiatonicLabelsOverrideChords(
   integers: NoteInteger[],
   rotation: number,
 ): LabelsOverride {
-  return generateChordLabels(
+  return generateLabelsOverrideChords(
     integers,
     rotation,
     DIATONIC_TRIADS,
@@ -171,11 +171,11 @@ export function generateDiatonicChordLabels(
   );
 }
 
-export function generateHarmonicMinorChordLabels(
+export function generateHarmonicMinorLabelsOverrideChords(
   integers: NoteInteger[],
   rotation: number,
 ): LabelsOverride {
-  return generateChordLabels(
+  return generateLabelsOverrideChords(
     integers,
     rotation,
     HARMONIC_MINOR_TRIADS,
@@ -183,11 +183,11 @@ export function generateHarmonicMinorChordLabels(
   );
 }
 
-export function generateMelodicMinorChordLabels(
+export function generateMelodicMinorLabelsOverrideChords(
   integers: NoteInteger[],
   rotation: number,
 ): LabelsOverride {
-  return generateChordLabels(
+  return generateLabelsOverrideChords(
     integers,
     rotation,
     MELODIC_MINOR_TRIADS,
