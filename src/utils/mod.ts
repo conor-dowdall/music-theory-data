@@ -16,7 +16,7 @@
  * const labels = getNoteSequenceLabels("ionian", "flat");
  *
  * // Search for minor keyword in all note sequence themes
- * const themes = searchNoteSequenceThemes("minor");
+ * const themes = searchNoteSequenceThemes({query: "minor"});
  * ```
  *
  * @example

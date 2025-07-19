@@ -11,10 +11,10 @@
  * ```ts
  * import { searchNoteSequenceThemes } from "@musodojo/music-theory-data/utils";
  *
- * // A search for "minor" will now prioritize the "Minor" scale first.
- * const minorResults = searchNoteNoteSequenceThemes({ query: "minor" });
+ * // A search for "minor"
+ * const minorResults = searchNoteSequenceThemes({ query: "minor" });
  *
- * // A search for "b2" will now correctly find scales with a flat second.
+ * // A search for "b2"
  * const flat2Results = searchNoteSequenceThemes({ query: "b2" });
  *
  * // Advanced search for scales containing specific intervals
@@ -81,8 +81,8 @@ function normalize(str: string): string {
     normalized = normalized.replace(regex, canonical);
   }
 
-  // Final cleanup: remove all remaining spaces and non-essential characters.
-  return normalized.replace(/[\s-()]/g, "");
+  // Final cleanup: remove non-essential characters and collapse whitespace.
+  return normalized.replace(/[-()]/g, "").replace(/\s+/g, " ").trim();
 }
 
 // --- Search Functionality --- //
@@ -137,6 +137,12 @@ export function searchNoteSequenceThemes(
     return candidates;
   }
 
+  // Use case-sensitive search for "M" and "m" to avoid incorrect matches.
+  const isCaseSensitiveQuery = normalizedQuery === "M" ||
+    normalizedQuery === "m";
+  const regexFlags = isCaseSensitiveQuery ? "" : "i";
+  const searchRegex = new RegExp(`\\b${normalizedQuery}\\b`, regexFlags);
+
   const passes = [
     // Pass 1: Exact match on primaryName
     (theme: NoteSequenceTheme) =>
@@ -144,18 +150,18 @@ export function searchNoteSequenceThemes(
     // Pass 2: Exact match on any name
     (theme: NoteSequenceTheme) =>
       theme.names.some((name) => normalize(name) === normalizedQuery),
-    // Pass 3: Partial match on primaryName
+    // Pass 3: Whole word match on primaryName
     (theme: NoteSequenceTheme) =>
-      normalize(theme.primaryName).includes(normalizedQuery),
-    // // Pass 4: Partial match on any name
-    // (theme: NoteSequenceTheme) =>
-    //   theme.names.some((name) => normalize(name).includes(normalizedQuery)),
-    // Pass 5: Partial match on any type
-    // (theme: NoteSequenceTheme) =>
-    //   theme.type.some((t) => normalize(t).includes(normalizedQuery)),
-    // Pass 6: Partial match on any characteristic
-    // (theme: NoteSequenceTheme) =>
-    //   theme.characteristics.some((c) => normalize(c).includes(normalizedQuery)),
+      searchRegex.test(normalize(theme.primaryName)),
+    // Pass 4: Whole word match on any name
+    (theme: NoteSequenceTheme) =>
+      theme.names.some((name) => searchRegex.test(normalize(name))),
+    // Pass 7: Whole word match on any type
+    (theme: NoteSequenceTheme) =>
+      theme.type.some((t) => searchRegex.test(normalize(t))),
+    // Pass 8: Whole word match on any characteristic
+    (theme: NoteSequenceTheme) =>
+      theme.characteristics.some((c) => searchRegex.test(normalize(c))),
   ];
 
   for (const pass of passes) {

@@ -37,10 +37,10 @@ import { otherSequences } from "./other-sequences.ts";
  */
 export const allNoteSequenceThemes = {
   ...diatonicModes,
-  ...dominantVariants,
-  ...majorVariants,
-  ...melodicMinorModes,
   ...harmonicMinorModes,
+  ...melodicMinorModes,
+  ...majorVariants,
+  ...dominantVariants,
   ...otherSequences,
 } as const;
 
