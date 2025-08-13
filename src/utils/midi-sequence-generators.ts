@@ -23,11 +23,8 @@
  * ```
  */
 
-import type {
-  Interval,
-  MidiNoteNumber,
-  MidiNoteSequence,
-} from "../types/note-labels.d.ts";
+import type { Interval, MidiNoteNumber } from "../types/note-labels.d.ts";
+import type { MidiNoteSequence } from "../types/note-sequences.d.ts";
 import { rootMidiAndIntervalToMidi } from "./note-conversions.ts";
 
 /**

@@ -48,53 +48,6 @@ export const noteLabelThemes: Record<NoteLabelThemeKey, NoteLabelTheme> = {
     labels: ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B"],
   },
 
-  relative: {
-    name: "Relative Intervals",
-    shortName: "Relative",
-    isRelative: true,
-    labels: ["1", "♭2", "2", "♭3", "3", "4", "♭5", "5", "♭6", "6", "♭7", "7"],
-  },
-
-  quality: {
-    name: "Relative Interval Qualities",
-    shortName: "Quality",
-    isRelative: true,
-    labels: [
-      "P1",
-      "m2",
-      "M2",
-      "m3",
-      "M3",
-      "P4",
-      "d5",
-      "P5",
-      "m6",
-      "M6",
-      "m7",
-      "M7",
-    ],
-  },
-
-  extension: {
-    name: "Relative Interval Extensions",
-    shortName: "Extension",
-    isRelative: true,
-    labels: [
-      "1",
-      "♭9",
-      "9",
-      "♭3",
-      "3",
-      "11",
-      "♭5",
-      "5",
-      "♭13",
-      "13",
-      "♭7",
-      "7",
-    ],
-  },
-
   fixedDoFlat: {
     name: "Solfege Fixed Do Flat Notes",
     shortName: "Fixed Do Flat",
@@ -174,48 +127,4 @@ export const noteLabelThemes: Record<NoteLabelThemeKey, NoteLabelTheme> = {
       "si",
     ],
   },
-
-  /**
-   * Can be overwritten in a specific NoteSequenceTheme using labelsOverride.
-   * e.g. "M", "m", "o", "+", ...
-   */
-  triad: {
-    name: "Triad Chords",
-    shortName: "Triad",
-    isRelative: true,
-    labels: ["", "", "", "", "", "", "", "", "", "", "", ""],
-  },
-
-  /**
-   * Can be overwritten in a specific NoteSequenceTheme using labelsOverride.
-   * e.g. "I", "ii", "V", ...
-   */
-  romanTriad: {
-    name: "Roman Numeral Triad Chords",
-    shortName: "Roman Triad",
-    isRelative: true,
-    labels: ["", "", "", "", "", "", "", "", "", "", "", ""],
-  },
-
-  /**
-   * Can be overwritten in a specific NoteSequenceTheme using labelsOverride.
-   * e.g. "M7", "m7", "7", ...
-   */
-  seventh: {
-    name: "Seventh Chords",
-    shortName: "Seventh",
-    isRelative: true,
-    labels: ["", "", "", "", "", "", "", "", "", "", "", ""],
-  },
-
-  /**
-   * Can be overwritten in a specific NoteSequenceTheme using labelsOverride.
-   * e.g. "IM7", "iim7", "V7", ...
-   */
-  romanSeventh: {
-    name: "Roman Numeral Seventh Chords",
-    shortName: "Roman Seventh",
-    isRelative: true,
-    labels: ["", "", "", "", "", "", "", "", "", "", "", ""],
-  },
-} as const;
+};

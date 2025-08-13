@@ -24,8 +24,15 @@ import type {
   NoteAccidental,
   NoteExtensionInteger,
   NoteInteger,
+  NoteLetter,
   NoteName,
-} from "../types/note-labels.d.ts";
+} from "../../types/note-labels.d.ts";
+
+/**
+ * An array of the seven standard musical note letters.
+ * @see {@link NoteLetter}
+ */
+export const noteLetters: NoteLetter[] = ["C", "D", "E", "F", "G", "A", "B"];
 
 /**
  * A 2D array, where each inner array contains enharmonically equivalent
@@ -114,7 +121,7 @@ export const noteNameIntegers: Record<NoteName, NoteInteger> = {
   "B𝄪": 1,
 } as const;
 
-export const IntervalIntegers: Record<
+export const intervalIntegers: Record<
   Interval,
   NoteInteger | NoteExtensionInteger
 > = {
@@ -224,7 +231,7 @@ export const IntervalIntegers: Record<
   "𝄪15": 26,
 } as const;
 
-export const IntervalQualityIntegers: Partial<
+export const intervalQualityIntegers: Partial<
   Record<IntervalQuality, NoteInteger | NoteExtensionInteger>
 > = {
   "P1": 0,

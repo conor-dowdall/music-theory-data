@@ -64,7 +64,10 @@ export function getNoteSequenceLabels(
   const labels = noteLabelTheme.labels;
   if (!("labelsOverride" in noteSequenceTheme)) return labels;
 
-  const overrideMap = noteSequenceTheme.labelsOverride?.[noteLabelThemeKey];
+  // TODO: review this code and the necessity of the function getNoteSequenceLabels
+  // and how to adapt it for the updated types and data structures
+  // const overrideMap = noteSequenceTheme.labelsOverride?.[noteLabelThemeKey];
+  const overrideMap = new Map();
   if (!overrideMap) return labels;
 
   return labels.map(

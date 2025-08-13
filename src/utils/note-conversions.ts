@@ -9,7 +9,6 @@
 import type {
   Interval,
   MidiNoteNumber,
-  MidiNoteSequence,
   NoteInteger,
   NoteLabelThemeKey,
   NoteLetter,
@@ -17,10 +16,11 @@ import type {
   OctaveNumber,
 } from "../types/note-labels.d.ts";
 import {
-  IntervalIntegers,
+  intervalIntegers,
   noteNameIntegers,
 } from "../note-labels/note-labels.ts";
 import { noteLabelThemes } from "../note-labels/note-label-themes.ts";
+import type { MidiNoteSequence } from "../types/note-sequences.d.ts";
 
 /**
  * Converts a note name and alteration to a note integer (0-11).
@@ -149,14 +149,14 @@ export function rootIntegerAndIntervalToMidi(
   interval: Interval,
 ): MidiNoteNumber {
   return (rootNoteOctave + 1) * 12 + rootNoteInteger +
-    IntervalIntegers[interval] as MidiNoteNumber;
+    intervalIntegers[interval] as MidiNoteNumber;
 }
 
 export function rootMidiAndIntervalToMidi(
   rootNoteMidi: MidiNoteNumber,
   interval: Interval,
 ): MidiNoteNumber {
-  return rootNoteMidi + IntervalIntegers[interval] as MidiNoteNumber;
+  return rootNoteMidi + intervalIntegers[interval] as MidiNoteNumber;
 }
 
 // TODO: another function to return an array of note names for a sequence, like ["C", "D", "E♭", ...] for C minor

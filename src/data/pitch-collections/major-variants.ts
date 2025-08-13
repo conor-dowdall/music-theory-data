@@ -1,40 +1,9 @@
-/**
- * @module
- *
- * This file contains a collection of major chord and arpeggio variants commonly
- * used in music. These patterns build upon the basic major triad (1-3-5) by
- * adding extensions like 6ths, 7ths, and 9ths to create richer harmonic
- * structures.
- *
- * As these are chord-based structures, the `intervals` array for each theme
- * does not include the octave ("8").
- */
-
 import type {
   MajorVariantKey,
-  NoteSequenceTheme,
-} from "../types/note-sequences.d.ts";
+  PitchCollection,
+} from "../../types/pitch-collections.d.ts";
 
-/**
- * A record containing various major chord and arpeggio structures.
- * Each variant is a `NoteSequenceTheme` that describes its musical properties.
- *
- * The keys of this record are `MajorVariantKey`s, providing type-safe
- * access to each major chord definition.
- *
- * @example
- * ```ts
- * import { majorVariants } from "@musodojo/music-theory-data/note-sequences";
- *
- * const major7th = majorVariants.major7;
- * console.log(major7th.primaryName); // "M7"
- * console.log(major7th.intervals);   // ["1", "3", "5", "7"]
- * ```
- *
- * @see {@link NoteSequenceTheme} for the structure of each variant definition.
- * @see {@link MajorVariantKey} for the available variant keys.
- */
-export const majorVariants: Record<MajorVariantKey, NoteSequenceTheme> = {
+export const majorVariants: Record<MajorVariantKey, PitchCollection> = {
   major: {
     primaryName: "M",
     names: ["M", "maj", "Major", "Major Triad", "Δ"],
@@ -49,7 +18,6 @@ export const majorVariants: Record<MajorVariantKey, NoteSequenceTheme> = {
     ],
     pattern: ["major third", "minor third"],
     patternShort: ["M3", "m3"],
-    exampleNotes: ["C", "E", "G"],
   },
   major6: {
     primaryName: "6",
@@ -68,7 +36,6 @@ export const majorVariants: Record<MajorVariantKey, NoteSequenceTheme> = {
     ],
     pattern: ["major third", "minor third", "major second"],
     patternShort: ["M3", "m3", "M2"],
-    exampleNotes: ["C", "E", "G", "A"],
   },
   major7: {
     primaryName: "M7",
@@ -86,7 +53,6 @@ export const majorVariants: Record<MajorVariantKey, NoteSequenceTheme> = {
     ],
     pattern: ["major third", "minor third", "major third"],
     patternShort: ["M3", "m3", "M3"],
-    exampleNotes: ["C", "E", "G", "B"],
   },
   major9: {
     primaryName: "M9",
@@ -105,11 +71,6 @@ export const majorVariants: Record<MajorVariantKey, NoteSequenceTheme> = {
     ],
     pattern: ["major third", "minor third", "major third", "minor third"],
     patternShort: ["M3", "m3", "M3", "m3"],
-    exampleNotes: ["C", "E", "G", "B", "D"],
-    labelsOverride: {
-      quality: new Map([[2, "M9"]]),
-      relative: new Map([[2, "9"]]),
-    },
   },
   majorAdd9: {
     primaryName: "add9",
@@ -128,11 +89,6 @@ export const majorVariants: Record<MajorVariantKey, NoteSequenceTheme> = {
     ],
     pattern: ["major third", "minor third", "perfect fifth"],
     patternShort: ["M3", "m3", "P5"],
-    exampleNotes: ["C", "E", "G", "D"],
-    labelsOverride: {
-      quality: new Map([[2, "M9"]]),
-      relative: new Map([[2, "9"]]),
-    },
   },
   major6Add9: {
     primaryName: "6/9",
@@ -155,10 +111,5 @@ export const majorVariants: Record<MajorVariantKey, NoteSequenceTheme> = {
     ],
     pattern: ["major third", "minor third", "major second", "perfect fourth"],
     patternShort: ["M3", "m3", "M2", "P4"],
-    exampleNotes: ["C", "E", "G", "A", "D"],
-    labelsOverride: {
-      quality: new Map([[2, "M9"]]),
-      relative: new Map([[2, "9"]]),
-    },
   },
 } as const;

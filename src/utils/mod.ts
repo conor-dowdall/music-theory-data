@@ -35,3 +35,5 @@ export * from "./get-note-sequence-labels.ts";
 export * from "./midi-sequence-generators.ts";
 export * from "./note-conversions.ts";
 export * from "./search-note-sequence-themes.ts";
+export * from "./get-notes.ts";
+export * from "./transform-intervals.ts";

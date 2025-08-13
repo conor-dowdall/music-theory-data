@@ -5,17 +5,8 @@ working with modes, scales, arpeggios, and chords.
 
 ## Features
 
-- **Note Sequences**: Diatonic modes, major variants, and dominant variants
-- **Note Labels**: Enharmonic notes and label themes
 - **Type Safety**: Full TypeScript support with detailed type definitions
 - **Zero Dependencies**: Pure TypeScript/JavaScript implementation
-- **Tree-Shakeable**: Import only what you need
-
-## Installation
-
-```ts
-import { noteSequenceThemes } from "jsr:@musodojo/music-theory-data";
-```
 
 ## Usage Examples
 
@@ -53,24 +44,3 @@ import { getNoteSequenceLabels } from "jsr:@musodojo/music-theory-data";
 const labels = getNoteSequenceLabels("ionian", "triad");
 // Returns: ["M", "", "m", "", "m", "M", "", "M", "", "m", "", "o"]
 ```
-
-### Note Sequences
-
-- `diatonicModes`: The seven traditional church modes
-- `majorVariants`: Major chord/arpeggio variations
-- `dominantVariants`: Dominant chord/arpeggio variations
-- `melodicMinorModes`: The seven modes of the melodic minor scale
-
-### Note Labels
-
-- `noteLabelThemes`: Different labeling systems (sharp, flat, triads, roman
-  numerals, etc.)
-- `enharmonicNoteNameGroups`: Alternative note name spellings
-
-### Utilities
-
-- various handy utilities
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.

@@ -1,196 +1,136 @@
-/**
- * @module
- *
- * This module provides functions for generating label overrides for note sequences.
- * These functions help automate the creation of complex label maps for different
- * musical modes by rotating base patterns.
- */
-
+import {
+  diatonicSevenths,
+  diatonicTriads,
+  harmonicMinorSevenths,
+  harmonicMinorTriads,
+  lowerCaseRomanChords,
+  melodicMinorSevenths,
+  melodicMinorTriads,
+  upperCaseRomanChords,
+} from "../chord-labels/mod.ts";
 import type {
-  LabelsOverride,
-  LabelsOverrideMap,
-} from "../types/note-sequences.d.ts";
-import type { NoteInteger } from "../types/note-labels.d.ts";
-import type {
-  RomanNumeral,
-  RomanSeventh,
-  RomanTriad,
-  SeventhQuality,
-  TriadQuality,
+  ChordQuality,
+  RomanChord,
+  RomanSeventhChord,
+  ScaleIntervalChords,
+  SeventhChord,
 } from "../types/chord-labels.d.ts";
+import type { Interval } from "../types/note-labels.d.ts";
+import { rotateArray } from "./rotate-array.ts";
 
-// --- Base Patterns ---
-const DIATONIC_TRIADS: TriadQuality[] = ["M", "m", "m", "M", "M", "m", "°"];
-const DIATONIC_SEVENTHS: SeventhQuality[] = [
-  "M7",
-  "m7",
-  "m7",
-  "M7",
-  "7",
-  "m7",
-  "ø7",
-];
-
-const HARMONIC_MINOR_TRIADS: TriadQuality[] = [
-  "m",
-  "°",
-  "+",
-  "m",
-  "M",
-  "M",
-  "°",
-];
-const HARMONIC_MINOR_SEVENTHS: SeventhQuality[] = [
-  "m(M7)",
-  "ø7",
-  "+M7",
-  "m7",
-  "7",
-  "M7",
-  "°7",
-];
-
-const MELODIC_MINOR_TRIADS: TriadQuality[] = [
-  "m",
-  "m",
-  "+",
-  "M",
-  "M",
-  "°",
-  "°",
-];
-const MELODIC_MINOR_SEVENTHS: SeventhQuality[] = [
-  "m(M7)",
-  "m7",
-  "+M7",
-  "7",
-  "7",
-  "ø7",
-  "ø7",
-];
-
-// --- Utility Functions ---
-
-function rotate<T>(array: T[], times: number): T[] {
-  const result = [...array];
-  for (let i = 0; i < times; i++) {
-    result.push(result.shift()!);
-  }
-  return result;
-}
-
-function createLabelsOverrideMap(
-  integers: NoteInteger[],
-  pattern: string[],
-): LabelsOverrideMap {
-  const map = new Map<NoteInteger, string>();
-  for (let i = 0; i < integers.length; i++) {
-    map.set(integers[i], pattern[i]);
-  }
-  return map;
-}
-
-function generateRomanChords(
-  qualities: (TriadQuality | SeventhQuality)[],
-): (RomanTriad | RomanSeventh)[] {
-  const baseNumerals: RomanNumeral[] = [
-    "I",
-    "II",
-    "III",
-    "IV",
-    "V",
-    "VI",
-    "VII",
-  ];
-  return qualities.map((quality, i) => {
-    const numeral = baseNumerals[i];
+function generateRomanTriads(chordTypes: ChordQuality[]): RomanChord[] {
+  return chordTypes.map((quality, i) => {
     switch (quality) {
       case "M":
-        return numeral.toUpperCase();
+        return upperCaseRomanChords[i];
       case "m":
-        return numeral.toLowerCase();
+        return lowerCaseRomanChords[i];
       case "°":
-        return numeral.toLowerCase() + "°";
+        return lowerCaseRomanChords[i] + quality;
       case "+":
-        return numeral.toUpperCase() + "+";
-      case "M7":
-        return numeral.toUpperCase() + "M7";
-      case "m7":
-        return numeral.toLowerCase() + "m7";
-      case "7":
-        return numeral.toUpperCase() + "7";
-      case "ø7":
-        return numeral.toLowerCase() + "ø7";
-      case "m7♭5":
-        return numeral.toLowerCase() + "m7♭5";
-      case "°7":
-        return numeral.toLowerCase() + "°7";
-      case "m(M7)":
-        return numeral.toLowerCase() + "m(M7)";
-      case "+M7":
-        return numeral.toUpperCase() + "+M7";
-      case "M7♯5":
-        return numeral.toUpperCase() + "M7♯5";
+        return upperCaseRomanChords[i] + quality;
       default:
-        return numeral;
+        return upperCaseRomanChords[i];
     }
-  }) as (RomanTriad | RomanSeventh)[];
+  }) as RomanChord[];
 }
 
-// --- Public API ---
-
-export function generateLabelsOverrideChords(
-  integers: NoteInteger[],
-  rotation: number,
-  triadQualities: TriadQuality[],
-  seventhQualities: SeventhQuality[],
-): LabelsOverride {
-  const rotatedTriads = rotate(triadQualities, rotation);
-  const rotatedSevenths = rotate(seventhQualities, rotation);
-
-  const romanTriads = generateRomanChords(rotatedTriads);
-  const romanSevenths = generateRomanChords(rotatedSevenths);
-
-  return {
-    triad: createLabelsOverrideMap(integers, rotatedTriads),
-    romanTriad: createLabelsOverrideMap(integers, romanTriads),
-    seventh: createLabelsOverrideMap(integers, rotatedSevenths),
-    romanSeventh: createLabelsOverrideMap(integers, romanSevenths),
-  };
+function generateRomanSevenths(
+  chordTypes: SeventhChord[],
+): RomanSeventhChord[] {
+  return chordTypes.map((quality, i) => {
+    switch (quality) {
+      case "M7":
+        return upperCaseRomanChords[i] + quality;
+      case "m7":
+        return lowerCaseRomanChords[i] + quality;
+      case "7":
+        return upperCaseRomanChords[i] + quality;
+      case "ø7":
+        return lowerCaseRomanChords[i] + quality;
+      case "m7♭5":
+        return lowerCaseRomanChords[i] + quality;
+      case "°7":
+        return lowerCaseRomanChords[i] + quality;
+      case "m(M7)":
+        return lowerCaseRomanChords[i] + quality;
+      case "+M7":
+        return upperCaseRomanChords[i] + quality;
+      case "M7♯5":
+        return upperCaseRomanChords[i] + quality;
+      default:
+        return upperCaseRomanChords[i] + quality;
+    }
+  }) as RomanSeventhChord[];
 }
 
-export function generateDiatonicLabelsOverrideChords(
-  integers: NoteInteger[],
+// TODO: add functions to return array of chord names, not an object
+// TODO: filter octave out, i.e. 8
+
+function generateScaleChords(
+  intervals: Interval[],
+  triads: ChordQuality[],
+  sevenths: SeventhChord[],
+  romanTriads: RomanChord[],
+  romanSevenths: RomanSeventhChord[],
+): ScaleIntervalChords[] {
+  return intervals.map((interval, i) => ({
+    interval,
+    triad: triads[i],
+    seventh: sevenths[i],
+    romanTriad: romanTriads[i],
+    romanSeventh: romanSevenths[i],
+  }));
+}
+
+export function generateDiatonicChords(
+  intervals: Interval[],
   rotation: number,
-): LabelsOverride {
-  return generateLabelsOverrideChords(
-    integers,
-    rotation,
-    DIATONIC_TRIADS,
-    DIATONIC_SEVENTHS,
+): ScaleIntervalChords[] {
+  const rotatedTriads = rotateArray(diatonicTriads, rotation);
+  const rotatedSevenths = rotateArray(diatonicSevenths, rotation);
+  return generateScaleChords(
+    intervals,
+    rotatedTriads,
+    rotatedSevenths,
+    generateRomanTriads(rotatedTriads),
+    generateRomanSevenths(rotatedSevenths),
   );
 }
 
-export function generateHarmonicMinorLabelsOverrideChords(
-  integers: NoteInteger[],
+export function generateHarmonicMinorChords(
+  intervals: Interval[],
   rotation: number,
-): LabelsOverride {
-  return generateLabelsOverrideChords(
-    integers,
-    rotation,
-    HARMONIC_MINOR_TRIADS,
-    HARMONIC_MINOR_SEVENTHS,
+): ScaleIntervalChords[] {
+  const rotatedTriads = rotateArray(harmonicMinorTriads, rotation);
+  const rotatedSevenths = rotateArray(harmonicMinorSevenths, rotation);
+  return generateScaleChords(
+    intervals,
+    rotatedTriads,
+    rotatedSevenths,
+    generateRomanTriads(harmonicMinorTriads),
+    generateRomanSevenths(harmonicMinorSevenths),
   );
 }
 
-export function generateMelodicMinorLabelsOverrideChords(
-  integers: NoteInteger[],
+export function generateMelodicMinorChords(
+  intervals: Interval[],
   rotation: number,
-): LabelsOverride {
-  return generateLabelsOverrideChords(
-    integers,
-    rotation,
-    MELODIC_MINOR_TRIADS,
-    MELODIC_MINOR_SEVENTHS,
+): ScaleIntervalChords[] {
+  const rotatedTriads = rotateArray(melodicMinorTriads, rotation);
+  const rotatedSevenths = rotateArray(melodicMinorSevenths, rotation);
+  return generateScaleChords(
+    intervals,
+    rotatedTriads,
+    rotatedSevenths,
+    generateRomanTriads(melodicMinorTriads),
+    generateRomanSevenths(melodicMinorSevenths),
   );
 }
+
+console.table(
+  generateDiatonicChords(["1", "2", "3", "4", "5", "6", "7", "8"], 0),
+);
+console.table(
+  generateDiatonicChords(["1", "2", "3", "4", "5", "6", "7"], 1),
+);

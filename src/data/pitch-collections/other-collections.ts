@@ -1,22 +1,9 @@
-/**
- * @module
- *
- * This file contains definitions for miscellaneous sequences that do not fit into
- * the other categories, such as the Chromatic scale.
- */
-
 import type {
-  NoteSequenceTheme,
   OtherSequenceKey,
-} from "../types/note-sequences.d.ts";
+  PitchCollection,
+} from "../../types/pitch-collections.d.ts";
 
-/**
- * A record containing miscellaneous musical sequences.
- *
- * @see {@link NoteSequenceTheme} for the structure of each sequence definition.
- * @see {@link OtherSequenceKey} for the available sequence keys.
- */
-export const otherSequences: Record<OtherSequenceKey, NoteSequenceTheme> = {
+export const otherCollections: Record<OtherSequenceKey, PitchCollection> = {
   chromatic: {
     primaryName: "Chromatic",
     names: ["Chromatic", "Twelve-Tone Scale"],
@@ -58,21 +45,6 @@ export const otherSequences: Record<OtherSequenceKey, NoteSequenceTheme> = {
       "half",
     ],
     patternShort: ["H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
-    exampleNotes: [
-      "C",
-      "C♯",
-      "D",
-      "D♯",
-      "E",
-      "F",
-      "F♯",
-      "G",
-      "G♯",
-      "A",
-      "A♯",
-      "B",
-      "C",
-    ],
   },
   wholeTone: {
     primaryName: "Whole Tone Scale",
@@ -93,6 +65,5 @@ export const otherSequences: Record<OtherSequenceKey, NoteSequenceTheme> = {
     ],
     pattern: ["whole", "whole", "whole", "whole", "whole"],
     patternShort: ["W", "W", "W", "W", "W"],
-    exampleNotes: ["C", "D", "E", "F♯", "G♯", "A♯", "C"],
   },
 } as const;
