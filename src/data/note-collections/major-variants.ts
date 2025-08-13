@@ -1,9 +1,9 @@
 import type {
   MajorVariantKey,
-  PitchCollection,
-} from "../../types/pitch-collections.d.ts";
+  NoteCollection,
+} from "../../types/note-collections.d.ts";
 
-export const majorVariants: Record<MajorVariantKey, PitchCollection> = {
+export const majorVariants: Record<MajorVariantKey, NoteCollection> = {
   major: {
     primaryName: "M",
     names: ["M", "maj", "Major", "Major Triad", "Δ"],

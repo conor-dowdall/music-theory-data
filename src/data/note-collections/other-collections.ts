@@ -1,11 +1,11 @@
 import type {
-  OtherPitchCollectionKey,
-  PitchCollection,
-} from "../../types/pitch-collections.d.ts";
+  NoteCollection,
+  OtherNoteCollectionKey,
+} from "../../types/note-collections.d.ts";
 
-export const otherCollections: Record<
-  OtherPitchCollectionKey,
-  PitchCollection
+export const otherNoteCollections: Record<
+  OtherNoteCollectionKey,
+  NoteCollection
 > = {
   chromatic: {
     primaryName: "Chromatic",

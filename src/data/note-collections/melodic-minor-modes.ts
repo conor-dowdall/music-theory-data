@@ -1,9 +1,9 @@
 import type {
   MelodicMinorModeKey,
-  PitchCollection,
-} from "../../types/pitch-collections.d.ts";
+  NoteCollection,
+} from "../../types/note-collections.d.ts";
 
-export const melodicMinorModes: Record<MelodicMinorModeKey, PitchCollection> = {
+export const melodicMinorModes: Record<MelodicMinorModeKey, NoteCollection> = {
   melodicMinor: {
     primaryName: "Melodic Minor",
     names: [

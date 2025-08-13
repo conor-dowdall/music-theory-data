@@ -1,11 +1,11 @@
 import type {
   HarmonicMinorModeKey,
-  PitchCollection,
-} from "../../types/pitch-collections.d.ts";
+  NoteCollection,
+} from "../../types/note-collections.d.ts";
 
 export const harmonicMinorModes: Record<
   HarmonicMinorModeKey,
-  PitchCollection
+  NoteCollection
 > = {
   harmonicMinor: {
     primaryName: "Harmonic Minor",

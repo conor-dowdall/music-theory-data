@@ -1,9 +1,9 @@
 import type {
   DominantVariantKey,
-  PitchCollection,
-} from "../../types/pitch-collections.d.ts";
+  NoteCollection,
+} from "../../types/note-collections.d.ts";
 
-export const dominantVariants: Record<DominantVariantKey, PitchCollection> = {
+export const dominantVariants: Record<DominantVariantKey, NoteCollection> = {
   dominant7: {
     primaryName: "7",
     names: ["7", "dom7", "Dominant 7th", "Dominant Seventh"],

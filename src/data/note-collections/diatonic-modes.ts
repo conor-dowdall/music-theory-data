@@ -1,9 +1,9 @@
 import type {
   DiatonicModeKey,
-  PitchCollection,
-} from "../../types/pitch-collections.d.ts";
+  NoteCollection,
+} from "../../types/note-collections.d.ts";
 
-export const diatonicModes: Record<DiatonicModeKey, PitchCollection> = {
+export const diatonicModes: Record<DiatonicModeKey, NoteCollection> = {
   ionian: {
     primaryName: "Major",
     names: ["Major", "Ionian", "Major Scale", "Ionian Mode", "Diatonic Major"],

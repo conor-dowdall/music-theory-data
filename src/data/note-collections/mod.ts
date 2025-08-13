@@ -3,16 +3,16 @@ import { harmonicMinorModes } from "./harmonic-minor-modes.ts";
 import { melodicMinorModes } from "./melodic-minor-modes.ts";
 import { dominantVariants } from "./dominant-variants.ts";
 import { majorVariants } from "./major-variants.ts";
-import { otherCollections } from "./other-collections.ts";
+import { otherNoteCollections } from "./other-collections.ts";
 
-import type { PitchCollectionGroupKey } from "../../types/pitch-collections.d.ts";
+import type { NoteCollectionGroupKey } from "../../types/note-collections.d.ts";
 
 export { diatonicModes } from "./diatonic-modes.ts";
 export { dominantVariants } from "./dominant-variants.ts";
 export { harmonicMinorModes } from "./harmonic-minor-modes.ts";
 export { majorVariants } from "./major-variants.ts";
 export { melodicMinorModes } from "./melodic-minor-modes.ts";
-export { otherCollections } from "./other-collections.ts";
+export { otherNoteCollections } from "./other-collections.ts";
 
 export const pitchCollections = {
   ...diatonicModes,
@@ -20,7 +20,7 @@ export const pitchCollections = {
   ...melodicMinorModes,
   ...dominantVariants,
   ...majorVariants,
-  ...otherCollections,
+  ...otherNoteCollections,
 } as const;
 
 export const groupedPitchCollections = {
@@ -29,11 +29,11 @@ export const groupedPitchCollections = {
   melodicMinorModes,
   dominantVariants,
   majorVariants,
-  otherCollections,
+  otherNoteCollections,
 } as const;
 
 export const pitchCollectionGroupsMetadata: Record<
-  PitchCollectionGroupKey,
+  NoteCollectionGroupKey,
   {
     displayName: string;
     description: string;
@@ -64,7 +64,7 @@ export const pitchCollectionGroupsMetadata: Record<
     description:
       "Chord structures based on the major triad, including sixth and major seventh harmonies.",
   },
-  otherCollections: {
+  otherNoteCollections: {
     displayName: "Other",
     description:
       "Other pitch collections that don't fall into a specific category.",

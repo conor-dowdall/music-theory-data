@@ -1,6 +1,6 @@
-import type { Interval, NoteInteger } from "../types/note-labels.d.ts";
+import type { Interval, NoteInteger } from "../types/labels.d.ts";
 
-export interface PitchCollection {
+export interface NoteCollection {
   primaryName: string;
   names: string[];
   intervals: Interval[];
@@ -12,13 +12,13 @@ export interface PitchCollection {
   patternShort: string[];
 }
 
-export type PitchCollectionGroupKey =
+export type NoteCollectionGroupKey =
   | "diatonicModes"
   | "harmonicMinorModes"
   | "melodicMinorModes"
   | "dominantVariants"
   | "majorVariants"
-  | "otherCollections";
+  | "otherNoteCollections";
 
 export type DiatonicModeKey =
   | "ionian"
@@ -60,12 +60,12 @@ export type MajorVariantKey =
   | "majorAdd9"
   | "major6Add9";
 
-export type OtherPitchCollectionKey = "chromatic" | "wholeTone";
+export type OtherNoteCollectionKey = "chromatic" | "wholeTone";
 
-export type PitchCollectionKey =
+export type NoteCollectionKey =
   | DiatonicModeKey
   | HarmonicMinorModeKey
   | MelodicMinorModeKey
   | DominantVariantKey
   | MajorVariantKey
-  | OtherPitchCollectionKey;
+  | OtherNoteCollectionKey;
