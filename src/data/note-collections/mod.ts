@@ -14,7 +14,7 @@ export { majorVariants } from "./major-variants.ts";
 export { melodicMinorModes } from "./melodic-minor-modes.ts";
 export { otherNoteCollections } from "./other-collections.ts";
 
-export const pitchCollections = {
+export const noteCollections = {
   ...diatonicModes,
   ...harmonicMinorModes,
   ...melodicMinorModes,
@@ -23,7 +23,7 @@ export const pitchCollections = {
   ...otherNoteCollections,
 } as const;
 
-export const groupedPitchCollections = {
+export const groupedNoteCollections = {
   diatonicModes,
   harmonicMinorModes,
   melodicMinorModes,
@@ -32,7 +32,7 @@ export const groupedPitchCollections = {
   otherNoteCollections,
 } as const;
 
-export const pitchCollectionGroupsMetadata: Record<
+export const noteCollectionGroupsMetadata: Record<
   NoteCollectionGroupKey,
   {
     displayName: string;

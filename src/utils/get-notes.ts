@@ -1,4 +1,4 @@
-import { pitchCollections } from "../data/pitch-collections/mod.ts";
+import { noteCollections } from "../data/note-collections/mod.ts";
 import { noteNameStringToInteger } from "./note-conversions.ts";
 import {
   enharmonicNoteNameGroups,
@@ -6,11 +6,11 @@ import {
   noteLetters,
 } from "../data/labels/note-labels.ts";
 import type { Interval, NoteLetter, NoteName } from "../types/labels.d.ts";
-import type { PitchCollectionKey } from "../types/pitch-collections.d.ts";
+import type { NoteCollectionKey } from "../types/note-collections.d.ts";
 
 export function getNotes(
   rootNote: NoteName,
-  pitchCollectionKey: PitchCollectionKey,
+  pitchCollectionKey: NoteCollectionKey,
   options: { orderBy?: "intervals" | "pitch" } = {},
 ): NoteName[] {
   const rootNoteInteger = noteNameStringToInteger(rootNote);
@@ -19,7 +19,7 @@ export function getNotes(
     return [];
   }
 
-  const noteSequence = pitchCollections[pitchCollectionKey];
+  const noteSequence = noteCollections[pitchCollectionKey];
   if (!noteSequence) {
     console.warn(`Invalid note sequence theme key: ${pitchCollectionKey}`);
     return [];

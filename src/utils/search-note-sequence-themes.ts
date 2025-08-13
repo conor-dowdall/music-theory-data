@@ -1,6 +1,6 @@
-import type { PitchCollection } from "@musodojo/music-theory-data";
+import type { NoteCollection } from "@musodojo/music-theory-data";
 import type { Interval } from "../types/labels.d.ts";
-import { pitchCollections } from "../data/pitch-collections/mod.ts";
+import { noteCollections } from "../data/note-collections/mod.ts";
 
 const normalizationMap = new Map<string, string>();
 
@@ -72,9 +72,9 @@ export interface SearchOptions {
  */
 export function searchNoteSequenceThemes(
   options: SearchOptions,
-): PitchCollection[] {
+): NoteCollection[] {
   const { query, intervals, type } = options;
-  let candidates = Object.values(pitchCollections);
+  let candidates = Object.values(noteCollections);
 
   // 1. Apply hard filters first to narrow down the candidate pool
   if (type) {
@@ -96,7 +96,7 @@ export function searchNoteSequenceThemes(
   }
 
   // 2. Apply prioritized text search on the filtered candidates
-  const prioritizedResults = new Set<PitchCollection>();
+  const prioritizedResults = new Set<NoteCollection>();
   const normalizedQuery = normalize(query);
 
   if (!normalizedQuery) {
@@ -111,21 +111,20 @@ export function searchNoteSequenceThemes(
 
   const passes = [
     // Pass 1: Exact match on primaryName
-    (theme: PitchCollection) =>
-      normalize(theme.primaryName) === normalizedQuery,
+    (theme: NoteCollection) => normalize(theme.primaryName) === normalizedQuery,
     // Pass 2: Exact match on any name
-    (theme: PitchCollection) =>
+    (theme: NoteCollection) =>
       theme.names.some((name) => normalize(name) === normalizedQuery),
     // Pass 3: Whole word match on primaryName
-    (theme: PitchCollection) => searchRegex.test(normalize(theme.primaryName)),
+    (theme: NoteCollection) => searchRegex.test(normalize(theme.primaryName)),
     // Pass 4: Whole word match on any name
-    (theme: PitchCollection) =>
+    (theme: NoteCollection) =>
       theme.names.some((name) => searchRegex.test(normalize(name))),
     // Pass 7: Whole word match on any type
-    (theme: PitchCollection) =>
+    (theme: NoteCollection) =>
       theme.type.some((t) => searchRegex.test(normalize(t))),
     // Pass 8: Whole word match on any characteristic
-    (theme: PitchCollection) =>
+    (theme: NoteCollection) =>
       theme.characteristics.some((c) => searchRegex.test(normalize(c))),
   ];
 

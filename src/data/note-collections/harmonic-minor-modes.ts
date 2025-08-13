@@ -17,6 +17,7 @@ export const harmonicMinorModes: Record<
     ],
     intervals: ["1", "2", "♭3", "4", "5", "♭6", "7", "8"],
     integers: [0, 2, 3, 5, 7, 8, 11],
+    rotation: 0,
     type: ["harmonic minor mode", "minor", "scale", "mode", "heptatonic"],
     characteristics: [
       "dark",
@@ -43,6 +44,7 @@ export const harmonicMinorModes: Record<
     names: ["Locrian ♮6", "Locrian Natural Sixth", "Locrian Raised Sixth"],
     intervals: ["1", "♭2", "♭3", "4", "♭5", "6", "♭7", "8"],
     integers: [0, 1, 3, 5, 6, 9, 10],
+    rotation: 1,
     type: ["harmonic minor mode", "diminished", "scale", "mode", "heptatonic"],
     characteristics: [
       "dark",
@@ -72,6 +74,7 @@ export const harmonicMinorModes: Record<
     ],
     intervals: ["1", "2", "3", "4", "♯5", "6", "7", "8"],
     integers: [0, 2, 4, 5, 8, 9, 11],
+    rotation: 2,
     type: [
       "harmonic minor mode",
       "major",
@@ -110,6 +113,7 @@ export const harmonicMinorModes: Record<
     ],
     intervals: ["1", "2", "♭3", "♯4", "5", "6", "♭7", "8"],
     integers: [0, 2, 3, 6, 7, 9, 10],
+    rotation: 3,
     type: ["harmonic minor mode", "minor", "scale", "heptatonic"],
     characteristics: ["exotic minor", "eastern european folk", "gypsy"],
     pattern: [
@@ -137,6 +141,7 @@ export const harmonicMinorModes: Record<
     ],
     intervals: ["1", "♭2", "3", "4", "5", "♭6", "♭7", "8"],
     integers: [0, 1, 4, 5, 7, 8, 10],
+    rotation: 4,
     type: ["harmonic minor mode", "dominant", "scale", "heptatonic"],
     characteristics: [
       "very exotic",
@@ -168,6 +173,7 @@ export const harmonicMinorModes: Record<
     ],
     intervals: ["1", "♯2", "3", "♯4", "5", "6", "7", "8"],
     integers: [0, 3, 4, 6, 7, 9, 11],
+    rotation: 5,
     type: ["harmonic minor mode", "major", "scale", "heptatonic"],
     characteristics: ["very bright", "unusual", "double augmented", "exotic"],
     pattern: [
@@ -191,6 +197,7 @@ export const harmonicMinorModes: Record<
     ],
     intervals: ["1", "♭2", "♭3", "♭4", "♭5", "♭6", "𝄫7", "8"],
     integers: [0, 1, 3, 4, 6, 8, 9],
+    rotation: 6,
     type: ["harmonic minor mode", "diminished", "scale", "heptatonic"],
     characteristics: [
       "extremely tense",

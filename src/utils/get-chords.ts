@@ -16,7 +16,15 @@ import type {
   Triad,
 } from "../types/chords.d.ts";
 import type { Interval } from "../types/labels.d.ts";
+import type {
+  DiatonicModeKey,
+  HarmonicMinorModeKey,
+  MelodicMinorModeKey,
+} from "../types/note-collections.d.ts";
+import { diatonicModes } from "../data/note-collections/mod.ts";
 import { rotateArray } from "./rotate-array.ts";
+import { harmonicMinorModes } from "../data/note-collections/harmonic-minor-modes.ts";
+import { melodicMinorModes } from "../data/note-collections/melodic-minor-modes.ts";
 
 function getRomanTriads(chordTypes: Triad[]): RomanTriad[] {
   return chordTypes.map((quality, i) => {
@@ -53,7 +61,7 @@ function getRomanSevenths(
       case "°7":
         return lowerCaseRomanNumerals[i] + quality;
       case "m(M7)":
-        return lowerCaseRomanNumerals[i] + quality;
+        return lowerCaseRomanNumerals[i] + "M7";
       case "+M7":
         return upperCaseRomanNumerals[i] + quality;
       case "M7♯5":
@@ -67,30 +75,33 @@ function getRomanSevenths(
 // TODO: add functions to return array of chord names, not an object
 // TODO: filter octave out, i.e. 8
 
-function getModeChords(
+export function getModeChordDetails(
   intervals: Interval[],
   triads: Triad[],
   sevenths: Seventh[],
   romanTriads: RomanTriad[],
   romanSevenths: RomanSeventh[],
 ): ChordDetails[] {
-  return intervals.map((interval, i) => ({
-    interval,
-    triad: triads[i],
-    seventh: sevenths[i],
-    romanTriad: romanTriads[i],
-    romanSeventh: romanSevenths[i],
-  }));
+  return intervals
+    .filter((interval) => interval !== "8")
+    .map((interval, i) => ({
+      interval,
+      triad: triads[i],
+      seventh: sevenths[i],
+      romanTriad: romanTriads[i],
+      romanSeventh: romanSevenths[i],
+    }));
 }
 
-export function getDiatonicChords(
-  intervals: Interval[],
-  rotation: number,
+export function getDiatonicModeChordDetails(
+  diatonicModeKey: DiatonicModeKey,
 ): ChordDetails[] {
+  const mode = diatonicModes[diatonicModeKey];
+  const rotation = mode.rotation as number;
   const rotatedTriads = rotateArray(diatonicTriads, rotation);
   const rotatedSevenths = rotateArray(diatonicSevenths, rotation);
-  return getModeChords(
-    intervals,
+  return getModeChordDetails(
+    mode.intervals,
     rotatedTriads,
     rotatedSevenths,
     getRomanTriads(rotatedTriads),
@@ -98,39 +109,34 @@ export function getDiatonicChords(
   );
 }
 
-export function getHarmonicMinorChords(
-  intervals: Interval[],
-  rotation: number,
+export function getHarmonicMinorModeChordDetails(
+  harmonicMinorModeKey: HarmonicMinorModeKey,
 ): ChordDetails[] {
+  const mode = harmonicMinorModes[harmonicMinorModeKey];
+  const rotation = mode.rotation as number;
   const rotatedTriads = rotateArray(harmonicMinorTriads, rotation);
   const rotatedSevenths = rotateArray(harmonicMinorSevenths, rotation);
-  return getModeChords(
-    intervals,
+  return getModeChordDetails(
+    mode.intervals,
     rotatedTriads,
     rotatedSevenths,
-    getRomanTriads(harmonicMinorTriads),
-    getRomanSevenths(harmonicMinorSevenths),
+    getRomanTriads(rotatedTriads),
+    getRomanSevenths(rotatedSevenths),
   );
 }
 
-export function getMelodicMinorChords(
-  intervals: Interval[],
-  rotation: number,
+export function getMelodicMinorModeChordDetails(
+  melodicMinorModeKey: MelodicMinorModeKey,
 ): ChordDetails[] {
+  const mode = melodicMinorModes[melodicMinorModeKey];
+  const rotation = mode.rotation as number;
   const rotatedTriads = rotateArray(melodicMinorTriads, rotation);
   const rotatedSevenths = rotateArray(melodicMinorSevenths, rotation);
-  return getModeChords(
-    intervals,
+  return getModeChordDetails(
+    mode.intervals,
     rotatedTriads,
     rotatedSevenths,
-    getRomanTriads(melodicMinorTriads),
-    getRomanSevenths(melodicMinorSevenths),
+    getRomanTriads(rotatedTriads),
+    getRomanSevenths(rotatedSevenths),
   );
 }
-
-console.table(
-  getDiatonicChords(["1", "2", "3", "4", "5", "6", "7", "8"], 0),
-);
-console.table(
-  getDiatonicChords(["1", "2", "3", "4", "5", "6", "7"], 1),
-);
