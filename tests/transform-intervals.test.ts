@@ -1,6 +1,6 @@
-import { assertEquals } from "https://deno.land/std@0.224.0/assert/mod.ts";
+import { assertEquals } from "@std/assert";
 import { transformIntervals } from "../src/utils/transform-intervals.ts";
-import type { Interval } from "../src/types/note-labels.d.ts";
+import type { Interval } from "../src/types/labels.d.ts";
 
 Deno.test("transformIntervals - Spread", () => {
   const majorScaleIntervals: Interval[] = [

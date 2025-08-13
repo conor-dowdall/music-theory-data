@@ -1,39 +1,12 @@
-/**
- * Collection of note labeling systems used in music theory and composition.
- * Provides various ways to represent musical pitches and harmonies.
- *
- * Features:
- * - Accidental styles (sharp ♯, flat ♭)
- * - Interval qualities (perfect, major, minor)
- * - Relative and Extension Notes (6, 13)
- * - Solfege systems (fixed do, movable do)
- * - Chord symbols (triads, sevenths)
- * - Roman numeral chords
- *
- * @example
- * ```ts
- * import { noteLabelThemes } from "@musodojo/music-theory-data/note-labels";
- *
- * // Get flat note names
- * const flatLabels = noteLabelThemes.flat.labels;  // ["C", "D♭", "D", ...]
- *
- * // Get relative interval qualities
- * const qualities = noteLabelThemes.quality.labels;  // ["P1", "m2", "M2", ...]
- * ```
- *
- * @module
- */
-
 import type {
-  NoteLabelTheme,
-  NoteLabelThemeKey,
-} from "../types/note-labels.d.ts";
+  NoteLabelCollection,
+  NoteLabelCollectionKey,
+} from "../../types/labels.d.ts";
 
-/**
- * An object containing the available note label themes,
- * such as flat notes, sharp notes, and various other representations.
- */
-export const noteLabelThemes: Record<NoteLabelThemeKey, NoteLabelTheme> = {
+export const noteLabelCollections: Record<
+  NoteLabelCollectionKey,
+  NoteLabelCollection
+> = {
   flat: {
     name: "Flat Notes",
     shortName: "Flat",
@@ -127,4 +100,4 @@ export const noteLabelThemes: Record<NoteLabelThemeKey, NoteLabelTheme> = {
       "si",
     ],
   },
-};
+} as const;

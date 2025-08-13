@@ -1,22 +1,3 @@
-/**
- * enharmonicNoteNameGroups Provides collections of enharmonic note spellings for the 12 pitch classes.
- * Enharmonic notes are different ways of writing the same musical pitch. 42 note names!
- *
- * Features:
- * - Unicode version using proper musical symbols (♯, ♭, ♮)
- * - All common enharmonic spellings for each pitch class
- * - Bare note name, natural accidental, simple-and-double accidental (C C♮ C♭ C𝄫 C♯ C𝄪)
- *
- * @example
- * ```ts
- * const cPitchClass = enharmonicNoteNameGroups[0];  // ["C", "C♮", "D𝄫", "B♯"]
- * ```
- *
- * Note: Each top-level-array index represents a pitch class from C (0) to B (11).
- *
- * @module
- */
-
 import type {
   EnharmonicNoteNameGroups,
   Interval,
@@ -26,19 +7,18 @@ import type {
   NoteInteger,
   NoteLetter,
   NoteName,
-} from "../../types/note-labels.d.ts";
+} from "../../types/labels.d.ts";
 
-/**
- * An array of the seven standard musical note letters.
- * @see {@link NoteLetter}
- */
-export const noteLetters: NoteLetter[] = ["C", "D", "E", "F", "G", "A", "B"];
+export const noteLetters: NoteLetter[] = [
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "A",
+  "B",
+] as const;
 
-/**
- * A 2D array, where each inner array contains enharmonically equivalent
- * representations of one of the 12 pitch classes.
- * '♯' and '♭' are used instead of '#' and 'b'.
- */
 export const enharmonicNoteNameGroups: EnharmonicNoteNameGroups = [
   ["C", "C♮", "B♯", "D𝄫"],
   ["D♭", "C♯", "B𝄪"],
@@ -54,14 +34,6 @@ export const enharmonicNoteNameGroups: EnharmonicNoteNameGroups = [
   ["B", "B♮", "C♭", "A𝄪"],
 ] as const;
 
-/**
- * Maps note accidentals to their corresponding alteration integers.
- * - `𝄫` (double flat) is -2
- * - `♭` (flat) is -1
- * - `♮` (natural) is 0
- * - `♯` (sharp) is 1
- * - `𝄪` (double sharp) is 2
- */
 export const noteAccidentalIntegers: Record<NoteAccidental, number> = {
   "𝄫": -2,
   "♭": -1,

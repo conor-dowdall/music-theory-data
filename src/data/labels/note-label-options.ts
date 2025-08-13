@@ -1,4 +1,5 @@
-export const noteSequenceRepresentations = {
+// TODO: delete or finish this prototype object containing the available note labelling options
+export const noteLabelOptions = {
   noteNames: {
     name: "Note Names",
     description:

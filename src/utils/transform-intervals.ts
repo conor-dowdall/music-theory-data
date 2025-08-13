@@ -1,4 +1,4 @@
-import type { Interval } from "../types/note-labels.d.ts";
+import type { Interval } from "../types/labels.d.ts";
 
 /**
  * Defines the possible transformation types for an interval sequence.

@@ -82,14 +82,14 @@ export type NoteLabelGroup = [
   string,
 ];
 
-export interface NoteLabelTheme {
+export interface NoteLabelCollection {
   name: string;
   shortName: string;
   isRelative: boolean;
   labels: NoteLabelGroup;
 }
 
-export type NoteLabelThemeKey =
+export type NoteLabelCollectionKey =
   | "flat"
   | "sharp"
   | "fixedDoFlat"

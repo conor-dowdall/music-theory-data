@@ -1,8 +1,12 @@
-import type { PitchColorCollection } from "../../types/pitch-colors.d.ts";
+import type {
+  ColorCollection,
+  ColorCollectionKey,
+} from "../../types/colors.d.ts";
 
-export const colorCollections: Record<string, PitchColorCollection> = {
+export const colorCollections: Record<ColorCollectionKey, ColorCollection> = {
   musoDojo: {
     name: "Muso Dojo Colors",
+    description: "A custom set of colors, designed by Muso Dojo.",
     relative: false,
     colors: [
       "#ED2929",
@@ -21,6 +25,8 @@ export const colorCollections: Record<string, PitchColorCollection> = {
   },
   musoDojoRoot: {
     name: "Muso Dojo Root",
+    description:
+      "Use the red color from Muso Dojo's colors on just the root note.",
     relative: true,
     colors: [
       "#ED2929",
@@ -39,6 +45,8 @@ export const colorCollections: Record<string, PitchColorCollection> = {
   },
   musoDojoRootAndFifth: {
     name: "Muso Dojo Root and Fifth",
+    description:
+      "Use the red-and-green colors from Muso Dojo's colors on the root-and-fifth notes.",
     relative: true,
     colors: [
       "#ED2929",
@@ -57,6 +65,7 @@ export const colorCollections: Record<string, PitchColorCollection> = {
   },
   boomwhackers: {
     name: "Boomwhackers",
+    description: "The colors used by Boomwhackers.",
     relative: false,
     colors: [
       "#E21C48",

@@ -1,4 +1,4 @@
-import type { Interval } from "./note-labels.d.ts";
+import type { Interval } from "./labels.d.ts";
 
 export type Triad = "M" | "m" | "°" | "+";
 
@@ -35,7 +35,7 @@ export type RomanTriad =
 
 export type RomanSeventh = `${RomanNumeral}${Seventh}`;
 
-export interface ModeIntervalChords {
+export interface ChordDetails {
   interval: Interval;
   triad: Triad;
   seventh: Seventh;

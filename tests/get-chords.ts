@@ -1,19 +1,19 @@
 import { assertEquals } from "@std/assert";
-import { diatonicModes } from "../src/data/note-sequences/diatonic-modes.ts";
-import { harmonicMinorModes } from "../src/note-sequences/harmonic-minor-modes.ts";
-import { melodicMinorModes } from "../src/note-sequences/melodic-minor-modes.ts";
+import { diatonicModes } from "../src/data/pitch-collections/diatonic-modes.ts";
+import { harmonicMinorModes } from "../src/data/pitch-collections/harmonic-minor-modes.ts";
+import { melodicMinorModes } from "../src/data/pitch-collections/melodic-minor-modes.ts";
 import {
-  generateDiatonicChords,
-  generateHarmonicMinorChords,
-  generateMelodicMinorChords,
-} from "../src/utils/chord-label-generators.ts";
-import type { ScaleIntervalChords } from "../src/types/chord-labels.d.ts";
+  getDiatonicChords,
+  getHarmonicMinorChords,
+  getMelodicMinorChords,
+} from "../src/utils/get-chords.ts";
+import type { ChordDetails } from "../src/types/chords.d.ts";
 
-Deno.test("generateDiatonicChords - Ionian (rotation 0)", () => {
+Deno.test("getDiatonicChords - Ionian (rotation 0)", () => {
   const ionianIntervals = diatonicModes.ionian.intervals.slice(0, 7);
-  const chords = generateDiatonicChords(ionianIntervals, 0);
+  const chords = getDiatonicChords(ionianIntervals, 0);
 
-  const expectedChords: ScaleIntervalChords[] = [
+  const expectedChords: ChordDetails[] = [
     {
       interval: "1",
       triad: "M",
@@ -68,11 +68,11 @@ Deno.test("generateDiatonicChords - Ionian (rotation 0)", () => {
   assertEquals(chords, expectedChords);
 });
 
-Deno.test("generateDiatonicChords - Dorian (rotation 1)", () => {
+Deno.test("getDiatonicChords - Dorian (rotation 1)", () => {
   const dorianIntervals = diatonicModes.dorian.intervals.slice(0, 7);
-  const chords = generateDiatonicChords(dorianIntervals, 1);
+  const chords = getDiatonicChords(dorianIntervals, 1);
 
-  const expectedChords: ScaleIntervalChords[] = [
+  const expectedChords: ChordDetails[] = [
     {
       interval: "1",
       triad: "m",
@@ -127,11 +127,11 @@ Deno.test("generateDiatonicChords - Dorian (rotation 1)", () => {
   assertEquals(chords, expectedChords);
 });
 
-Deno.test("generateDiatonicChords - Locrian (rotation 6)", () => {
+Deno.test("getDiatonicChords - Locrian (rotation 6)", () => {
   const locrianIntervals = diatonicModes.locrian.intervals.slice(0, 7);
-  const chords = generateDiatonicChords(locrianIntervals, 6);
+  const chords = getDiatonicChords(locrianIntervals, 6);
 
-  const expectedChords: ScaleIntervalChords[] = [
+  const expectedChords: ChordDetails[] = [
     {
       interval: "1",
       triad: "°",
@@ -186,15 +186,15 @@ Deno.test("generateDiatonicChords - Locrian (rotation 6)", () => {
   assertEquals(chords, expectedChords);
 });
 
-Deno.test("generateHarmonicMinorChords - Harmonic Minor (rotation 0)", () => {
+Deno.test("getHarmonicMinorChords - Harmonic Minor (rotation 0)", () => {
   const harmonicMinorIntervals = harmonicMinorModes.harmonicMinor.intervals
     .slice(0, 7);
-  const chords = generateHarmonicMinorChords(
+  const chords = getHarmonicMinorChords(
     harmonicMinorIntervals,
     0,
   );
 
-  const expectedChords: ScaleIntervalChords[] = [
+  const expectedChords: ChordDetails[] = [
     {
       interval: "1",
       triad: "m",
@@ -249,15 +249,15 @@ Deno.test("generateHarmonicMinorChords - Harmonic Minor (rotation 0)", () => {
   assertEquals(chords, expectedChords);
 });
 
-Deno.test("generateHarmonicMinorChords - Phrygian Dominant (rotation 4)", () => {
+Deno.test("getHarmonicMinorChords - Phrygian Dominant (rotation 4)", () => {
   const phrygianDominantIntervals = harmonicMinorModes.phrygianDominant
     .intervals.slice(0, 7);
-  const chords = generateHarmonicMinorChords(
+  const chords = getHarmonicMinorChords(
     phrygianDominantIntervals,
     4,
   );
 
-  const expectedChords: ScaleIntervalChords[] = [
+  const expectedChords: ChordDetails[] = [
     {
       interval: "1",
       triad: "M",
@@ -312,17 +312,17 @@ Deno.test("generateHarmonicMinorChords - Phrygian Dominant (rotation 4)", () => 
   assertEquals(chords, expectedChords);
 });
 
-Deno.test("generateMelodicMinorChords - Melodic Minor (rotation 0)", () => {
+Deno.test("getMelodicMinorChords - Melodic Minor (rotation 0)", () => {
   const melodicMinorIntervals = melodicMinorModes.melodicMinor.intervals.slice(
     0,
     7,
   );
-  const chords = generateMelodicMinorChords(
+  const chords = getMelodicMinorChords(
     melodicMinorIntervals,
     0,
   );
 
-  const expectedChords: ScaleIntervalChords[] = [
+  const expectedChords: ChordDetails[] = [
     {
       interval: "1",
       triad: "m",

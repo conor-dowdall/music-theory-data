@@ -1,9 +1,12 @@
 import type {
-  OtherSequenceKey,
+  OtherPitchCollectionKey,
   PitchCollection,
 } from "../../types/pitch-collections.d.ts";
 
-export const otherCollections: Record<OtherSequenceKey, PitchCollection> = {
+export const otherCollections: Record<
+  OtherPitchCollectionKey,
+  PitchCollection
+> = {
   chromatic: {
     primaryName: "Chromatic",
     names: ["Chromatic", "Twelve-Tone Scale"],

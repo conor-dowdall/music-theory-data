@@ -1,47 +1,18 @@
-/**
- * Utility functions for converting between note names, integer notation
- * and midi note numbers.
- * simpleNoteNameToInteger handles both #,b and ♯,♭ accidental formats only.
- *
- * @module
- */
-
 import type {
   Interval,
-  MidiNoteNumber,
   NoteInteger,
-  NoteLabelThemeKey,
+  NoteLabelCollectionKey,
   NoteLetter,
   NoteName,
   OctaveNumber,
-} from "../types/note-labels.d.ts";
+} from "../types/labels.d.ts";
 import {
   intervalIntegers,
   noteNameIntegers,
-} from "../note-labels/note-labels.ts";
-import { noteLabelThemes } from "../note-labels/note-label-themes.ts";
-import type { MidiNoteSequence } from "../types/note-sequences.d.ts";
+} from "../data/labels/note-labels.ts";
+import { noteLabelCollections } from "../data/labels/note-label-collections.ts";
+import type { MidiNoteNumber, MidiNoteSequence } from "../types/midi.d.ts";
 
-/**
- * Converts a note name and alteration to a note integer (0-11).
- *
- * @param noteName The note name {@link NoteName}.
- * @param alteration The number of semitones to alter the note
- * (e.g., 1 for sharp, -1 for flat). Defaults to 0.
- * @returns The note integer (0-11) representing the note.
- *
- * @example
- * ```ts
- * // Returns 0
- * noteNameToInteger("C", 0);
- *
- * // Returns 1
- * noteNameToInteger("C", 1);
- *
- * // Returns 11
- * noteNameToInteger("B", 0);
- * ```
- */
 export function noteNameToInteger(
   noteName: NoteName,
   alteration: number = 0,
@@ -50,27 +21,6 @@ export function noteNameToInteger(
   return (noteValue % 12 + 12) % 12 as NoteInteger;
 }
 
-/**
- * Converts a note name, alteration, and octave to a MIDI note number.
- * Follows "scientific pitch notation" conventions.
- *
- * @param noteName The note name {@link NoteName}.
- * @param alteration The number of semitones to alter the note name.
- * @param noteOctave The octave number (e.g., 4 for middle C).
- * @returns The MIDI note number.
- *
- * @example
- * ```ts
- * // Returns 12 (MIDI note number for C0)
- * noteNameToMidi("C", 0, 0);
- *
- * // Returns 60 (MIDI note number for middle C = C4)
- * noteNameToMidi("C", 0, 4);
- *
- * // Returns 61 (MIDI note number for C#4)
- * noteNameToMidi("C", 1, 4);
- * ```
- */
 export function noteNameToMidi(
   noteName: NoteName,
   octaveNumber: OctaveNumber,
@@ -80,21 +30,6 @@ export function noteNameToMidi(
   return noteValue + (octaveNumber + 1) * 12 as MidiNoteNumber;
 }
 
-/**
- * Converts a musical note name string including ASCII sharps and flats
- * (e.g., "C#", "Bb", "E") to its corresponding note integer (0-11).
- *
- * The note name should start with a letter from A to G (case-insensitive),
- * optionally followed by one or more sharp symbols ('#', '♯', 'x', or '𝄪'), which add 1 or 2 to the value,
- * or flat ('b' or '♭') or double flat ('𝄫') symbols, which subtract 1 or 2.
- * Any other characters after the initial note letter, that are not valid accidentals,
- * will be considered invalid.
- * Alterations should be less than 12 semitones away in total.
- *
- * @param noteName The musical note name string to convert.
- * @returns The note integer (0-11) representing the note,
- * or `undefined` if the input is invalid.
- */
 export function noteNameStringToInteger(
   noteName: string,
 ): NoteInteger | undefined {
@@ -163,11 +98,11 @@ export function rootMidiAndIntervalToMidi(
 // TODO: make midiNoteSequenceToIntervals accept a root note - currently it assumes C
 export function midiNoteSequenceToIntervals(
   midiNoteSequence: MidiNoteSequence,
-  noteLabelThemeKey: NoteLabelThemeKey,
+  noteLabelCollectionKey: NoteLabelCollectionKey,
 ): (string | null)[] {
   const result = midiNoteSequence.map((note) => {
     if (note === null) return null;
-    return noteLabelThemes[noteLabelThemeKey]["labels"][note % 12];
+    return noteLabelCollections[noteLabelCollectionKey]["labels"][note % 12];
   }) as (string | null)[];
   return result;
 }
