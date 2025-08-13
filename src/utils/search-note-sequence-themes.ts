@@ -1,5 +1,5 @@
-import type { NoteCollection } from "@musodojo/music-theory-data";
 import type { Interval } from "../types/labels.d.ts";
+import type { NoteCollection } from "../types/note-collections.d.ts";
 import { noteCollections } from "../data/note-collections/mod.ts";
 
 const normalizationMap = new Map<string, string>();
@@ -27,11 +27,6 @@ for (const [canonical, aliases] of Object.entries(aliasSets)) {
   }
 }
 
-/**
- * Converts a string into a canonical, simplified format for searching.
- * This makes the search case-insensitive and forgiving of aliases.
- * @internal
- */
 function normalize(str: string): string {
   // Start with trimming, but preserve original case for now.
   let normalized = str.trim();
@@ -51,26 +46,13 @@ function normalize(str: string): string {
   return normalized.replace(/[-()]/g, "").replace(/\s+/g, " ").trim();
 }
 
-// --- Search Functionality --- //
-
 export interface SearchOptions {
   query?: string;
   intervals?: Interval[];
   type?: string;
 }
 
-/**
- * Searches all note sequence themes based on a flexible set of criteria.
- * The search prioritizes results in a musically relevant order:
- * 1. Exact matches on primary name and other names.
- * 2. Partial matches on primary name and other names.
- * 3. Partial matches on type.
- * 4. Partial matches on characteristics.
- *
- * @param options - The search criteria.
- * @returns An array of unique `NoteSequenceTheme` objects that match the criteria.
- */
-export function searchNoteSequenceThemes(
+export function searchNoteCollections(
   options: SearchOptions,
 ): NoteCollection[] {
   const { query, intervals, type } = options;
