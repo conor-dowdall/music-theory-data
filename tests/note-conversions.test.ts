@@ -102,6 +102,7 @@ Deno.test("handle double sharps and flats", () => {
 });
 
 Deno.test("invalid note names", () => {
+  console.log("Expect invalid note names warnings...");
   assertEquals(noteNameStringToInteger("H"), undefined);
   assertEquals(noteNameStringToInteger(""), undefined);
   assertEquals(noteNameStringToInteger(" "), undefined);

@@ -273,6 +273,7 @@ Deno.test("getNotes - Super Locrian Double Flat 7 Modes", () => {
 });
 
 Deno.test("getNotes - Invalid Inputs", () => {
+  console.log("Expect invalid inputs to getNotes warnings...");
   // @ts-expect-error invalid function input
   assertEquals(getNotes("X", "ionian"), []);
   // @ts-expect-error invalid function input

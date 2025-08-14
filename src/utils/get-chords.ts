@@ -26,8 +26,8 @@ import { rotateArray } from "./rotate-array.ts";
 import { harmonicMinorModes } from "../data/note-collections/harmonic-minor-modes.ts";
 import { melodicMinorModes } from "../data/note-collections/melodic-minor-modes.ts";
 
-function getRomanTriads(chordTypes: Triad[]): RomanTriad[] {
-  return chordTypes.map((quality, i) => {
+export function getRomanTriads(triads: Triad[]): RomanTriad[] {
+  return triads.map((quality, i) => {
     switch (quality) {
       case "M":
         return upperCaseRomanNumerals[i];
@@ -43,10 +43,10 @@ function getRomanTriads(chordTypes: Triad[]): RomanTriad[] {
   }) as RomanTriad[];
 }
 
-function getRomanSevenths(
-  chordTypes: Seventh[],
+export function getRomanSevenths(
+  sevenths: Seventh[],
 ): RomanSeventh[] {
-  return chordTypes.map((quality, i) => {
+  return sevenths.map((quality, i) => {
     switch (quality) {
       case "M7":
         return upperCaseRomanNumerals[i] + quality;
