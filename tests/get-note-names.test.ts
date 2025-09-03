@@ -1,5 +1,9 @@
 import { assertEquals } from "@std/assert";
-import { getNoteNamesFromRootAndCollectionKey } from "../src/utils/note-names.ts";
+import {
+  getNoteNamesFromRootAndCollectionKey,
+  getNoteNamesFromRootAndIntervals,
+} from "../src/utils/note-names.ts";
+import { diatonicModes } from "../src/data/note-collections/diatonic-modes.ts";
 
 Deno.test("getNoteNamesFromRootAndCollectionKey - Major Scales", () => {
   assertEquals(getNoteNamesFromRootAndCollectionKey("C", "ionian"), [
@@ -288,5 +292,14 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Super Locrian Double Flat 7 Mo
       "A♭", // no triple flats are used in this library
       "C♭",
     ],
+  );
+});
+
+Deno.test("getNoteNamesFromRootAndIntervals", () => {
+  assertEquals(
+    getNoteNamesFromRootAndIntervals("B♭", diatonicModes.aeolian.intervals, {
+      filterOutOctave: true,
+    }),
+    ["B♭", "C", "D♭", "E♭", "F", "G♭", "A♭"],
   );
 });

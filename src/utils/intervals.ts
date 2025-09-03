@@ -18,6 +18,12 @@ export interface TransformIntervalsOptions {
   reorderByPitch?: boolean;
 }
 
+export function filterOutOctaveIntervals(
+  intervals: readonly Interval[],
+): Interval[] {
+  return intervals.filter((i) => i !== "8" && i !== "♮8");
+}
+
 export function transformIntervals(
   intervals: readonly Interval[],
   transformation: IntervalTransformation,
@@ -28,7 +34,7 @@ export function transformIntervals(
     reorderByPitch = true,
   } = options;
 
-  const map: Record<string, Interval | undefined> = (() => {
+  const intervalMap: Partial<Record<Interval, Interval>> = (() => {
     switch (transformation) {
       case "simpleToExtension":
         return simpleToExtensionIntervalMap;
@@ -41,24 +47,21 @@ export function transformIntervals(
     }
   })();
 
-  let startIntervals = intervals;
+  const fundamentalIntervals = filterOutOctave
+    ? filterOutOctaveIntervals(intervals)
+    : intervals;
 
-  if (filterOutOctave) {
-    startIntervals = startIntervals
-      .filter(
-        (i) => i !== "8" && i !== "♮8",
-      );
-  }
-
-  const finalIntervals = startIntervals.map((interval) =>
-    map[interval] ?? interval
+  const finalIntervals = fundamentalIntervals.map((interval) =>
+    intervalMap[interval] ?? interval
   );
 
+  // TODO: reorder by pitch makes no sense - check meaning of reorderByPitch.
   if (reorderByPitch) {
     finalIntervals
       .sort((a, b) => {
-        const intA = intervalToIntegerMap[a];
-        const intB = intervalToIntegerMap[b];
+        const intA = intervalToIntegerMap.get(a);
+        const intB = intervalToIntegerMap.get(b);
+        if (intA === undefined || intB === undefined) return 0;
         return intA - intB;
       });
   }

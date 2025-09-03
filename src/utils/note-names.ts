@@ -129,8 +129,8 @@ export function normalizeRootNoteString(name: string): RootNote | undefined {
 
 export function noteNameToInteger(
   noteName: NoteName,
-): NoteInteger {
-  return noteNameToIntegerMap[noteName];
+): NoteInteger | undefined {
+  return noteNameToIntegerMap.get(noteName);
 }
 
 export function noteNameStringToInteger(
@@ -146,6 +146,9 @@ export function getNoteNamesFromRootAndIntervals(
   intervals: readonly Interval[],
   options: TransformIntervalsOptions = {},
 ): NoteName[] {
+  const rootNoteInteger = noteNameToInteger(rootNote);
+  if (rootNoteInteger === undefined) return [];
+
   const { filterOutOctave = false, reorderByPitch = true } = options;
 
   let intervalsToProcess = [...intervals];
@@ -158,8 +161,9 @@ export function getNoteNamesFromRootAndIntervals(
 
   if (reorderByPitch) {
     intervalsToProcess.sort((a, b) => {
-      const intA = intervalToIntegerMap[a];
-      const intB = intervalToIntegerMap[b];
+      const intA = intervalToIntegerMap.get(a);
+      const intB = intervalToIntegerMap.get(b);
+      if (intA === undefined || intB === undefined) return 0;
       return intA - intB;
     });
   }
@@ -167,24 +171,30 @@ export function getNoteNamesFromRootAndIntervals(
   const rootNoteLetter = rootNote.charAt(0).toUpperCase();
   const rootNoteLetterIndex = noteLetters.indexOf(rootNoteLetter as NoteLetter);
 
-  const notes: NoteName[] = intervalsToProcess.map((interval) => {
-    const intervalInteger = intervalToIntegerMap[interval];
-    const absoluteNoteInteger =
-      (noteNameToInteger(rootNote) + intervalInteger) % 12;
+  const notes: NoteName[] = intervalsToProcess.reduce(
+    (acc: NoteName[], interval) => {
+      const intervalInteger = intervalToIntegerMap.get(interval);
+      if (intervalInteger === undefined) return acc;
 
-    const intervalNumberMatch = interval.match(/\d+/)!;
-    const intervalNumber = parseInt(intervalNumberMatch[0], 10);
+      const absoluteNoteInteger = (rootNoteInteger + intervalInteger) % 12;
 
-    const targetNoteLetter =
-      noteLetters[(rootNoteLetterIndex + intervalNumber - 1) % 7];
+      const intervalNumberMatch = interval.match(/\d+/)!;
+      const intervalNumber = parseInt(intervalNumberMatch[0], 10);
 
-    const enharmonicGroup = enharmonicNoteNameGroups[absoluteNoteInteger];
-    const selectedNote = enharmonicGroup.find((noteName) =>
-      noteName.startsWith(targetNoteLetter)
-    );
+      const targetNoteLetter =
+        noteLetters[(rootNoteLetterIndex + intervalNumber - 1) % 7];
 
-    return selectedNote ?? enharmonicGroup[0];
-  });
+      const enharmonicGroup = enharmonicNoteNameGroups[absoluteNoteInteger];
+      const selectedNote = enharmonicGroup.find((noteName) =>
+        noteName.startsWith(targetNoteLetter)
+      );
+
+      acc.push(selectedNote ?? enharmonicGroup[0]);
+
+      return acc;
+    },
+    [],
+  );
 
   return notes;
 }

@@ -24,78 +24,12 @@ const _noteAccidentalToIntegerMap = {
 
 export type NoteAccidental = keyof typeof _noteAccidentalToIntegerMap;
 
-export const noteAccidentalToIntegerMap: Record<
-  NoteAccidental,
-  number
-> = _noteAccidentalToIntegerMap;
+export const noteAccidentalToIntegerMap: ReadonlyMap<NoteAccidental, number> =
+  new Map(
+    Object.entries(_noteAccidentalToIntegerMap) as [NoteAccidental, number][],
+  );
 
-const _noteNameToIntegerMap = {
-  "C𝄫": 10,
-  "C♭": 11,
-  "C♮": 0,
-  "C": 0,
-  "C♯": 1,
-  "C𝄪": 2,
-
-  "D𝄫": 0,
-  "D♭": 1,
-  "D♮": 2,
-  "D": 2,
-  "D♯": 3,
-  "D𝄪": 4,
-
-  "E𝄫": 2,
-  "E♭": 3,
-  "E♮": 4,
-  "E": 4,
-  "E♯": 5,
-  "E𝄪": 6,
-
-  "F𝄫": 3,
-  "F♭": 4,
-  "F♮": 5,
-  "F": 5,
-  "F♯": 6,
-  "F𝄪": 7,
-
-  "G𝄫": 5,
-  "G♭": 6,
-  "G♮": 7,
-  "G": 7,
-  "G♯": 8,
-  "G𝄪": 9,
-
-  "A𝄫": 7,
-  "A♭": 8,
-  "A♮": 9,
-  "A": 9,
-  "A♯": 10,
-  "A𝄪": 11,
-
-  "B𝄫": 9,
-  "B♭": 10,
-  "B♮": 11,
-  "B": 11,
-  "B♯": 0,
-  "B𝄪": 1,
-} as const;
-// satisfies Record<
-//   NoteLetter | `${NoteLetter}${NoteAccidental}`,
-//   NoteInteger
-// >; // extra type safety for development purposes only (causes slow types)
-
-export type NoteName = keyof typeof _noteNameToIntegerMap;
-
-export const noteNameToIntegerMap: Record<NoteName, NoteInteger> =
-  _noteNameToIntegerMap;
-
-export const noteNames: readonly NoteName[] = Object.keys(
-  noteNameToIntegerMap,
-) as readonly NoteName[];
-
-export const noteNamesSet: Set<NoteName> = new Set(noteNames);
-
-export const enharmonicNoteNameGroups: readonly (readonly NoteName[])[] = [
+const _enharmonicNoteNameGroups = [
   ["C", "C♮", "B♯", "D𝄫"],
   ["D♭", "C♯", "B𝄪"],
   ["D", "D♮", "E𝄫", "C𝄪"],
@@ -110,7 +44,26 @@ export const enharmonicNoteNameGroups: readonly (readonly NoteName[])[] = [
   ["B", "B♮", "C♭", "A𝄪"],
 ] as const;
 
-export const enharmonicRootNoteGroups = [
+export type NoteName = typeof _enharmonicNoteNameGroups[number][number];
+
+export const enharmonicNoteNameGroups: readonly (readonly NoteName[])[] =
+  _enharmonicNoteNameGroups;
+
+export const noteNames: readonly NoteName[] = enharmonicNoteNameGroups.flat();
+
+export const noteNamesSet: ReadonlySet<NoteName> = new Set(noteNames);
+
+export const noteNameToIntegerMap: ReadonlyMap<NoteName, NoteInteger> = (() => {
+  const map = new Map<NoteName, NoteInteger>();
+  _enharmonicNoteNameGroups.forEach((group, index) => {
+    group.forEach((note) => {
+      map.set(note, index as NoteInteger);
+    });
+  });
+  return map;
+})();
+
+const _enharmonicRootNoteGroups = [
   ["C", "B♯"],
   ["D♭", "C♯"],
   ["D"],
@@ -125,11 +78,24 @@ export const enharmonicRootNoteGroups = [
   ["B", "C♭"],
 ] as const;
 
-export type RootNote = typeof enharmonicRootNoteGroups[number][number];
+export type RootNote = typeof _enharmonicRootNoteGroups[number][number];
+
+export const enharmonicRootNoteGroups: readonly (readonly RootNote[])[] =
+  _enharmonicRootNoteGroups;
 
 export const rootNotes: readonly RootNote[] = enharmonicRootNoteGroups.flat();
 
-export const rootNotesSet: Set<RootNote> = new Set(rootNotes);
+export const rootNotesSet: ReadonlySet<RootNote> = new Set(rootNotes);
+
+export const rootNoteToIntegerMap: ReadonlyMap<RootNote, NoteInteger> = (() => {
+  const map = new Map<RootNote, NoteInteger>();
+  enharmonicRootNoteGroups.forEach((group, index) => {
+    group.forEach((note) => {
+      map.set(note, index as NoteInteger);
+    });
+  });
+  return map;
+})();
 
 export type SimpleIntervalNumber =
   | "1"
@@ -280,12 +246,11 @@ const _intervalToIntegerMap = {
 
 export type Interval = keyof typeof _intervalToIntegerMap;
 
-export const intervalToIntegerMap: Record<Interval, number> =
-  _intervalToIntegerMap;
+export const intervalToIntegerMap: ReadonlyMap<Interval, number> = new Map(
+  Object.entries(_intervalToIntegerMap) as [Interval, number][],
+);
 
-export const simpleToExtensionIntervalMap: Partial<
-  Record<SimpleInterval, CompoundInterval>
-> = {
+export const _simpleToExtensionIntervalMap = {
   "2": "9",
   "♮2": "♮9",
   "♭2": "♭9",
@@ -299,6 +264,19 @@ export const simpleToExtensionIntervalMap: Partial<
   "♭6": "♭13",
   "♯6": "♯13",
 } as const;
+// satisfies Partial<
+//   Record<SimpleInterval, CompoundInterval>
+// >;
+
+export const simpleToExtensionIntervalMap: ReadonlyMap<
+  SimpleInterval,
+  CompoundInterval
+> = new Map(
+  Object.entries(_simpleToExtensionIntervalMap) as [
+    SimpleInterval,
+    CompoundInterval,
+  ][],
+);
 
 export const extensionToSimpleIntervalMap: Partial<
   Record<CompoundInterval, SimpleInterval>

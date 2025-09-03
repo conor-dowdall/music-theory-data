@@ -20,6 +20,16 @@ export interface MidiNoteSequenceOptions {
   extraNotes?: number;
 }
 
+/**
+ * Generates a monotonic sequence of MIDI notes.
+ * @param rootNoteMidi The root MIDI note number.
+ * @param intervals The array of intervals to generate the sequence from.
+ * @param numNotes The number of notes to generate.
+ * @param startFromIndex The starting index in the intervals array.
+ * @param direction The direction of the sequence ('ascending' or 'descending').
+ * @returns An array of MIDI note numbers.
+ * @throws {Error} If a MIDI note cannot be calculated for an interval.
+ */
 function getMonotonicMidiNoteSequence(
   rootNoteMidi: MidiNoteNumber,
   intervals: Interval[],
@@ -30,9 +40,7 @@ function getMonotonicMidiNoteSequence(
   const notes: MidiNoteNumber[] = [];
   const intervalsLength = intervals.length;
 
-  if (intervalsLength === 0 || numNotes <= 0) {
-    return [];
-  }
+  if (intervalsLength === 0 || numNotes <= 0) return [];
 
   for (let i = 0; i < numNotes; i++) {
     let intervalIndex: number;
@@ -43,6 +51,11 @@ function getMonotonicMidiNoteSequence(
       octaveOffset = Math.floor((startFromIndex + i) / intervalsLength) * 12;
       const interval = intervals[intervalIndex];
       const note = rootMidiAndIntervalToMidi(rootNoteMidi, interval);
+      if (note === undefined) {
+        throw new Error(
+          `Could not calculate MIDI note for interval ${interval} at index ${intervalIndex}`,
+        );
+      }
       notes.push((note + octaveOffset) as MidiNoteNumber);
     } // descending...
     else {
@@ -66,13 +79,25 @@ function getMonotonicMidiNoteSequence(
         (rootNoteMidi - octaveOffset) as MidiNoteNumber,
         interval,
       );
-      notes.push(note as MidiNoteNumber);
+      if (note === undefined) {
+        throw new Error(
+          `Could not calculate MIDI note for interval ${interval} at index ${intervalIndex}`,
+        );
+      }
+      notes.push(note);
     }
   }
 
   return notes;
 }
 
+/**
+ * Generates a sequence of MIDI notes based on the provided options.
+ * The sequence can be ascending, descending, or a combination of both.
+ * @param options The options for generating the MIDI note sequence.
+ * @returns A sequence of MIDI notes.
+ * @throws {Error} If a MIDI note cannot be calculated for an interval.
+ */
 export function getMidiNoteSequence(
   options: MidiNoteSequenceOptions,
 ): MidiNoteSequence {
