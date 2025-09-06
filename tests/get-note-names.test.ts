@@ -4,6 +4,7 @@ import {
   getNoteNamesFromRootAndIntervals,
 } from "../src/utils/note-names.ts";
 import { diatonicModes } from "../src/data/note-collections/diatonic-modes.ts";
+import { filterOutOctaveIntervals } from "../src/utils/intervals.ts";
 
 Deno.test("getNoteNamesFromRootAndCollectionKey - Major Scales", () => {
   assertEquals(getNoteNamesFromRootAndCollectionKey("C", "ionian"), [
@@ -299,8 +300,7 @@ Deno.test("getNoteNamesFromRootAndIntervals", () => {
   assertEquals(
     getNoteNamesFromRootAndIntervals(
       "B♭",
-      diatonicModes.aeolian.intervals,
-      { filterOutOctave: true },
+      filterOutOctaveIntervals(diatonicModes.aeolian.intervals),
     ),
     ["B♭", "C", "D♭", "E♭", "F", "G♭", "A♭"],
   );
@@ -308,14 +308,6 @@ Deno.test("getNoteNamesFromRootAndIntervals", () => {
     getNoteNamesFromRootAndIntervals(
       "B♭",
       diatonicModes.aeolian.intervals,
-    ),
-    ["B♭", "C", "D♭", "E♭", "F", "G♭", "A♭", "B♭"],
-  );
-  assertEquals(
-    getNoteNamesFromRootAndIntervals(
-      "B♭",
-      diatonicModes.aeolian.intervals,
-      { filterOutOctave: false },
     ),
     ["B♭", "C", "D♭", "E♭", "F", "G♭", "A♭", "B♭"],
   );

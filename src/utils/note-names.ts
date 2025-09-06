@@ -11,7 +11,6 @@ import {
   type RootNote,
   rootNotes,
 } from "../data/labels/note-labels.ts";
-import type { TransformIntervalsOptions } from "./intervals.ts";
 import {
   type NoteCollectionKey,
   noteCollections,
@@ -144,25 +143,14 @@ export function noteNameStringToInteger(
 export function getNoteNamesFromRootAndIntervals(
   rootNote: RootNote,
   intervals: readonly Interval[],
-  options: TransformIntervalsOptions = {},
 ): NoteName[] {
   const rootNoteInteger = noteNameToInteger(rootNote);
   if (rootNoteInteger === undefined) return [];
 
-  const { filterOutOctave = false } = options;
-
-  let intervalsToProcess = [...intervals];
-
-  if (filterOutOctave) {
-    intervalsToProcess = intervalsToProcess.filter(
-      (i) => i !== "8" && i !== "♮8",
-    );
-  }
-
   const rootNoteLetter = rootNote.charAt(0).toUpperCase();
   const rootNoteLetterIndex = noteLetters.indexOf(rootNoteLetter as NoteLetter);
 
-  const notes: NoteName[] = intervalsToProcess.reduce(
+  const notes: NoteName[] = intervals.reduce(
     (acc: NoteName[], interval) => {
       const intervalInteger = intervalToIntegerMap.get(interval);
       if (intervalInteger === undefined) return acc;
@@ -190,14 +178,13 @@ export function getNoteNamesFromRootAndIntervals(
   return notes;
 }
 
+// TODO: allow transforming intervals before getting note names?
 export function getNoteNamesFromRootAndCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
-  options: TransformIntervalsOptions = {},
 ): NoteName[] {
   return getNoteNamesFromRootAndIntervals(
     rootNote,
     noteCollections[noteCollectionKey].intervals,
-    options,
   );
 }

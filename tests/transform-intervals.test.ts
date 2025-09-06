@@ -12,6 +12,15 @@ Deno.test("simpleToExtension ionian", () => {
   assertEquals(spread, ["1", "3", "5", "7", "9", "11", "13"]);
 });
 
+Deno.test("simpleToExtension ionian - unsorted", () => {
+  const spread = transformIntervals(
+    diatonicModes.ionian.intervals,
+    "simpleToExtension",
+    { filterOutOctave: true, sortIntervals: false },
+  );
+  assertEquals(spread, ["1", "9", "3", "11", "5", "13", "7"]);
+});
+
 Deno.test("simpleToExtension ionian with octave", () => {
   const spread = transformIntervals(
     diatonicModes.ionian.intervals,
