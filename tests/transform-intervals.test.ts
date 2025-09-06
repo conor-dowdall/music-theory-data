@@ -7,7 +7,7 @@ Deno.test("simpleToExtension ionian", () => {
   const spread = transformIntervals(
     diatonicModes.ionian.intervals,
     "simpleToExtension",
-    { filterOutOctave: true, reorderByPitch: true },
+    { filterOutOctave: true, sortIntervals: true },
   );
   assertEquals(spread, ["1", "3", "5", "7", "9", "11", "13"]);
 });
@@ -16,7 +16,7 @@ Deno.test("simpleToExtension ionian with octave", () => {
   const spread = transformIntervals(
     diatonicModes.ionian.intervals,
     "simpleToExtension",
-    { filterOutOctave: false, reorderByPitch: true },
+    { filterOutOctave: false, sortIntervals: true },
   );
   assertEquals(spread, ["1", "3", "5", "7", "8", "9", "11", "13"]);
 });
@@ -25,7 +25,7 @@ Deno.test("simpleToExtension - dorian", () => {
   const spread = transformIntervals(
     diatonicModes.dorian.intervals,
     "simpleToExtension",
-    { filterOutOctave: true, reorderByPitch: true },
+    { filterOutOctave: true, sortIntervals: true },
   );
   assertEquals(spread, ["1", "♭3", "5", "♭7", "9", "11", "13"]);
 });

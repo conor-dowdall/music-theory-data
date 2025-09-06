@@ -2,7 +2,7 @@ import {
   enharmonicNoteNameGroups,
   type Interval,
   intervalToIntegerMap,
-  NoteInteger,
+  type NoteInteger,
   type NoteLetter,
   noteLetters,
   type NoteName,
@@ -149,7 +149,7 @@ export function getNoteNamesFromRootAndIntervals(
   const rootNoteInteger = noteNameToInteger(rootNote);
   if (rootNoteInteger === undefined) return [];
 
-  const { filterOutOctave = false, reorderByPitch = true } = options;
+  const { filterOutOctave = false } = options;
 
   let intervalsToProcess = [...intervals];
 
@@ -157,15 +157,6 @@ export function getNoteNamesFromRootAndIntervals(
     intervalsToProcess = intervalsToProcess.filter(
       (i) => i !== "8" && i !== "♮8",
     );
-  }
-
-  if (reorderByPitch) {
-    intervalsToProcess.sort((a, b) => {
-      const intA = intervalToIntegerMap.get(a);
-      const intB = intervalToIntegerMap.get(b);
-      if (intA === undefined || intB === undefined) return 0;
-      return intA - intB;
-    });
   }
 
   const rootNoteLetter = rootNote.charAt(0).toUpperCase();

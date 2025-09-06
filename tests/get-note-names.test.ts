@@ -297,9 +297,26 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Super Locrian Double Flat 7 Mo
 
 Deno.test("getNoteNamesFromRootAndIntervals", () => {
   assertEquals(
-    getNoteNamesFromRootAndIntervals("B♭", diatonicModes.aeolian.intervals, {
-      filterOutOctave: true,
-    }),
+    getNoteNamesFromRootAndIntervals(
+      "B♭",
+      diatonicModes.aeolian.intervals,
+      { filterOutOctave: true },
+    ),
     ["B♭", "C", "D♭", "E♭", "F", "G♭", "A♭"],
+  );
+  assertEquals(
+    getNoteNamesFromRootAndIntervals(
+      "B♭",
+      diatonicModes.aeolian.intervals,
+    ),
+    ["B♭", "C", "D♭", "E♭", "F", "G♭", "A♭", "B♭"],
+  );
+  assertEquals(
+    getNoteNamesFromRootAndIntervals(
+      "B♭",
+      diatonicModes.aeolian.intervals,
+      { filterOutOctave: false },
+    ),
+    ["B♭", "C", "D♭", "E♭", "F", "G♭", "A♭", "B♭"],
   );
 });

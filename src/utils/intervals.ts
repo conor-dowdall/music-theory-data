@@ -15,13 +15,23 @@ export type IntervalTransformation =
 
 export interface TransformIntervalsOptions {
   filterOutOctave?: boolean;
-  reorderByPitch?: boolean;
+  sortIntervals?: boolean;
 }
 
 export function filterOutOctaveIntervals(
   intervals: readonly Interval[],
 ): Interval[] {
   return intervals.filter((i) => i !== "8" && i !== "♮8");
+}
+
+export function sortIntervalArray(intervals: Interval[]) {
+  intervals
+    .sort((a, b) => {
+      const intA = intervalToIntegerMap.get(a);
+      const intB = intervalToIntegerMap.get(b);
+      if (intA === undefined || intB === undefined) return 0;
+      return intA - intB;
+    });
 }
 
 export function transformIntervals(
@@ -31,7 +41,7 @@ export function transformIntervals(
 ): Interval[] {
   const {
     filterOutOctave = false,
-    reorderByPitch = true,
+    sortIntervals = true,
   } = options;
 
   const intervalMap: ReadonlyMap<Interval, Interval> = (() => {
@@ -55,16 +65,7 @@ export function transformIntervals(
     intervalMap.get(interval) ?? interval
   );
 
-  // TODO: reorder by pitch makes no sense - check meaning of reorderByPitch.
-  if (reorderByPitch) {
-    finalIntervals
-      .sort((a, b) => {
-        const intA = intervalToIntegerMap.get(a);
-        const intB = intervalToIntegerMap.get(b);
-        if (intA === undefined || intB === undefined) return 0;
-        return intA - intB;
-      });
-  }
+  if (sortIntervals) sortIntervalArray(finalIntervals);
 
   return finalIntervals;
 }
