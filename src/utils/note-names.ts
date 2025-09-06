@@ -1,8 +1,8 @@
-import type { NoteInteger } from "../types/labels.d.ts";
 import {
   enharmonicNoteNameGroups,
   type Interval,
   intervalToIntegerMap,
+  NoteInteger,
   type NoteLetter,
   noteLetters,
   type NoteName,

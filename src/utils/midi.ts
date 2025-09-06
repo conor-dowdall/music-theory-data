@@ -1,11 +1,12 @@
 import {
   type Interval,
   intervalToIntegerMap,
+  type NoteInteger,
   type NoteName,
   noteNameToIntegerMap,
 } from "../data/labels/note-labels.ts";
-import type { NoteInteger, OctaveNumber } from "../types/labels.d.ts";
-import type { MidiNoteNumber } from "../types/midi.d.ts";
+
+import type { MidiNoteNumber, OctaveNumber } from "../types/midi.d.ts";
 
 export function rootIntegerAndIntervalToMidi(
   rootNoteInteger: NoteInteger,

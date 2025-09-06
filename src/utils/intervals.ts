@@ -34,7 +34,7 @@ export function transformIntervals(
     reorderByPitch = true,
   } = options;
 
-  const intervalMap: Partial<Record<Interval, Interval>> = (() => {
+  const intervalMap: ReadonlyMap<Interval, Interval> = (() => {
     switch (transformation) {
       case "simpleToExtension":
         return simpleToExtensionIntervalMap;
@@ -52,7 +52,7 @@ export function transformIntervals(
     : intervals;
 
   const finalIntervals = fundamentalIntervals.map((interval) =>
-    intervalMap[interval] ?? interval
+    intervalMap.get(interval) ?? interval
   );
 
   // TODO: reorder by pitch makes no sense - check meaning of reorderByPitch.

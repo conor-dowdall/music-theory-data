@@ -1,4 +1,4 @@
-import type { NoteInteger } from "../../types/labels.d.ts";
+export type NoteInteger = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
 const _noteLetters = [
   "C",
@@ -164,10 +164,6 @@ const _simpleIntervalToIntegerMap = {
   "♯8": 13,
   "𝄪8": 14,
 } as const;
-// satisfies Record<
-//   SimpleIntervalNumber | `${NoteAccidental}${SimpleIntervalNumber}`,
-//   number
-// >; // extra type safety for development purposes only (causes slow types)
 
 export type SimpleInterval = keyof typeof _simpleIntervalToIntegerMap;
 
@@ -230,10 +226,6 @@ const _compoundIntervalToIntegerMap = {
   "♯15": 25,
   "𝄪15": 26,
 } as const;
-// satisfies Record<
-//   CompoundIntervalNumber | `${NoteAccidental}${CompoundIntervalNumber}`,
-//   number
-// >; // extra type safety for development purposes only (causes slow types)
 
 export type CompoundInterval = keyof typeof _compoundIntervalToIntegerMap;
 
@@ -250,7 +242,7 @@ export const intervalToIntegerMap: ReadonlyMap<Interval, number> = new Map(
   Object.entries(_intervalToIntegerMap) as [Interval, number][],
 );
 
-export const _simpleToExtensionIntervalMap = {
+const _simpleToExtensionIntervalMap = {
   "2": "9",
   "♮2": "♮9",
   "♭2": "♭9",
@@ -264,9 +256,6 @@ export const _simpleToExtensionIntervalMap = {
   "♭6": "♭13",
   "♯6": "♯13",
 } as const;
-// satisfies Partial<
-//   Record<SimpleInterval, CompoundInterval>
-// >;
 
 export const simpleToExtensionIntervalMap: ReadonlyMap<
   SimpleInterval,
@@ -278,9 +267,7 @@ export const simpleToExtensionIntervalMap: ReadonlyMap<
   ][],
 );
 
-export const extensionToSimpleIntervalMap: Partial<
-  Record<CompoundInterval, SimpleInterval>
-> = {
+const _extensionToSimpleIntervalMap = {
   "9": "2",
   "♮9": "♮2",
   "♭9": "♭2",
@@ -295,9 +282,17 @@ export const extensionToSimpleIntervalMap: Partial<
   "♯13": "♯6",
 } as const;
 
-export const simpleToCompoundIntervalMap: Partial<
-  Record<SimpleInterval, CompoundInterval>
-> = {
+export const extensionToSimpleIntervalMap: ReadonlyMap<
+  CompoundInterval,
+  SimpleInterval
+> = new Map(
+  Object.entries(_extensionToSimpleIntervalMap) as [
+    CompoundInterval,
+    SimpleInterval,
+  ][],
+);
+
+const _simpleToCompoundIntervalMap = {
   "2": "9",
   "♮2": "♮9",
   "♭2": "♭9",
@@ -324,9 +319,17 @@ export const simpleToCompoundIntervalMap: Partial<
   "♯7": "♯14",
 } as const;
 
-export const compoundToSimpleIntervalMap: Partial<
-  Record<CompoundInterval, SimpleInterval>
-> = {
+export const simpleToCompoundIntervalMap: ReadonlyMap<
+  SimpleInterval,
+  CompoundInterval
+> = new Map(
+  Object.entries(_simpleToCompoundIntervalMap) as [
+    SimpleInterval,
+    CompoundInterval,
+  ][],
+);
+
+const _compoundToSimpleIntervalMap = {
   "9": "2",
   "♮9": "♮2",
   "♭9": "♭2",
@@ -352,6 +355,16 @@ export const compoundToSimpleIntervalMap: Partial<
   "♭14": "♭7",
   "♯14": "♯7",
 } as const;
+
+export const compoundToSimpleIntervalMap: ReadonlyMap<
+  CompoundInterval,
+  SimpleInterval
+> = new Map(
+  Object.entries(_compoundToSimpleIntervalMap) as [
+    CompoundInterval,
+    SimpleInterval,
+  ][],
+);
 
 export type IntervalQualityType = "d" | "m" | "P" | "M" | "A";
 
@@ -424,13 +437,15 @@ const _intervalQualityToIntegerMap = {
   "P15": 24,
   "A15": 25,
 } as const;
-// satisfies Partial<
-//   Record<`${IntervalQualityType}${IntervalNumber}`, number>
-// >; // extra type safety for development purposes only (causes slow types)
 
 export type IntervalQuality = keyof typeof _intervalQualityToIntegerMap;
 
-export const intervalQualityToIntegerMap: Record<
+export const intervalQualityToIntegerMap: ReadonlyMap<
   IntervalQuality,
   number
-> = _intervalQualityToIntegerMap;
+> = new Map(
+  Object.entries(_intervalQualityToIntegerMap) as [
+    IntervalQuality,
+    number,
+  ][],
+);

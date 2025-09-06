@@ -1,5 +1,4 @@
-import type { Interval } from "../data/labels/note-labels.ts";
-import type { NoteInteger } from "../types/labels.d.ts";
+import type { Interval, NoteInteger } from "../data/labels/note-labels.ts";
 
 export interface NoteCollection {
   readonly primaryName: string;
