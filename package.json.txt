@@ -1,0 +1,13 @@
+{
+  "name": "@musodojo/music-theory-data",
+  "version": "14.0.1",
+  "description": "The musician-friendly TypeScript library for modes, scales, chords, and more.",
+  "keywords": [
+    "music",
+    "theory"
+  ],
+  "license": "CC0-1.0",
+  "author": "Conor Dowdall",
+  "type": "module",
+  "main": "src/mod.ts"
+}
