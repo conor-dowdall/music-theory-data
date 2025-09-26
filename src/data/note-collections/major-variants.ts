@@ -1,4 +1,4 @@
-import type { NoteCollection } from "../../types/note-collections.d.ts ";
+import type { NoteCollection } from "../../types/note-collections.d.ts";
 
 const major: NoteCollection = {
   primaryName: "M",
