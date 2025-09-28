@@ -109,18 +109,37 @@ export function searchNoteCollections(
   }
 
   // 2. Apply prioritized text search on the filtered candidates
-  const prioritizedResults = new Set<NoteCollection>();
   const normalizedQuery = normalizeSearchTerm(query);
 
   if (!normalizedQuery) {
     return candidates;
   }
 
-  // Use case-sensitive search for "M" and "m" to avoid incorrect matches.
-  const isCaseSensitiveQuery = normalizedQuery === "M" ||
-    normalizedQuery === "m";
-  const regexFlags = isCaseSensitiveQuery ? "" : "i";
-  const searchRegex = new RegExp(`\\b${normalizedQuery}\\b`, regexFlags);
+  const searchWords = normalizedQuery.split(" ");
+
+  // Filter candidates to those that contain all search words
+  const textFilteredCandidates = candidates.filter((theme) => {
+    const searchableText = [
+      theme.primaryName,
+      ...theme.names,
+      ...theme.type,
+      ...theme.characteristics,
+    ]
+      .map(normalizeSearchTerm)
+      .join(" ");
+
+    return searchWords.every((word) => {
+      const isCaseSensitiveWord = word === "M" || word === "m";
+      const regex = new RegExp(
+        `\\b${word}\\b`,
+        isCaseSensitiveWord ? "" : "i",
+      );
+      return regex.test(searchableText);
+    });
+  });
+
+  // 3. Prioritize the filtered results
+  const prioritizedResults = new Set<NoteCollection>();
 
   const passes = [
     // Pass 1: Exact match on primaryName
@@ -129,28 +148,27 @@ export function searchNoteCollections(
     // Pass 2: Exact match on any name
     (theme: NoteCollection) =>
       theme.names.some((name) => normalizeSearchTerm(name) === normalizedQuery),
-    // Pass 3: Whole word match on primaryName
+    // Pass 3: Primary name starts with the query
     (theme: NoteCollection) =>
-      searchRegex.test(normalizeSearchTerm(theme.primaryName)),
-    // Pass 4: Whole word match on any name
+      normalizeSearchTerm(theme.primaryName).startsWith(normalizedQuery),
+    // Pass 4: Any name starts with the query
     (theme: NoteCollection) =>
-      theme.names.some((name) => searchRegex.test(normalizeSearchTerm(name))),
-    // Pass 7: Whole word match on any type
-    (theme: NoteCollection) =>
-      theme.type.some((t) => searchRegex.test(normalizeSearchTerm(t))),
-    // Pass 8: Whole word match on any characteristic
-    (theme: NoteCollection) =>
-      theme.characteristics.some((c) =>
-        searchRegex.test(normalizeSearchTerm(c))
+      theme.names.some((name) =>
+        normalizeSearchTerm(name).startsWith(normalizedQuery)
       ),
   ];
 
   for (const pass of passes) {
-    for (const theme of candidates) {
+    for (const theme of textFilteredCandidates) {
       if (pass(theme)) {
         prioritizedResults.add(theme);
       }
     }
+  }
+
+  // Add the remaining text-filtered candidates that didn't match a priority pass
+  for (const theme of textFilteredCandidates) {
+    prioritizedResults.add(theme);
   }
 
   return Array.from(prioritizedResults);

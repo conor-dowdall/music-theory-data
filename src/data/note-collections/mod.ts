@@ -1,23 +1,35 @@
 import { diatonicModes } from "./diatonic-modes.ts";
 import { harmonicMinorModes } from "./harmonic-minor-modes.ts";
 import { melodicMinorModes } from "./melodic-minor-modes.ts";
+import { minorVariants } from "./minor-variants.ts";
 import { dominantVariants } from "./dominant-variants.ts";
 import { majorVariants } from "./major-variants.ts";
+import { pentatonics } from "./pentatonics.ts";
+import { diminished } from "./diminished.ts";
+import { augmented } from "./augmented.ts";
 import { otherNoteCollections } from "./other-collections.ts";
 
 export { diatonicModes } from "./diatonic-modes.ts";
 export { dominantVariants } from "./dominant-variants.ts";
 export { harmonicMinorModes } from "./harmonic-minor-modes.ts";
 export { majorVariants } from "./major-variants.ts";
+export { minorVariants } from "./minor-variants.ts";
 export { melodicMinorModes } from "./melodic-minor-modes.ts";
+export { pentatonics } from "./pentatonics.ts";
+export { diminished } from "./diminished.ts";
+export { augmented } from "./augmented.ts";
 export { otherNoteCollections } from "./other-collections.ts";
 
 export const noteCollections = {
   ...diatonicModes,
   ...harmonicMinorModes,
   ...melodicMinorModes,
-  ...dominantVariants,
   ...majorVariants,
+  ...minorVariants,
+  ...dominantVariants,
+  ...pentatonics,
+  ...diminished,
+  ...augmented,
   ...otherNoteCollections,
 } as const;
 
@@ -27,8 +39,12 @@ export const groupedNoteCollections = {
   diatonicModes,
   harmonicMinorModes,
   melodicMinorModes,
-  dominantVariants,
   majorVariants,
+  minorVariants,
+  dominantVariants,
+  pentatonics,
+  diminished,
+  augmented,
   otherNoteCollections,
 } as const;
 
@@ -56,15 +72,33 @@ export const noteCollectionGroupsMetadata: Record<
     description:
       "Seven-note scales derived from the melodic minor scale, each starting on a different scale degree.",
   },
+  majorVariants: {
+    displayName: "Major Variants",
+    description:
+      "Chord structures based on the major triad, including sixth and major seventh harmonies.",
+  },
+  minorVariants: {
+    displayName: "Minor Variants",
+    description:
+      "Chord structures based on the minor triad, including sixth and seventh harmonies.",
+  },
   dominantVariants: {
     displayName: "Dominant Variants",
     description:
       "Chord structures based on the dominant seventh chord, including extended harmonies (9ths, 11ths, 13ths).",
   },
-  majorVariants: {
-    displayName: "Major Variants",
+  pentatonics: {
+    displayName: "Pentatonic Scales",
+    description: "Five-note scales used widely in folk, blues, and rock music.",
+  },
+  diminished: {
+    displayName: "Diminished",
+    description: "Tense and dissonant chords and scales built on minor thirds.",
+  },
+  augmented: {
+    displayName: "Augmented",
     description:
-      "Chord structures based on the major triad, including sixth and major seventh harmonies.",
+      "Unstable and dreamy chords and scales, including classical augmented sixth chords.",
   },
   otherNoteCollections: {
     displayName: "Other",

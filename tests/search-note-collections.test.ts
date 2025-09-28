@@ -71,9 +71,14 @@ Deno.test("findNoteCollection - finds single best match", () => {
   // Should find ionian because "Major Scale" is an exact name match
   const majorScale = findNoteCollection({ query: "Major Scale" });
   assertEquals(majorScale, noteCollections.ionian);
+  const majorScale2 = findNoteCollection({ query: "major scale" });
+  assertEquals(majorScale2, noteCollections.ionian);
 
   const majorTriad = findNoteCollection({ query: "major triad" });
   assertEquals(majorTriad, noteCollections.major);
+
+  const minorTriad = findNoteCollection({ query: "minor triad" });
+  assertEquals(minorTriad, noteCollections.minor);
 
   // Returns undefined if no match
   const noMatch = findNoteCollection({ query: "nonexistent" });
