@@ -4,7 +4,7 @@ import { melodicMinorModes } from "./melodic-minor-modes.ts";
 import { minorVariants } from "./minor-variants.ts";
 import { dominantVariants } from "./dominant-variants.ts";
 import { majorVariants } from "./major-variants.ts";
-import { pentatonics } from "./pentatonics.ts";
+import { pentatonicVariants } from "./pentatonic-variants.ts";
 import { diminished } from "./diminished.ts";
 import { augmented } from "./augmented.ts";
 import { otherNoteCollections } from "./other-collections.ts";
@@ -15,7 +15,7 @@ export { harmonicMinorModes } from "./harmonic-minor-modes.ts";
 export { majorVariants } from "./major-variants.ts";
 export { minorVariants } from "./minor-variants.ts";
 export { melodicMinorModes } from "./melodic-minor-modes.ts";
-export { pentatonics } from "./pentatonics.ts";
+export { pentatonicVariants } from "./pentatonic-variants.ts";
 export { diminished } from "./diminished.ts";
 export { augmented } from "./augmented.ts";
 export { otherNoteCollections } from "./other-collections.ts";
@@ -27,7 +27,7 @@ export const noteCollections = {
   ...majorVariants,
   ...minorVariants,
   ...dominantVariants,
-  ...pentatonics,
+  ...pentatonicVariants,
   ...diminished,
   ...augmented,
   ...otherNoteCollections,
@@ -42,7 +42,7 @@ export const groupedNoteCollections = {
   majorVariants,
   minorVariants,
   dominantVariants,
-  pentatonics,
+  pentatonicVariants,
   diminished,
   augmented,
   otherNoteCollections,
@@ -87,8 +87,8 @@ export const noteCollectionGroupsMetadata: Record<
     description:
       "Chord structures based on the dominant seventh chord, including extended harmonies (9ths, 11ths, 13ths).",
   },
-  pentatonics: {
-    displayName: "Pentatonic Scales",
+  pentatonicVariants: {
+    displayName: "Pentatonic Variants",
     description: "Five-note scales used widely in folk, blues, and rock music.",
   },
   diminished: {

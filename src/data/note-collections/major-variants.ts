@@ -93,7 +93,7 @@ const majorAdd9: NoteCollection = {
 
 const major6Add9: NoteCollection = {
   primaryName: "6/9",
-  names: ["6/9", "M6/9", "maj6/9", "Major 6/9", "6add9", "Major add6 add9"],
+  names: ["6/9", "M6/9", "maj6/9", "Major 6/9", "6add9", "Major add 6 add 9"],
   intervals: ["1", "3", "5", "6", "9"],
   integers: [0, 2, 4, 7, 9],
   type: ["major", "chord", "arpeggio", "pentad"],

@@ -2,7 +2,7 @@ import type { NoteCollection } from "../../types/note-collections.d.ts";
 
 const minor: NoteCollection = {
   primaryName: "m",
-  names: ["m", "min", "Minor", "Minor Triad"],
+  names: ["m", "min", "Minor", "Minor Triad", "-"],
   intervals: ["1", "♭3", "5"],
   integers: [0, 3, 7],
   type: ["minor", "chord", "arpeggio", "triad"],
@@ -34,18 +34,18 @@ const minor6: NoteCollection = {
 
 const minor7: NoteCollection = {
   primaryName: "m7",
-  names: ["m7", "min7", "Minor 7th", "Minor Seventh"],
+  names: ["m7", "min7", "Minor 7th", "Minor Seventh", "-7"],
   intervals: ["1", "♭3", "5", "♭7"],
   integers: [0, 3, 7, 10],
   type: ["minor", "chord", "arpeggio", "tetrad"],
-  characteristics: ["smooth", "jazzy", "versatile", "foundational minor chord"],
+  characteristics: ["smooth", "jazzy", "versatile"],
   pattern: ["minor third", "major third", "minor third"],
   patternShort: ["m3", "M3", "m3"],
 } as const;
 
 const minor9: NoteCollection = {
   primaryName: "m9",
-  names: ["m9", "min9", "Minor 9th", "Minor Ninth"],
+  names: ["m9", "min9", "Minor 9th", "Minor Ninth", "-9"],
   intervals: ["1", "♭3", "5", "♭7", "9"],
   integers: [0, 2, 3, 7, 10],
   type: ["minor", "chord", "arpeggio", "pentad"],
