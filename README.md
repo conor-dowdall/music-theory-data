@@ -1,5 +1,7 @@
 # Music Theory Data
 
+## Currently Under Review for Accuracy
+
 **The musician-friendly TypeScript library for modes, scales, chords, and
 more.**
 

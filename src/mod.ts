@@ -15,8 +15,26 @@
  * // You can now access all the data and functions.
  * // The details for the Ionian Diatonic Mode (Major Scale).
  * console.log("ionian details: ", music_theory_data.noteCollections.ionian);
+ * // ionian details:  {
+ * // primaryName: "Major",
+ * // names: [ "Major", "Ionian", "Major Scale", "Ionian Mode", "Diatonic Major" ],
+ * // intervals: [
+ * //   "1", "2", "3",
+ * //   "4", "5", "6",
+ * //   "7", "8"
+ * // ],
+ * // integers: [
+ * //   0, 2,  4, 5,
+ * //   7, 9, 11
+ * // ],
+ * // rotation: 0,
+ * // type: [
+ * //   "major.
+ * // ...
+ * // }
  * // Get the notes of a stored chord, or scale.
  * console.log("A harmonic minor: ", music_theory_data.getNoteNamesFromRootAndCollectionKey("A", "harmonicMinor"))
+ * // A harmonic minor: ["A", "B", "C", "D", "E", "F", "G♯", "A"]
  * ```
  */
 export * from "./data/mod.ts";
