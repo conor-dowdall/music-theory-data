@@ -1,6 +1,7 @@
 import type { NoteCollection } from "../../types/note-collections.d.ts";
 
 const major: NoteCollection = {
+  category: "chord",
   primaryName: "M",
   names: ["M", "maj", "Major", "Major Triad", "Δ"],
   intervals: ["1", "3", "5"],
@@ -17,6 +18,7 @@ const major: NoteCollection = {
 } as const;
 
 const major6: NoteCollection = {
+  category: "chord",
   primaryName: "6",
   names: ["6", "M6", "maj6", "Major 6th", "Major Sixth"],
   intervals: ["1", "3", "5", "6"],
@@ -36,6 +38,7 @@ const major6: NoteCollection = {
 } as const;
 
 const major7: NoteCollection = {
+  category: "chord",
   primaryName: "M7",
   names: ["M7", "maj7", "Major 7th", "Major Seventh", "Δ7"],
   intervals: ["1", "3", "5", "7"],
@@ -54,6 +57,7 @@ const major7: NoteCollection = {
 } as const;
 
 const major9: NoteCollection = {
+  category: "chord",
   primaryName: "M9",
   names: ["M9", "maj9", "Major 9th", "Major Ninth", "Δ9"],
   intervals: ["1", "3", "5", "7", "9"],
@@ -73,6 +77,7 @@ const major9: NoteCollection = {
 } as const;
 
 const majorAdd9: NoteCollection = {
+  category: "chord",
   primaryName: "add9",
   names: ["add9", "maj(add9)", "M(add9)", "Major add 9"],
   intervals: ["1", "3", "5", "9"],
@@ -92,6 +97,7 @@ const majorAdd9: NoteCollection = {
 } as const;
 
 const major6Add9: NoteCollection = {
+  category: "chord",
   primaryName: "6/9",
   names: ["6/9", "M6/9", "maj6/9", "Major 6/9", "6add9", "Major add 6 add 9"],
   intervals: ["1", "3", "5", "6", "9"],

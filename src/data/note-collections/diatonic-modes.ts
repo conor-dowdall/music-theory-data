@@ -1,6 +1,8 @@
 import type { NoteCollection } from "../../types/note-collections.d.ts";
 
 const ionian: NoteCollection = {
+  category: "scale",
+  rotation: 0,
   primaryName: "Major",
   names: [
     "Major",
@@ -11,7 +13,6 @@ const ionian: NoteCollection = {
   ],
   intervals: ["1", "2", "3", "4", "5", "6", "7", "8"],
   integers: [0, 2, 4, 5, 7, 9, 11],
-  rotation: 0,
   type: [
     "major",
     "ionian",
@@ -41,6 +42,8 @@ const ionian: NoteCollection = {
 } as const;
 
 const dorian: NoteCollection = {
+  category: "scale",
+  rotation: 1,
   primaryName: "Dorian",
   names: [
     "Dorian",
@@ -49,7 +52,6 @@ const dorian: NoteCollection = {
   ],
   intervals: ["1", "2", "♭3", "4", "5", "6", "♭7", "8"],
   integers: [0, 2, 3, 5, 7, 9, 10],
-  rotation: 1,
   type: [
     "minor",
     "dorian",
@@ -79,6 +81,8 @@ const dorian: NoteCollection = {
 } as const;
 
 const phrygian: NoteCollection = {
+  category: "scale",
+  rotation: 2,
   primaryName: "Phrygian",
   names: [
     "Phrygian",
@@ -87,7 +91,6 @@ const phrygian: NoteCollection = {
   ],
   intervals: ["1", "♭2", "♭3", "4", "5", "♭6", "♭7", "8"],
   integers: [0, 1, 3, 5, 7, 8, 10],
-  rotation: 2,
   type: [
     "minor",
     "phrygian",
@@ -115,11 +118,12 @@ const phrygian: NoteCollection = {
 } as const;
 
 const lydian: NoteCollection = {
+  category: "scale",
+  rotation: 3,
   primaryName: "Lydian",
   names: ["Lydian", "Major ♯4", "Lydian Mode"],
   intervals: ["1", "2", "3", "♯4", "5", "6", "7", "8"],
   integers: [0, 2, 4, 6, 7, 9, 11],
-  rotation: 3,
   type: [
     "major",
     "lydian",
@@ -145,6 +149,8 @@ const lydian: NoteCollection = {
 } as const;
 
 const mixolydian: NoteCollection = {
+  category: "scale",
+  rotation: 4,
   primaryName: "Mixolydian",
   names: [
     "Mixolydian",
@@ -154,7 +160,6 @@ const mixolydian: NoteCollection = {
   ],
   intervals: ["1", "2", "3", "4", "5", "6", "♭7", "8"],
   integers: [0, 2, 4, 5, 7, 9, 10],
-  rotation: 4,
   type: [
     "major",
     "dominant",
@@ -181,6 +186,8 @@ const mixolydian: NoteCollection = {
 } as const;
 
 const aeolian: NoteCollection = {
+  category: "scale",
+  rotation: 5,
   primaryName: "Minor",
   names: [
     "Minor",
@@ -191,7 +198,6 @@ const aeolian: NoteCollection = {
   ],
   intervals: ["1", "2", "♭3", "4", "5", "♭6", "♭7", "8"],
   integers: [0, 2, 3, 5, 7, 8, 10],
-  rotation: 5,
   type: [
     "minor",
     "aeolian",
@@ -218,6 +224,8 @@ const aeolian: NoteCollection = {
 } as const;
 
 const locrian: NoteCollection = {
+  category: "scale",
+  rotation: 6,
   primaryName: "Locrian",
   names: [
     "Locrian",
@@ -226,7 +234,6 @@ const locrian: NoteCollection = {
   ],
   intervals: ["1", "♭2", "♭3", "4", "♭5", "♭6", "♭7", "8"],
   integers: [0, 1, 3, 5, 6, 8, 10],
-  rotation: 6,
   type: [
     "diminished",
     "locrian",

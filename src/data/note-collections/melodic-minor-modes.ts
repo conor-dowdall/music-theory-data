@@ -1,6 +1,8 @@
 import type { NoteCollection } from "../../types/note-collections.d.ts";
 
 const melodicMinor: NoteCollection = {
+  category: "scale",
+  rotation: 0,
   primaryName: "Melodic Minor",
   names: [
     "Melodic Minor",
@@ -32,6 +34,8 @@ const melodicMinor: NoteCollection = {
 } as const;
 
 const dorianFlat2: NoteCollection = {
+  category: "scale",
+  rotation: 1,
   primaryName: "Dorian ♭2",
   names: [
     "Dorian ♭2",
@@ -56,6 +60,8 @@ const dorianFlat2: NoteCollection = {
 } as const;
 
 const lydianAugmented: NoteCollection = {
+  category: "scale",
+  rotation: 2,
   primaryName: "Lydian Augmented",
   names: ["Lydian Augmented", "Lydian ♯5", "Lydian Sharp Fifth"],
   intervals: ["1", "2", "3", "♯4", "♯5", "6", "7", "8"],
@@ -81,6 +87,8 @@ const lydianAugmented: NoteCollection = {
 } as const;
 
 const lydianDominant: NoteCollection = {
+  category: "scale",
+  rotation: 3,
   primaryName: "Lydian Dominant",
   names: [
     "Lydian Dominant",
@@ -109,6 +117,8 @@ const lydianDominant: NoteCollection = {
 } as const;
 
 const mixolydianFlat6: NoteCollection = {
+  category: "scale",
+  rotation: 4,
   primaryName: "Mixolydian ♭6",
   names: [
     "Mixolydian ♭6",
@@ -134,6 +144,8 @@ const mixolydianFlat6: NoteCollection = {
 } as const;
 
 const aeolianFlat5: NoteCollection = {
+  category: "scale",
+  rotation: 5,
   primaryName: "Aeolian ♭5",
   names: [
     "Aeolian ♭5",
@@ -159,6 +171,8 @@ const aeolianFlat5: NoteCollection = {
 } as const;
 
 const altered: NoteCollection = {
+  category: "scale",
+  rotation: 6,
   primaryName: "Altered Scale",
   names: [
     "Altered Scale",

@@ -64,8 +64,8 @@ const minorPentatonic: NoteCollection = {
     "found in many cultures",
     "relative of major pentatonic",
   ],
-  pattern: ["minor third", "whole", "whole", "minor third"],
-  patternShort: ["m3", "W", "W", "m3"],
+  pattern: ["minor third", "whole", "whole", "minor third", "whole"],
+  patternShort: ["m3", "W", "W", "m3", "W"],
 } as const;
 
 const dominantPentatonic: NoteCollection = {

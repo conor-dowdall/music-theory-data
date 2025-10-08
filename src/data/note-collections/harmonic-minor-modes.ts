@@ -1,6 +1,8 @@
 import type { NoteCollection } from "../../types/note-collections.d.ts";
 
 const harmonicMinor: NoteCollection = {
+  category: "scale",
+  rotation: 0,
   primaryName: "Harmonic Minor",
   names: [
     "Harmonic Minor",
@@ -10,7 +12,6 @@ const harmonicMinor: NoteCollection = {
   ],
   intervals: ["1", "2", "♭3", "4", "5", "♭6", "7", "8"],
   integers: [0, 2, 3, 5, 7, 8, 11],
-  rotation: 0,
   type: ["harmonic minor mode", "minor", "scale", "mode", "heptatonic"],
   characteristics: [
     "dark",
@@ -34,11 +35,12 @@ const harmonicMinor: NoteCollection = {
 } as const;
 
 const locrianNatural6: NoteCollection = {
+  category: "scale",
+  rotation: 1,
   primaryName: "Locrian ♮6",
   names: ["Locrian ♮6", "Locrian Natural Sixth", "Locrian Raised Sixth"],
   intervals: ["1", "♭2", "♭3", "4", "♭5", "6", "♭7", "8"],
   integers: [0, 1, 3, 5, 6, 9, 10],
-  rotation: 1,
   type: ["harmonic minor mode", "diminished", "scale", "mode", "heptatonic"],
   characteristics: [
     "dark",
@@ -60,6 +62,8 @@ const locrianNatural6: NoteCollection = {
 } as const;
 
 const ionianSharp5: NoteCollection = {
+  category: "scale",
+  rotation: 2,
   primaryName: "Ionian ♯5",
   names: [
     "Ionian ♯5",
@@ -69,7 +73,6 @@ const ionianSharp5: NoteCollection = {
   ],
   intervals: ["1", "2", "3", "4", "♯5", "6", "7", "8"],
   integers: [0, 2, 4, 5, 8, 9, 11],
-  rotation: 2,
   type: [
     "harmonic minor mode",
     "major",
@@ -98,6 +101,8 @@ const ionianSharp5: NoteCollection = {
 } as const;
 
 const dorianSharp4: NoteCollection = {
+  category: "scale",
+  rotation: 3,
   primaryName: "Dorian ♯4",
   names: [
     "Dorian ♯4",
@@ -109,7 +114,6 @@ const dorianSharp4: NoteCollection = {
   ],
   intervals: ["1", "2", "♭3", "♯4", "5", "6", "♭7", "8"],
   integers: [0, 2, 3, 6, 7, 9, 10],
-  rotation: 3,
   type: ["harmonic minor mode", "minor", "scale", "heptatonic"],
   characteristics: ["exotic minor", "eastern european folk", "gypsy"],
   pattern: [
@@ -125,6 +129,8 @@ const dorianSharp4: NoteCollection = {
 } as const;
 
 const phrygianDominant: NoteCollection = {
+  category: "scale",
+  rotation: 4,
   primaryName: "Phrygian Dominant",
   names: [
     "Phrygian Dominant",
@@ -138,7 +144,6 @@ const phrygianDominant: NoteCollection = {
   ],
   intervals: ["1", "♭2", "3", "4", "5", "♭6", "♭7", "8"],
   integers: [0, 1, 4, 5, 7, 8, 10],
-  rotation: 4,
   type: ["harmonic minor mode", "dominant", "scale", "heptatonic"],
   characteristics: [
     "very exotic",
@@ -162,6 +167,8 @@ const phrygianDominant: NoteCollection = {
 } as const;
 
 const lydianSharp2: NoteCollection = {
+  category: "scale",
+  rotation: 5,
   primaryName: "Lydian ♯2",
   names: [
     "Lydian ♯2",
@@ -171,7 +178,6 @@ const lydianSharp2: NoteCollection = {
   ],
   intervals: ["1", "♯2", "3", "♯4", "5", "6", "7", "8"],
   integers: [0, 3, 4, 6, 7, 9, 11],
-  rotation: 5,
   type: ["harmonic minor mode", "major", "scale", "heptatonic"],
   characteristics: ["very bright", "unusual", "double augmented", "exotic"],
   pattern: [
@@ -187,6 +193,8 @@ const lydianSharp2: NoteCollection = {
 } as const;
 
 const superLocrianDoubleFlat7: NoteCollection = {
+  category: "scale",
+  rotation: 6,
   primaryName: "Super Locrian 𝄫7",
   names: [
     "Super Locrian 𝄫7",
@@ -196,7 +204,6 @@ const superLocrianDoubleFlat7: NoteCollection = {
   ],
   intervals: ["1", "♭2", "♭3", "♭4", "♭5", "♭6", "𝄫7", "8"],
   integers: [0, 1, 3, 4, 6, 8, 9],
-  rotation: 6,
   type: ["harmonic minor mode", "diminished", "scale", "heptatonic"],
   characteristics: [
     "extremely tense",
