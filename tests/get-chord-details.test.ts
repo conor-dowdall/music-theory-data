@@ -3,7 +3,7 @@ import {
   getChordDetailsForDiatonicMode,
   getChordDetailsForHarmonicMinorMode,
   getChordDetailsForMelodicMinorMode,
-} from "../src/utils/get-chords.ts";
+} from "../src/utils/chords.ts";
 import type { ChordDetails } from "../src/types/chords.d.ts";
 
 Deno.test("getChordDetailsForDiatonicMode - Ionian", () => {

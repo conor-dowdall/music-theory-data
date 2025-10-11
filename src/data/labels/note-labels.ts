@@ -366,76 +366,106 @@ export const compoundToSimpleIntervalMap: ReadonlyMap<
   ][],
 );
 
-export type IntervalQualityType = "d" | "m" | "P" | "M" | "A";
+export type IntervalQualityType = "dd" | "d" | "m" | "P" | "M" | "A" | "AA";
 
 const _intervalQualityToIntegerMap = {
+  "dd1": -2,
   "d1": -1,
   "P1": 0,
   "A1": 1,
+  "AA1": 2,
 
+  "dd2": -1,
   "d2": 0,
   "m2": 1,
   "M2": 2,
   "A2": 3,
+  "AA2": 4,
 
+  "dd3": 1,
   "d3": 2,
   "m3": 3,
   "M3": 4,
   "A3": 5,
+  "AA3": 6,
 
+  "dd4": 3,
   "d4": 4,
   "P4": 5,
   "A4": 6,
+  "AA4": 7,
 
+  "dd5": 5,
   "d5": 6,
   "P5": 7,
   "A5": 8,
+  "AA5": 9,
 
+  "dd6": 6,
   "d6": 7,
   "m6": 8,
   "M6": 9,
   "A6": 10,
+  "AA6": 11,
 
+  "dd7": 8,
   "d7": 9,
   "m7": 10,
   "M7": 11,
   "A7": 12,
+  "AA7": 13,
 
+  "dd8": 10,
   "d8": 11,
   "P8": 12,
   "A8": 13,
+  "AA8": 14,
 
+  "dd9": 11,
   "d9": 12,
   "m9": 13,
   "M9": 14,
   "A9": 15,
+  "AA9": 16,
 
+  "dd10": 13,
   "d10": 14,
   "m10": 15,
   "M10": 16,
   "A10": 17,
+  "AA10": 18,
 
+  "dd11": 15,
   "d11": 16,
   "P11": 17,
   "A11": 19,
+  "AA11": 20,
 
+  "dd12": 17,
   "d12": 18,
   "P12": 19,
   "A12": 20,
+  "AA12": 21,
 
+  "dd13": 18,
   "d13": 19,
   "m13": 20,
   "M13": 21,
   "A13": 22,
+  "AA13": 23,
 
+  "dd14": 20,
   "d14": 21,
   "m14": 22,
   "M14": 23,
   "A14": 24,
+  "AA14": 25,
 
+  "dd15": 22,
   "d15": 23,
   "P15": 24,
   "A15": 25,
+  "AA15": 26,
 } as const;
 
 export type IntervalQuality = keyof typeof _intervalQualityToIntegerMap;
@@ -447,5 +477,126 @@ export const intervalQualityToIntegerMap: ReadonlyMap<
   Object.entries(_intervalQualityToIntegerMap) as [
     IntervalQuality,
     number,
+  ][],
+);
+
+//TODO: add beyond an octave
+const _intervalToIntervalQualityMap = {
+  "𝄫1": "dd1",
+  "♭1": "d1",
+  "1": "P1",
+  "♮1": "P1",
+  "♯1": "A1",
+  "𝄪1": "AA1",
+
+  "𝄫2": "dd2",
+  "♭2": "m2",
+  "2": "M2",
+  "♮2": "M2",
+  "♯2": "A2",
+  "𝄪2": "AA2",
+
+  "𝄫3": "dd3",
+  "♭3": "m3",
+  "3": "M3",
+  "♮3": "M3",
+  "♯3": "A3",
+  "𝄪3": "AA3",
+
+  "𝄫4": "dd4",
+  "♭4": "d4",
+  "4": "P4",
+  "♮4": "P4",
+  "♯4": "A4",
+  "𝄪4": "AA4",
+
+  "𝄫5": "dd5",
+  "♭5": "d5",
+  "5": "P5",
+  "♮5": "P5",
+  "♯5": "A5",
+  "𝄪5": "AA5",
+
+  "𝄫6": "dd6",
+  "♭6": "m6",
+  "6": "M6",
+  "♮6": "M6",
+  "♯6": "A6",
+  "𝄪6": "AA6",
+
+  "𝄫7": "dd7",
+  "♭7": "m7",
+  "7": "M7",
+  "♮7": "M7",
+  "♯7": "A7",
+  "𝄪7": "AA7",
+} as const;
+
+export const intervalToIntervalQualityMap: ReadonlyMap<
+  Interval,
+  IntervalQuality
+> = new Map(
+  Object.entries(_intervalToIntervalQualityMap) as [
+    Interval,
+    IntervalQuality,
+  ][],
+);
+
+//TODO: add beyond an octave
+const _intervalQualityToIntervalMap = {
+  "dd1": "𝄫1",
+  "d1": "♭1",
+  "P1": "1",
+  "A1": "♯1",
+  "AA1": "𝄪1",
+
+  "dd2": "𝄫2",
+  "d2": "♭2",
+  "m2": "♭2",
+  "M2": "2",
+  "A2": "♯2",
+  "AA2": "𝄪2",
+
+  "dd3": "𝄫3",
+  "d3": "♭3",
+  "m3": "♭3",
+  "M3": "3",
+  "A3": "♯3",
+  "AA3": "𝄪3",
+
+  "dd4": "𝄫4",
+  "d4": "♭4",
+  "P4": "4",
+  "A4": "♯4",
+  "AA4": "𝄪4",
+
+  "dd5": "𝄫5",
+  "d5": "♭5",
+  "P5": "5",
+  "A5": "♯5",
+  "AA5": "𝄪5",
+
+  "dd6": "𝄫6",
+  "d6": "♭6",
+  "m6": "♭6",
+  "M6": "6",
+  "A6": "♯6",
+  "AA6": "𝄪6",
+
+  "dd7": "𝄫7",
+  "d7": "♭7",
+  "m7": "♭7",
+  "M7": "7",
+  "A7": "♯7",
+  "AA7": "𝄪7",
+} as const;
+
+export const intervalQualityToIntervalMap: ReadonlyMap<
+  IntervalQuality,
+  Interval
+> = new Map(
+  Object.entries(_intervalQualityToIntervalMap) as [
+    IntervalQuality,
+    Interval,
   ][],
 );

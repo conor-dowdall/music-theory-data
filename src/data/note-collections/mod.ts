@@ -5,8 +5,8 @@ import { minorVariants } from "./minor-variants.ts";
 import { dominantVariants } from "./dominant-variants.ts";
 import { harmonicMinorModes } from "./harmonic-minor-modes.ts";
 import { melodicMinorModes } from "./melodic-minor-modes.ts";
-import { diminished } from "./diminished.ts";
-import { augmented } from "./augmented.ts";
+import { diminishedVariants } from "./diminished-variants.ts";
+import { augmentedVariants } from "./augmented-variants.ts";
 import { otherNoteCollections } from "./other-collections.ts";
 
 export { diatonicModes } from "./diatonic-modes.ts";
@@ -16,8 +16,8 @@ export { minorVariants } from "./minor-variants.ts";
 export { dominantVariants } from "./dominant-variants.ts";
 export { harmonicMinorModes } from "./harmonic-minor-modes.ts";
 export { melodicMinorModes } from "./melodic-minor-modes.ts";
-export { diminished } from "./diminished.ts";
-export { augmented } from "./augmented.ts";
+export { diminishedVariants } from "./diminished-variants.ts";
+export { augmentedVariants } from "./augmented-variants.ts";
 export { otherNoteCollections } from "./other-collections.ts";
 
 export const noteCollections = {
@@ -28,8 +28,8 @@ export const noteCollections = {
   ...dominantVariants,
   ...harmonicMinorModes,
   ...melodicMinorModes,
-  ...diminished,
-  ...augmented,
+  ...diminishedVariants,
+  ...augmentedVariants,
   ...otherNoteCollections,
 } as const;
 
@@ -43,8 +43,8 @@ export const groupedNoteCollections = {
   dominantVariants,
   harmonicMinorModes,
   melodicMinorModes,
-  diminished,
-  augmented,
+  diminishedVariants,
+  augmentedVariants,
   otherNoteCollections,
 } as const;
 
@@ -91,11 +91,11 @@ export const noteCollectionGroupsMetadata: Record<
     description:
       "Seven-note scales derived from the melodic minor scale, each starting on a different scale degree.",
   },
-  diminished: {
+  diminishedVariants: {
     displayName: "Diminished",
     description: "Tense and dissonant chords and scales built on minor thirds.",
   },
-  augmented: {
+  augmentedVariants: {
     displayName: "Augmented",
     description:
       "Unstable and dreamy chords and scales, including classical augmented sixth chords.",

@@ -1,6 +1,7 @@
 import type { NoteCollection } from "../../types/note-collections.d.ts";
 
 const minor: NoteCollection = {
+  category: "chord",
   primaryName: "m",
   names: ["m", "min", "Minor", "Minor Triad", "-"],
   intervals: ["1", "♭3", "5"],
@@ -17,6 +18,7 @@ const minor: NoteCollection = {
 } as const;
 
 const minor6: NoteCollection = {
+  category: "chord",
   primaryName: "m6",
   names: ["m6", "min6", "Minor 6th", "Minor Sixth"],
   intervals: ["1", "♭3", "5", "6"],
@@ -33,6 +35,7 @@ const minor6: NoteCollection = {
 } as const;
 
 const minor7: NoteCollection = {
+  category: "chord",
   primaryName: "m7",
   names: ["m7", "min7", "Minor 7th", "Minor Seventh", "-7"],
   intervals: ["1", "♭3", "5", "♭7"],
@@ -44,6 +47,7 @@ const minor7: NoteCollection = {
 } as const;
 
 const minor9: NoteCollection = {
+  category: "chord",
   primaryName: "m9",
   names: ["m9", "min9", "Minor 9th", "Minor Ninth", "-9"],
   intervals: ["1", "♭3", "5", "♭7", "9"],
@@ -55,6 +59,7 @@ const minor9: NoteCollection = {
 } as const;
 
 const minorAdd9: NoteCollection = {
+  category: "chord",
   primaryName: "m(add9)",
   names: ["m(add9)", "min(add9)", "Minor add 9"],
   intervals: ["1", "♭3", "5", "9"],
@@ -71,6 +76,7 @@ const minorAdd9: NoteCollection = {
 } as const;
 
 const minor6Add9: NoteCollection = {
+  category: "chord",
   primaryName: "m6/9",
   names: ["m6/9", "min6/9", "Minor 6/9"],
   intervals: ["1", "♭3", "5", "6", "9"],

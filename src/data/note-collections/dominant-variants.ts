@@ -1,6 +1,7 @@
 import type { NoteCollection } from "../../types/note-collections.d.ts";
 
 const dominant7: NoteCollection = {
+  category: "chord",
   primaryName: "7",
   names: ["7", "dom7", "Dominant 7th", "Dominant Seventh"],
   intervals: ["1", "3", "5", "♭7"],
@@ -24,6 +25,7 @@ const dominant7: NoteCollection = {
 } as const;
 
 const dominant9: NoteCollection = {
+  category: "chord",
   primaryName: "9",
   names: ["9", "dom9", "Dominant 9th", "Dominant Ninth"],
   intervals: ["1", "3", "5", "♭7", "9"],
@@ -43,6 +45,7 @@ const dominant9: NoteCollection = {
 } as const;
 
 const dominant11: NoteCollection = {
+  category: "chord",
   primaryName: "11",
   names: ["11", "dom11", "Dominant 11th", "Dominant Eleventh"],
   intervals: ["1", "3", "5", "♭7", "9", "11"],
@@ -70,6 +73,7 @@ const dominant11: NoteCollection = {
 } as const;
 
 const dominant13: NoteCollection = {
+  category: "chord",
   primaryName: "13",
   names: ["13", "dom13", "Dominant 13th", "Dominant Thirteenth"],
   intervals: ["1", "3", "5", "♭7", "9", "11", "13"],

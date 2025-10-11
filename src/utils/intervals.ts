@@ -2,7 +2,10 @@ import {
   compoundToSimpleIntervalMap,
   extensionToSimpleIntervalMap,
   type Interval,
+  type IntervalQuality,
+  intervalQualityToIntervalMap,
   intervalToIntegerMap,
+  intervalToIntervalQualityMap,
   simpleToCompoundIntervalMap,
   simpleToExtensionIntervalMap,
 } from "../data/labels/note-labels.ts";
@@ -13,9 +16,13 @@ export function filterOutOctaveIntervals(
   return intervals.filter((i) => i !== "8" && i !== "♮8");
 }
 
-export function toSortedIntervals(
-  intervals: readonly Interval[],
-): Interval[] {
+/**
+ * Sorts an array of intervals in ascending order based on their integer value.
+ * This is a pure function and returns a new sorted array, leaving the original array unchanged.
+ * @param intervals The array of intervals to sort.
+ * @returns A new array with the sorted intervals.
+ */
+export function sortIntervals(intervals: readonly Interval[]): Interval[] {
   return intervals
     .toSorted((a, b) => {
       const intA = intervalToIntegerMap.get(a);
@@ -34,7 +41,7 @@ export type IntervalTransformation =
 export interface TransformIntervalsOptions {
   intervalTransformation?: IntervalTransformation;
   filterOutOctave?: boolean;
-  sortIntervals?: boolean;
+  shouldSort?: boolean;
 }
 
 export function transformIntervals(
@@ -44,7 +51,7 @@ export function transformIntervals(
   const {
     intervalTransformation,
     filterOutOctave = false,
-    sortIntervals = true,
+    shouldSort = true,
   } = options;
 
   const intervalMap: ReadonlyMap<Interval, Interval> = (() => {
@@ -70,5 +77,23 @@ export function transformIntervals(
     intervalMap.get(interval) ?? interval
   );
 
-  return sortIntervals ? toSortedIntervals(finalIntervals) : finalIntervals;
+  return shouldSort ? sortIntervals(finalIntervals) : finalIntervals;
+}
+
+export function getQualitiesFromIntervals(
+  intervals: readonly Interval[],
+): IntervalQuality[] {
+  return intervals.flatMap((interval) => {
+    const quality = intervalToIntervalQualityMap.get(interval);
+    return quality ? [quality] : [];
+  });
+}
+
+export function getIntervalsFromQualities(
+  qualities: IntervalQuality[],
+): Interval[] {
+  return qualities.flatMap((quality) => {
+    const interval = intervalQualityToIntervalMap.get(quality);
+    return interval ? [interval] : [];
+  });
 }

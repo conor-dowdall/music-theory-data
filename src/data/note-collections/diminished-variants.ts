@@ -1,6 +1,7 @@
 import type { NoteCollection } from "../../types/note-collections.d.ts";
 
 const diminishedTriad: NoteCollection = {
+  category: "chord",
   primaryName: "dim",
   names: ["dim", "°", "Diminished Triad"],
   intervals: ["1", "♭3", "♭5"],
@@ -12,6 +13,7 @@ const diminishedTriad: NoteCollection = {
 } as const;
 
 const diminished7: NoteCollection = {
+  category: "chord",
   primaryName: "dim7",
   names: ["dim7", "°7", "Diminished 7th"],
   intervals: ["1", "♭3", "♭5", "𝄫7"],
@@ -23,6 +25,7 @@ const diminished7: NoteCollection = {
 } as const;
 
 const halfDiminished7: NoteCollection = {
+  category: "chord",
   primaryName: "m7♭5",
   names: ["m7♭5", "ø7", "Half Diminished 7th"],
   intervals: ["1", "♭3", "♭5", "♭7"],
@@ -34,6 +37,7 @@ const halfDiminished7: NoteCollection = {
 } as const;
 
 const wholeHalfDiminished: NoteCollection = {
+  category: "scale",
   primaryName: "Whole Half Diminished",
   names: ["Whole Half Diminished"],
   intervals: ["1", "2", "♭3", "4", "♭5", "♭6", "6", "7"],
@@ -45,6 +49,7 @@ const wholeHalfDiminished: NoteCollection = {
 } as const;
 
 const halfWholeDiminished: NoteCollection = {
+  category: "scale",
   primaryName: "Half Whole Diminished",
   names: ["Half Whole Diminished", "Dominant Diminished"],
   intervals: ["1", "♭2", "♭3", "3", "♯4", "5", "6", "♭7"],
@@ -60,7 +65,7 @@ const halfWholeDiminished: NoteCollection = {
   patternShort: ["H", "W", "H", "W", "H", "W", "H", "W"],
 } as const;
 
-export const _diminished = {
+export const _diminishedVariants = {
   diminishedTriad,
   diminished7,
   halfDiminished7,
@@ -68,6 +73,7 @@ export const _diminished = {
   halfWholeDiminished,
 } as const;
 
-export type DiminishedKey = keyof typeof _diminished;
+export type DiminishedVariantKey = keyof typeof _diminishedVariants;
 
-export const diminished: Record<DiminishedKey, NoteCollection> = _diminished;
+export const diminishedVariants: Record<DiminishedVariantKey, NoteCollection> =
+  _diminishedVariants;

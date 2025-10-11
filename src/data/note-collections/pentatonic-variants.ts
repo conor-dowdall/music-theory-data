@@ -1,6 +1,8 @@
 import type { NoteCollection } from "../../types/note-collections.d.ts";
 
 const majorPentatonic: NoteCollection = {
+  category: "scale",
+  rotation: 0,
   primaryName: "Major Pentatonic",
   names: ["Major Pentatonic"],
   intervals: ["1", "2", "3", "5", "6", "8"],
@@ -19,6 +21,8 @@ const majorPentatonic: NoteCollection = {
 } as const;
 
 const suspendedPentatonic: NoteCollection = {
+  category: "scale",
+  rotation: 1,
   primaryName: "Suspended Pentatonic",
   names: ["Suspended Pentatonic", "Egyptian Pentatonic"],
   intervals: ["1", "2", "4", "5", "♭7", "8"],
@@ -30,6 +34,8 @@ const suspendedPentatonic: NoteCollection = {
 } as const;
 
 const bluesMinorPentatonic: NoteCollection = {
+  category: "scale",
+  rotation: 2,
   primaryName: "Blues Minor Pentatonic",
   names: ["Blues Minor Pentatonic"],
   intervals: ["1", "♭3", "4", "♭5", "♭7", "8"],
@@ -41,6 +47,8 @@ const bluesMinorPentatonic: NoteCollection = {
 } as const;
 
 const bluesMajorPentatonic: NoteCollection = {
+  category: "scale",
+  rotation: 3,
   primaryName: "Blues Major Pentatonic",
   names: ["Blues Major Pentatonic"],
   intervals: ["1", "2", "♭3", "5", "6", "8"],
@@ -52,6 +60,8 @@ const bluesMajorPentatonic: NoteCollection = {
 } as const;
 
 const minorPentatonic: NoteCollection = {
+  category: "scale",
+  rotation: 4,
   primaryName: "Minor Pentatonic",
   names: ["Minor Pentatonic"],
   intervals: ["1", "♭3", "4", "5", "♭7", "8"],
@@ -69,6 +79,7 @@ const minorPentatonic: NoteCollection = {
 } as const;
 
 const dominantPentatonic: NoteCollection = {
+  category: "scale",
   primaryName: "Dominant Pentatonic",
   names: ["Dominant Pentatonic"],
   intervals: ["1", "2", "3", "5", "♭7", "8"],

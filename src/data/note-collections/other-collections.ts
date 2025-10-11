@@ -1,5 +1,6 @@
 import type { NoteCollection } from "../../types/note-collections.d.ts";
 const chromatic: NoteCollection = {
+  category: "scale",
   primaryName: "Chromatic",
   names: ["Chromatic", "Twelve-Tone Scale"],
   intervals: [
@@ -43,6 +44,7 @@ const chromatic: NoteCollection = {
 } as const;
 
 const wholeTone: NoteCollection = {
+  category: "scale",
   primaryName: "Whole Tone Scale",
   names: [
     "Whole Tone Scale",

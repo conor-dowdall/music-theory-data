@@ -9,7 +9,7 @@ Deno.test("simpleToExtension ionian", () => {
     {
       intervalTransformation: "simpleToExtension",
       filterOutOctave: true,
-      sortIntervals: true,
+      shouldSort: true,
     },
   );
   assertEquals(spread, ["1", "3", "5", "7", "9", "11", "13"]);
@@ -21,7 +21,7 @@ Deno.test("simpleToExtension ionian - unsorted", () => {
     {
       intervalTransformation: "simpleToExtension",
       filterOutOctave: true,
-      sortIntervals: false,
+      shouldSort: false,
     },
   );
   assertEquals(spread, ["1", "9", "3", "11", "5", "13", "7"]);
@@ -33,7 +33,7 @@ Deno.test("simpleToExtension ionian with octave", () => {
     {
       intervalTransformation: "simpleToExtension",
       filterOutOctave: false,
-      sortIntervals: true,
+      shouldSort: true,
     },
   );
   assertEquals(spread, ["1", "3", "5", "7", "8", "9", "11", "13"]);
@@ -45,7 +45,7 @@ Deno.test("simpleToExtension - dorian", () => {
     {
       intervalTransformation: "simpleToExtension",
       filterOutOctave: true,
-      sortIntervals: true,
+      shouldSort: true,
     },
   );
   assertEquals(spread, ["1", "♭3", "5", "♭7", "9", "11", "13"]);

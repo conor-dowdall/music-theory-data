@@ -1,6 +1,7 @@
 import type { NoteCollection } from "../../types/note-collections.d.ts";
 
 const augmentedTriad: NoteCollection = {
+  category: "chord",
   primaryName: "aug",
   names: ["aug", "+", "Augmented Triad"],
   intervals: ["1", "3", "♯5"],
@@ -11,7 +12,20 @@ const augmentedTriad: NoteCollection = {
   patternShort: ["M3", "M3"],
 } as const;
 
+const augmented7: NoteCollection = {
+  category: "chord",
+  primaryName: "aug7",
+  names: ["aug7", "+7", "7♯5", "Augmented Seventh"],
+  intervals: ["1", "3", "♯5", "♭7"],
+  integers: [0, 4, 8, 10],
+  type: ["augmented", "dominant", "chord", "arpeggio", "tetrad"],
+  characteristics: ["tense", "unstable", "dissonant", "dominant function"],
+  pattern: ["major third", "major third", "minor second"],
+  patternShort: ["M3", "M3", "m2"],
+} as const;
+
 const italian6: NoteCollection = {
+  category: "chord",
   primaryName: "It+6",
   names: ["It+6", "Italian 6th"],
   intervals: ["1", "3", "♭6"],
@@ -27,6 +41,7 @@ const italian6: NoteCollection = {
 } as const;
 
 const french6: NoteCollection = {
+  category: "chord",
   primaryName: "Fr+6",
   names: ["Fr+6", "French 6th"],
   intervals: ["1", "3", "♯4", "♭6"],
@@ -43,6 +58,7 @@ const french6: NoteCollection = {
 } as const;
 
 const german6: NoteCollection = {
+  category: "chord",
   primaryName: "Ger+6",
   names: ["Ger+6", "German 6th"],
   intervals: ["1", "3", "5", "♭6"],
@@ -58,25 +74,15 @@ const german6: NoteCollection = {
   patternShort: ["M3", "m3", "A1"],
 } as const;
 
-const augmented7: NoteCollection = {
-  primaryName: "aug7",
-  names: ["aug7", "+7", "7♯5", "Augmented Seventh"],
-  intervals: ["1", "3", "♯5", "♭7"],
-  integers: [0, 4, 8, 10],
-  type: ["augmented", "dominant", "chord", "arpeggio", "tetrad"],
-  characteristics: ["tense", "unstable", "dissonant", "dominant function"],
-  pattern: ["major third", "major third", "minor second"],
-  patternShort: ["M3", "M3", "m2"],
-} as const;
-
-export const _augmented = {
+export const _augmentedVariants = {
   augmentedTriad,
+  augmented7,
   italian6,
   french6,
   german6,
-  augmented7,
 } as const;
 
-export type AugmentedKey = keyof typeof _augmented;
+export type AugmentedVariantKey = keyof typeof _augmentedVariants;
 
-export const augmented: Record<AugmentedKey, NoteCollection> = _augmented;
+export const augmentedVariants: Record<AugmentedVariantKey, NoteCollection> =
+  _augmentedVariants;
