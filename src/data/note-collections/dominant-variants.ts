@@ -1,6 +1,10 @@
-import type { NoteCollection } from "../../types/note-collections.d.ts";
+import type {
+  ChordCollection,
+  NoteCollection,
+  ScaleCollection,
+} from "../../types/note-collections.d.ts";
 
-const dominant7: NoteCollection = {
+const dominant7: ChordCollection = {
   category: "chord",
   primaryName: "7",
   names: ["7", "dom7", "Dominant 7th", "Dominant Seventh"],
@@ -24,7 +28,7 @@ const dominant7: NoteCollection = {
   patternShort: ["M3", "m3", "m3"],
 } as const;
 
-const dominant9: NoteCollection = {
+const dominant9: ChordCollection = {
   category: "chord",
   primaryName: "9",
   names: ["9", "dom9", "Dominant 9th", "Dominant Ninth"],
@@ -44,7 +48,7 @@ const dominant9: NoteCollection = {
   patternShort: ["M3", "m3", "m3", "M3"],
 } as const;
 
-const dominant11: NoteCollection = {
+const dominant11: ChordCollection = {
   category: "chord",
   primaryName: "11",
   names: ["11", "dom11", "Dominant 11th", "Dominant Eleventh"],
@@ -72,7 +76,7 @@ const dominant11: NoteCollection = {
   patternShort: ["M3", "m3", "m3", "M3", "m3"],
 } as const;
 
-const dominant13: NoteCollection = {
+const dominant13: ChordCollection = {
   category: "chord",
   primaryName: "13",
   names: ["13", "dom13", "Dominant 13th", "Dominant Thirteenth"],
@@ -101,11 +105,24 @@ const dominant13: NoteCollection = {
   patternShort: ["M3", "m3", "m3", "M3", "m3", "m3"],
 } as const;
 
+const dominantPentatonic: ScaleCollection = {
+  category: "scale",
+  primaryName: "Dominant Pentatonic",
+  names: ["Dominant Pentatonic"],
+  intervals: ["1", "2", "3", "5", "♭7", "8"],
+  integers: [0, 2, 4, 7, 10],
+  type: ["dominant", "pentatonic", "scale", "gapped scale"],
+  characteristics: ["bluesy", "dominant feel", "mixolydian flavor"],
+  pattern: ["whole", "whole", "minor third", "minor third"],
+  patternShort: ["W", "W", "m3", "m3"],
+} as const;
+
 export const _dominantVariants = {
   dominant7,
   dominant9,
   dominant11,
   dominant13,
+  dominantPentatonic,
 } as const;
 
 export type DominantVariantKey = keyof typeof _dominantVariants;

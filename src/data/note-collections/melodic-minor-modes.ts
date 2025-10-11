@@ -1,6 +1,6 @@
-import type { NoteCollection } from "../../types/note-collections.d.ts";
+import type { ScaleCollection } from "../../types/note-collections.d.ts";
 
-const melodicMinor: NoteCollection = {
+const melodicMinor: ScaleCollection = {
   category: "scale",
   rotation: 0,
   primaryName: "Melodic Minor",
@@ -33,7 +33,7 @@ const melodicMinor: NoteCollection = {
   patternShort: ["W", "H", "W", "W", "W", "W", "H"],
 } as const;
 
-const dorianFlat2: NoteCollection = {
+const dorianFlat2: ScaleCollection = {
   category: "scale",
   rotation: 1,
   primaryName: "Dorian ♭2",
@@ -59,7 +59,7 @@ const dorianFlat2: NoteCollection = {
   patternShort: ["H", "W", "W", "W", "W", "H", "W"],
 } as const;
 
-const lydianAugmented: NoteCollection = {
+const lydianAugmented: ScaleCollection = {
   category: "scale",
   rotation: 2,
   primaryName: "Lydian Augmented",
@@ -86,7 +86,7 @@ const lydianAugmented: NoteCollection = {
   patternShort: ["W", "W", "W", "W", "H", "W", "H"],
 } as const;
 
-const lydianDominant: NoteCollection = {
+const lydianDominant: ScaleCollection = {
   category: "scale",
   rotation: 3,
   primaryName: "Lydian Dominant",
@@ -116,7 +116,7 @@ const lydianDominant: NoteCollection = {
   patternShort: ["W", "W", "W", "H", "W", "H", "W"],
 } as const;
 
-const mixolydianFlat6: NoteCollection = {
+const mixolydianFlat6: ScaleCollection = {
   category: "scale",
   rotation: 4,
   primaryName: "Mixolydian ♭6",
@@ -143,7 +143,7 @@ const mixolydianFlat6: NoteCollection = {
   patternShort: ["W", "W", "H", "W", "H", "W", "W"],
 } as const;
 
-const aeolianFlat5: NoteCollection = {
+const aeolianFlat5: ScaleCollection = {
   category: "scale",
   rotation: 5,
   primaryName: "Aeolian ♭5",
@@ -170,7 +170,7 @@ const aeolianFlat5: NoteCollection = {
   patternShort: ["W", "H", "W", "H", "W", "W", "W"],
 } as const;
 
-const altered: NoteCollection = {
+const altered: ScaleCollection = {
   category: "scale",
   rotation: 6,
   primaryName: "Altered Scale",
@@ -208,5 +208,5 @@ export const _melodicMinorModes = {
 
 export type MelodicMinorModeKey = keyof typeof _melodicMinorModes;
 
-export const melodicMinorModes: Record<MelodicMinorModeKey, NoteCollection> =
+export const melodicMinorModes: Record<MelodicMinorModeKey, ScaleCollection> =
   _melodicMinorModes;

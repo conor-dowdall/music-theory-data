@@ -1,5 +1,9 @@
-import type { NoteCollection } from "../../types/note-collections.d.ts";
-const chromatic: NoteCollection = {
+import type {
+  NoteCollection,
+  ScaleCollection,
+} from "../../types/note-collections.d.ts";
+
+const chromatic: ScaleCollection = {
   category: "scale",
   primaryName: "Chromatic",
   names: ["Chromatic", "Twelve-Tone Scale"],
@@ -43,7 +47,7 @@ const chromatic: NoteCollection = {
   patternShort: ["H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
 } as const;
 
-const wholeTone: NoteCollection = {
+const wholeTone: ScaleCollection = {
   category: "scale",
   primaryName: "Whole Tone Scale",
   names: [

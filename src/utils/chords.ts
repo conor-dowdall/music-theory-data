@@ -42,7 +42,8 @@ export function getRomanTriads(triads: Triad[]): RomanTriad[] {
       case "+":
         return upperCaseRomanNumerals[i] + quality;
       default:
-        return upperCaseRomanNumerals[i];
+        // This should not happen with valid data. Fail fast if it does.
+        throw new Error(`Unhandled triad quality: ${quality}`);
     }
   }) as RomanTriad[];
 }
@@ -71,7 +72,8 @@ export function getRomanSeventhChords(
       case "M7♯5":
         return upperCaseRomanNumerals[i] + quality;
       default:
-        return upperCaseRomanNumerals[i] + quality;
+        // This should not happen with valid data. Fail fast if it does.
+        throw new Error(`Unhandled seventh chord quality: ${quality}`);
     }
   }) as RomanSeventhChord[];
 }
@@ -98,7 +100,12 @@ export function getChordDetailsForDiatonicMode(
   diatonicModeKey: DiatonicModeKey,
 ): ChordDetails[] {
   const mode = diatonicModes[diatonicModeKey];
-  const rotation = mode.rotation as number;
+  if (mode.rotation === undefined) {
+    throw new Error(
+      `Mode "${diatonicModeKey}" is missing the 'rotation' property.`,
+    );
+  }
+  const rotation = mode.rotation;
   const rotatedTriads = rotateArray(diatonicTriads, rotation);
   const rotatedSeventhChords = rotateArray(diatonicSeventhChords, rotation);
   return getChordDetailsForMode(
@@ -114,7 +121,12 @@ export function getChordDetailsForHarmonicMinorMode(
   harmonicMinorModeKey: HarmonicMinorModeKey,
 ): ChordDetails[] {
   const mode = harmonicMinorModes[harmonicMinorModeKey];
-  const rotation = mode.rotation as number;
+  if (mode.rotation === undefined) {
+    throw new Error(
+      `Mode "${harmonicMinorModeKey}" is missing the 'rotation' property.`,
+    );
+  }
+  const rotation = mode.rotation;
   const rotatedTriads = rotateArray(harmonicMinorTriads, rotation);
   const rotatedSeventhChords = rotateArray(
     harmonicMinorSeventhChords,
@@ -133,7 +145,12 @@ export function getChordDetailsForMelodicMinorMode(
   melodicMinorModeKey: MelodicMinorModeKey,
 ): ChordDetails[] {
   const mode = melodicMinorModes[melodicMinorModeKey];
-  const rotation = mode.rotation as number;
+  if (mode.rotation === undefined) {
+    throw new Error(
+      `Mode "${melodicMinorModeKey}" is missing the 'rotation' property.`,
+    );
+  }
+  const rotation = mode.rotation;
   const rotatedTriads = rotateArray(melodicMinorTriads, rotation);
   const rotatedSeventhChords = rotateArray(melodicMinorSeventhChords, rotation);
   return getChordDetailsForMode(

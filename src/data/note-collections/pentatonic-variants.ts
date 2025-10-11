@@ -1,6 +1,6 @@
-import type { NoteCollection } from "../../types/note-collections.d.ts";
+import type { ScaleCollection } from "../../types/note-collections.d.ts";
 
-const majorPentatonic: NoteCollection = {
+const majorPentatonic: ScaleCollection = {
   category: "scale",
   rotation: 0,
   primaryName: "Major Pentatonic",
@@ -20,7 +20,7 @@ const majorPentatonic: NoteCollection = {
   patternShort: ["W", "W", "m3", "W", "m3"],
 } as const;
 
-const suspendedPentatonic: NoteCollection = {
+const suspendedPentatonic: ScaleCollection = {
   category: "scale",
   rotation: 1,
   primaryName: "Suspended Pentatonic",
@@ -33,7 +33,7 @@ const suspendedPentatonic: NoteCollection = {
   patternShort: ["W", "m3", "W", "m3"],
 } as const;
 
-const bluesMinorPentatonic: NoteCollection = {
+const bluesMinorPentatonic: ScaleCollection = {
   category: "scale",
   rotation: 2,
   primaryName: "Blues Minor Pentatonic",
@@ -46,7 +46,7 @@ const bluesMinorPentatonic: NoteCollection = {
   patternShort: ["m3", "W", "H", "m3"],
 } as const;
 
-const bluesMajorPentatonic: NoteCollection = {
+const bluesMajorPentatonic: ScaleCollection = {
   category: "scale",
   rotation: 3,
   primaryName: "Blues Major Pentatonic",
@@ -59,7 +59,7 @@ const bluesMajorPentatonic: NoteCollection = {
   patternShort: ["W", "H", "M3", "W"],
 } as const;
 
-const minorPentatonic: NoteCollection = {
+const minorPentatonic: ScaleCollection = {
   category: "scale",
   rotation: 4,
   primaryName: "Minor Pentatonic",
@@ -78,28 +78,15 @@ const minorPentatonic: NoteCollection = {
   patternShort: ["m3", "W", "W", "m3", "W"],
 } as const;
 
-const dominantPentatonic: NoteCollection = {
-  category: "scale",
-  primaryName: "Dominant Pentatonic",
-  names: ["Dominant Pentatonic"],
-  intervals: ["1", "2", "3", "5", "♭7", "8"],
-  integers: [0, 2, 4, 7, 10],
-  type: ["dominant", "pentatonic", "scale", "gapped scale"],
-  characteristics: ["bluesy", "dominant feel", "mixolydian flavor"],
-  pattern: ["whole", "whole", "minor third", "minor third"],
-  patternShort: ["W", "W", "m3", "m3"],
-} as const;
-
 export const _pentatonicVariants = {
   majorPentatonic,
   suspendedPentatonic,
   bluesMinorPentatonic,
   bluesMajorPentatonic,
   minorPentatonic,
-  dominantPentatonic,
 } as const;
 
 export type PentatonicVariantKey = keyof typeof _pentatonicVariants;
 
-export const pentatonicVariants: Record<PentatonicVariantKey, NoteCollection> =
+export const pentatonicVariants: Record<PentatonicVariantKey, ScaleCollection> =
   _pentatonicVariants;

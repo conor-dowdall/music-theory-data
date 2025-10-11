@@ -1,6 +1,6 @@
-import type { NoteCollection } from "../../types/note-collections.d.ts";
+import type { ScaleCollection } from "../../types/note-collections.d.ts";
 
-const harmonicMinor: NoteCollection = {
+const harmonicMinor: ScaleCollection = {
   category: "scale",
   rotation: 0,
   primaryName: "Harmonic Minor",
@@ -34,7 +34,7 @@ const harmonicMinor: NoteCollection = {
   patternShort: ["W", "H", "W", "W", "H", "A2", "H"],
 } as const;
 
-const locrianNatural6: NoteCollection = {
+const locrianNatural6: ScaleCollection = {
   category: "scale",
   rotation: 1,
   primaryName: "Locrian ♮6",
@@ -61,7 +61,7 @@ const locrianNatural6: NoteCollection = {
   patternShort: ["H", "W", "W", "H", "A2", "H", "W"],
 } as const;
 
-const ionianSharp5: NoteCollection = {
+const ionianSharp5: ScaleCollection = {
   category: "scale",
   rotation: 2,
   primaryName: "Ionian ♯5",
@@ -100,7 +100,7 @@ const ionianSharp5: NoteCollection = {
   patternShort: ["W", "W", "H", "A2", "H", "W", "W"],
 } as const;
 
-const dorianSharp4: NoteCollection = {
+const dorianSharp4: ScaleCollection = {
   category: "scale",
   rotation: 3,
   primaryName: "Dorian ♯4",
@@ -128,7 +128,7 @@ const dorianSharp4: NoteCollection = {
   patternShort: ["W", "H", "A2", "H", "W", "W", "H"],
 } as const;
 
-const phrygianDominant: NoteCollection = {
+const phrygianDominant: ScaleCollection = {
   category: "scale",
   rotation: 4,
   primaryName: "Phrygian Dominant",
@@ -166,7 +166,7 @@ const phrygianDominant: NoteCollection = {
   patternShort: ["H", "A2", "H", "W", "H", "W", "W"],
 } as const;
 
-const lydianSharp2: NoteCollection = {
+const lydianSharp2: ScaleCollection = {
   category: "scale",
   rotation: 5,
   primaryName: "Lydian ♯2",
@@ -192,7 +192,7 @@ const lydianSharp2: NoteCollection = {
   patternShort: ["A2", "H", "W", "H", "W", "W", "W"],
 } as const;
 
-const superLocrianDoubleFlat7: NoteCollection = {
+const superLocrianDoubleFlat7: ScaleCollection = {
   category: "scale",
   rotation: 6,
   primaryName: "Super Locrian 𝄫7",
@@ -227,5 +227,5 @@ export const _harmonicMinorModes = {
 
 export type HarmonicMinorModeKey = keyof typeof _harmonicMinorModes;
 
-export const harmonicMinorModes: Record<HarmonicMinorModeKey, NoteCollection> =
+export const harmonicMinorModes: Record<HarmonicMinorModeKey, ScaleCollection> =
   _harmonicMinorModes;

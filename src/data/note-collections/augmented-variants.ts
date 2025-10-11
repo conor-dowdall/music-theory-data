@@ -1,6 +1,6 @@
-import type { NoteCollection } from "../../types/note-collections.d.ts";
+import type { ChordCollection } from "../../types/note-collections.d.ts";
 
-const augmentedTriad: NoteCollection = {
+const augmentedTriad: ChordCollection = {
   category: "chord",
   primaryName: "aug",
   names: ["aug", "+", "Augmented Triad"],
@@ -12,7 +12,7 @@ const augmentedTriad: NoteCollection = {
   patternShort: ["M3", "M3"],
 } as const;
 
-const augmented7: NoteCollection = {
+const augmented7: ChordCollection = {
   category: "chord",
   primaryName: "aug7",
   names: ["aug7", "+7", "7♯5", "Augmented Seventh"],
@@ -24,7 +24,7 @@ const augmented7: NoteCollection = {
   patternShort: ["M3", "M3", "m2"],
 } as const;
 
-const italian6: NoteCollection = {
+const italian6: ChordCollection = {
   category: "chord",
   primaryName: "It+6",
   names: ["It+6", "Italian 6th"],
@@ -40,7 +40,7 @@ const italian6: NoteCollection = {
   patternShort: ["M3", "d4"],
 } as const;
 
-const french6: NoteCollection = {
+const french6: ChordCollection = {
   category: "chord",
   primaryName: "Fr+6",
   names: ["Fr+6", "French 6th"],
@@ -57,7 +57,7 @@ const french6: NoteCollection = {
   patternShort: ["M3", "m2", "M2"],
 } as const;
 
-const german6: NoteCollection = {
+const german6: ChordCollection = {
   category: "chord",
   primaryName: "Ger+6",
   names: ["Ger+6", "German 6th"],
@@ -84,5 +84,5 @@ export const _augmentedVariants = {
 
 export type AugmentedVariantKey = keyof typeof _augmentedVariants;
 
-export const augmentedVariants: Record<AugmentedVariantKey, NoteCollection> =
+export const augmentedVariants: Record<AugmentedVariantKey, ChordCollection> =
   _augmentedVariants;

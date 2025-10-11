@@ -1,6 +1,6 @@
-import type { NoteCollection } from "../../types/note-collections.d.ts";
+import type { ChordCollection } from "../../types/note-collections.d.ts";
 
-const major: NoteCollection = {
+const major: ChordCollection = {
   category: "chord",
   primaryName: "M",
   names: ["M", "maj", "Major", "Major Triad", "Δ"],
@@ -17,7 +17,7 @@ const major: NoteCollection = {
   patternShort: ["M3", "m3"],
 } as const;
 
-const major6: NoteCollection = {
+const major6: ChordCollection = {
   category: "chord",
   primaryName: "6",
   names: ["6", "M6", "maj6", "Major 6th", "Major Sixth"],
@@ -37,7 +37,7 @@ const major6: NoteCollection = {
   patternShort: ["M3", "m3", "M2"],
 } as const;
 
-const major7: NoteCollection = {
+const major7: ChordCollection = {
   category: "chord",
   primaryName: "M7",
   names: ["M7", "maj7", "Major 7th", "Major Seventh", "Δ7"],
@@ -56,7 +56,7 @@ const major7: NoteCollection = {
   patternShort: ["M3", "m3", "M3"],
 } as const;
 
-const major9: NoteCollection = {
+const major9: ChordCollection = {
   category: "chord",
   primaryName: "M9",
   names: ["M9", "maj9", "Major 9th", "Major Ninth", "Δ9"],
@@ -76,7 +76,7 @@ const major9: NoteCollection = {
   patternShort: ["M3", "m3", "M3", "m3"],
 } as const;
 
-const majorAdd9: NoteCollection = {
+const majorAdd9: ChordCollection = {
   category: "chord",
   primaryName: "add9",
   names: ["add9", "maj(add9)", "M(add9)", "Major add 9"],
@@ -96,7 +96,7 @@ const majorAdd9: NoteCollection = {
   patternShort: ["M3", "m3", "P5"],
 } as const;
 
-const major6Add9: NoteCollection = {
+const major6Add9: ChordCollection = {
   category: "chord",
   primaryName: "6/9",
   names: ["6/9", "M6/9", "maj6/9", "Major 6/9", "6add9", "Major add 6 add 9"],
@@ -131,5 +131,5 @@ export const _majorVariants = {
 
 export type MajorVariantKey = keyof typeof _majorVariants;
 
-export const majorVariants: Record<MajorVariantKey, NoteCollection> =
+export const majorVariants: Record<MajorVariantKey, ChordCollection> =
   _majorVariants;

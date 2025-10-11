@@ -1,6 +1,6 @@
-import type { NoteCollection } from "../../types/note-collections.d.ts";
+import type { ScaleCollection } from "../../types/note-collections.d.ts";
 
-const ionian: NoteCollection = {
+const ionian: ScaleCollection = {
   category: "scale",
   rotation: 0,
   primaryName: "Major",
@@ -41,7 +41,7 @@ const ionian: NoteCollection = {
   patternShort: ["W", "W", "H", "W", "W", "W", "H"],
 } as const;
 
-const dorian: NoteCollection = {
+const dorian: ScaleCollection = {
   category: "scale",
   rotation: 1,
   primaryName: "Dorian",
@@ -80,7 +80,7 @@ const dorian: NoteCollection = {
   patternShort: ["W", "H", "W", "W", "W", "H", "W"],
 } as const;
 
-const phrygian: NoteCollection = {
+const phrygian: ScaleCollection = {
   category: "scale",
   rotation: 2,
   primaryName: "Phrygian",
@@ -117,7 +117,7 @@ const phrygian: NoteCollection = {
   patternShort: ["H", "W", "W", "W", "H", "W", "W"],
 } as const;
 
-const lydian: NoteCollection = {
+const lydian: ScaleCollection = {
   category: "scale",
   rotation: 3,
   primaryName: "Lydian",
@@ -148,7 +148,7 @@ const lydian: NoteCollection = {
   patternShort: ["W", "W", "W", "H", "W", "W", "H"],
 } as const;
 
-const mixolydian: NoteCollection = {
+const mixolydian: ScaleCollection = {
   category: "scale",
   rotation: 4,
   primaryName: "Mixolydian",
@@ -185,7 +185,7 @@ const mixolydian: NoteCollection = {
   patternShort: ["W", "W", "H", "W", "W", "H", "W"],
 } as const;
 
-const aeolian: NoteCollection = {
+const aeolian: ScaleCollection = {
   category: "scale",
   rotation: 5,
   primaryName: "Minor",
@@ -223,7 +223,7 @@ const aeolian: NoteCollection = {
   patternShort: ["W", "H", "W", "W", "H", "W", "W"],
 } as const;
 
-const locrian: NoteCollection = {
+const locrian: ScaleCollection = {
   category: "scale",
   rotation: 6,
   primaryName: "Locrian",
@@ -270,5 +270,5 @@ const _diatonicModes = {
 
 export type DiatonicModeKey = keyof typeof _diatonicModes;
 
-export const diatonicModes: Record<DiatonicModeKey, NoteCollection> =
+export const diatonicModes: Record<DiatonicModeKey, ScaleCollection> =
   _diatonicModes;

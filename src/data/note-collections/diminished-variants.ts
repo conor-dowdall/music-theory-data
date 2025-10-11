@@ -1,6 +1,10 @@
-import type { NoteCollection } from "../../types/note-collections.d.ts";
+import type {
+  ChordCollection,
+  NoteCollection,
+  ScaleCollection,
+} from "../../types/note-collections.d.ts";
 
-const diminishedTriad: NoteCollection = {
+const diminishedTriad: ChordCollection = {
   category: "chord",
   primaryName: "dim",
   names: ["dim", "°", "Diminished Triad"],
@@ -12,7 +16,7 @@ const diminishedTriad: NoteCollection = {
   patternShort: ["m3", "m3"],
 } as const;
 
-const diminished7: NoteCollection = {
+const diminished7: ChordCollection = {
   category: "chord",
   primaryName: "dim7",
   names: ["dim7", "°7", "Diminished 7th"],
@@ -24,7 +28,7 @@ const diminished7: NoteCollection = {
   patternShort: ["m3", "m3", "m3"],
 } as const;
 
-const halfDiminished7: NoteCollection = {
+const halfDiminished7: ChordCollection = {
   category: "chord",
   primaryName: "m7♭5",
   names: ["m7♭5", "ø7", "Half Diminished 7th"],
@@ -36,11 +40,11 @@ const halfDiminished7: NoteCollection = {
   patternShort: ["m3", "m3", "M3"],
 } as const;
 
-const wholeHalfDiminished: NoteCollection = {
+const wholeHalfDiminished: ScaleCollection = {
   category: "scale",
   primaryName: "Whole Half Diminished",
   names: ["Whole Half Diminished"],
-  intervals: ["1", "2", "♭3", "4", "♭5", "♭6", "6", "7"],
+  intervals: ["1", "2", "♭3", "4", "♭5", "♭6", "6", "7", "8"],
   integers: [0, 2, 3, 5, 6, 8, 9, 11],
   type: ["diminished", "scale", "symmetrical", "octatonic"],
   characteristics: ["tense", "jazzy", "symmetrical", "alternating tones"],
@@ -48,11 +52,11 @@ const wholeHalfDiminished: NoteCollection = {
   patternShort: ["W", "H", "W", "H", "W", "H", "W", "H"],
 } as const;
 
-const halfWholeDiminished: NoteCollection = {
+const halfWholeDiminished: ScaleCollection = {
   category: "scale",
   primaryName: "Half Whole Diminished",
   names: ["Half Whole Diminished", "Dominant Diminished"],
-  intervals: ["1", "♭2", "♭3", "3", "♯4", "5", "6", "♭7"],
+  intervals: ["1", "♭2", "♭3", "3", "♯4", "5", "6", "♭7", "8"],
   integers: [0, 1, 3, 4, 6, 7, 9, 10],
   type: ["diminished", "dominant", "scale", "symmetrical", "octatonic"],
   characteristics: [
