@@ -24,7 +24,7 @@ jobs:
         run: npx jsr publish
 
       # Part 2: Prepare and Publish to NPM
-      - name: Make prepare-npm.sh executable
+      - name: Make npm preparation script executable
         run: chmod +x ./prepare-npm.sh
 
       - name: Run prepare-npm.sh script
@@ -40,9 +40,6 @@ jobs:
       # Ensure npm 11.5.1 or later is installed
       - name: Update npm
         run: npm install -g npm@latest
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm test
 
       - name: Publish to NPM
         run: npm publish ./npm --access public
