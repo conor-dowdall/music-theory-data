@@ -1,19 +1,41 @@
-name: Publish
+name: Publish Package
+
 on:
   push:
-    branches:
-      - publish
+    tags:
+      - "v*" # This workflow runs when you push a tag like v1.0.0
 
 jobs:
   publish:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read
-      id-token: write
+      contents: read # Needed to checkout the repository
+      id-token: write # Needed for OIDC authentication with JSR
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Publish package
+      # Part 1: Publish to JSR (Deno's registry)
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+
+      - name: Publish to JSR
         run: npx jsr publish
+
+      # Part 2: Prepare and Publish to NPM
+      - name: Make prepare-npm.sh executable
+        run: chmod +x ./prepare-npm.sh
+
+      - name: Run prepare-npm.sh script
+        run: ./prepare-npm.sh
+
+      - name: Set up Node.js for NPM publishing
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+          provenance: true # Link package to source and build
+
+      - name: Publish to NPM
+        run: npm publish ./npm
