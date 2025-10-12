@@ -44,7 +44,7 @@ cat > "$NPM_DIR/package.json" <<EOF
   "main": "src/mod.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/conor-dowdall/music-theory-data.git"
+    "url": "git+https://github.com/conor-dowdall/music-theory-data.git"
   },
   "bugs": {
     "url": "https://github.com/conor-dowdall/music-theory-data/issues"
