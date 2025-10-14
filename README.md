@@ -6,6 +6,19 @@ more.**
 > **Note:** This library is currently under review for accuracy. Please verify
 > data before use in a critical application.
 
+## Verified Note Collections
+
+- ✅ Diatonic Modes
+- 🛠️ Pentatonic Variants
+- 🛠️ Major Variants
+- 🛠️ Minor Variants
+- 🛠️ Dominant Variants
+- ✅ Harmonic Minor Modes
+- 🛠️ Melodic Minor Modes
+- 🛠️ Diminished Variants
+- 🛠️ Augmented Variants
+- 🛠️ Other Note Collections
+
 ## Features
 
 - **Rich Data Structures:** Access detailed information for scales, modes,
@@ -47,9 +60,11 @@ Then import it into your project:
 import * as music_theory_data from "@musodojo/music-theory-data";
 ```
 
-## Usage Example
+## Usage Examples
 
-The `tests/` directory contains many useful examples.
+Note: the `tests/` directory contains many useful examples.
+
+The code below shows how to access and print some of the data.
 
 ```ts
 import * as music_theory_data from "jsr:@musodojo/music-theory-data";
