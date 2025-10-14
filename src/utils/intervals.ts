@@ -9,6 +9,7 @@ import {
   simpleToCompoundIntervalMap,
   simpleToExtensionIntervalMap,
 } from "../data/labels/note-labels.ts";
+import type { NoteCollection } from "../types/note-collections.d.ts";
 
 export function filterOutOctaveIntervals(
   intervals: readonly Interval[],
@@ -96,4 +97,15 @@ export function getIntervalsFromQualities(
     const interval = intervalQualityToIntervalMap.get(quality);
     return interval ? [interval] : [];
   });
+}
+
+/**
+ * Extracts the interval qualities (e.g., "P1", "M2", "m3") from a NoteCollection.
+ * @param collection The NoteCollection object.
+ * @returns An array of IntervalQuality strings.
+ */
+export function getQualitiesFromNoteCollection(
+  collection: NoteCollection,
+): IntervalQuality[] {
+  return getQualitiesFromIntervals(collection.intervals);
 }

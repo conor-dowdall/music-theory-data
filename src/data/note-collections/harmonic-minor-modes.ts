@@ -95,9 +95,9 @@ const ionianSharp5: ScaleCollection = {
     "augmented second",
     "half",
     "whole",
-    "whole",
+    "half",
   ],
-  patternShort: ["W", "W", "H", "A2", "H", "W", "W"],
+  patternShort: ["W", "W", "H", "A2", "H", "W", "H"],
 } as const;
 
 const dorianSharp4: ScaleCollection = {
@@ -122,10 +122,10 @@ const dorianSharp4: ScaleCollection = {
     "augmented second",
     "half",
     "whole",
-    "whole",
     "half",
+    "whole",
   ],
-  patternShort: ["W", "H", "A2", "H", "W", "W", "H"],
+  patternShort: ["W", "H", "A2", "H", "W", "H", "W"],
 } as const;
 
 const phrygianDominant: ScaleCollection = {
@@ -187,9 +187,9 @@ const lydianSharp2: ScaleCollection = {
     "half",
     "whole",
     "whole",
-    "whole",
+    "half",
   ],
-  patternShort: ["A2", "H", "W", "H", "W", "W", "W"],
+  patternShort: ["A2", "H", "W", "H", "W", "W", "H"],
 } as const;
 
 const superLocrianDoubleFlat7: ScaleCollection = {
@@ -211,8 +211,16 @@ const superLocrianDoubleFlat7: ScaleCollection = {
     "altered",
     "theoretical",
   ],
-  pattern: ["half", "whole", "half", "whole", "whole", "half", "whole"],
-  patternShort: ["H", "W", "H", "W", "W", "H", "W"],
+  pattern: [
+    "half",
+    "whole",
+    "half",
+    "whole",
+    "whole",
+    "half",
+    "augmented second",
+  ],
+  patternShort: ["H", "W", "H", "W", "W", "H", "A2"],
 } as const;
 
 export const _harmonicMinorModes = {

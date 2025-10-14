@@ -49,7 +49,7 @@ import * as music_theory_data from "@musodojo/music-theory-data";
 
 ## Usage Example
 
-Get the notes of a scale or the details of a mode.
+The `tests/` directory contains many useful examples.
 
 ```ts
 import * as music_theory_data from "jsr:@musodojo/music-theory-data";
@@ -61,6 +61,11 @@ const notes = music_theory_data.getNoteNamesFromRootAndCollectionKey(
 );
 console.log(notes);
 // ["A", "B", "C", "D", "E", "F", "G♯", "A"]
+
+// Automatically knows whether to use flats or sharps
+notes = music_theory_data.getNoteNamesFromRootAndCollectionKey("F", "ionian");
+console.log(notes);
+//  ["F", "G", "A", "B♭", "C", "D", "E", "F"];
 
 // Get the full data structure for the Ionian mode (Major Scale)
 const ionian = music_theory_data.noteCollections.ionian;

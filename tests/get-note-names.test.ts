@@ -302,16 +302,34 @@ Deno.test("getNoteNamesFromRootAndIntervals", () => {
   assertEquals(
     getNoteNamesFromRootAndIntervals(
       "B♭",
-      filterOutOctaveIntervals(diatonicModes.aeolian.intervals),
+      diatonicModes.aeolian.intervals,
+      { filterOutOctave: true },
     ),
-    ["B♭", "C", "D♭", "E♭", "F", "G♭", "A♭"],
+    [
+      "B♭",
+      "C",
+      "D♭",
+      "E♭",
+      "F",
+      "G♭",
+      "A♭",
+    ],
   );
   assertEquals(
     getNoteNamesFromRootAndIntervals(
       "B♭",
       diatonicModes.aeolian.intervals,
     ),
-    ["B♭", "C", "D♭", "E♭", "F", "G♭", "A♭", "B♭"],
+    [
+      "B♭",
+      "C",
+      "D♭",
+      "E♭",
+      "F",
+      "G♭",
+      "A♭",
+      "B♭",
+    ],
   );
 });
 
