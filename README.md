@@ -6,6 +6,10 @@ more.**
 > **Note:** This library is currently under review for accuracy. Please verify
 > data before use in a critical application.
 
+## Discord
+
+**[Join the Muso Dojo Community on Discord!](https://discord.gg/7nrnVmmH)**
+
 ## Verified Note Collections
 
 - ✅ Diatonic Modes
@@ -70,16 +74,19 @@ The code below shows how to access and print some of the data.
 import * as music_theory_data from "jsr:@musodojo/music-theory-data";
 
 // Get the notes of A Harmonic Minor
-const notes = music_theory_data.getNoteNamesFromRootAndCollectionKey(
+const notes1 = music_theory_data.getNoteNamesFromRootAndCollectionKey(
   "A",
   "harmonicMinor",
 );
-console.log(notes);
+console.log(notes1);
 // ["A", "B", "C", "D", "E", "F", "G♯", "A"]
 
 // Automatically knows whether to use flats or sharps
-notes = music_theory_data.getNoteNamesFromRootAndCollectionKey("F", "ionian");
-console.log(notes);
+const notes2 = music_theory_data.getNoteNamesFromRootAndCollectionKey(
+  "F",
+  "ionian",
+);
+console.log(notes2);
 //  ["F", "G", "A", "B♭", "C", "D", "E", "F"];
 
 // Get the full data structure for the Ionian mode (Major Scale)
