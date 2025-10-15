@@ -49,6 +49,7 @@ const chromatic: ScaleCollection = {
 
 const wholeTone: ScaleCollection = {
   category: "scale",
+  rotation: 0,
   primaryName: "Whole Tone Scale",
   names: [
     "Whole Tone Scale",

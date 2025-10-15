@@ -114,8 +114,13 @@ const dorianSharp4: ScaleCollection = {
   ],
   intervals: ["1", "2", "♭3", "♯4", "5", "6", "♭7", "8"],
   integers: [0, 2, 3, 6, 7, 9, 10],
-  type: ["harmonic minor mode", "minor", "scale", "heptatonic"],
-  characteristics: ["exotic minor", "eastern european folk", "gypsy"],
+  type: ["harmonic minor mode", "minor", "scale", "mode", "heptatonic"],
+  characteristics: [
+    "exotic minor",
+    "eastern european folk",
+    "gypsy",
+    "fourth mode of harmonic minor",
+  ],
   pattern: [
     "whole",
     "half",
@@ -144,8 +149,9 @@ const phrygianDominant: ScaleCollection = {
   ],
   intervals: ["1", "♭2", "3", "4", "5", "♭6", "♭7", "8"],
   integers: [0, 1, 4, 5, 7, 8, 10],
-  type: ["harmonic minor mode", "dominant", "scale", "heptatonic"],
+  type: ["harmonic minor mode", "dominant", "scale", "mode", "heptatonic"],
   characteristics: [
+    "fifth mode of harmonic minor",
     "very exotic",
     "spanish",
     "flamenco",
@@ -178,8 +184,14 @@ const lydianSharp2: ScaleCollection = {
   ],
   intervals: ["1", "♯2", "3", "♯4", "5", "6", "7", "8"],
   integers: [0, 3, 4, 6, 7, 9, 11],
-  type: ["harmonic minor mode", "major", "scale", "heptatonic"],
-  characteristics: ["very bright", "unusual", "double augmented", "exotic"],
+  type: ["harmonic minor mode", "major", "scale", "mode", "heptatonic"],
+  characteristics: [
+    "very bright",
+    "unusual",
+    "double augmented",
+    "exotic",
+    "sixth mode of harmonic minor",
+  ],
   pattern: [
     "augmented second",
     "half",
@@ -204,12 +216,13 @@ const superLocrianDoubleFlat7: ScaleCollection = {
   ],
   intervals: ["1", "♭2", "♭3", "♭4", "♭5", "♭6", "𝄫7", "8"],
   integers: [0, 1, 3, 4, 6, 8, 9],
-  type: ["harmonic minor mode", "diminished", "scale", "heptatonic"],
+  type: ["harmonic minor mode", "diminished", "scale", "mode", "heptatonic"],
   characteristics: [
     "extremely tense",
     "highly dissonant",
     "altered",
     "theoretical",
+    "seventh mode of harmonic minor",
   ],
   pattern: [
     "half",

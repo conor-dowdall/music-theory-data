@@ -109,7 +109,7 @@ const lydianDominant: ScaleCollection = {
     "quirky",
     "bluesy",
     "jazzy",
-    "a very common scale in jazz for non-resolving dominant chords",
+    "used in jazz for non-resolving dominant chords",
     "fourth mode of melodic minor",
   ],
   pattern: ["whole", "whole", "whole", "half", "whole", "half", "whole"],
@@ -181,7 +181,7 @@ const altered: ScaleCollection = {
     "Locrian ♭4",
     "Locrian Flat Fourth",
   ],
-  intervals: ["1", "♭2", "♭3", "♭4", "♭5", "♭7", "8"],
+  intervals: ["1", "♭2", "♭3", "♭4", "♭5", "♭6", "♭7", "8"],
   integers: [0, 1, 3, 4, 6, 8, 10],
   type: ["melodic minor mode", "dominant", "mode", "scale", "heptatonic"],
   characteristics: [

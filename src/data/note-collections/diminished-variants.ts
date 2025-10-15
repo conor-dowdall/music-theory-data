@@ -42,6 +42,7 @@ const halfDiminished7: ChordCollection = {
 
 const wholeHalfDiminished: ScaleCollection = {
   category: "scale",
+  rotation: 0,
   primaryName: "Whole Half Diminished",
   names: ["Whole Half Diminished"],
   intervals: ["1", "2", "♭3", "4", "♭5", "♭6", "6", "7", "8"],
@@ -54,6 +55,7 @@ const wholeHalfDiminished: ScaleCollection = {
 
 const halfWholeDiminished: ScaleCollection = {
   category: "scale",
+  rotation: 1,
   primaryName: "Half Whole Diminished",
   names: ["Half Whole Diminished", "Dominant Diminished"],
   intervals: ["1", "♭2", "♭3", "3", "♯4", "5", "6", "♭7", "8"],

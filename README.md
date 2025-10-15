@@ -18,7 +18,7 @@ more.**
 - 🛠️ Minor Variants
 - 🛠️ Dominant Variants
 - ✅ Harmonic Minor Modes
-- 🛠️ Melodic Minor Modes
+- ✅ Melodic Minor Modes
 - 🛠️ Diminished Variants
 - 🛠️ Augmented Variants
 - 🛠️ Other Note Collections

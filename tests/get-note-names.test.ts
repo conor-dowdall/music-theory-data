@@ -4,7 +4,6 @@ import {
   getNoteNamesFromRootAndIntervals,
 } from "../src/utils/note-names.ts";
 import { diatonicModes } from "../src/data/note-collections/diatonic-modes.ts";
-import { filterOutOctaveIntervals } from "../src/utils/intervals.ts";
 import type { NoteCollectionKey } from "../src/data/note-collections/mod.ts";
 import { isValidNoteCollectionKey } from "../src/utils/note-collections.ts";
 
