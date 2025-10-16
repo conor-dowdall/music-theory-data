@@ -1,6 +1,10 @@
-import type { ScaleCollection } from "../../types/note-collections.d.ts";
+import type {
+  ModalScaleCollection,
+  ParentScaleCollection,
+  ScaleCollection,
+} from "../../types/note-collections.d.ts";
 
-const ionian: ScaleCollection = {
+const ionian: ParentScaleCollection = {
   category: "scale",
   rotation: 0,
   primaryName: "Major",
@@ -41,9 +45,10 @@ const ionian: ScaleCollection = {
   patternShort: ["W", "W", "H", "W", "W", "W", "H"],
 } as const;
 
-const dorian: ScaleCollection = {
+const dorian: ModalScaleCollection = {
   category: "scale",
   rotation: 1,
+  parentScale: "ionian",
   primaryName: "Dorian",
   names: [
     "Dorian",
@@ -80,9 +85,10 @@ const dorian: ScaleCollection = {
   patternShort: ["W", "H", "W", "W", "W", "H", "W"],
 } as const;
 
-const phrygian: ScaleCollection = {
+const phrygian: ModalScaleCollection = {
   category: "scale",
   rotation: 2,
+  parentScale: "ionian",
   primaryName: "Phrygian",
   names: [
     "Phrygian",
@@ -117,9 +123,10 @@ const phrygian: ScaleCollection = {
   patternShort: ["H", "W", "W", "W", "H", "W", "W"],
 } as const;
 
-const lydian: ScaleCollection = {
+const lydian: ModalScaleCollection = {
   category: "scale",
   rotation: 3,
+  parentScale: "ionian",
   primaryName: "Lydian",
   names: ["Lydian", "Major ♯4", "Lydian Mode"],
   intervals: ["1", "2", "3", "♯4", "5", "6", "7", "8"],
@@ -148,9 +155,10 @@ const lydian: ScaleCollection = {
   patternShort: ["W", "W", "W", "H", "W", "W", "H"],
 } as const;
 
-const mixolydian: ScaleCollection = {
+const mixolydian: ModalScaleCollection = {
   category: "scale",
   rotation: 4,
+  parentScale: "ionian",
   primaryName: "Mixolydian",
   names: [
     "Mixolydian",
@@ -185,9 +193,10 @@ const mixolydian: ScaleCollection = {
   patternShort: ["W", "W", "H", "W", "W", "H", "W"],
 } as const;
 
-const aeolian: ScaleCollection = {
+const aeolian: ModalScaleCollection = {
   category: "scale",
   rotation: 5,
+  parentScale: "ionian",
   primaryName: "Minor",
   names: [
     "Minor",
@@ -223,9 +232,10 @@ const aeolian: ScaleCollection = {
   patternShort: ["W", "H", "W", "W", "H", "W", "W"],
 } as const;
 
-const locrian: ScaleCollection = {
+const locrian: ModalScaleCollection = {
   category: "scale",
   rotation: 6,
+  parentScale: "ionian",
   primaryName: "Locrian",
   names: [
     "Locrian",

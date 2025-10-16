@@ -49,11 +49,8 @@ const chromatic: ScaleCollection = {
 
 const wholeTone: ScaleCollection = {
   category: "scale",
-  rotation: 0,
   primaryName: "Whole Tone Scale",
-  names: [
-    "Whole Tone Scale",
-  ],
+  names: ["Whole Tone Scale"],
   intervals: ["1", "2", "3", "♯4", "♯5", "♯6", "8"],
   integers: [0, 2, 4, 6, 8, 10],
   type: ["whole tone", "scale", "symmetrical", "hexatonic"],

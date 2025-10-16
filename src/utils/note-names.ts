@@ -2,13 +2,13 @@ import {
   enharmonicNoteNameGroups,
   type Interval,
   intervalToIntegerMap,
-  type NoteInteger,
   type NoteLetter,
   noteLetters,
   type NoteName,
   noteNamesSet,
   noteNameToIntegerMap,
   type RootNote,
+  type RootNoteInteger,
   rootNotesSet,
 } from "../data/labels/note-labels.ts";
 import {
@@ -124,13 +124,13 @@ export function normalizeRootNoteString(name: string): RootNote | undefined {
 
 export function noteNameToInteger(
   noteName: NoteName,
-): NoteInteger | undefined {
+): RootNoteInteger | undefined {
   return noteNameToIntegerMap.get(noteName);
 }
 
 export function noteNameStringToInteger(
   noteName: string,
-): NoteInteger | undefined {
+): RootNoteInteger | undefined {
   const normalized = normalizeNoteNameString(noteName);
   if (!normalized) return undefined;
   return noteNameToInteger(normalized);

@@ -1,6 +1,10 @@
-import type { ScaleCollection } from "../../types/note-collections.d.ts";
+import type {
+  ModalScaleCollection,
+  ParentScaleCollection,
+  ScaleCollection,
+} from "../../types/note-collections.d.ts";
 
-const melodicMinor: ScaleCollection = {
+const melodicMinor: ParentScaleCollection = {
   category: "scale",
   rotation: 0,
   primaryName: "Melodic Minor",
@@ -33,9 +37,10 @@ const melodicMinor: ScaleCollection = {
   patternShort: ["W", "H", "W", "W", "W", "W", "H"],
 } as const;
 
-const dorianFlat2: ScaleCollection = {
+const dorianFlat2: ModalScaleCollection = {
   category: "scale",
   rotation: 1,
+  parentScale: "melodicMinor",
   primaryName: "Dorian ♭2",
   names: [
     "Dorian ♭2",
@@ -59,9 +64,10 @@ const dorianFlat2: ScaleCollection = {
   patternShort: ["H", "W", "W", "W", "W", "H", "W"],
 } as const;
 
-const lydianAugmented: ScaleCollection = {
+const lydianAugmented: ModalScaleCollection = {
   category: "scale",
   rotation: 2,
+  parentScale: "melodicMinor",
   primaryName: "Lydian Augmented",
   names: ["Lydian Augmented", "Lydian ♯5", "Lydian Sharp Fifth"],
   intervals: ["1", "2", "3", "♯4", "♯5", "6", "7", "8"],
@@ -86,9 +92,10 @@ const lydianAugmented: ScaleCollection = {
   patternShort: ["W", "W", "W", "W", "H", "W", "H"],
 } as const;
 
-const lydianDominant: ScaleCollection = {
+const lydianDominant: ModalScaleCollection = {
   category: "scale",
   rotation: 3,
+  parentScale: "melodicMinor",
   primaryName: "Lydian Dominant",
   names: [
     "Lydian Dominant",
@@ -116,9 +123,10 @@ const lydianDominant: ScaleCollection = {
   patternShort: ["W", "W", "W", "H", "W", "H", "W"],
 } as const;
 
-const mixolydianFlat6: ScaleCollection = {
+const mixolydianFlat6: ModalScaleCollection = {
   category: "scale",
   rotation: 4,
+  parentScale: "melodicMinor",
   primaryName: "Mixolydian ♭6",
   names: [
     "Mixolydian ♭6",
@@ -143,9 +151,10 @@ const mixolydianFlat6: ScaleCollection = {
   patternShort: ["W", "W", "H", "W", "H", "W", "W"],
 } as const;
 
-const aeolianFlat5: ScaleCollection = {
+const aeolianFlat5: ModalScaleCollection = {
   category: "scale",
   rotation: 5,
+  parentScale: "melodicMinor",
   primaryName: "Aeolian ♭5",
   names: [
     "Aeolian ♭5",
@@ -170,9 +179,10 @@ const aeolianFlat5: ScaleCollection = {
   patternShort: ["W", "H", "W", "H", "W", "W", "W"],
 } as const;
 
-const altered: ScaleCollection = {
+const altered: ModalScaleCollection = {
   category: "scale",
   rotation: 6,
+  parentScale: "melodicMinor",
   primaryName: "Altered Scale",
   names: [
     "Altered Scale",

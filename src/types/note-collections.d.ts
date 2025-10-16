@@ -1,4 +1,4 @@
-import type { Interval, NoteInteger } from "../data/labels/note-labels.ts";
+import type { Interval } from "../data/labels/note-labels.ts";
 
 export type CollectionCategory = "scale" | "chord";
 
@@ -20,10 +20,11 @@ interface NoteCollectionBase {
    */
   readonly intervals: readonly Interval[];
   /**
-   * The set of pitch classes as integers (0-11), representing semitones from the root.
-   * This set never includes the octave.
+   * The set of semitone values from the root.
+   * - For **scales**, this is a pitch class set (0-11) and does not include the octave.
+   * - For **chords**, this can include values > 11 to represent extensions (e.g., 14 for a 9th).
    */
-  readonly integers: readonly NoteInteger[];
+  readonly integers: readonly number[];
   /**
    * An array of tags used for classification and filtering.
    * e.g., ["major", "scale", "heptatonic", "diatonic mode"]
@@ -48,25 +49,47 @@ interface NoteCollectionBase {
   readonly patternShort: readonly string[];
 }
 
-export interface ScaleCollection extends NoteCollectionBase {
+/** A scale that is the parent of a set of modes (e.g., Ionian, Melodic Minor). */
+interface ParentScaleCollection extends NoteCollectionBase {
   /**
    * The fundamental classification of the collection. For scales, this is always "scale".
-   * This influences the interpretation of other properties:
-   * - `intervals` conventionally includes the octave ("8").
-   * - `pattern` represents steps between consecutive notes.
    */
   readonly category: "scale";
   /**
-   * The rotation index relative to a parent scale (e.g., for diatonic modes).
-   * Ionian is 0, Dorian is 1, etc. This property is optional and only applies
-   * to collections that are modes of another scale.
+   * The rotation index for a parent scale is always 0.
    */
-  readonly rotation?: number;
+  readonly rotation: 0;
+  readonly parentScale?: never;
+}
+
+/** A scale that is a mode of a parent scale (e.g., Dorian, Lydian Augmented). */
+interface ModalScaleCollection extends NoteCollectionBase {
+  readonly category: "scale";
+  /**
+   * The rotation index relative to a parent scale. e.g., Dorian is 1.
+   */
+  readonly rotation: number;
+  /**
+   * The key-name (e.g., "ionian") of the parent scale from which this mode is derived.
+   */
+  readonly parentScale: string;
+}
+
+/** A scale that is not a mode of another scale in this collection. */
+interface NonModalScaleCollection extends NoteCollectionBase {
+  readonly category: "scale";
+  readonly rotation?: never;
+  readonly parentScale?: never;
 }
 
 export interface ChordCollection extends NoteCollectionBase {
   readonly category: "chord";
   readonly rotation?: never;
 }
+
+export type ScaleCollection =
+  | ParentScaleCollection
+  | ModalScaleCollection
+  | NonModalScaleCollection;
 
 export type NoteCollection = ScaleCollection | ChordCollection;

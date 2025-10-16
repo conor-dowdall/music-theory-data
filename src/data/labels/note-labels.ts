@@ -1,4 +1,4 @@
-export type NoteInteger = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
+export type RootNoteInteger = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
 const _noteLetters = [
   "C",
@@ -53,15 +53,16 @@ export const noteNames: readonly NoteName[] = enharmonicNoteNameGroups.flat();
 
 export const noteNamesSet: ReadonlySet<NoteName> = new Set(noteNames);
 
-export const noteNameToIntegerMap: ReadonlyMap<NoteName, NoteInteger> = (() => {
-  const map = new Map<NoteName, NoteInteger>();
-  _enharmonicNoteNameGroups.forEach((group, index) => {
-    group.forEach((note) => {
-      map.set(note, index as NoteInteger);
+export const noteNameToIntegerMap: ReadonlyMap<NoteName, RootNoteInteger> =
+  (() => {
+    const map = new Map<NoteName, RootNoteInteger>();
+    _enharmonicNoteNameGroups.forEach((group, index) => {
+      group.forEach((note) => {
+        map.set(note, index as RootNoteInteger);
+      });
     });
-  });
-  return map;
-})();
+    return map;
+  })();
 
 const _enharmonicRootNoteGroups = [
   ["C", "B♯"],
@@ -87,15 +88,16 @@ export const rootNotes: readonly RootNote[] = enharmonicRootNoteGroups.flat();
 
 export const rootNotesSet: ReadonlySet<RootNote> = new Set(rootNotes);
 
-export const rootNoteToIntegerMap: ReadonlyMap<RootNote, NoteInteger> = (() => {
-  const map = new Map<RootNote, NoteInteger>();
-  enharmonicRootNoteGroups.forEach((group, index) => {
-    group.forEach((note) => {
-      map.set(note, index as NoteInteger);
+export const rootNoteToIntegerMap: ReadonlyMap<RootNote, RootNoteInteger> =
+  (() => {
+    const map = new Map<RootNote, RootNoteInteger>();
+    enharmonicRootNoteGroups.forEach((group, index) => {
+      group.forEach((note) => {
+        map.set(note, index as RootNoteInteger);
+      });
     });
-  });
-  return map;
-})();
+    return map;
+  })();
 
 export type SimpleIntervalNumber =
   | "1"

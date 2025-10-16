@@ -46,12 +46,35 @@ const minor7: ChordCollection = {
   patternShort: ["m3", "M3", "m3"],
 } as const;
 
+const minorMajor7: ChordCollection = {
+  category: "chord",
+  primaryName: "m(M7)",
+  names: [
+    "m(M7)",
+    "min(M7)",
+    "Minor (Major 7th)",
+    "Minor Major Seventh",
+    "mM7",
+    "-M7",
+    "-(maj7)",
+  ],
+  intervals: ["1", "♭3", "5", "7"],
+  integers: [0, 3, 7, 11],
+  type: ["minor", "chord", "arpeggio", "tetrad"],
+  characteristics: [
+    "smooth",
+    "jazzy",
+  ],
+  pattern: ["minor third", "major third", "major third"],
+  patternShort: ["m3", "M3", "M3"],
+};
+
 const minor9: ChordCollection = {
   category: "chord",
   primaryName: "m9",
   names: ["m9", "min9", "Minor 9th", "Minor Ninth", "-9"],
   intervals: ["1", "♭3", "5", "♭7", "9"],
-  integers: [0, 2, 3, 7, 10],
+  integers: [0, 3, 7, 10, 14],
   type: ["minor", "chord", "arpeggio", "pentad"],
   characteristics: ["rich", "lush", "sophisticated", "common in jazz"],
   pattern: ["minor third", "major third", "minor third", "major third"],
@@ -63,7 +86,7 @@ const minorAdd9: ChordCollection = {
   primaryName: "m(add9)",
   names: ["m(add9)", "min(add9)", "Minor add 9"],
   intervals: ["1", "♭3", "5", "9"],
-  integers: [0, 2, 3, 7],
+  integers: [0, 3, 7, 14],
   type: ["minor", "chord", "arpeggio", "tetrad"],
   characteristics: [
     "open",
@@ -78,9 +101,9 @@ const minorAdd9: ChordCollection = {
 const minor6Add9: ChordCollection = {
   category: "chord",
   primaryName: "m6/9",
-  names: ["m6/9", "min6/9", "Minor 6/9"],
+  names: ["m6/9", "min6/9", "Minor 6/9", "-6/9"],
   intervals: ["1", "♭3", "5", "6", "9"],
-  integers: [0, 2, 3, 7, 9],
+  integers: [0, 3, 7, 9, 14],
   type: ["minor", "chord", "arpeggio", "pentad"],
   characteristics: [
     "rich",
@@ -96,6 +119,7 @@ export const _minorVariants = {
   minor,
   minor6,
   minor7,
+  minorMajor7,
   minor9,
   minorAdd9,
   minor6Add9,

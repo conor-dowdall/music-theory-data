@@ -13,9 +13,9 @@ more.**
 ## Verified Note Collections
 
 - ✅ Diatonic Modes
-- 🛠️ Pentatonic Variants
-- 🛠️ Major Variants
-- 🛠️ Minor Variants
+- ✅ Pentatonic Variants
+- ✅ Major Variants
+- ✅ Minor Variants
 - 🛠️ Dominant Variants
 - ✅ Harmonic Minor Modes
 - ✅ Melodic Minor Modes

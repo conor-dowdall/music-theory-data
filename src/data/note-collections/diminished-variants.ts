@@ -1,7 +1,8 @@
 import type {
   ChordCollection,
+  ModalScaleCollection,
   NoteCollection,
-  ScaleCollection,
+  ParentScaleCollection,
 } from "../../types/note-collections.d.ts";
 
 const diminishedTriad: ChordCollection = {
@@ -40,7 +41,7 @@ const halfDiminished7: ChordCollection = {
   patternShort: ["m3", "m3", "M3"],
 } as const;
 
-const wholeHalfDiminished: ScaleCollection = {
+const wholeHalfDiminished: ParentScaleCollection = {
   category: "scale",
   rotation: 0,
   primaryName: "Whole Half Diminished",
@@ -53,9 +54,10 @@ const wholeHalfDiminished: ScaleCollection = {
   patternShort: ["W", "H", "W", "H", "W", "H", "W", "H"],
 } as const;
 
-const halfWholeDiminished: ScaleCollection = {
+const halfWholeDiminished: ModalScaleCollection = {
   category: "scale",
   rotation: 1,
+  parentScale: "wholeHalfDiminished",
   primaryName: "Half Whole Diminished",
   names: ["Half Whole Diminished", "Dominant Diminished"],
   intervals: ["1", "♭2", "♭3", "3", "♯4", "5", "6", "♭7", "8"],

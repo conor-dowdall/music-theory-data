@@ -61,7 +61,7 @@ const major9: ChordCollection = {
   primaryName: "M9",
   names: ["M9", "maj9", "Major 9th", "Major Ninth", "Δ9"],
   intervals: ["1", "3", "5", "7", "9"],
-  integers: [0, 2, 4, 7, 11],
+  integers: [0, 4, 7, 11, 14],
   type: ["major", "chord", "arpeggio", "pentad"],
   characteristics: [
     "stable",
@@ -81,7 +81,7 @@ const majorAdd9: ChordCollection = {
   primaryName: "add9",
   names: ["add9", "maj(add9)", "M(add9)", "Major add 9"],
   intervals: ["1", "3", "5", "9"],
-  integers: [0, 2, 4, 7],
+  integers: [0, 4, 7, 14],
   type: ["major", "chord", "arpeggio", "tetrad"],
   characteristics: [
     "stable",
@@ -101,7 +101,7 @@ const major6Add9: ChordCollection = {
   primaryName: "6/9",
   names: ["6/9", "M6/9", "maj6/9", "Major 6/9", "6add9", "Major add 6 add 9"],
   intervals: ["1", "3", "5", "6", "9"],
-  integers: [0, 2, 4, 7, 9],
+  integers: [0, 4, 7, 9, 14],
   type: ["major", "chord", "arpeggio", "pentad"],
   characteristics: [
     "stable",

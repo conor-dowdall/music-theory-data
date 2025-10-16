@@ -1,6 +1,10 @@
-import type { ScaleCollection } from "../../types/note-collections.d.ts";
+import type {
+  ModalScaleCollection,
+  ParentScaleCollection,
+  ScaleCollection,
+} from "../../types/note-collections.d.ts";
 
-const harmonicMinor: ScaleCollection = {
+const harmonicMinor: ParentScaleCollection = {
   category: "scale",
   rotation: 0,
   primaryName: "Harmonic Minor",
@@ -34,9 +38,10 @@ const harmonicMinor: ScaleCollection = {
   patternShort: ["W", "H", "W", "W", "H", "A2", "H"],
 } as const;
 
-const locrianNatural6: ScaleCollection = {
+const locrianNatural6: ModalScaleCollection = {
   category: "scale",
   rotation: 1,
+  parentScale: "harmonicMinor",
   primaryName: "Locrian ♮6",
   names: ["Locrian ♮6", "Locrian Natural Sixth", "Locrian Raised Sixth"],
   intervals: ["1", "♭2", "♭3", "4", "♭5", "6", "♭7", "8"],
@@ -61,9 +66,10 @@ const locrianNatural6: ScaleCollection = {
   patternShort: ["H", "W", "W", "H", "A2", "H", "W"],
 } as const;
 
-const ionianSharp5: ScaleCollection = {
+const ionianSharp5: ModalScaleCollection = {
   category: "scale",
   rotation: 2,
+  parentScale: "harmonicMinor",
   primaryName: "Ionian ♯5",
   names: [
     "Ionian ♯5",
@@ -100,9 +106,10 @@ const ionianSharp5: ScaleCollection = {
   patternShort: ["W", "W", "H", "A2", "H", "W", "H"],
 } as const;
 
-const dorianSharp4: ScaleCollection = {
+const dorianSharp4: ModalScaleCollection = {
   category: "scale",
   rotation: 3,
+  parentScale: "harmonicMinor",
   primaryName: "Dorian ♯4",
   names: [
     "Dorian ♯4",
@@ -133,9 +140,10 @@ const dorianSharp4: ScaleCollection = {
   patternShort: ["W", "H", "A2", "H", "W", "H", "W"],
 } as const;
 
-const phrygianDominant: ScaleCollection = {
+const phrygianDominant: ModalScaleCollection = {
   category: "scale",
   rotation: 4,
+  parentScale: "harmonicMinor",
   primaryName: "Phrygian Dominant",
   names: [
     "Phrygian Dominant",
@@ -172,9 +180,10 @@ const phrygianDominant: ScaleCollection = {
   patternShort: ["H", "A2", "H", "W", "H", "W", "W"],
 } as const;
 
-const lydianSharp2: ScaleCollection = {
+const lydianSharp2: ModalScaleCollection = {
   category: "scale",
   rotation: 5,
+  parentScale: "harmonicMinor",
   primaryName: "Lydian ♯2",
   names: [
     "Lydian ♯2",
@@ -204,9 +213,10 @@ const lydianSharp2: ScaleCollection = {
   patternShort: ["A2", "H", "W", "H", "W", "W", "H"],
 } as const;
 
-const superLocrianDoubleFlat7: ScaleCollection = {
+const superLocrianDoubleFlat7: ModalScaleCollection = {
   category: "scale",
   rotation: 6,
+  parentScale: "harmonicMinor",
   primaryName: "Super Locrian 𝄫7",
   names: [
     "Super Locrian 𝄫7",
