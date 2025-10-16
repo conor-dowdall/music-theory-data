@@ -38,16 +38,16 @@ more.**
 
 ### Deno / JSR
 
-Import directly from JSR in your Deno project:
+Install the package from the JSR registry:
+
+```bash
+deno add jsr:@musodojo/music-theory-data
+```
+
+Then import it into your project:
 
 ```ts
 import * as music_theory_data from "@musodojo/music-theory-data";
-```
-
-or
-
-```ts
-import * as music_theory_data from "jsr:@musodojo/music-theory-data";
 ```
 
 ### Node.js / npm
