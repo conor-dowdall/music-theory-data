@@ -8,7 +8,7 @@ more.**
 
 ## Community & Support
 
-Have a question, a suggestion, or want to report a bug? We'd love to hear from
+Have a question, a suggestion, or want to report a bug? I'd love to hear from
 you!
 
 - **💬 Ask a Question or Share an Idea:** Use
