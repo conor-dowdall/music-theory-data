@@ -1,7 +1,7 @@
 import type {
   ChordCollection,
+  NonModalScaleCollection,
   NoteCollection,
-  ScaleCollection,
 } from "../../types/note-collections.d.ts";
 
 const dominant7: ChordCollection = {
@@ -105,7 +105,7 @@ const dominant13: ChordCollection = {
   patternShort: ["M3", "m3", "m3", "M3", "m3", "m3"],
 } as const;
 
-const dominantPentatonic: ScaleCollection = {
+const dominantPentatonic: NonModalScaleCollection = {
   category: "scale",
   primaryName: "Dominant Pentatonic",
   names: ["Dominant Pentatonic"],

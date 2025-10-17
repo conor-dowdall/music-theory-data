@@ -1,6 +1,6 @@
 {
   "name": "@musodojo/music-theory-data",
-  "version": "18.0.0",
+  "version": "19.0.0",
   "license": "CC0 1.0 Universal",
   "exports": "./src/mod.ts",
   "imports": {

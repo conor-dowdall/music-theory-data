@@ -1,12 +1,9 @@
-import type {
-  ModalScaleCollection,
-  ParentScaleCollection,
-  ScaleCollection,
-} from "../../types/note-collections.d.ts";
+import type { ModalScaleCollection } from "../../types/note-collections.d.ts";
 
-const melodicMinor: ParentScaleCollection = {
+const melodicMinor: ModalScaleCollection = {
   category: "scale",
   rotation: 0,
+  parentScale: "melodicMinor",
   primaryName: "Melodic Minor",
   names: [
     "Melodic Minor",
@@ -218,5 +215,7 @@ export const _melodicMinorModes = {
 
 export type MelodicMinorModeKey = keyof typeof _melodicMinorModes;
 
-export const melodicMinorModes: Record<MelodicMinorModeKey, ScaleCollection> =
-  _melodicMinorModes;
+export const melodicMinorModes: Record<
+  MelodicMinorModeKey,
+  ModalScaleCollection
+> = _melodicMinorModes;

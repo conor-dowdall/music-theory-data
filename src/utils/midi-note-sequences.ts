@@ -1,6 +1,6 @@
 import type { Interval } from "../data/labels/note-labels.ts";
 import type { MidiNoteNumber, MidiNoteSequence } from "../types/midi.d.ts";
-import { rootMidiAndIntervalToMidi } from "./midi.ts";
+import { noteMidiAndIntervalToMidi } from "./midi.ts";
 
 export type MidiNoteSequenceDirection =
   | "ascending"
@@ -50,7 +50,7 @@ function getMonotonicMidiNoteSequence(
       intervalIndex = (startFromIndex + i) % intervalsLength;
       octaveOffset = Math.floor((startFromIndex + i) / intervalsLength) * 12;
       const interval = intervals[intervalIndex];
-      const note = rootMidiAndIntervalToMidi(rootNoteMidi, interval);
+      const note = noteMidiAndIntervalToMidi(rootNoteMidi, interval);
       if (note === undefined) {
         throw new Error(
           `Could not calculate MIDI note for interval ${interval} at index ${intervalIndex}`,
@@ -75,7 +75,7 @@ function getMonotonicMidiNoteSequence(
         Math.max(0, Math.ceil((i - startFromIndex) / intervalsLength)) * 12;
       const interval = intervals[intervalIndex];
       // Subtract octaveOffset from root before applying interval
-      const note = rootMidiAndIntervalToMidi(
+      const note = noteMidiAndIntervalToMidi(
         (rootNoteMidi - octaveOffset) as MidiNoteNumber,
         interval,
       );

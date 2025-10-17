@@ -100,11 +100,6 @@ export function getChordDetailsForDiatonicMode(
   diatonicModeKey: DiatonicModeKey,
 ): ChordDetails[] {
   const mode = diatonicModes[diatonicModeKey];
-  if (mode.rotation === undefined) {
-    throw new Error(
-      `Mode "${diatonicModeKey}" is missing the 'rotation' property.`,
-    );
-  }
   const rotation = mode.rotation;
   const rotatedTriads = rotateArray(diatonicTriads, rotation);
   const rotatedSeventhChords = rotateArray(diatonicSeventhChords, rotation);
@@ -121,11 +116,6 @@ export function getChordDetailsForHarmonicMinorMode(
   harmonicMinorModeKey: HarmonicMinorModeKey,
 ): ChordDetails[] {
   const mode = harmonicMinorModes[harmonicMinorModeKey];
-  if (mode.rotation === undefined) {
-    throw new Error(
-      `Mode "${harmonicMinorModeKey}" is missing the 'rotation' property.`,
-    );
-  }
   const rotation = mode.rotation;
   const rotatedTriads = rotateArray(harmonicMinorTriads, rotation);
   const rotatedSeventhChords = rotateArray(
@@ -145,11 +135,6 @@ export function getChordDetailsForMelodicMinorMode(
   melodicMinorModeKey: MelodicMinorModeKey,
 ): ChordDetails[] {
   const mode = melodicMinorModes[melodicMinorModeKey];
-  if (mode.rotation === undefined) {
-    throw new Error(
-      `Mode "${melodicMinorModeKey}" is missing the 'rotation' property.`,
-    );
-  }
   const rotation = mode.rotation;
   const rotatedTriads = rotateArray(melodicMinorTriads, rotation);
   const rotatedSeventhChords = rotateArray(melodicMinorSeventhChords, rotation);

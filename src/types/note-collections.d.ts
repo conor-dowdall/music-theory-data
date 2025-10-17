@@ -49,28 +49,20 @@ interface NoteCollectionBase {
   readonly patternShort: readonly string[];
 }
 
-/** A scale that is the parent of a set of modes (e.g., Ionian, Melodic Minor). */
-interface ParentScaleCollection extends NoteCollectionBase {
+/** A scale that can be thought of as a mode of a parent scale (e.g., Ionian, Dorian, Lydian Augmented). */
+interface ModalScaleCollection extends NoteCollectionBase {
   /**
    * The fundamental classification of the collection. For scales, this is always "scale".
    */
   readonly category: "scale";
   /**
    * The rotation index for a parent scale is always 0.
-   */
-  readonly rotation: 0;
-  readonly parentScale?: never;
-}
-
-/** A scale that is a mode of a parent scale (e.g., Dorian, Lydian Augmented). */
-interface ModalScaleCollection extends NoteCollectionBase {
-  readonly category: "scale";
-  /**
    * The rotation index relative to a parent scale. e.g., Dorian is 1.
    */
   readonly rotation: number;
   /**
    * The key-name (e.g., "ionian") of the parent scale from which this mode is derived.
+   * The parent scale has itself as parentScale!
    */
   readonly parentScale: string;
 }
@@ -88,7 +80,6 @@ export interface ChordCollection extends NoteCollectionBase {
 }
 
 export type ScaleCollection =
-  | ParentScaleCollection
   | ModalScaleCollection
   | NonModalScaleCollection;
 

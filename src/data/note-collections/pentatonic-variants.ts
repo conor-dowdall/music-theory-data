@@ -1,12 +1,9 @@
-import type {
-  ModalScaleCollection,
-  ParentScaleCollection,
-  ScaleCollection,
-} from "../../types/note-collections.d.ts";
+import type { ModalScaleCollection } from "../../types/note-collections.d.ts";
 
-const majorPentatonic: ParentScaleCollection = {
+const majorPentatonic: ModalScaleCollection = {
   category: "scale",
   rotation: 0,
+  parentScale: "majorPentatonic",
   primaryName: "Major Pentatonic",
   names: ["Major Pentatonic"],
   intervals: ["1", "2", "3", "5", "6", "8"],
@@ -96,5 +93,7 @@ export const _pentatonicVariants = {
 
 export type PentatonicVariantKey = keyof typeof _pentatonicVariants;
 
-export const pentatonicVariants: Record<PentatonicVariantKey, ScaleCollection> =
-  _pentatonicVariants;
+export const pentatonicVariants: Record<
+  PentatonicVariantKey,
+  ModalScaleCollection
+> = _pentatonicVariants;

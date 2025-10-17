@@ -122,18 +122,12 @@ export function normalizeRootNoteString(name: string): RootNote | undefined {
   return undefined;
 }
 
-export function noteNameToInteger(
-  noteName: NoteName,
-): RootNoteInteger | undefined {
-  return noteNameToIntegerMap.get(noteName);
-}
-
-export function noteNameStringToInteger(
+export function getNoteIntegerFromString(
   noteName: string,
 ): RootNoteInteger | undefined {
   const normalized = normalizeNoteNameString(noteName);
   if (!normalized) return undefined;
-  return noteNameToInteger(normalized);
+  return noteNameToIntegerMap.get(normalized);
 }
 
 export function getNoteNamesFromRootAndIntervals(
@@ -141,7 +135,7 @@ export function getNoteNamesFromRootAndIntervals(
   intervals: readonly Interval[],
   options: TransformIntervalsOptions = {},
 ): NoteName[] {
-  const rootNoteInteger = noteNameToInteger(rootNote);
+  const rootNoteInteger = noteNameToIntegerMap.get(rootNote);
   if (rootNoteInteger === undefined) return [];
   const rootNoteLetter = rootNote.charAt(0).toUpperCase();
   const rootNoteLetterIndex = noteLetters.indexOf(rootNoteLetter as NoteLetter);

@@ -1,12 +1,9 @@
-import type {
-  ModalScaleCollection,
-  ParentScaleCollection,
-  ScaleCollection,
-} from "../../types/note-collections.d.ts";
+import type { ModalScaleCollection } from "../../types/note-collections.d.ts";
 
-const ionian: ParentScaleCollection = {
+const ionian: ModalScaleCollection = {
   category: "scale",
   rotation: 0,
+  parentScale: "ionian",
   primaryName: "Major",
   names: [
     "Major",
@@ -280,5 +277,5 @@ const _diatonicModes = {
 
 export type DiatonicModeKey = keyof typeof _diatonicModes;
 
-export const diatonicModes: Record<DiatonicModeKey, ScaleCollection> =
+export const diatonicModes: Record<DiatonicModeKey, ModalScaleCollection> =
   _diatonicModes;

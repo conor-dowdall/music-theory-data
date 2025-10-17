@@ -3,48 +3,49 @@ import {
   intervalToIntegerMap,
   type NoteName,
   noteNameToIntegerMap,
-  type RootNoteInteger,
 } from "../data/labels/note-labels.ts";
 
-import type { MidiNoteNumber, OctaveNumber } from "../types/midi.d.ts";
+import type { MidiNoteNumber } from "../types/midi.d.ts";
 
-export function rootIntegerAndIntervalToMidi(
-  rootNoteInteger: RootNoteInteger,
-  interval: Interval,
-  rootNoteOctaveNumber: OctaveNumber = 4,
-): MidiNoteNumber | undefined {
-  const intervalValue = intervalToIntegerMap.get(interval);
-  if (intervalValue === undefined) return undefined;
-  return (rootNoteOctaveNumber + 1) * 12 + rootNoteInteger +
-    intervalValue as MidiNoteNumber;
-}
-
-export function rootMidiAndIntervalToMidi(
-  rootNoteMidi: MidiNoteNumber,
+export function noteIntegerAndIntervalToMidi(
+  noteInteger: number,
+  noteOctaveNumber: number,
   interval: Interval,
 ): MidiNoteNumber | undefined {
-  const intervalValue = intervalToIntegerMap.get(interval);
-  if (intervalValue === undefined) return undefined;
-  return rootNoteMidi + intervalValue as MidiNoteNumber;
-}
-
-export function noteNameToMidi(
-  noteName: NoteName,
-  octaveNumber: OctaveNumber = 4,
-): MidiNoteNumber | undefined {
-  const noteValue = noteNameToIntegerMap.get(noteName);
-  if (noteValue === undefined) return undefined;
-  return noteValue + (octaveNumber + 1) * 12 as MidiNoteNumber;
+  const intervalInteger = intervalToIntegerMap.get(interval);
+  if (intervalInteger === undefined) return undefined;
+  return (noteOctaveNumber + 1) * 12 + noteInteger +
+    intervalInteger as MidiNoteNumber;
 }
 
 export function noteNameAndIntervalToMidi(
   noteName: NoteName,
+  noteOctaveNumber: number,
   interval: Interval,
-  octaveNumber: OctaveNumber = 4,
+): MidiNoteNumber | undefined {
+  const noteInteger = noteNameToIntegerMap.get(noteName);
+  if (noteInteger === undefined) return undefined;
+  return noteIntegerAndIntervalToMidi(
+    noteInteger,
+    noteOctaveNumber,
+    interval,
+  );
+}
+
+export function noteMidiAndIntervalToMidi(
+  noteMidi: MidiNoteNumber,
+  interval: Interval,
+): MidiNoteNumber | undefined {
+  const intervalValue = intervalToIntegerMap.get(interval);
+  if (intervalValue === undefined) return undefined;
+  return noteMidi + intervalValue as MidiNoteNumber;
+}
+
+export function noteNameToMidi(
+  noteName: NoteName,
+  noteOctaveNumber: number,
 ): MidiNoteNumber | undefined {
   const noteValue = noteNameToIntegerMap.get(noteName);
   if (noteValue === undefined) return undefined;
-  const intervalValue = intervalToIntegerMap.get(interval);
-  if (intervalValue === undefined) return undefined;
-  return noteValue + (octaveNumber + 1) * 12 as MidiNoteNumber;
+  return noteValue + (noteOctaveNumber + 1) * 12 as MidiNoteNumber;
 }
