@@ -50,7 +50,7 @@ EOF
 
 # 5. Push the commit and the tag to the remote repository.
 echo "Pushing commit and tag to origin..."
-git push origin main # Or your default branch name
+git push origin main
 git push origin "$TAG_NAME"
 
 echo "Release process for $TAG_NAME complete. The publish workflow should now be running."
