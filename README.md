@@ -6,9 +6,15 @@ more.**
 > **Note:** This library is currently under review for accuracy. Please verify
 > data before use in a critical application.
 
-## Discord
+## Community & Support
 
-**[Join the Muso Dojo Community on Discord!](https://discord.gg/7nrnVmmH)**
+Have a question, a suggestion, or want to report a bug? We'd love to hear from
+you!
+
+- **💬 Ask a Question or Share an Idea:** Use
+  [GitHub Discussions](https://github.com/conor-dowdall/music-theory-data/discussions).
+- **🐞 Report a Bug or Request a Feature:** Open a
+  [GitHub Issue](https://github.com/conor-dowdall/music-theory-data/issues).
 
 ## Verified Note Collections
 
