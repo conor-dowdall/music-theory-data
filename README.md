@@ -3,42 +3,98 @@
 **The musician-friendly TypeScript library for modes, scales, chords, and
 more.**
 
-> **Note:** This library is currently under review for accuracy. Please verify
-> data before use in a critical application.
-
 ## Community & Support
 
-Have a question, a suggestion, or want to report a bug? I'd love to hear from
-you!
+Have a question, a suggestion, or want to report a bug? Get in touch!
 
 - **💬 Ask a Question or Share an Idea:** Use
   [GitHub Discussions](https://github.com/conor-dowdall/music-theory-data/discussions).
-- **🐞 Report a Bug or Request a Feature:** Open a
+- **🐞 Report a Bug or Flaw in the Data:** Open a
   [GitHub Issue](https://github.com/conor-dowdall/music-theory-data/issues).
 
-## Verified Note Collections
+## Available Note Collections
 
 - ✅ Diatonic Modes
 - ✅ Pentatonic Variants
 - ✅ Major Variants
 - ✅ Minor Variants
-- 🛠️ Dominant Variants
+- ✅ Dominant Variants
 - ✅ Harmonic Minor Modes
 - ✅ Melodic Minor Modes
-- 🛠️ Diminished Variants
-- 🛠️ Augmented Variants
-- 🛠️ Other Note Collections
+- ✅ Diminished Variants
+- ✅ Augmented Variants
+- ✅ Other Note Collections
 
 ## Features
 
-- **Rich Data Structures:** Access detailed information for scales, modes,
-  chords, and more, including intervals, integer notations, and common names.
-- **Practical Utility Functions:** Helpers for common tasks like generating note
-  names from a root note and a collection key.
 - **Fully Typed:** Written in TypeScript with comprehensive type definitions for
   a great developer experience.
 - **Deno First, NPM Ready:** A modern Deno module that is also published to npm
   for use in Node.js projects.
+
+### Rich Data Structures
+
+Access detailed information for scales, modes, chords, and more, including
+intervals, integer notations, and common names.
+
+```ts
+// src/data/note-collections/diatonic-modes.ts
+const ionian: ModalScaleCollection = {
+  category: "scale",
+  rotation: 0,
+  parentScale: "ionian",
+  primaryName: "Major",
+  names: [
+    "Major",
+    "Ionian",
+    "Major Scale",
+    "Ionian Mode",
+    "Diatonic Major",
+  ],
+  intervals: ["1", "2", "3", "4", "5", "6", "7", "8"],
+  integers: [0, 2, 4, 5, 7, 9, 11],
+  type: [
+    "major",
+    "ionian",
+    "mode",
+    "scale",
+    "church mode",
+    "diatonic mode",
+    "heptatonic",
+    "first diatonic mode",
+    "do mode",
+  ],
+  characteristics: [
+    "bright",
+    "happy",
+    "stable",
+    "uplifting",
+    "consonant",
+    "western",
+    "foundational",
+    "simple",
+    "pop music",
+    "major tonality",
+    "commonly used western scale",
+  ],
+  pattern: ["whole", "whole", "half", "whole", "whole", "whole", "half"],
+  patternShort: ["W", "W", "H", "W", "W", "W", "H"],
+} as const;
+```
+
+### Practical Utility Functions
+
+Helpers for common tasks like generating note names from a root note and a set
+of intervals.
+
+```ts
+// src/utils/note-names.ts
+export function getNoteNamesFromRootAndIntervals(
+  rootNote: RootNote,
+  intervals: readonly Interval[],
+  options: TransformIntervalsOptions = {},
+): NoteName[];
+```
 
 ## Installation
 

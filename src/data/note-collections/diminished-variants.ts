@@ -60,7 +60,7 @@ const halfWholeDiminished: ModalScaleCollection = {
   parentScale: "wholeHalfDiminished",
   primaryName: "Half Whole Diminished",
   names: ["Half Whole Diminished", "Dominant Diminished"],
-  intervals: ["1", "♭2", "♭3", "3", "♯4", "5", "6", "♭7", "8"],
+  intervals: ["1", "♭2", "♯2", "3", "♯4", "5", "6", "♭7", "8"],
   integers: [0, 1, 3, 4, 6, 7, 9, 10],
   type: ["diminished", "dominant", "scale", "symmetrical", "octatonic"],
   characteristics: [

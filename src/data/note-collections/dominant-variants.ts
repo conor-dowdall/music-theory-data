@@ -33,7 +33,7 @@ const dominant9: ChordCollection = {
   primaryName: "9",
   names: ["9", "dom9", "Dominant 9th", "Dominant Ninth"],
   intervals: ["1", "3", "5", "♭7", "9"],
-  integers: [0, 2, 4, 7, 10],
+  integers: [0, 4, 7, 10, 14],
   type: ["dominant", "major", "chord", "arpeggio", "pentad"],
   characteristics: [
     "unstable",
@@ -53,7 +53,7 @@ const dominant11: ChordCollection = {
   primaryName: "11",
   names: ["11", "dom11", "Dominant 11th", "Dominant Eleventh"],
   intervals: ["1", "3", "5", "♭7", "9", "11"],
-  integers: [0, 2, 4, 5, 7, 10],
+  integers: [0, 4, 7, 10, 14, 17],
   type: ["dominant", "major", "chord", "arpeggio", "hexad"],
   characteristics: [
     "unstable",
@@ -81,7 +81,7 @@ const dominant13: ChordCollection = {
   primaryName: "13",
   names: ["13", "dom13", "Dominant 13th", "Dominant Thirteenth"],
   intervals: ["1", "3", "5", "♭7", "9", "11", "13"],
-  integers: [0, 2, 4, 5, 7, 9, 10],
+  integers: [0, 4, 7, 10, 14, 17, 21],
   type: ["dominant", "major", "chord", "arpeggio", "heptad"],
   characteristics: [
     "unstable",
@@ -100,9 +100,9 @@ const dominant13: ChordCollection = {
     "minor third",
     "major third",
     "minor third",
-    "minor third",
+    "major third",
   ],
-  patternShort: ["M3", "m3", "m3", "M3", "m3", "m3"],
+  patternShort: ["M3", "m3", "m3", "M3", "m3", "M3"],
 } as const;
 
 const dominantPentatonic: NonModalScaleCollection = {
