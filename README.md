@@ -3,6 +3,11 @@
 **The musician-friendly TypeScript library for modes, scales, chords, and
 more.**
 
+[![npm version](https://img.shields.io/npm/v/@musodojo/music-theory-data.svg)](https://www.npmjs.com/package/@musodojo/music-theory-data)
+[![npm downloads](https://img.shields.io/npm/dw/@musodojo/music-theory-data.svg)](https://www.npmjs.com/package/@musodojo/music-theory-data)
+
+[![JSR score](https://jsr.io/badges/@musodojo/music-theory-data)](https://jsr.io/@musodojo/music-theory-data)
+
 ## Community & Support
 
 Have a question, a suggestion, or want to report a bug? Get in touch!
