@@ -93,7 +93,9 @@ export function getNoteNamesFromRootAndIntervals(
   rootNote: RootNote,
   intervals: readonly Interval[],
   options: TransformIntervalsOptions = {},
-): NoteName[];
+): NoteName[] {
+  //...
+}
 ```
 
 ## Installation

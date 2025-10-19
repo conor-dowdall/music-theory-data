@@ -8,13 +8,13 @@ export type MidiNoteSequenceDirection =
   | "ascending-descending"
   | "descending-ascending";
 
-// TODO: add property `restsAtEnd` to add null values to array end
 export interface MidiNoteSequenceOptions {
   rootNoteMidi: MidiNoteNumber;
   intervals: Interval[];
   direction: MidiNoteSequenceDirection;
   startFromIndex?: number;
   filterOutOctave?: boolean;
+  restsAtEnd?: number;
   numNotes?: number;
   numOctaves?: number;
   extraNotes?: number;
@@ -109,6 +109,7 @@ export function getMidiNoteSequence(
     filterOutOctave = true,
     numNotes,
     numOctaves = 1,
+    restsAtEnd = 0,
     extraNotes = 0,
   } = options;
 
@@ -163,6 +164,8 @@ export function getMidiNoteSequence(
       break;
     }
   }
+
+  if (restsAtEnd > 0) sequence.push(...Array(restsAtEnd).fill(null));
 
   return sequence;
 }
