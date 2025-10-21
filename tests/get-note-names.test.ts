@@ -220,6 +220,23 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Lydian Modes", () => {
   ]);
 });
 
+Deno.test("getNoteNamesFromRootAndCollectionKey - Major Chord", () => {
+  assertEquals(getNoteNamesFromRootAndCollectionKey("D", "major"), [
+    "D",
+    "F♯",
+    "A",
+  ]);
+});
+
+Deno.test("getNoteNamesFromRootAndCollectionKey - Major Seventh Chord", () => {
+  assertEquals(getNoteNamesFromRootAndCollectionKey("G", "major7"), [
+    "G",
+    "B",
+    "D",
+    "F♯",
+  ]);
+});
+
 Deno.test("getNoteNamesFromRootAndCollectionKey - Dominant 13th Chord", () => {
   assertEquals(getNoteNamesFromRootAndCollectionKey("C", "dominant13"), [
     "C",
@@ -291,7 +308,7 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Super Locrian Double Flat 7 Mo
       "F𝄫",
       "G𝄫",
       "A𝄫",
-      "A♭", // no triple flats are used in this library
+      "A♭", // no triple flats are used in this library, i.e. Bbbb
       "C♭",
     ],
   );
