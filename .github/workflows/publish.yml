@@ -3,27 +3,22 @@ name: Publish Package
 on:
   push:
     tags:
-      - "v*" # This workflow runs when you push a tag like v1.0.0
+      - "v*"
 
 jobs:
   publish:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read # Needed to checkout the repository
-      id-token: write # Needed for OIDC authentication
+      contents: read
+      id-token: write
 
     steps:
       - uses: actions/checkout@v4
 
-      # Part 1: Publish to JSR (Deno's registry)
-      - name: Set up Deno
-        uses: denoland/setup-deno@v2
-
       - name: Publish to JSR
         run: npx jsr publish
 
-      # Part 2: Prepare and Publish to NPM
       - name: Make npm preparation script executable
         run: chmod +x ./prepare-npm.sh
 
@@ -37,7 +32,6 @@ jobs:
           scope: "@musodojo"
           registry-url: "https://registry.npmjs.org"
 
-      # Ensure npm 11.5.1 or later is installed
       - name: Update npm
         run: npm install -g npm@latest
 

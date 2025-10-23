@@ -1,6 +1,7 @@
 # Muso Dojo | Music Theory Data
 
-**The musician-friendly TypeScript library for modes, scales, chords, and
+**Empower your music applications with a comprehensive, type-safe, and
+musician-friendly TypeScript/JavaScript library for modes, scales, chords, and
 more.**
 
 [![npm version](https://img.shields.io/npm/v/@musodojo/music-theory-data.svg)](https://www.npmjs.com/package/@musodojo/music-theory-data)
@@ -12,7 +13,10 @@ more.**
 
 Have a question, a suggestion, or want to report a bug? Get in touch!
 
-- **💬 Ask a Question or Share an Idea:** Use
+- **💬 Join our Discord Server:** Connect with other developers and music
+  enthusiasts in the `#music-theory-data` channel on Discord.
+
+- **📢 Ask a Question or Share an Idea:** Use
   [GitHub Discussions](https://github.com/conor-dowdall/music-theory-data/discussions).
 - **🐞 Report a Bug or Flaw in the Data:** Open a
   [GitHub Issue](https://github.com/conor-dowdall/music-theory-data/issues).
@@ -49,13 +53,7 @@ const ionian: ModalScaleCollection = {
   rotation: 0,
   parentScale: "ionian",
   primaryName: "Major",
-  names: [
-    "Major",
-    "Ionian",
-    "Major Scale",
-    "Ionian Mode",
-    "Diatonic Major",
-  ],
+  names: ["Major", "Ionian", "Major Scale", "Ionian Mode", "Diatonic Major"],
   intervals: ["1", "2", "3", "4", "5", "6", "7", "8"],
   integers: [0, 2, 4, 5, 7, 9, 11],
   type: [
@@ -167,11 +165,11 @@ console.log(ionian.primaryName);
 console.log(ionian.intervals);
 // ["1", "2", "3", "4", "5", "6", "7", "8"]
 
-// Log the array of all available Note Collection Keys
+// Log an array of all available Note Collection Keys
 console.log(Object.keys(music_theory_data.noteCollections));
 // ["ionian", "dorian", "phrygian", ...]
 
-// Log the array of all available Grouped Note Collections Keys
+// Log an array of all available Grouped Note Collections Keys
 console.log(Object.keys(music_theory_data.groupedNoteCollections));
 // ["diatonicModes", "pentatonicVariants", ...]
 ```
