@@ -33,7 +33,7 @@ cat > "$NPM_DIR/package.json" <<EOF
 {
   "name": "@musodojo/music-theory-data",
   "version": "$VERSION",
-  "description": "The musician-friendly TypeScript library for modes, scales, chords, and more.",
+  "description": "The musician-friendly TypeScript library for scales, modes, chords, and arpeggios.",
   "keywords": [
     "music",
     "theory"
