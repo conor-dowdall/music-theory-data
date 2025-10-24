@@ -13,9 +13,8 @@ more.**
 
 Have a question, a suggestion, or want to report a bug? Get in touch!
 
-- **💬 Join our Discord Server:** Connect with other developers and music
-  enthusiasts in the `#music-theory-data` channel on Discord.
-
+- **💬 Discord Server:** Connect with other developers and music
+  enthusiasts in the [`#music-theory-data` channel.](https://discord.gg/3Tt4SXG5QC)
 - **📢 Ask a Question or Share an Idea:** Use
   [GitHub Discussions](https://github.com/conor-dowdall/music-theory-data/discussions).
 - **🐞 Report a Bug or Flaw in the Data:** Open a
@@ -95,7 +94,7 @@ of intervals.
 export function getNoteNamesFromRootAndIntervals(
   rootNote: RootNote,
   intervals: readonly Interval[],
-  options: TransformIntervalsOptions = {},
+  options: TransformIntervalsOptions = {}
 ): NoteName[] {
   //...
 }
@@ -143,7 +142,7 @@ import * as music_theory_data from "jsr:@musodojo/music-theory-data";
 // Get the notes of A Harmonic Minor
 const notes1 = music_theory_data.getNoteNamesFromRootAndCollectionKey(
   "A",
-  "harmonicMinor",
+  "harmonicMinor"
 );
 console.log(notes1);
 // ["A", "B", "C", "D", "E", "F", "G♯", "A"]
@@ -151,7 +150,7 @@ console.log(notes1);
 // Automatically knows whether to use flats or sharps
 const notes2 = music_theory_data.getNoteNamesFromRootAndCollectionKey(
   "F",
-  "ionian",
+  "ionian"
 );
 console.log(notes2);
 //  ["F", "G", "A", "B♭", "C", "D", "E", "F"];
