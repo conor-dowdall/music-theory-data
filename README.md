@@ -6,15 +6,14 @@ more.**
 
 [![npm version](https://img.shields.io/npm/v/@musodojo/music-theory-data.svg)](https://www.npmjs.com/package/@musodojo/music-theory-data)
 [![npm downloads](https://img.shields.io/npm/dw/@musodojo/music-theory-data.svg)](https://www.npmjs.com/package/@musodojo/music-theory-data)
-
 [![JSR score](https://jsr.io/badges/@musodojo/music-theory-data)](https://jsr.io/@musodojo/music-theory-data)
 
 ## Community & Support
 
 Have a question, a suggestion, or want to report a bug? Get in touch!
 
-- **💬 Discord Server:** Connect with other developers and music
-  enthusiasts in the [`#music-theory-data` channel.](https://discord.gg/3Tt4SXG5QC)
+- **💬 Discord Server:** Connect with other developers and music enthusiasts in
+  the [`#music-theory-data` channel.](https://discord.gg/3Tt4SXG5QC)
 - **📢 Ask a Question or Share an Idea:** Use
   [GitHub Discussions](https://github.com/conor-dowdall/music-theory-data/discussions).
 - **🐞 Report a Bug or Flaw in the Data:** Open a
@@ -47,6 +46,7 @@ intervals, integer notations, and common names.
 
 ```ts
 // src/data/note-collections/diatonic-modes.ts
+// @ts-ignore
 const ionian: ModalScaleCollection = {
   category: "scale",
   rotation: 0,
@@ -87,16 +87,18 @@ const ionian: ModalScaleCollection = {
 ### Practical Utility Functions
 
 Helpers for common tasks like generating note names from a root note and a set
-of intervals.
+of intervals. For the full implementation details, refer to the source file.
 
 ```ts
-// src/utils/note-names.ts
 export function getNoteNamesFromRootAndIntervals(
+  // @ts-ignore
   rootNote: RootNote,
   intervals: readonly Interval[],
-  options: TransformIntervalsOptions = {}
+  options: TransformIntervalsOptions = {},
 ): NoteName[] {
-  //...
+  // This is a simplified representation for documentation purposes.
+  // The actual implementation is in src/utils/note-names.ts
+  return [];
 }
 ```
 
@@ -142,7 +144,7 @@ import * as music_theory_data from "jsr:@musodojo/music-theory-data";
 // Get the notes of A Harmonic Minor
 const notes1 = music_theory_data.getNoteNamesFromRootAndCollectionKey(
   "A",
-  "harmonicMinor"
+  "harmonicMinor",
 );
 console.log(notes1);
 // ["A", "B", "C", "D", "E", "F", "G♯", "A"]
@@ -150,7 +152,7 @@ console.log(notes1);
 // Automatically knows whether to use flats or sharps
 const notes2 = music_theory_data.getNoteNamesFromRootAndCollectionKey(
   "F",
-  "ionian"
+  "ionian",
 );
 console.log(notes2);
 //  ["F", "G", "A", "B♭", "C", "D", "E", "F"];

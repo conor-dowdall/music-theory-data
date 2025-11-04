@@ -36,7 +36,12 @@ cat > "$NPM_DIR/package.json" <<EOF
   "description": "The musician-friendly TypeScript library for scales, modes, chords, and arpeggios.",
   "keywords": [
     "music",
-    "theory"
+    "theory",
+    "enharmonic",
+    "scale",
+    "mode",
+    "chord",
+    "arpeggio"
   ],
   "license": "CC0-1.0",
   "author": "Conor Dowdall",
