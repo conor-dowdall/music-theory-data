@@ -272,80 +272,43 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Locrian Modes", () => {
   ]);
 });
 
-Deno.test("getNoteNamesFromRootAndCollectionKey - Super Locrian Double Flat 7 Modes", () => {
-  assertEquals(
-    getNoteNamesFromRootAndCollectionKey("D♭", "superLocrianDoubleFlat7"),
-    [
-      "D♭",
-      "E𝄫",
-      "F♭",
-      "G𝄫",
-      "A𝄫",
-      "B𝄫",
-      "C𝄫",
-      "D♭",
-    ],
-  );
-  assertEquals(
-    getNoteNamesFromRootAndCollectionKey("A", "superLocrianDoubleFlat7"),
-    [
-      "A",
-      "B♭",
-      "C",
-      "D♭",
-      "E♭",
-      "F",
-      "G♭",
-      "A",
-    ],
-  );
-  assertEquals(
-    getNoteNamesFromRootAndCollectionKey("C♭", "superLocrianDoubleFlat7"),
-    [
-      "C♭",
-      "D𝄫",
-      "E𝄫",
-      "F𝄫",
-      "G𝄫",
-      "A𝄫",
-      "A♭", // no triple flats are used in this library, i.e. Bbbb
-      "C♭",
-    ],
-  );
-});
+Deno.test(
+  "getNoteNamesFromRootAndCollectionKey - Super Locrian Double Flat 7 Modes",
+  () => {
+    assertEquals(
+      getNoteNamesFromRootAndCollectionKey("D♭", "superLocrianDoubleFlat7"),
+      ["D♭", "E𝄫", "F♭", "G𝄫", "A𝄫", "B𝄫", "C𝄫", "D♭"],
+    );
+    assertEquals(
+      getNoteNamesFromRootAndCollectionKey("A", "superLocrianDoubleFlat7"),
+      ["A", "B♭", "C", "D♭", "E♭", "F", "G♭", "A"],
+    );
+    assertEquals(
+      getNoteNamesFromRootAndCollectionKey("C♭", "superLocrianDoubleFlat7"),
+      [
+        "C♭",
+        "D𝄫",
+        "E𝄫",
+        "F𝄫",
+        "G𝄫",
+        "A𝄫",
+        "A♭", // no triple flats are used in this library, i.e. Bbbb
+        "C♭",
+      ],
+    );
+  },
+);
 
 Deno.test("getNoteNamesFromRootAndIntervals", () => {
   assertEquals(
-    getNoteNamesFromRootAndIntervals(
-      "B♭",
-      diatonicModes.aeolian.intervals,
-      { filterOutOctave: true },
-    ),
-    [
-      "B♭",
-      "C",
-      "D♭",
-      "E♭",
-      "F",
-      "G♭",
-      "A♭",
-    ],
+    getNoteNamesFromRootAndIntervals("B♭", diatonicModes.aeolian.intervals, {
+      filterOutOctave: true,
+    }),
+    ["B♭", "C", "D♭", "E♭", "F", "G♭", "A♭"],
   );
   assertEquals(
-    getNoteNamesFromRootAndIntervals(
-      "B♭",
-      diatonicModes.aeolian.intervals,
-    ),
-    [
-      "B♭",
-      "C",
-      "D♭",
-      "E♭",
-      "F",
-      "G♭",
-      "A♭",
-      "B♭",
-    ],
+    getNoteNamesFromRootAndIntervals("B♭", diatonicModes.aeolian.intervals),
+    ["B♭", "C", "D♭", "E♭", "F", "G♭", "A♭", "B♭"],
   );
 });
 
@@ -364,4 +327,154 @@ Deno.test("isValidNoteCollectionKey", () => {
   assertEquals(isValidNoteCollectionKey("major"), true);
   assertEquals(isValidNoteCollectionKey("invalidKey"), false);
   assertEquals(isValidNoteCollectionKey(""), false);
+});
+
+Deno.test("getNoteNamesFromRootAndIntervals - fillChromatic", () => {
+  // C Major: C, D, E, F, G, A, B
+  // Defaults (C-based): C, Db, D, Eb, E, F, Gb, G, Ab, A, Bb, B
+  // Result should be mixed.
+  // C (0), Db (1), D (2), Eb (3), E (4), F (5), Gb (6), G (7), Ab (8), A (9), Bb (10), B (11)
+  const cMajorIntervals = diatonicModes.ionian.intervals;
+  const cMajorChromatic = getNoteNamesFromRootAndIntervals(
+    "C",
+    cMajorIntervals,
+    { fillChromatic: true },
+  );
+  assertEquals(cMajorChromatic, [
+    "C",
+    "D♭",
+    "D",
+    "E♭",
+    "E",
+    "F",
+    "G♭",
+    "G",
+    "A♭",
+    "A",
+    "B♭",
+    "B",
+  ]);
+
+  // D Major: D, E, F#, G, A, B, C#
+  // Root D defaults (rotated flat notes): D, Eb, E, F, Gb, G, Ab, A, Bb, B, C, Db
+  // Expected overwrites:
+  // 2 (M2) -> E (matches default)
+  // 4 (M3) -> F# (overwrites Gb)
+  // 5 (P4) -> G (matches default)
+  // 7 (P5) -> A (matches default)
+  // 9 (M6) -> B (matches default)
+  // 11 (M7) -> C# (overwrites Db)
+  // Result: D, Eb, E, F, F#, G, Ab, A, Bb, B, C, C#
+  const dMajorChromatic = getNoteNamesFromRootAndIntervals(
+    "D",
+    cMajorIntervals, // Ionian is Major
+    { fillChromatic: true },
+  );
+  assertEquals(dMajorChromatic, [
+    "D",
+    "E♭",
+    "E", // M2
+    "F",
+    "F♯", // M3 (overwrites Gb)
+    "G", // P4
+    "A♭",
+    "A", // P5
+    "B♭",
+    "B", // M6
+    "C",
+    "C♯", // M7 (overwrites Db)
+  ]);
+
+  // Test with empty intervals - should just return defaults relative to root
+  const fDefaults = getNoteNamesFromRootAndIntervals("F", [], {
+    fillChromatic: true,
+  });
+  // F flat chromatic: F, Gb, G, Ab, A, Bb, B, C, Db, D, Eb, E
+  assertEquals(fDefaults, [
+    "F",
+    "G♭",
+    "G",
+    "A♭",
+    "A",
+    "B♭",
+    "B",
+    "C",
+    "D♭",
+    "D",
+    "E♭",
+    "E",
+  ]);
+});
+
+Deno.test("getNoteNamesFromRootAndIntervals - rotateToRootInteger0", () => {
+  const cMajorIntervals = diatonicModes.ionian.intervals;
+
+  // C Major (fillChromatic, rotate) - Should be standard C Chromatic
+  // C (0). Rotate by 0. No change.
+  const cMajorRotated = getNoteNamesFromRootAndIntervals("C", cMajorIntervals, {
+    fillChromatic: true,
+    rotateToRootInteger0: true,
+  });
+  assertEquals(cMajorRotated, [
+    "C",
+    "D♭",
+    "D",
+    "E♭",
+    "E",
+    "F",
+    "G♭",
+    "G",
+    "A♭",
+    "A",
+    "B♭",
+    "B",
+  ]);
+
+  // D Major (fillChromatic, rotate)
+  // D Major filled: [D, Eb, E, F, F#, G, Ab, A, Bb, B, C, C#]
+  // Rotated to C (Right shift 2): [C, C#, D, Eb, E, F, F#, G, Ab, A, Bb, B]
+  const dMajorRotated = getNoteNamesFromRootAndIntervals("D", cMajorIntervals, {
+    fillChromatic: true,
+    rotateToRootInteger0: true,
+  });
+  assertEquals(dMajorRotated, [
+    "C",
+    "C♯",
+    "D",
+    "E♭",
+    "E",
+    "F",
+    "F♯",
+    "G",
+    "A♭",
+    "A",
+    "B♭",
+    "B",
+  ]);
+
+  // F Major Intervals (fillChromatic, rotate)
+  // F Major filled: [F, Gb, G, Ab, A, Bb, B, C, Db, D, Eb, E]
+  // Rotated to C (Right shift 5 (F)):
+  // Indexes in F-base: 0=F, 1=Gb, 2=G, 3=Ab, 4=A, 5=Bb, 6=B, 7=C...
+  // Shift 5. Old 7 becomes (7+5)%12 = 0. So C becomes 0.
+  // Result should start with C.
+  // C, Db, D, Eb, E, F, Gb, G, Ab, A, Bb, B
+  const fDefaultsRotated = getNoteNamesFromRootAndIntervals("F", [], {
+    fillChromatic: true,
+    rotateToRootInteger0: true,
+  });
+  assertEquals(fDefaultsRotated, [
+    "C",
+    "D♭",
+    "D",
+    "E♭",
+    "E",
+    "F",
+    "G♭",
+    "G",
+    "A♭",
+    "A",
+    "B♭",
+    "B",
+  ]);
 });

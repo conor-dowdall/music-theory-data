@@ -15,7 +15,7 @@ import type {
   SeventhChord,
   Triad,
 } from "../types/chords.d.ts";
-import { rotateArray } from "./rotate-array.ts";
+import { rotateArrayLeft } from "./rotate-array.ts";
 import {
   type HarmonicMinorModeKey,
   harmonicMinorModes,
@@ -101,8 +101,8 @@ export function getChordDetailsForDiatonicMode(
 ): ChordDetails[] {
   const mode = diatonicModes[diatonicModeKey];
   const rotation = mode.rotation;
-  const rotatedTriads = rotateArray(diatonicTriads, rotation);
-  const rotatedSeventhChords = rotateArray(diatonicSeventhChords, rotation);
+  const rotatedTriads = rotateArrayLeft(diatonicTriads, rotation);
+  const rotatedSeventhChords = rotateArrayLeft(diatonicSeventhChords, rotation);
   return getChordDetailsForMode(
     mode.intervals,
     rotatedTriads,
@@ -117,8 +117,8 @@ export function getChordDetailsForHarmonicMinorMode(
 ): ChordDetails[] {
   const mode = harmonicMinorModes[harmonicMinorModeKey];
   const rotation = mode.rotation;
-  const rotatedTriads = rotateArray(harmonicMinorTriads, rotation);
-  const rotatedSeventhChords = rotateArray(
+  const rotatedTriads = rotateArrayLeft(harmonicMinorTriads, rotation);
+  const rotatedSeventhChords = rotateArrayLeft(
     harmonicMinorSeventhChords,
     rotation,
   );
@@ -136,8 +136,11 @@ export function getChordDetailsForMelodicMinorMode(
 ): ChordDetails[] {
   const mode = melodicMinorModes[melodicMinorModeKey];
   const rotation = mode.rotation;
-  const rotatedTriads = rotateArray(melodicMinorTriads, rotation);
-  const rotatedSeventhChords = rotateArray(melodicMinorSeventhChords, rotation);
+  const rotatedTriads = rotateArrayLeft(melodicMinorTriads, rotation);
+  const rotatedSeventhChords = rotateArrayLeft(
+    melodicMinorSeventhChords,
+    rotation,
+  );
   return getChordDetailsForMode(
     mode.intervals,
     rotatedTriads,
@@ -152,9 +155,7 @@ export type AnyModeKey =
   | HarmonicMinorModeKey
   | MelodicMinorModeKey;
 
-export function getChordDetailsForModeKey(
-  modeKey: AnyModeKey,
-): ChordDetails[] {
+export function getChordDetailsForModeKey(modeKey: AnyModeKey): ChordDetails[] {
   if (Object.prototype.hasOwnProperty.call(diatonicModes, modeKey)) {
     return getChordDetailsForDiatonicMode(modeKey as DiatonicModeKey);
   }

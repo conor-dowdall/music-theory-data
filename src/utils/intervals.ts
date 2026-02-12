@@ -42,6 +42,8 @@ export interface TransformIntervalsOptions {
   intervalTransformation?: IntervalTransformation;
   filterOutOctave?: boolean;
   shouldSort?: boolean;
+  fillChromatic?: boolean;
+  rotateToRootInteger0?: boolean;
 }
 
 export function transformIntervals(
