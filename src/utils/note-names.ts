@@ -21,6 +21,10 @@ import {
 } from "./intervals.ts";
 import { isValidNoteCollectionKey } from "./note-collections.ts";
 
+const NOTE_LETTER_REGEX = /^[A-Ga-g]/;
+const ACCIDENTAL_REGEX = /([#♯xX𝄪]+)|([b♭𝄫]+)/gu;
+const INTERVAL_NUMBER_REGEX = /\d+/;
+
 /**
  * Parses a string and returns a canonical `NoteName` if the string is a valid note name.
  * This is useful for handling user input that may use ASCII characters like 'b' and '#',
@@ -39,10 +43,7 @@ export function normalizeNoteNameString(name: string): NoteName | undefined {
     return name as NoteName;
   }
 
-  const noteLetterRegex = /^[A-Ga-g]/;
-  const accidentalRegex = /([#♯xX𝄪]+)|([b♭𝄫]+)/gu;
-
-  const noteLetterMatch = name.match(noteLetterRegex);
+  const noteLetterMatch = name.match(NOTE_LETTER_REGEX);
   if (!noteLetterMatch) {
     return undefined;
   }
@@ -52,13 +53,11 @@ export function normalizeNoteNameString(name: string): NoteName | undefined {
   let validAccidentalLength = 0;
   let noteAlterInteger = 0;
 
-  for (const match of accidentalString.matchAll(accidentalRegex)) {
+  for (const match of accidentalString.matchAll(ACCIDENTAL_REGEX)) {
     const sharps = match[1];
     if (sharps) {
       for (const char of sharps) {
-        noteAlterInteger += (char.toLowerCase() === "x" || char === "𝄪")
-          ? 2
-          : 1;
+        noteAlterInteger += char.toLowerCase() === "x" || char === "𝄪" ? 2 : 1;
       }
       validAccidentalLength += sharps.length;
     }
@@ -66,7 +65,7 @@ export function normalizeNoteNameString(name: string): NoteName | undefined {
     const flats = match[2];
     if (flats) {
       for (const char of flats) {
-        noteAlterInteger -= (char === "𝄫") ? 2 : 1;
+        noteAlterInteger -= char === "𝄫" ? 2 : 1;
       }
       validAccidentalLength += flats.length;
     }
@@ -140,9 +139,10 @@ export function getNoteNamesFromRootAndIntervals(
   const rootNoteLetter = rootNote.charAt(0).toUpperCase();
   const rootNoteLetterIndex = noteLetters.indexOf(rootNoteLetter as NoteLetter);
 
-  const intervalsToConvert = Object.keys(options).length > 0
-    ? transformIntervals(intervals, options)
-    : intervals;
+  const intervalsToConvert =
+    Object.keys(options).length > 0
+      ? transformIntervals(intervals, options)
+      : intervals;
 
   const noteNames: NoteName[] = intervalsToConvert.flatMap((interval) => {
     const intervalInteger = intervalToIntegerMap.get(interval);
@@ -150,15 +150,18 @@ export function getNoteNamesFromRootAndIntervals(
 
     const absoluteNoteInteger = (rootNoteInteger + intervalInteger) % 12;
 
-    const intervalNumberMatch = interval.match(/\d+/)!;
+    const intervalNumberMatch = interval.match(INTERVAL_NUMBER_REGEX);
+    if (!intervalNumberMatch) return [];
+
     const intervalNumber = parseInt(intervalNumberMatch[0], 10);
 
+    // intervalNumber is 1-based (e.g. 1 for Unison), so we subtract 1 for 0-based index calculation
     const targetNoteLetter =
       noteLetters[(rootNoteLetterIndex + intervalNumber - 1) % 7];
 
     const enharmonicGroup = enharmonicNoteNameGroups[absoluteNoteInteger];
     const selectedNote = enharmonicGroup.find((noteName) =>
-      noteName.startsWith(targetNoteLetter)
+      noteName.startsWith(targetNoteLetter),
     );
 
     return [selectedNote ?? enharmonicGroup[0]];

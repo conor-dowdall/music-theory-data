@@ -24,13 +24,12 @@ export function filterOutOctaveIntervals(
  * @returns A new array with the sorted intervals.
  */
 export function sortIntervals(intervals: readonly Interval[]): Interval[] {
-  return intervals
-    .toSorted((a, b) => {
-      const intA = intervalToIntegerMap.get(a);
-      const intB = intervalToIntegerMap.get(b);
-      if (intA === undefined || intB === undefined) return 0;
-      return intA - intB;
-    });
+  return intervals.toSorted((a, b) => {
+    const intA = intervalToIntegerMap.get(a);
+    const intB = intervalToIntegerMap.get(b);
+    if (intA === undefined || intB === undefined) return 0;
+    return intA - intB;
+  });
 }
 
 export type IntervalTransformation =
@@ -74,8 +73,8 @@ export function transformIntervals(
     ? filterOutOctaveIntervals(intervals)
     : intervals;
 
-  const finalIntervals = fundamentalIntervals.map((interval) =>
-    intervalMap.get(interval) ?? interval
+  const finalIntervals = fundamentalIntervals.map(
+    (interval) => intervalMap.get(interval) ?? interval,
   );
 
   return shouldSort ? sortIntervals(finalIntervals) : finalIntervals;

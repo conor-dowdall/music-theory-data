@@ -13,24 +13,24 @@ jobs:
       id-token: write
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: stable
 
       - name: Publish package
         run: npx jsr publish
 
-      - name: Make npm preparation script executable
-        run: chmod +x ./prepare-npm.sh
+      - name: Build npm package
+        run: deno run -A scripts/build-npm.ts
 
-      - name: Run prepare-npm.sh script
-        run: ./prepare-npm.sh
-
-      - name: Set up Node.js for NPM publishing
+      - name: Set up Node.js for npm publishing
         uses: actions/setup-node@v6
         with:
-          node-version: "latest"
-          check-latest: true
+          node-version: "lts/*"
           scope: "@musodojo"
           registry-url: "https://registry.npmjs.org"
 
-      - name: Publish to NPM
+      - name: Publish to npm
         run: npm publish ./npm --access public
