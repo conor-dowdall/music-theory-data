@@ -1,6 +1,6 @@
 {
   "name": "@musodojo/music-theory-data",
-  "version": "20.6.0",
+  "version": "20.6.1",
   "license": "CC0-1.0",
   "exports": "./src/mod.ts",
   "tasks": {
@@ -12,5 +12,7 @@
     "@std/cli": "jsr:@std/cli@^1.0.27",
     "@std/semver": "jsr:@std/semver@^1.0.8"
   },
-  "exclude": ["npm/"]
+  "exclude": [
+    "npm/"
+  ]
 }
