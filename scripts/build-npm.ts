@@ -5,15 +5,16 @@ await emptyDir("./npm");
 const denoJson = JSON.parse(Deno.readTextFileSync("./deno.json"));
 
 await build({
-  typeCheck: false,
+  typeCheck: "both",
+  compilerOptions: {
+    lib: ["ESNext"],
+  },
   entryPoints: ["./src/mod.ts"],
   outDir: "./npm",
   shims: {
-    // see JS docs for overview and more options
     deno: true,
   },
   package: {
-    // package.json properties
     name: denoJson.name,
     version: denoJson.version,
     description:
