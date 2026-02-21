@@ -8,8 +8,8 @@
  * @returns A new array with the elements rotated.
  */
 export function rotateArrayLeft<T>(array: T[], rotation: number): T[] {
-  const normalizedRotation =
-    ((rotation % array.length) + array.length) % array.length;
+  const normalizedRotation = ((rotation % array.length) + array.length) %
+    array.length;
   return array
     .slice(normalizedRotation)
     .concat(array.slice(0, normalizedRotation));

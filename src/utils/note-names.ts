@@ -160,7 +160,7 @@ function getNoteFromRootAndInterval(
 
     const enharmonicGroup = enharmonicNoteNameGroups[absoluteNoteInteger];
     selectedNote = enharmonicGroup.find((noteName) =>
-      noteName.startsWith(targetNoteLetter),
+      noteName.startsWith(targetNoteLetter)
     );
   }
 
@@ -185,10 +185,9 @@ export function getNoteNamesFromRootAndIntervals(
   const rootNoteLetterIndex = noteLetters.indexOf(rootNoteLetter as NoteLetter);
 
   // 2. Transform Intervals
-  const intervalsToConvert =
-    Object.keys(options).length > 0
-      ? transformIntervals(intervals, options)
-      : intervals;
+  const intervalsToConvert = Object.keys(options).length > 0
+    ? transformIntervals(intervals, options)
+    : intervals;
 
   let noteNames: NoteName[];
 

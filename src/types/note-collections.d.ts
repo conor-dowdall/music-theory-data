@@ -79,8 +79,6 @@ export interface ChordCollection extends NoteCollectionBase {
   readonly rotation?: never;
 }
 
-export type ScaleCollection =
-  | ModalScaleCollection
-  | NonModalScaleCollection;
+export type ScaleCollection = ModalScaleCollection | NonModalScaleCollection;
 
 export type NoteCollection = ScaleCollection | ChordCollection;

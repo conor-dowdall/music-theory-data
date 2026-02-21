@@ -73,7 +73,9 @@ await Deno.writeTextFile(
 console.log(`Updated deno.json from ${oldVersion} to ${version}`);
 
 const tagName = `v${version}`;
-const tagMessage = `Version ${version}\n\n${message || `Release of version ${version}.`}`;
+const tagMessage = `Version ${version}\n\n${
+  message || `Release of version ${version}.`
+}`;
 
 // Helper to run commands
 async function run(cmd: string, args: string[]) {
