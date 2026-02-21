@@ -2,23 +2,20 @@ import type { ChordCollection } from "../../types/note-collections.d.ts";
 
 const minor: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "aeolian",
   primaryName: "m",
   names: ["m", "min", "Minor", "Minor Triad", "-"],
   intervals: ["1", "♭3", "5"],
   integers: [0, 3, 7],
   type: ["minor", "chord", "arpeggio", "triad"],
-  characteristics: [
-    "sad",
-    "melancholic",
-    "dark",
-    "the most basic minor chord",
-  ],
+  characteristics: ["sad", "melancholic", "dark", "the most basic minor chord"],
   pattern: ["minor third", "major third"],
   patternShort: ["m3", "M3"],
 } as const;
 
 const minor6: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "dorian",
   primaryName: "m6",
   names: ["m6", "min6", "Minor 6th", "Minor Sixth"],
   intervals: ["1", "♭3", "5", "6"],
@@ -36,6 +33,7 @@ const minor6: ChordCollection = {
 
 const minor7: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "aeolian",
   primaryName: "m7",
   names: ["m7", "min7", "Minor 7th", "Minor Seventh", "-7"],
   intervals: ["1", "♭3", "5", "♭7"],
@@ -48,6 +46,7 @@ const minor7: ChordCollection = {
 
 const minorMajor7: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "harmonicMinor",
   primaryName: "m(M7)",
   names: [
     "m(M7)",
@@ -61,16 +60,14 @@ const minorMajor7: ChordCollection = {
   intervals: ["1", "♭3", "5", "7"],
   integers: [0, 3, 7, 11],
   type: ["minor", "chord", "arpeggio", "tetrad"],
-  characteristics: [
-    "smooth",
-    "jazzy",
-  ],
+  characteristics: ["smooth", "jazzy", "harmonic minor"],
   pattern: ["minor third", "major third", "major third"],
   patternShort: ["m3", "M3", "M3"],
 };
 
 const minor9: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "aeolian",
   primaryName: "m9",
   names: ["m9", "min9", "Minor 9th", "Minor Ninth", "-9"],
   intervals: ["1", "♭3", "5", "♭7", "9"],
@@ -83,6 +80,7 @@ const minor9: ChordCollection = {
 
 const minorAdd9: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "aeolian",
   primaryName: "m(add9)",
   names: ["m(add9)", "min(add9)", "Minor add 9"],
   intervals: ["1", "♭3", "5", "9"],
@@ -100,6 +98,7 @@ const minorAdd9: ChordCollection = {
 
 const minor6Add9: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "dorian",
   primaryName: "m6/9",
   names: ["m6/9", "min6/9", "Minor 6/9", "-6/9"],
   intervals: ["1", "♭3", "5", "6", "9"],

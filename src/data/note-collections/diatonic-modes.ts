@@ -3,15 +3,10 @@ import type { ModalScaleCollection } from "../../types/note-collections.d.ts";
 const ionian: ModalScaleCollection = {
   category: "scale",
   rotation: 0,
-  parentScale: "ionian",
+  rotatedScale: "ionian",
+  mostSimilarScale: "ionian",
   primaryName: "Major",
-  names: [
-    "Major",
-    "Ionian",
-    "Major Scale",
-    "Ionian Mode",
-    "Diatonic Major",
-  ],
+  names: ["Major", "Ionian", "Major Scale", "Ionian Mode", "Diatonic Major"],
   intervals: ["1", "2", "3", "4", "5", "6", "7", "8"],
   integers: [0, 2, 4, 5, 7, 9, 11],
   type: [
@@ -45,13 +40,10 @@ const ionian: ModalScaleCollection = {
 const dorian: ModalScaleCollection = {
   category: "scale",
   rotation: 1,
-  parentScale: "ionian",
+  rotatedScale: "ionian",
+  mostSimilarScale: "dorian",
   primaryName: "Dorian",
-  names: [
-    "Dorian",
-    "Minor ♮6",
-    "Dorian Mode",
-  ],
+  names: ["Dorian", "Minor ♮6", "Dorian Mode"],
   intervals: ["1", "2", "♭3", "4", "5", "6", "♭7", "8"],
   integers: [0, 2, 3, 5, 7, 9, 10],
   type: [
@@ -85,13 +77,10 @@ const dorian: ModalScaleCollection = {
 const phrygian: ModalScaleCollection = {
   category: "scale",
   rotation: 2,
-  parentScale: "ionian",
+  rotatedScale: "ionian",
+  mostSimilarScale: "phrygian",
   primaryName: "Phrygian",
-  names: [
-    "Phrygian",
-    "Minor ♭2",
-    "Phrygian Mode",
-  ],
+  names: ["Phrygian", "Minor ♭2", "Phrygian Mode"],
   intervals: ["1", "♭2", "♭3", "4", "5", "♭6", "♭7", "8"],
   integers: [0, 1, 3, 5, 7, 8, 10],
   type: [
@@ -123,7 +112,8 @@ const phrygian: ModalScaleCollection = {
 const lydian: ModalScaleCollection = {
   category: "scale",
   rotation: 3,
-  parentScale: "ionian",
+  rotatedScale: "ionian",
+  mostSimilarScale: "lydian",
   primaryName: "Lydian",
   names: ["Lydian", "Major ♯4", "Lydian Mode"],
   intervals: ["1", "2", "3", "♯4", "5", "6", "7", "8"],
@@ -155,14 +145,10 @@ const lydian: ModalScaleCollection = {
 const mixolydian: ModalScaleCollection = {
   category: "scale",
   rotation: 4,
-  parentScale: "ionian",
+  rotatedScale: "ionian",
+  mostSimilarScale: "mixolydian",
   primaryName: "Mixolydian",
-  names: [
-    "Mixolydian",
-    "Major ♭7",
-    "Dominant Scale",
-    "Mixolydian Mode",
-  ],
+  names: ["Mixolydian", "Major ♭7", "Dominant Scale", "Mixolydian Mode"],
   intervals: ["1", "2", "3", "4", "5", "6", "♭7", "8"],
   integers: [0, 2, 4, 5, 7, 9, 10],
   type: [
@@ -193,7 +179,8 @@ const mixolydian: ModalScaleCollection = {
 const aeolian: ModalScaleCollection = {
   category: "scale",
   rotation: 5,
-  parentScale: "ionian",
+  rotatedScale: "ionian",
+  mostSimilarScale: "aeolian",
   primaryName: "Minor",
   names: [
     "Minor",
@@ -232,13 +219,10 @@ const aeolian: ModalScaleCollection = {
 const locrian: ModalScaleCollection = {
   category: "scale",
   rotation: 6,
-  parentScale: "ionian",
+  rotatedScale: "ionian",
+  mostSimilarScale: "locrian",
   primaryName: "Locrian",
-  names: [
-    "Locrian",
-    "Minor ♭2 ♭5",
-    "Locrian Mode",
-  ],
+  names: ["Locrian", "Minor ♭2 ♭5", "Locrian Mode"],
   intervals: ["1", "♭2", "♭3", "4", "♭5", "♭6", "♭7", "8"],
   integers: [0, 1, 3, 5, 6, 8, 10],
   type: [

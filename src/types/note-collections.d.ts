@@ -1,4 +1,5 @@
 import type { Interval } from "../data/labels/note-labels.ts";
+import type { NoteCollectionKey } from "@musodojo/music-theory-data";
 
 export type CollectionCategory = "scale" | "chord";
 
@@ -61,22 +62,34 @@ interface ModalScaleCollection extends NoteCollectionBase {
    */
   readonly rotation: number;
   /**
-   * The key-name (e.g., "ionian") of the parent scale from which this mode is derived.
-   * The parent scale has itself as parentScale!
+   * The key name (e.g., "ionian") of the parent scale from which this mode is a rotation of.
    */
-  readonly parentScale: string;
+  readonly rotatedScale: NoteCollectionKey;
+  /**
+   * The key name (e.g., "ionian") of the parent scale from which this scale could be derived.
+   * This is the scale that contains the most notes in common with this scale.
+   */
+  readonly mostSimilarScale: NoteCollectionKey;
 }
 
 /** A scale that is not a mode of another scale in this collection. */
 interface NonModalScaleCollection extends NoteCollectionBase {
   readonly category: "scale";
   readonly rotation?: never;
-  readonly parentScale?: never;
+  /**
+   * The scale that contains the most notes in common with this scale.
+   * The scale that contains the most notes in common with this scale.
+   */
+  readonly mostSimilarScale: NoteCollectionKey;
 }
 
 export interface ChordCollection extends NoteCollectionBase {
   readonly category: "chord";
   readonly rotation?: never;
+  /**
+   * The scale that contains the most notes in common with this scale.
+   */
+  readonly mostSimilarScale: NoteCollectionKey;
 }
 
 export type ScaleCollection = ModalScaleCollection | NonModalScaleCollection;

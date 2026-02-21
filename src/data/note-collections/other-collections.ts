@@ -6,6 +6,7 @@ import type {
 
 const rootAndFifth: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "ionian",
   primaryName: "Root and Fifth",
   names: ["Root and Fifth", "Power Chord"],
   intervals: ["1", "5"],
@@ -18,6 +19,7 @@ const rootAndFifth: ChordCollection = {
 
 const bluesPentatonic: NonModalScaleCollection = {
   category: "scale",
+  mostSimilarScale: "aeolian",
   primaryName: "Blues Pentatonic",
   names: ["Blues Pentatonic"],
   intervals: ["1", "♭3", "4", "♭5", "5", "♭7", "8"],
@@ -30,6 +32,7 @@ const bluesPentatonic: NonModalScaleCollection = {
 
 const chromatic: NonModalScaleCollection = {
   category: "scale",
+  mostSimilarScale: "ionian",
   primaryName: "Chromatic",
   names: ["Chromatic", "Twelve-Tone Scale"],
   intervals: [
@@ -74,6 +77,7 @@ const chromatic: NonModalScaleCollection = {
 
 const wholeTone: NonModalScaleCollection = {
   category: "scale",
+  mostSimilarScale: "ionian",
   primaryName: "Whole Tone Scale",
   names: ["Whole Tone Scale"],
   intervals: ["1", "2", "3", "♯4", "♯5", "♯6", "8"],

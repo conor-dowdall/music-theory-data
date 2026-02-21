@@ -2,6 +2,7 @@ import type { ChordCollection } from "../../types/note-collections.d.ts";
 
 const augmentedTriad: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "ionian",
   primaryName: "aug",
   names: ["aug", "+", "Augmented Triad"],
   intervals: ["1", "3", "♯5"],
@@ -14,6 +15,7 @@ const augmentedTriad: ChordCollection = {
 
 const augmented7: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "mixolydian",
   primaryName: "aug7",
   names: ["aug7", "+7", "7♯5", "Augmented Seventh"],
   intervals: ["1", "3", "♯5", "♭7"],

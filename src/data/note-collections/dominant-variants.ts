@@ -6,6 +6,7 @@ import type {
 
 const dominant7: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "mixolydian",
   primaryName: "7",
   names: ["7", "dom7", "Dominant 7th", "Dominant Seventh"],
   intervals: ["1", "3", "5", "♭7"],
@@ -30,6 +31,7 @@ const dominant7: ChordCollection = {
 
 const dominant9: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "mixolydian",
   primaryName: "9",
   names: ["9", "dom9", "Dominant 9th", "Dominant Ninth"],
   intervals: ["1", "3", "5", "♭7", "9"],
@@ -50,6 +52,7 @@ const dominant9: ChordCollection = {
 
 const dominant11: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "mixolydian",
   primaryName: "11",
   names: ["11", "dom11", "Dominant 11th", "Dominant Eleventh"],
   intervals: ["1", "3", "5", "♭7", "9", "11"],
@@ -78,6 +81,7 @@ const dominant11: ChordCollection = {
 
 const dominant13: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "mixolydian",
   primaryName: "13",
   names: ["13", "dom13", "Dominant 13th", "Dominant Thirteenth"],
   intervals: ["1", "3", "5", "♭7", "9", "11", "13"],
@@ -107,6 +111,7 @@ const dominant13: ChordCollection = {
 
 const dominantPentatonic: NonModalScaleCollection = {
   category: "scale",
+  mostSimilarScale: "mixolydian",
   primaryName: "Dominant Pentatonic",
   names: ["Dominant Pentatonic"],
   intervals: ["1", "2", "3", "5", "♭7", "8"],

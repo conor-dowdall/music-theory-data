@@ -3,7 +3,8 @@ import type { ModalScaleCollection } from "../../types/note-collections.d.ts";
 const melodicMinor: ModalScaleCollection = {
   category: "scale",
   rotation: 0,
-  parentScale: "melodicMinor",
+  rotatedScale: "melodicMinor",
+  mostSimilarScale: "melodicMinor",
   primaryName: "Melodic Minor",
   names: [
     "Melodic Minor",
@@ -37,7 +38,8 @@ const melodicMinor: ModalScaleCollection = {
 const dorianFlat2: ModalScaleCollection = {
   category: "scale",
   rotation: 1,
-  parentScale: "melodicMinor",
+  rotatedScale: "melodicMinor",
+  mostSimilarScale: "dorianFlat2",
   primaryName: "Dorian ♭2",
   names: [
     "Dorian ♭2",
@@ -64,18 +66,13 @@ const dorianFlat2: ModalScaleCollection = {
 const lydianAugmented: ModalScaleCollection = {
   category: "scale",
   rotation: 2,
-  parentScale: "melodicMinor",
+  rotatedScale: "melodicMinor",
+  mostSimilarScale: "lydianAugmented",
   primaryName: "Lydian Augmented",
   names: ["Lydian Augmented", "Lydian ♯5", "Lydian Sharp Fifth"],
   intervals: ["1", "2", "3", "♯4", "♯5", "6", "7", "8"],
   integers: [0, 2, 4, 6, 8, 9, 11],
-  type: [
-    "melodic minor mode",
-    "augmented",
-    "mode",
-    "scale",
-    "heptatonic",
-  ],
+  type: ["melodic minor mode", "augmented", "mode", "scale", "heptatonic"],
   characteristics: [
     "dreamy",
     "unsettling",
@@ -92,7 +89,8 @@ const lydianAugmented: ModalScaleCollection = {
 const lydianDominant: ModalScaleCollection = {
   category: "scale",
   rotation: 3,
-  parentScale: "melodicMinor",
+  rotatedScale: "melodicMinor",
+  mostSimilarScale: "lydianDominant",
   primaryName: "Lydian Dominant",
   names: [
     "Lydian Dominant",
@@ -123,7 +121,8 @@ const lydianDominant: ModalScaleCollection = {
 const mixolydianFlat6: ModalScaleCollection = {
   category: "scale",
   rotation: 4,
-  parentScale: "melodicMinor",
+  rotatedScale: "melodicMinor",
+  mostSimilarScale: "mixolydianFlat6",
   primaryName: "Mixolydian ♭6",
   names: [
     "Mixolydian ♭6",
@@ -151,7 +150,8 @@ const mixolydianFlat6: ModalScaleCollection = {
 const aeolianFlat5: ModalScaleCollection = {
   category: "scale",
   rotation: 5,
-  parentScale: "melodicMinor",
+  rotatedScale: "melodicMinor",
+  mostSimilarScale: "aeolianFlat5",
   primaryName: "Aeolian ♭5",
   names: [
     "Aeolian ♭5",
@@ -179,7 +179,8 @@ const aeolianFlat5: ModalScaleCollection = {
 const altered: ModalScaleCollection = {
   category: "scale",
   rotation: 6,
-  parentScale: "melodicMinor",
+  rotatedScale: "melodicMinor",
+  mostSimilarScale: "altered",
   primaryName: "Altered Scale",
   names: [
     "Altered Scale",

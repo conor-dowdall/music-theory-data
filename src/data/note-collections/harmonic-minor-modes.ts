@@ -3,7 +3,8 @@ import type { ModalScaleCollection } from "../../types/note-collections.d.ts";
 const harmonicMinor: ModalScaleCollection = {
   category: "scale",
   rotation: 0,
-  parentScale: "harmonicMinor",
+  rotatedScale: "harmonicMinor",
+  mostSimilarScale: "harmonicMinor",
   primaryName: "Harmonic Minor",
   names: [
     "Harmonic Minor",
@@ -38,7 +39,8 @@ const harmonicMinor: ModalScaleCollection = {
 const locrianNatural6: ModalScaleCollection = {
   category: "scale",
   rotation: 1,
-  parentScale: "harmonicMinor",
+  rotatedScale: "harmonicMinor",
+  mostSimilarScale: "locrianNatural6",
   primaryName: "Locrian ♮6",
   names: ["Locrian ♮6", "Locrian Natural Sixth", "Locrian Raised Sixth"],
   intervals: ["1", "♭2", "♭3", "4", "♭5", "6", "♭7", "8"],
@@ -66,7 +68,8 @@ const locrianNatural6: ModalScaleCollection = {
 const ionianSharp5: ModalScaleCollection = {
   category: "scale",
   rotation: 2,
-  parentScale: "harmonicMinor",
+  rotatedScale: "harmonicMinor",
+  mostSimilarScale: "ionianSharp5",
   primaryName: "Ionian ♯5",
   names: [
     "Ionian ♯5",
@@ -106,7 +109,8 @@ const ionianSharp5: ModalScaleCollection = {
 const dorianSharp4: ModalScaleCollection = {
   category: "scale",
   rotation: 3,
-  parentScale: "harmonicMinor",
+  rotatedScale: "harmonicMinor",
+  mostSimilarScale: "dorianSharp4",
   primaryName: "Dorian ♯4",
   names: [
     "Dorian ♯4",
@@ -140,7 +144,8 @@ const dorianSharp4: ModalScaleCollection = {
 const phrygianDominant: ModalScaleCollection = {
   category: "scale",
   rotation: 4,
-  parentScale: "harmonicMinor",
+  rotatedScale: "harmonicMinor",
+  mostSimilarScale: "phrygianDominant",
   primaryName: "Phrygian Dominant",
   names: [
     "Phrygian Dominant",
@@ -180,7 +185,8 @@ const phrygianDominant: ModalScaleCollection = {
 const lydianSharp2: ModalScaleCollection = {
   category: "scale",
   rotation: 5,
-  parentScale: "harmonicMinor",
+  rotatedScale: "harmonicMinor",
+  mostSimilarScale: "lydianSharp2",
   primaryName: "Lydian ♯2",
   names: [
     "Lydian ♯2",
@@ -213,7 +219,8 @@ const lydianSharp2: ModalScaleCollection = {
 const superLocrianDoubleFlat7: ModalScaleCollection = {
   category: "scale",
   rotation: 6,
-  parentScale: "harmonicMinor",
+  rotatedScale: "harmonicMinor",
+  mostSimilarScale: "superLocrianDoubleFlat7",
   primaryName: "Super Locrian 𝄫7",
   names: [
     "Super Locrian 𝄫7",

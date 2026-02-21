@@ -2,23 +2,20 @@ import type { ChordCollection } from "../../types/note-collections.d.ts";
 
 const major: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "ionian",
   primaryName: "M",
   names: ["M", "maj", "Major", "Major Triad", "Δ"],
   intervals: ["1", "3", "5"],
   integers: [0, 4, 7],
   type: ["major", "chord", "arpeggio", "triad"],
-  characteristics: [
-    "stable",
-    "happy",
-    "bright",
-    "the most basic major chord",
-  ],
+  characteristics: ["stable", "happy", "bright", "the most basic major chord"],
   pattern: ["major third", "minor third"],
   patternShort: ["M3", "m3"],
 } as const;
 
 const major6: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "ionian",
   primaryName: "6",
   names: ["6", "M6", "maj6", "Major 6th", "Major Sixth"],
   intervals: ["1", "3", "5", "6"],
@@ -39,6 +36,7 @@ const major6: ChordCollection = {
 
 const major7: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "ionian",
   primaryName: "M7",
   names: ["M7", "maj7", "Major 7th", "Major Seventh", "Δ7"],
   intervals: ["1", "3", "5", "7"],
@@ -58,6 +56,7 @@ const major7: ChordCollection = {
 
 const major9: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "ionian",
   primaryName: "M9",
   names: ["M9", "maj9", "Major 9th", "Major Ninth", "Δ9"],
   intervals: ["1", "3", "5", "7", "9"],
@@ -78,6 +77,7 @@ const major9: ChordCollection = {
 
 const majorAdd9: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "ionian",
   primaryName: "add9",
   names: ["add9", "maj(add9)", "M(add9)", "Major add 9"],
   intervals: ["1", "3", "5", "9"],
@@ -98,6 +98,7 @@ const majorAdd9: ChordCollection = {
 
 const major6Add9: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "ionian",
   primaryName: "6/9",
   names: ["6/9", "M6/9", "maj6/9", "Major 6/9", "6add9", "Major add 6 add 9"],
   intervals: ["1", "3", "5", "6", "9"],

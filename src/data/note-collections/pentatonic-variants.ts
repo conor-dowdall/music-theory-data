@@ -3,7 +3,8 @@ import type { ModalScaleCollection } from "../../types/note-collections.d.ts";
 const majorPentatonic: ModalScaleCollection = {
   category: "scale",
   rotation: 0,
-  parentScale: "majorPentatonic",
+  rotatedScale: "majorPentatonic",
+  mostSimilarScale: "ionian",
   primaryName: "Major Pentatonic",
   names: ["Major Pentatonic"],
   intervals: ["1", "2", "3", "5", "6", "8"],
@@ -24,7 +25,8 @@ const majorPentatonic: ModalScaleCollection = {
 const suspendedPentatonic: ModalScaleCollection = {
   category: "scale",
   rotation: 1,
-  parentScale: "majorPentatonic",
+  rotatedScale: "majorPentatonic",
+  mostSimilarScale: "mixolydian",
   primaryName: "Suspended Pentatonic",
   names: ["Suspended Pentatonic", "Egyptian Pentatonic"],
   intervals: ["1", "2", "4", "5", "♭7", "8"],
@@ -38,7 +40,8 @@ const suspendedPentatonic: ModalScaleCollection = {
 const bluesMinorPentatonic: ModalScaleCollection = {
   category: "scale",
   rotation: 2,
-  parentScale: "majorPentatonic",
+  rotatedScale: "majorPentatonic",
+  mostSimilarScale: "aeolian",
   primaryName: "Blues Minor Pentatonic",
   names: ["Blues Minor Pentatonic"],
   intervals: ["1", "♭3", "4", "♭6", "♭7", "8"],
@@ -52,7 +55,8 @@ const bluesMinorPentatonic: ModalScaleCollection = {
 const bluesMajorPentatonic: ModalScaleCollection = {
   category: "scale",
   rotation: 3,
-  parentScale: "majorPentatonic",
+  rotatedScale: "majorPentatonic",
+  mostSimilarScale: "ionian",
   primaryName: "Blues Major Pentatonic",
   names: ["Blues Major Pentatonic"],
   intervals: ["1", "2", "4", "5", "6", "8"],
@@ -66,7 +70,8 @@ const bluesMajorPentatonic: ModalScaleCollection = {
 const minorPentatonic: ModalScaleCollection = {
   category: "scale",
   rotation: 4,
-  parentScale: "majorPentatonic",
+  rotatedScale: "majorPentatonic",
+  mostSimilarScale: "aeolian",
   primaryName: "Minor Pentatonic",
   names: ["Minor Pentatonic"],
   intervals: ["1", "♭3", "4", "5", "♭7", "8"],

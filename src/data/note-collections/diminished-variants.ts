@@ -6,6 +6,7 @@ import type {
 
 const diminishedTriad: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "locrian",
   primaryName: "dim",
   names: ["dim", "°", "Diminished Triad"],
   intervals: ["1", "♭3", "♭5"],
@@ -18,6 +19,7 @@ const diminishedTriad: ChordCollection = {
 
 const diminished7: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "wholeHalfDiminished",
   primaryName: "dim7",
   names: ["dim7", "°7", "Diminished 7th"],
   intervals: ["1", "♭3", "♭5", "𝄫7"],
@@ -30,6 +32,7 @@ const diminished7: ChordCollection = {
 
 const halfDiminished7: ChordCollection = {
   category: "chord",
+  mostSimilarScale: "locrian",
   primaryName: "m7♭5",
   names: ["m7♭5", "ø7", "Half Diminished 7th"],
   intervals: ["1", "♭3", "♭5", "♭7"],
@@ -43,7 +46,8 @@ const halfDiminished7: ChordCollection = {
 const wholeHalfDiminished: ModalScaleCollection = {
   category: "scale",
   rotation: 0,
-  parentScale: "wholeHalfDiminished",
+  rotatedScale: "wholeHalfDiminished",
+  mostSimilarScale: "wholeHalfDiminished",
   primaryName: "Whole Half Diminished",
   names: ["Whole Half Diminished"],
   intervals: ["1", "2", "♭3", "4", "♭5", "♭6", "6", "7", "8"],
@@ -57,7 +61,8 @@ const wholeHalfDiminished: ModalScaleCollection = {
 const halfWholeDiminished: ModalScaleCollection = {
   category: "scale",
   rotation: 1,
-  parentScale: "wholeHalfDiminished",
+  rotatedScale: "wholeHalfDiminished",
+  mostSimilarScale: "wholeHalfDiminished",
   primaryName: "Half Whole Diminished",
   names: ["Half Whole Diminished", "Dominant Diminished"],
   intervals: ["1", "♭2", "♯2", "3", "♯4", "5", "6", "♭7", "8"],
