@@ -160,7 +160,7 @@ function getNoteFromRootAndInterval(
 
     const enharmonicGroup = enharmonicNoteNameGroups[absoluteNoteInteger];
     selectedNote = enharmonicGroup.find((noteName) =>
-      noteName.startsWith(targetNoteLetter)
+      noteName.startsWith(targetNoteLetter),
     );
   }
 
@@ -185,9 +185,10 @@ export function getNoteNamesFromRootAndIntervals(
   const rootNoteLetterIndex = noteLetters.indexOf(rootNoteLetter as NoteLetter);
 
   // 2. Transform Intervals
-  const intervalsToConvert = Object.keys(options).length > 0
-    ? transformIntervals(intervals, options)
-    : intervals;
+  const intervalsToConvert =
+    Object.keys(options).length > 0
+      ? transformIntervals(intervals, options)
+      : intervals;
 
   let noteNames: NoteName[];
 
@@ -200,6 +201,23 @@ export function getNoteNamesFromRootAndIntervals(
       const absoluteInteger = (rootNoteInteger + i) % 12;
       return flatNotes[absoluteInteger] as NoteName;
     });
+
+    // 3a. Overlay mostSimilarScale if provided (to provide better accidental contexts)
+    if (options.mostSimilarScale) {
+      const similarCollection = noteCollections[options.mostSimilarScale];
+      if (similarCollection && similarCollection.intervals !== intervals) {
+        similarCollection.intervals.forEach((interval) => {
+          const result = getNoteFromRootAndInterval(
+            rootNoteInteger,
+            rootNoteLetterIndex,
+            interval,
+          );
+          if (result) {
+            noteNames[result.semitoneOffset] = result.noteName;
+          }
+        });
+      }
+    }
 
     // Overwrite default notes with specific notes calculated from intervals
     intervalsToConvert.forEach((interval) => {
@@ -245,9 +263,18 @@ export function getNoteNamesFromRootAndCollectionKey(
 ): NoteName[] {
   if (!isValidNoteCollectionKey(noteCollectionKey)) return [];
 
+  const collection = noteCollections[noteCollectionKey];
+  const mostSimilarScale =
+    "mostSimilarScale" in collection ? collection.mostSimilarScale : undefined;
+
+  const finalOptions =
+    mostSimilarScale && mostSimilarScale !== noteCollectionKey
+      ? { ...options, mostSimilarScale: mostSimilarScale as NoteCollectionKey }
+      : options;
+
   return getNoteNamesFromRootAndIntervals(
     rootNote,
-    noteCollections[noteCollectionKey].intervals,
-    options,
+    collection.intervals,
+    finalOptions,
   );
 }

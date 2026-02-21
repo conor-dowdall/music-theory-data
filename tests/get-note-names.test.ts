@@ -478,3 +478,32 @@ Deno.test("getNoteNamesFromRootAndIntervals - rotateToRootInteger0", () => {
     "B",
   ]);
 });
+
+Deno.test(
+  "getNoteNamesFromRootAndCollectionKey - fillChromatic with mostSimilarScale",
+  () => {
+    // D major chord has mostSimilarScale "ionian" (D, E, F#, G, A, B, C#)
+    // Without mostSimilarScale, D major chord with fillChromatic would be:
+    // D, Eb, E, F, F#, G, Ab, A, Bb, B, C, Db
+    // With mostSimilarScale "ionian", the Db is overwritten by C# (and E, G, B are provided by the scale)
+    assertEquals(
+      getNoteNamesFromRootAndCollectionKey("D", "major", {
+        fillChromatic: true,
+      }),
+      [
+        "D",
+        "E♭", // default flat
+        "E", // from mostSimilarScale (Ionian M2)
+        "F", // default flat
+        "F♯", // from major chord (and Ionian M3)
+        "G", // from mostSimilarScale (Ionian P4)
+        "A♭", // default flat
+        "A", // from major chord (and Ionian P5)
+        "B♭", // default flat
+        "B", // from mostSimilarScale (Ionian M6)
+        "C", // default flat
+        "C♯", // from mostSimilarScale (Ionian M7)
+      ],
+    );
+  },
+);

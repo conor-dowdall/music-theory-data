@@ -10,6 +10,7 @@ import {
   simpleToExtensionIntervalMap,
 } from "../data/labels/note-labels.ts";
 import type { NoteCollection } from "../types/note-collections.d.ts";
+import type { NoteCollectionKey } from "../data/note-collections/mod.ts";
 
 export function filterOutOctaveIntervals(
   intervals: readonly Interval[],
@@ -44,6 +45,7 @@ export interface TransformIntervalsOptions {
   shouldSort?: boolean;
   fillChromatic?: boolean;
   rotateToRootInteger0?: boolean;
+  mostSimilarScale?: NoteCollectionKey;
 }
 
 export function transformIntervals(
