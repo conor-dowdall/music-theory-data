@@ -1,3 +1,4 @@
+/** A fixed 12-element tuple of strings representing each note in the chromatic scale. */
 export type NoteLabelGroup = readonly [
   string,
   string,
@@ -13,6 +14,7 @@ export type NoteLabelGroup = readonly [
   string,
 ];
 
+/** The data interface governing an entire collection array of 12 note labels. */
 export interface NoteLabelCollection {
   readonly name: string;
   readonly shortName: string;
@@ -116,8 +118,10 @@ const _noteLabelCollections = {
   },
 } as const;
 
+/** A union string of valid keys to lookup different note label collections. */
 export type NoteLabelCollectionKey = keyof typeof _noteLabelCollections;
 
+/** A dictionary holding arrays mapping integer semitones into note/solfege names for varied contexts. */
 export const noteLabelCollections: Record<
   NoteLabelCollectionKey,
   NoteLabelCollection

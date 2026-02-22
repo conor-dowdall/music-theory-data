@@ -5,6 +5,7 @@ import type {
   UpperCaseRomanNumeral,
 } from "../../types/chords.d.ts";
 
+/** An ordered array containing the fundamental triad qualities of the diatonic major scale. */
 export const diatonicTriads: Triad[] = [
   "M",
   "m",
@@ -15,6 +16,7 @@ export const diatonicTriads: Triad[] = [
   "°",
 ] as const;
 
+/** An ordered array containing the fundamental seventh-chord qualities of the diatonic major scale. */
 export const diatonicSeventhChords: SeventhChord[] = [
   "M7",
   "m7",
@@ -25,6 +27,7 @@ export const diatonicSeventhChords: SeventhChord[] = [
   "ø7",
 ] as const;
 
+/** An ordered array containing the fundamental triad qualities of the harmonic minor scale. */
 export const harmonicMinorTriads: Triad[] = [
   "m",
   "°",
@@ -35,6 +38,7 @@ export const harmonicMinorTriads: Triad[] = [
   "°",
 ] as const;
 
+/** An ordered array containing the fundamental seventh-chord qualities of the harmonic minor scale. */
 export const harmonicMinorSeventhChords: SeventhChord[] = [
   "m(M7)",
   "ø7",
@@ -45,6 +49,7 @@ export const harmonicMinorSeventhChords: SeventhChord[] = [
   "°7",
 ] as const;
 
+/** An ordered array containing the fundamental triad qualities of the melodic minor scale. */
 export const melodicMinorTriads: Triad[] = [
   "m",
   "m",
@@ -55,6 +60,7 @@ export const melodicMinorTriads: Triad[] = [
   "°",
 ] as const;
 
+/** An ordered array containing the fundamental seventh-chord qualities of the melodic minor scale. */
 export const melodicMinorSeventhChords: SeventhChord[] = [
   "m(M7)",
   "m7",
@@ -65,6 +71,7 @@ export const melodicMinorSeventhChords: SeventhChord[] = [
   "ø7",
 ] as const;
 
+/** An array mapping 7 index scale degrees to their corresponding upper-case Roman numerals. */
 export const upperCaseRomanNumerals: UpperCaseRomanNumeral[] = [
   "I",
   "II",
@@ -75,6 +82,7 @@ export const upperCaseRomanNumerals: UpperCaseRomanNumeral[] = [
   "VII",
 ] as const;
 
+/** An array mapping 7 index scale degrees to their corresponding lower-case Roman numerals. */
 export const lowerCaseRomanNumerals: LowerCaseRomanNumeral[] = [
   "i",
   "ii",

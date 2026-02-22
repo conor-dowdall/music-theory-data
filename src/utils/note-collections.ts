@@ -25,14 +25,14 @@ const aliasSets: Record<string, string[]> = {
   "𝄫": ["bb", "doubleflat"],
   "𝄪": ["##", "doublesharp"],
 
-  "M": ["maj", "major"],
-  "m": ["min", "minor"],
+  M: ["maj", "major"],
+  m: ["min", "minor"],
   "°": ["dim", "diminished"],
   "+": ["aug", "augmented"],
-  "ø": ["halfdiminished"],
+  ø: ["halfdiminished"],
 
   "7": ["seventh"],
-  "dominant": ["dom"],
+  dominant: ["dom"],
 };
 
 for (const [canonical, aliases] of Object.entries(aliasSets)) {
@@ -66,12 +66,22 @@ function normalizeSearchTerm(str: string): string {
   return normalized.replace(/[-()]/g, "").replace(/\s+/g, " ").trim();
 }
 
+/** Search options for finding a note collection. */
 export interface SearchOptions {
+  /** A text string to search against collection names, aliases, and characteristics. */
   query?: string;
+  /** An array of specific intervals that the matching collection must contain. */
   intervals?: Interval[];
+  /** A string to filter collections by their mathematical or theoretical type (e.g. "heptatonic"). */
   type?: string;
 }
 
+/**
+ * Searches the library of musical note collections (scales, chords, modes) based on the provided matching criteria.
+ * Supports filtering by text query, required theoretical intervals, and category type.
+ * @param options The criteria to use for filtering the collections.
+ * @returns An array of `NoteCollection` objects that match the criteria, ranked by relevance if a text query was provided.
+ */
 export function searchNoteCollections(
   options: SearchOptions,
 ): NoteCollection[] {
@@ -130,10 +140,7 @@ export function searchNoteCollections(
 
     return searchWords.every((word) => {
       const isCaseSensitiveWord = word === "M" || word === "m";
-      const regex = new RegExp(
-        `\\b${word}\\b`,
-        isCaseSensitiveWord ? "" : "i",
-      );
+      const regex = new RegExp(`\\b${word}\\b`, isCaseSensitiveWord ? "" : "i");
       return regex.test(searchableText);
     });
   });

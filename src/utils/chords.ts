@@ -30,6 +30,13 @@ import {
   diatonicModes,
 } from "../data/note-collections/diatonic-modes.ts";
 
+/**
+ * Converts standard triad qualities (e.g., "M", "m") into their corresponding Roman numeral representations
+ * based on their scale degree index.
+ *
+ * @param triads An array of triad qualities in order of scale degree.
+ * @returns An array of string-based Roman numeral triads (e.g., "I", "ii", "iii°").
+ */
 export function getRomanTriads(triads: Triad[]): RomanTriad[] {
   return triads.map((quality, i) => {
     switch (quality) {
@@ -48,6 +55,13 @@ export function getRomanTriads(triads: Triad[]): RomanTriad[] {
   }) as RomanTriad[];
 }
 
+/**
+ * Converts standard seventh chord qualities (e.g., "M7", "m7") into their corresponding Roman numeral representations
+ * based on their scale degree index.
+ *
+ * @param sevenths An array of seventh chord qualities in order of scale degree.
+ * @returns An array of string-based Roman numeral seventh chords (e.g., "IM7", "ii7", "vii°7").
+ */
 export function getRomanSeventhChords(
   sevenths: SeventhChord[],
 ): RomanSeventhChord[] {
@@ -78,6 +92,17 @@ export function getRomanSeventhChords(
   }) as RomanSeventhChord[];
 }
 
+/**
+ * Aggregates chord data (triads, sevenths, and roman numerals) for each specific pitch interval
+ * of a scale or mode into a structured array of objects.
+ *
+ * @param intervals The intervals of the mode (excluding the octave).
+ * @param triads The basic triad qualities for each interval.
+ * @param sevenths The seventh chord qualities for each interval.
+ * @param romanTriads The computed Roman numeral triads.
+ * @param romanSeventhChords The computed Roman numeral seventh chords.
+ * @returns An organized list of full chord details for each degree of the provided mode.
+ */
 export function getChordDetailsForMode(
   intervals: readonly Interval[],
   triads: readonly Triad[],
@@ -96,6 +121,13 @@ export function getChordDetailsForMode(
     }));
 }
 
+/**
+ * Computes and aggregates comprehensive chord details (triads and sevenths) for a specific
+ * standard diatonic mode.
+ *
+ * @param diatonicModeKey The identifier for the diatonic mode (e.g. "ionian", "dorian").
+ * @returns An array of detailed chord objects mapped to each scale degree.
+ */
 export function getChordDetailsForDiatonicMode(
   diatonicModeKey: DiatonicModeKey,
 ): ChordDetails[] {
@@ -112,6 +144,13 @@ export function getChordDetailsForDiatonicMode(
   );
 }
 
+/**
+ * Computes and aggregates comprehensive chord details (triads and sevenths) for a specific
+ * harmonic minor scale mode.
+ *
+ * @param harmonicMinorModeKey The identifier for the mode (e.g. "harmonicMinor", "phrygianDominant").
+ * @returns An array of detailed chord objects mapped to each scale degree.
+ */
 export function getChordDetailsForHarmonicMinorMode(
   harmonicMinorModeKey: HarmonicMinorModeKey,
 ): ChordDetails[] {
@@ -131,6 +170,13 @@ export function getChordDetailsForHarmonicMinorMode(
   );
 }
 
+/**
+ * Computes and aggregates comprehensive chord details (triads and sevenths) for a specific
+ * melodic minor scale mode.
+ *
+ * @param melodicMinorModeKey The identifier for the mode (e.g. "melodicMinor", "superLocrian").
+ * @returns An array of detailed chord objects mapped to each scale degree.
+ */
 export function getChordDetailsForMelodicMinorMode(
   melodicMinorModeKey: MelodicMinorModeKey,
 ): ChordDetails[] {
@@ -150,11 +196,19 @@ export function getChordDetailsForMelodicMinorMode(
   );
 }
 
+/** A union of all valid identifiers for standard seven-note modal scales. */
 export type AnyModeKey =
   | DiatonicModeKey
   | HarmonicMinorModeKey
   | MelodicMinorModeKey;
 
+/**
+ * Resolves the given mode key to its parent scale type (diatonic, harmonic minor, or melodic minor)
+ * and computes its chord details dynamically.
+ *
+ * @param modeKey The generic modal identifier.
+ * @returns Complete chord details mapped per scale degree, or an empty array if invalid.
+ */
 export function getChordDetailsForModeKey(modeKey: AnyModeKey): ChordDetails[] {
   if (Object.prototype.hasOwnProperty.call(diatonicModes, modeKey)) {
     return getChordDetailsForDiatonicMode(modeKey as DiatonicModeKey);

@@ -123,6 +123,11 @@ export function normalizeRootNoteString(name: string): RootNote | undefined {
   return undefined;
 }
 
+/**
+ * Gets the integer representation (0-11, where C=0) of a given note name string.
+ * @param noteName The note name string to evaluate.
+ * @returns The integer value of the root note, or `undefined` if invalid.
+ */
 export function getNoteIntegerFromString(
   noteName: string,
 ): RootNoteInteger | undefined {
@@ -173,6 +178,16 @@ function getNoteFromRootAndInterval(
   return { noteName: selectedNote, semitoneOffset };
 }
 
+/**
+ * Calculates an array of specific note names given a root note and an array of intervals.
+ * Supports filling chromatic passing notes and other transformations via options.
+ * See `tests/get-note-names.test.ts` for comprehensive usage examples.
+ *
+ * @param rootNote The starting root note.
+ * @param intervals An array of intervals relative to the root.
+ * @param options Optional settings for formatting the output, such as chromatic filling.
+ * @returns An array of computed note names.
+ */
 export function getNoteNamesFromRootAndIntervals(
   rootNote: RootNote,
   intervals: readonly Interval[],
@@ -255,6 +270,16 @@ export function getNoteNamesFromRootAndIntervals(
   return noteNames;
 }
 
+/**
+ * Retrieves an array of note names for a given root note and a standard collection key (e.g., "major", "aeolian").
+ * Automatically inherits contextual hint data (like `mostSimilarScale`) from the collection for better accidental spelling.
+ * See `tests/get-note-names.test.ts` for examples of scale and chord spellings.
+ *
+ * @param rootNote The starting root note.
+ * @param noteCollectionKey The identifier for the desired scale or chord.
+ * @param options Optional settings for interval transformations or output formatting.
+ * @returns An array of computed note names.
+ */
 export function getNoteNamesFromRootAndCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,

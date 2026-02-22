@@ -12,6 +12,13 @@ import {
 import type { NoteCollection } from "../types/note-collections.d.ts";
 import type { NoteCollectionKey } from "../data/note-collections/mod.ts";
 
+/**
+ * Removes octave intervals (such as "8" or "♮8") from a given list of intervals.
+ * Highly useful for standardizing chord definitions that conventionally ignore the octave.
+ *
+ * @param intervals The array of intervals to filter.
+ * @returns A new array excluding any octave intervals.
+ */
 export function filterOutOctaveIntervals(
   intervals: readonly Interval[],
 ): Interval[] {
@@ -33,12 +40,14 @@ export function sortIntervals(intervals: readonly Interval[]): Interval[] {
   });
 }
 
+/** Specifies a direction for converting between simple and compound/extension intervals. */
 export type IntervalTransformation =
   | "simpleToExtension"
   | "extensionToSimple"
   | "simpleToCompound"
   | "compoundToSimple";
 
+/** Options for grouping and preprocessing intervals before they are evaluated. */
 export interface TransformIntervalsOptions {
   intervalTransformation?: IntervalTransformation;
   filterOutOctave?: boolean;
@@ -48,6 +57,14 @@ export interface TransformIntervalsOptions {
   mostSimilarScale?: NoteCollectionKey;
 }
 
+/**
+ * Applies a series of formatting steps to an array of intervals, such as changing compound formats,
+ * filtering octaves, and sorting.
+ *
+ * @param intervals The initial array of intervals.
+ * @param options Configuration for the desired transformations.
+ * @returns A new transformed array of intervals.
+ */
 export function transformIntervals(
   intervals: readonly Interval[],
   options: TransformIntervalsOptions = {},
@@ -84,6 +101,12 @@ export function transformIntervals(
   return shouldSort ? sortIntervals(finalIntervals) : finalIntervals;
 }
 
+/**
+ * Extracts generic interval qualities (e.g., "P5", "m3" becomes "P", "m") from a list of intervals.
+ *
+ * @param intervals An array of specific intervals.
+ * @returns An array of the corresponding interval qualities.
+ */
 export function getQualitiesFromIntervals(
   intervals: readonly Interval[],
 ): IntervalQuality[] {
@@ -93,6 +116,12 @@ export function getQualitiesFromIntervals(
   });
 }
 
+/**
+ * Retrieves the base intervals associated with a given set of interval qualities.
+ *
+ * @param qualities An array of generic interval qualities.
+ * @returns An array of corresponding base intervals.
+ */
 export function getIntervalsFromQualities(
   qualities: IntervalQuality[],
 ): Interval[] {

@@ -259,7 +259,9 @@ const _diatonicModes = {
   locrian,
 } as const;
 
+/** A strictly typed generic string representing the key of any diatonic mode. */
 export type DiatonicModeKey = keyof typeof _diatonicModes;
 
+/** A dictionary storing all 7 fundamental modes of the diatonic major scale. */
 export const diatonicModes: Record<DiatonicModeKey, ModalScaleCollection> =
   _diatonicModes;

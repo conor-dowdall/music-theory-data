@@ -2,21 +2,32 @@ import type { Interval } from "../data/labels/note-labels.ts";
 import type { MidiNoteNumber, MidiNoteSequence } from "../types/midi.d.ts";
 import { noteMidiAndIntervalToMidi } from "./midi.ts";
 
+/** Specifies the musical contour or direction for generating a sequence of notes. */
 export type MidiNoteSequenceDirection =
   | "ascending"
   | "descending"
   | "ascending-descending"
   | "descending-ascending";
 
+/** Configuration options for generating a sequence of MIDI notes from an interval pattern. */
 export interface MidiNoteSequenceOptions {
+  /** The starting MIDI note number acting as the root. */
   rootNoteMidi: MidiNoteNumber;
+  /** The array of intervals relative to the root that comprise the scale or arpeggio. */
   intervals: Interval[];
+  /** The direction contour of the sequence. */
   direction: MidiNoteSequenceDirection;
+  /** The index in the intervals array to start on (allows generating inversions or modes). */
   startFromIndex?: number;
+  /** Whether to remove octave intervals from the base array before generating. */
   filterOutOctave?: boolean;
+  /** The number of `null` rests to append to the very end of the sequence. */
   restsAtEnd?: number;
+  /** An exact specific number of notes to generate for the monotonic portion (ascend/descend) of the sequence. Overrides `numOctaves` if provided. */
   numNotes?: number;
+  /** How many octaves the monotonic portion of the sequence should span if `numNotes` is not provided. */
   numOctaves?: number;
+  /** A literal number of extra sequence steps to compute past the octave limit if `numNotes` is not provided. */
   extraNotes?: number;
 }
 
@@ -60,7 +71,7 @@ function getMonotonicMidiNoteSequence(
     } // descending...
     else {
       intervalIndex =
-        ((startFromIndex - i) % intervalsLength + intervalsLength) %
+        (((startFromIndex - i) % intervalsLength) + intervalsLength) %
         intervalsLength;
       /**
        * octaveOffset increases every time we've looped through all intervals
@@ -127,8 +138,7 @@ export function getMidiNoteSequence(
   const monotonicNoteCount = numNotes ??
     (numOctaves === 0
         ? fundamentalIntervals.length
-        : numOctaves * fundamentalIntervals.length + 1) +
-      extraNotes;
+        : numOctaves * fundamentalIntervals.length + 1) + extraNotes;
 
   if (monotonicNoteCount <= 0) return [];
 

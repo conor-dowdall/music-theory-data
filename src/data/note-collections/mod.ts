@@ -20,6 +20,7 @@ export { diminishedVariants } from "./diminished-variants.ts";
 export { augmentedVariants } from "./augmented-variants.ts";
 export { otherNoteCollections } from "./other-collections.ts";
 
+/** A massive, flattened dictionary of every pre-defined musical scale, mode, chord, and arpeggio inside the library. */
 export const noteCollections = {
   ...diatonicModes,
   ...pentatonicVariants,
@@ -33,8 +34,10 @@ export const noteCollections = {
   ...otherNoteCollections,
 } as const;
 
+/** A strictly typed generic string representing any key corresponding to a NoteCollection loaded in `noteCollections`. */
 export type NoteCollectionKey = keyof typeof noteCollections;
 
+/** An organized, grouped dictionary splitting note collections into theoretical categories (e.g. Diatonic Modes, Major Variants). */
 export const groupedNoteCollections = {
   diatonicModes,
   pentatonicVariants,
@@ -48,8 +51,10 @@ export const groupedNoteCollections = {
   otherNoteCollections,
 } as const;
 
+/** A strictly typed generic string representing the key of a top-level note collection category array. */
 export type NoteCollectionGroupKey = keyof typeof groupedNoteCollections;
 
+/** Human-readable DisplayName and Description metadata representing the mathematical traits of a Collection Group. */
 export const noteCollectionGroupsMetadata: Record<
   NoteCollectionGroupKey,
   {

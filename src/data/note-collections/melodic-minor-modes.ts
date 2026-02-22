@@ -214,8 +214,10 @@ export const _melodicMinorModes = {
   altered,
 } as const;
 
+/** A strictly typed generic string representing the key of any melodic minor mode. */
 export type MelodicMinorModeKey = keyof typeof _melodicMinorModes;
 
+/** A dictionary storing all 7 fundamental modes of the melodic minor scale. */
 export const melodicMinorModes: Record<
   MelodicMinorModeKey,
   ModalScaleCollection

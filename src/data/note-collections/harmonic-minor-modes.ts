@@ -260,8 +260,10 @@ export const _harmonicMinorModes = {
   superLocrianDoubleFlat7,
 } as const;
 
+/** A strictly typed generic string representing the key of any harmonic minor mode. */
 export type HarmonicMinorModeKey = keyof typeof _harmonicMinorModes;
 
+/** A dictionary storing all 7 fundamental modes of the harmonic minor scale. */
 export const harmonicMinorModes: Record<
   HarmonicMinorModeKey,
   ModalScaleCollection
