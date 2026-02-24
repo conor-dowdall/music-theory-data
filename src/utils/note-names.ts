@@ -19,8 +19,28 @@ import {
   transformIntervals,
   type TransformIntervalsOptions,
 } from "./intervals.ts";
+
 import { isValidNoteCollectionKey } from "./note-collections.ts";
 import { rotateArrayLeft } from "./rotate-array.ts";
+
+/** Options specifically for computing absolute note names. */
+export type GetNoteNamesOptions =
+  & TransformIntervalsOptions
+  & (
+    | {
+      fillChromatic: true;
+      /**
+       * Rotates the returned array so that the note corresponding to root C (integer 0)
+       * is positioned at index 0. Has no semantic effect on purely relative intervals.
+       * Only applicable when fillChromatic is true.
+       */
+      rotateToRootInteger0?: boolean;
+    }
+    | {
+      fillChromatic?: false;
+      rotateToRootInteger0?: never;
+    }
+  );
 
 const NOTE_LETTER_REGEX = /^[A-Ga-g]/;
 const ACCIDENTAL_REGEX = /([#♯xX𝄪]+)|([b♭𝄫]+)/gu;
@@ -190,7 +210,7 @@ function getNoteFromRootAndInterval(
 export function getNoteNamesFromRootAndIntervals(
   rootNote: RootNote,
   intervals: readonly Interval[],
-  options: TransformIntervalsOptions = {},
+  options: GetNoteNamesOptions = {},
 ): NoteName[] {
   // 1. Resolve Root Note
   const rootNoteInteger = noteNameToIntegerMap.get(rootNote);
@@ -217,7 +237,7 @@ export function getNoteNamesFromRootAndIntervals(
   });
 
   // 4. Rotate Array (Optional)
-  if (options.rotateToRootInteger0) {
+  if (options.fillChromatic && options.rotateToRootInteger0) {
     // Rotate so that the note corresponding to integer 0 (C) is at index 0.
     // e.g., if Root is D (2), the array currently starts at D.
     // To move C (currently at index 10) to index 0, we rotate right by 2 (rootNoteInteger).
@@ -243,7 +263,7 @@ export function getNoteNamesFromRootAndIntervals(
 export function getNoteNamesFromRootAndCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
-  options: TransformIntervalsOptions = {},
+  options: GetNoteNamesOptions = {},
 ): NoteName[] {
   if (!isValidNoteCollectionKey(noteCollectionKey)) return [];
 
@@ -252,10 +272,15 @@ export function getNoteNamesFromRootAndCollectionKey(
     ? collection.mostSimilarScale
     : undefined;
 
-  const finalOptions =
-    mostSimilarScale && mostSimilarScale !== noteCollectionKey
-      ? { ...options, mostSimilarScale: mostSimilarScale as NoteCollectionKey }
-      : options;
+  const finalOptions: GetNoteNamesOptions = options.fillChromatic &&
+      mostSimilarScale &&
+      mostSimilarScale !== noteCollectionKey
+    ? {
+      ...options,
+      fillChromatic: true,
+      mostSimilarScale: mostSimilarScale,
+    }
+    : options;
 
   return getNoteNamesFromRootAndIntervals(
     rootNote,

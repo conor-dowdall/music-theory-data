@@ -52,41 +52,44 @@ export type IntervalTransformation =
   | "compoundToSimple";
 
 /** Options for grouping and preprocessing intervals before they are evaluated. */
-export interface TransformIntervalsOptions {
-  /**
-   * Transforms intervals between simple, compound, and extended forms.
-   * For example, "simpleToExtension" might change "2" into "9".
-   */
-  intervalTransformation?: IntervalTransformation;
-  /**
-   * Continues to filter out octave intervals (like "8") from the results.
-   * Typically useful for scales where octaves are included by default but not needed for some applications.
-   */
-  filterOutOctave?: boolean;
-  /**
-   * Will sort intervals in ascending order based on their integer value.
-   * If `fillChromatic` is true, sorting is ignored as the array is fixed to the 12 semitones.
-   */
-  shouldSort?: boolean;
-  /**
-   * When true, generates a 12-element array representing the chromatic scale (0-11).
-   * Missing semitones are filled with standard flat intervals (like "♭2").
-   * Compound intervals are placed in their respective integer modulo 12 slot.
-   */
-  fillChromatic?: boolean;
-  /**
-   * Used strictly when computing absolute representations like note names.
-   * Rotates the returned array so that the note corresponding to root C (integer 0)
-   * is positioned at index 0. Has no semantic effect on purely relative intervals.
-   */
-  rotateToRootInteger0?: boolean;
-  /**
-   * If `fillChromatic` is true, this optionally overlays intervals from a known
-   * note collection (like a major scale) to provide better enharmonic spelling
-   * for the "background" chromatic notes.
-   */
-  mostSimilarScale?: NoteCollectionKey;
-}
+export type TransformIntervalsOptions =
+  & {
+    /**
+     * Transforms intervals between simple, compound, and extended forms.
+     * For example, "simpleToExtension" might change "2" into "9".
+     */
+    intervalTransformation?: IntervalTransformation;
+    /**
+     * Continues to filter out octave intervals (like "8") from the results.
+     * Typically useful for scales where octaves are included by default but not needed for some applications.
+     */
+    filterOutOctave?: boolean;
+    /**
+     * Will sort intervals in ascending order based on their integer value.
+     * If `fillChromatic` is true, sorting is ignored as the array is fixed to the 12 semitones.
+     */
+    shouldSort?: boolean;
+  }
+  & (
+    | {
+      /**
+       * When true, generates a 12-element array representing the chromatic scale (0-11).
+       * Missing semitones are filled with standard flat intervals (like "♭2").
+       * Compound intervals are placed in their respective integer modulo 12 slot.
+       */
+      fillChromatic: true;
+      /**
+       * If `fillChromatic` is true, this optionally overlays intervals from a known
+       * note collection (like a major scale) to provide better enharmonic spelling
+       * for the "background" chromatic notes.
+       */
+      mostSimilarScale?: NoteCollectionKey;
+    }
+    | {
+      fillChromatic?: false;
+      mostSimilarScale?: never;
+    }
+  );
 
 /**
  * Applies a series of formatting steps to an array of intervals, such as changing compound formats,
