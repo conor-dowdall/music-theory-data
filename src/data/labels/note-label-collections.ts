@@ -23,18 +23,72 @@ export interface NoteLabelCollection {
 }
 
 const _noteLabelCollections = {
-  flat: {
-    name: "Flat Notes",
-    shortName: "Flat",
+  noteNamesFlat: {
+    name: "Flat Note Names",
+    shortName: "Flat Notes",
     isRelative: false,
     labels: ["C", "D♭", "D", "E♭", "E", "F", "G♭", "G", "A♭", "A", "B♭", "B"],
   },
 
-  sharp: {
-    name: "Sharp Notes",
-    shortName: "Sharp",
+  noteNamesSharp: {
+    name: "Sharp Note Names",
+    shortName: "Sharp Notes",
     isRelative: false,
     labels: ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B"],
+  },
+
+  intervalsFlat: {
+    name: "Flat Note Intervals",
+    shortName: "Flat Intervals",
+    isRelative: true,
+    labels: ["1", "♭2", "2", "♭3", "3", "4", "♭5", "5", "♭6", "6", "♭7", "7"],
+  },
+
+  intervalsSharp: {
+    name: "Sharp Note Intervals",
+    shortName: "Sharp Intervals",
+    isRelative: true,
+    labels: ["1", "♯1", "2", "♯2", "3", "4", "♯4", "5", "♯5", "6", "♯6", "7"],
+  },
+
+  extensionsFlat: {
+    name: "Flat Note Extensions",
+    shortName: "Flat Extensions",
+    isRelative: true,
+    labels: [
+      "1",
+      "♭9",
+      "9",
+      "♭3",
+      "3",
+      "11",
+      "♭5",
+      "5",
+      "♭13",
+      "13",
+      "♭7",
+      "7",
+    ],
+  },
+
+  extensionsSharp: {
+    name: "Sharp Note Extensions",
+    shortName: "Sharp Extensions",
+    isRelative: true,
+    labels: [
+      "1",
+      "♯1",
+      "9",
+      "♯9",
+      "3",
+      "11",
+      "♯11",
+      "5",
+      "♯5",
+      "13",
+      "♯13",
+      "7",
+    ],
   },
 
   fixedDoFlat: {

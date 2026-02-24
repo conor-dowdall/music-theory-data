@@ -11,7 +11,6 @@ import {
   type RootNoteInteger,
   rootNotesSet,
 } from "../data/labels/note-labels.ts";
-import { noteLabelCollections } from "../data/labels/note-label-collections.ts";
 import {
   type NoteCollectionKey,
   noteCollections,
@@ -207,54 +206,15 @@ export function getNoteNamesFromRootAndIntervals(
   let noteNames: NoteName[];
 
   // 3. Generate Note Names
-  if (options.fillChromatic) {
-    // Initialize 12-note array with default flat notes relative to the root
-    // This ensures every semitone slot has a value (e.g., C, Db, D...)
-    const flatNotes = noteLabelCollections.flat.labels;
-    noteNames = Array.from({ length: 12 }, (_, i) => {
-      const absoluteInteger = (rootNoteInteger + i) % 12;
-      return flatNotes[absoluteInteger] as NoteName;
-    });
-
-    // 3a. Overlay mostSimilarScale if provided (to provide better accidental contexts)
-    if (options.mostSimilarScale) {
-      const similarCollection = noteCollections[options.mostSimilarScale];
-      if (similarCollection && similarCollection.intervals !== intervals) {
-        similarCollection.intervals.forEach((interval) => {
-          const result = getNoteFromRootAndInterval(
-            rootNoteInteger,
-            rootNoteLetterIndex,
-            interval,
-          );
-          if (result) {
-            noteNames[result.semitoneOffset] = result.noteName;
-          }
-        });
-      }
-    }
-
-    // Overwrite default notes with specific notes calculated from intervals
-    intervalsToConvert.forEach((interval) => {
-      const result = getNoteFromRootAndInterval(
-        rootNoteInteger,
-        rootNoteLetterIndex,
-        interval,
-      );
-      if (result) {
-        noteNames[result.semitoneOffset] = result.noteName;
-      }
-    });
-  } else {
-    // Map intervals directly to note names
-    noteNames = intervalsToConvert.flatMap((interval) => {
-      const result = getNoteFromRootAndInterval(
-        rootNoteInteger,
-        rootNoteLetterIndex,
-        interval,
-      );
-      return result ? [result.noteName] : [];
-    });
-  }
+  // Map intervals directly to note names
+  noteNames = intervalsToConvert.flatMap((interval) => {
+    const result = getNoteFromRootAndInterval(
+      rootNoteInteger,
+      rootNoteLetterIndex,
+      interval,
+    );
+    return result ? [result.noteName] : [];
+  });
 
   // 4. Rotate Array (Optional)
   if (options.rotateToRootInteger0) {

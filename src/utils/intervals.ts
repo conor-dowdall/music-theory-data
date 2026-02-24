@@ -10,7 +10,11 @@ import {
   simpleToExtensionIntervalMap,
 } from "../data/labels/note-labels.ts";
 import type { NoteCollection } from "../types/note-collections.d.ts";
-import type { NoteCollectionKey } from "../data/note-collections/mod.ts";
+import {
+  type NoteCollectionKey,
+  noteCollections,
+} from "../data/note-collections/mod.ts";
+import { noteLabelCollections } from "@musodojo/music-theory-data";
 
 /**
  * Removes octave intervals (such as "8" or "♮8") from a given list of intervals.
@@ -49,11 +53,38 @@ export type IntervalTransformation =
 
 /** Options for grouping and preprocessing intervals before they are evaluated. */
 export interface TransformIntervalsOptions {
+  /**
+   * Transforms intervals between simple, compound, and extended forms.
+   * For example, "simpleToExtension" might change "2" into "9".
+   */
   intervalTransformation?: IntervalTransformation;
+  /**
+   * Continues to filter out octave intervals (like "8") from the results.
+   * Typically useful for scales where octaves are included by default but not needed for some applications.
+   */
   filterOutOctave?: boolean;
+  /**
+   * Will sort intervals in ascending order based on their integer value.
+   * If `fillChromatic` is true, sorting is ignored as the array is fixed to the 12 semitones.
+   */
   shouldSort?: boolean;
+  /**
+   * When true, generates a 12-element array representing the chromatic scale (0-11).
+   * Missing semitones are filled with standard flat intervals (like "♭2").
+   * Compound intervals are placed in their respective integer modulo 12 slot.
+   */
   fillChromatic?: boolean;
+  /**
+   * Used strictly when computing absolute representations like note names.
+   * Rotates the returned array so that the note corresponding to root C (integer 0)
+   * is positioned at index 0. Has no semantic effect on purely relative intervals.
+   */
   rotateToRootInteger0?: boolean;
+  /**
+   * If `fillChromatic` is true, this optionally overlays intervals from a known
+   * note collection (like a major scale) to provide better enharmonic spelling
+   * for the "background" chromatic notes.
+   */
   mostSimilarScale?: NoteCollectionKey;
 }
 
@@ -73,6 +104,8 @@ export function transformIntervals(
     intervalTransformation,
     filterOutOctave = false,
     shouldSort = true,
+    fillChromatic = false,
+    mostSimilarScale,
   } = options;
 
   const intervalMap: ReadonlyMap<Interval, Interval> = (() => {
@@ -94,11 +127,43 @@ export function transformIntervals(
     ? filterOutOctaveIntervals(intervals)
     : intervals;
 
-  const finalIntervals = fundamentalIntervals.map(
+  const transformedIntervals = fundamentalIntervals.map(
     (interval) => intervalMap.get(interval) ?? interval,
   );
 
-  return shouldSort ? sortIntervals(finalIntervals) : finalIntervals;
+  if (fillChromatic) {
+    const chromaticMap = [
+      ...noteLabelCollections.intervalsFlat.labels,
+    ] as Interval[];
+
+    if (mostSimilarScale) {
+      const collection = noteCollections[mostSimilarScale];
+      if (collection && collection.intervals !== intervals) {
+        collection.intervals.forEach((interval) => {
+          const transformed = intervalMap.get(interval) ?? interval;
+          const semitones = intervalToIntegerMap.get(transformed);
+          if (semitones !== undefined) {
+            chromaticMap[semitones % 12] = transformed;
+          }
+        });
+      }
+    }
+
+    // Now overlay the provided parsed intervals
+    transformedIntervals.forEach((interval) => {
+      const semitones = intervalToIntegerMap.get(interval);
+      if (semitones !== undefined) {
+        chromaticMap[semitones % 12] = interval;
+      }
+    });
+
+    // We do NOT sort a chromatic map, as it's structurally fixed to indices 0-11
+    return chromaticMap;
+  }
+
+  return shouldSort
+    ? sortIntervals(transformedIntervals)
+    : transformedIntervals;
 }
 
 /**

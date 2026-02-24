@@ -334,10 +334,10 @@ Deno.test("getNoteNamesFromRootAndIntervals - fillChromatic", () => {
   // Defaults (C-based): C, Db, D, Eb, E, F, Gb, G, Ab, A, Bb, B
   // Result should be mixed.
   // C (0), Db (1), D (2), Eb (3), E (4), F (5), Gb (6), G (7), Ab (8), A (9), Bb (10), B (11)
-  const cMajorIntervals = diatonicModes.ionian.intervals;
+  const ionianIntervals = diatonicModes.ionian.intervals;
   const cMajorChromatic = getNoteNamesFromRootAndIntervals(
     "C",
-    cMajorIntervals,
+    ionianIntervals,
     { fillChromatic: true },
   );
   assertEquals(cMajorChromatic, [
@@ -367,7 +367,7 @@ Deno.test("getNoteNamesFromRootAndIntervals - fillChromatic", () => {
   // Result: D, Eb, E, F, F#, G, Ab, A, Bb, B, C, C#
   const dMajorChromatic = getNoteNamesFromRootAndIntervals(
     "D",
-    cMajorIntervals, // Ionian is Major
+    ionianIntervals, // Ionian is Major
     { fillChromatic: true },
   );
   assertEquals(dMajorChromatic, [
@@ -385,11 +385,11 @@ Deno.test("getNoteNamesFromRootAndIntervals - fillChromatic", () => {
     "C♯", // M7 (overwrites Db)
   ]);
 
-  // Test with empty intervals - should just return defaults relative to root
+  // Test F with empty intervals - should just return defaults relative to root
   const fDefaults = getNoteNamesFromRootAndIntervals("F", [], {
     fillChromatic: true,
   });
-  // F flat chromatic: F, Gb, G, Ab, A, Bb, B, C, Db, D, Eb, E
+  // F chromatic with flats: F, Gb, G, Ab, A, Bb, B, C, Db, D, Eb, E
   assertEquals(fDefaults, [
     "F",
     "G♭",
@@ -397,7 +397,31 @@ Deno.test("getNoteNamesFromRootAndIntervals - fillChromatic", () => {
     "A♭",
     "A",
     "B♭",
-    "B",
+    "C♭",
+    "C",
+    "D♭",
+    "D",
+    "E♭",
+    "E",
+  ]);
+
+  // Test F with ionian intervals
+  const fMajorChromatic = getNoteNamesFromRootAndIntervals(
+    "F",
+    ionianIntervals,
+    {
+      fillChromatic: true,
+    },
+  );
+  // F flat chromatic: F, Gb, G, Ab, A, Bb, B, C, Db, D, Eb, E
+  assertEquals(fMajorChromatic, [
+    "F",
+    "G♭",
+    "G",
+    "A♭",
+    "A",
+    "B♭",
+    "C♭",
     "C",
     "D♭",
     "D",
@@ -407,11 +431,11 @@ Deno.test("getNoteNamesFromRootAndIntervals - fillChromatic", () => {
 });
 
 Deno.test("getNoteNamesFromRootAndIntervals - rotateToRootInteger0", () => {
-  const cMajorIntervals = diatonicModes.ionian.intervals;
+  const ionianIntervals = diatonicModes.ionian.intervals;
 
   // C Major (fillChromatic, rotate) - Should be standard C Chromatic
   // C (0). Rotate by 0. No change.
-  const cMajorRotated = getNoteNamesFromRootAndIntervals("C", cMajorIntervals, {
+  const cMajorRotated = getNoteNamesFromRootAndIntervals("C", ionianIntervals, {
     fillChromatic: true,
     rotateToRootInteger0: true,
   });
@@ -433,7 +457,7 @@ Deno.test("getNoteNamesFromRootAndIntervals - rotateToRootInteger0", () => {
   // D Major (fillChromatic, rotate)
   // D Major filled: [D, Eb, E, F, F#, G, Ab, A, Bb, B, C, C#]
   // Rotated to C (Right shift 2): [C, C#, D, Eb, E, F, F#, G, Ab, A, Bb, B]
-  const dMajorRotated = getNoteNamesFromRootAndIntervals("D", cMajorIntervals, {
+  const dMajorRotated = getNoteNamesFromRootAndIntervals("D", ionianIntervals, {
     fillChromatic: true,
     rotateToRootInteger0: true,
   });
@@ -475,7 +499,7 @@ Deno.test("getNoteNamesFromRootAndIntervals - rotateToRootInteger0", () => {
     "A♭",
     "A",
     "B♭",
-    "B",
+    "C♭",
   ]);
 });
 
