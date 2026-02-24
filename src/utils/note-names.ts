@@ -42,6 +42,12 @@ export type GetNoteNamesOptions =
     }
   );
 
+/** Options specifically for computing absolute note names from a collection. */
+export type GetNoteNamesFromCollectionOptions = GetNoteNamesOptions & {
+  /** The mostSimilarScale is derived from the collection and should not be explicitly overridden. */
+  mostSimilarScale?: never;
+};
+
 const NOTE_LETTER_REGEX = /^[A-Ga-g]/;
 const ACCIDENTAL_REGEX = /([#♯xX𝄪]+)|([b♭𝄫]+)/gu;
 const INTERVAL_NUMBER_REGEX = /\d+/;
@@ -263,7 +269,7 @@ export function getNoteNamesFromRootAndIntervals(
 export function getNoteNamesFromRootAndCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
-  options: GetNoteNamesOptions = {},
+  options: GetNoteNamesFromCollectionOptions = {},
 ): NoteName[] {
   if (!isValidNoteCollectionKey(noteCollectionKey)) return [];
 
