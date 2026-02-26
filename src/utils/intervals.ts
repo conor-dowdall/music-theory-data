@@ -15,10 +15,12 @@ import {
   noteCollections,
 } from "../data/note-collections/mod.ts";
 import { noteLabelCollections } from "@musodojo/music-theory-data";
+import { rotateArrayLeft } from "./rotate-array.ts";
 
 /**
  * Removes octave intervals (such as "8" or "♮8") from a given list of intervals.
- * Highly useful for standardizing chord definitions that conventionally ignore the octave.
+ * Highly useful for standardizing chord and scale definitions (scales conventionally include the octave,
+ * chords conventionally do not).
  *
  * @param intervals The array of intervals to filter.
  * @returns A new array excluding any octave intervals.
@@ -52,26 +54,29 @@ export type IntervalTransformation =
   | "compoundToSimple";
 
 /** Options for grouping and preprocessing intervals before they are evaluated. */
-export type TransformIntervalsOptions =
-  & {
-    /**
-     * Transforms intervals between simple, compound, and extended forms.
-     * For example, "simpleToExtension" might change "2" into "9".
-     */
-    intervalTransformation?: IntervalTransformation;
-    /**
-     * Continues to filter out octave intervals (like "8") from the results.
-     * Typically useful for scales where octaves are included by default but not needed for some applications.
-     */
-    filterOutOctave?: boolean;
-    /**
-     * Will sort intervals in ascending order based on their integer value.
-     * If `fillChromatic` is true, sorting is ignored as the array is fixed to the 12 semitones.
-     */
-    shouldSort?: boolean;
-  }
-  & (
-    | {
+export type TransformIntervalsOptions = {
+  /**
+   * Transforms intervals between simple, compound, and extended forms.
+   * For example, "simpleToExtension" might change "2" into "9".
+   */
+  intervalTransformation?: IntervalTransformation;
+  /**
+   * Continues to filter out octave intervals (like "8") from the results.
+   * Typically useful for scales where octaves are included by default but not needed for some applications.
+   */
+  filterOutOctave?: boolean;
+  /**
+   * Will sort intervals in ascending order based on their integer value.
+   * If `fillChromatic` is true, sorting is ignored as the array is fixed to the 12 semitones.
+   */
+  shouldSort?: boolean;
+  /**
+   * A fixed number of steps to rotate the array left (positive) or right (negative).
+   * Rotation pushes elements from the beginning of the array to the end (left) or vice versa.
+   */
+  rotateLeft?: number;
+} & (
+  | {
       /**
        * When true, generates a 12-element array representing the chromatic scale (0-11).
        * Missing semitones are filled with standard flat intervals (like "♭2").
@@ -84,12 +89,24 @@ export type TransformIntervalsOptions =
        * for the "background" chromatic notes.
        */
       mostSimilarScale?: NoteCollectionKey;
+      /**
+       * If provided, allows for absolute rotations (like rotating to C=0).
+       */
+      rootNoteInteger?: number;
+      /**
+       * Rotates the returned array so that the note corresponding to root C (integer 0)
+       * is positioned at index 0. Has no semantic effect on purely relative intervals.
+       * Only applicable when fillChromatic is true and rootNoteInteger is provided.
+       */
+      rotateToRootInteger0?: boolean;
     }
-    | {
+  | {
       fillChromatic?: false;
       mostSimilarScale?: never;
+      rootNoteInteger?: never;
+      rotateToRootInteger0?: never;
     }
-  );
+);
 
 /**
  * Applies a series of formatting steps to an array of intervals, such as changing compound formats,
@@ -109,6 +126,7 @@ export function transformIntervals(
     shouldSort = true,
     fillChromatic = false,
     mostSimilarScale,
+    rotateLeft,
   } = options;
 
   const intervalMap: ReadonlyMap<Interval, Interval> = (() => {
@@ -160,13 +178,28 @@ export function transformIntervals(
       }
     });
 
-    // We do NOT sort a chromatic map, as it's structurally fixed to indices 0-11
-    return chromaticMap;
+    let result = chromaticMap;
+
+    if (options.rotateToRootInteger0 && options.rootNoteInteger !== undefined) {
+      result = rotateArrayLeft(result, -options.rootNoteInteger);
+    }
+
+    if (rotateLeft !== undefined) {
+      result = rotateArrayLeft(result, rotateLeft);
+    }
+
+    return result;
   }
 
-  return shouldSort
+  let result = shouldSort
     ? sortIntervals(transformedIntervals)
     : transformedIntervals;
+
+  if (rotateLeft !== undefined) {
+    result = rotateArrayLeft(result, rotateLeft);
+  }
+
+  return result;
 }
 
 /**
