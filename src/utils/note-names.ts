@@ -21,9 +21,9 @@ import {
 } from "./intervals.ts";
 
 import { isValidNoteCollectionKey } from "./note-collections.ts";
+import { normalizeAccidentalString } from "./accidentals.ts";
 
 const NOTE_LETTER_REGEX = /^[A-Ga-g]/;
-const ACCIDENTAL_REGEX = /([#♯xX𝄪]+)|([b♭𝄫]+)/gu;
 const INTERVAL_NUMBER_REGEX = /\d+/;
 
 /**
@@ -51,58 +51,29 @@ export function normalizeNoteNameString(name: string): NoteName | undefined {
 
   const noteLetter = noteLetterMatch[0].toUpperCase() as NoteLetter;
   const accidentalString = name.substring(noteLetterMatch[0].length);
-  let validAccidentalLength = 0;
-  let noteAlterInteger = 0;
 
-  for (const match of accidentalString.matchAll(ACCIDENTAL_REGEX)) {
-    const sharps = match[1];
-    if (sharps) {
-      for (const char of sharps) {
-        noteAlterInteger += char.toLowerCase() === "x" || char === "𝄪" ? 2 : 1;
-      }
-      validAccidentalLength += sharps.length;
-    }
-
-    const flats = match[2];
-    if (flats) {
-      for (const char of flats) {
-        noteAlterInteger -= char === "𝄫" ? 2 : 1;
-      }
-      validAccidentalLength += flats.length;
-    }
-  }
-
-  // Check if the entire accidental string had valid accidentals
-  if (accidentalString.length > validAccidentalLength) {
+  const accidentalSymbols = normalizeAccidentalString(accidentalString);
+  if (accidentalSymbols === undefined) {
     return undefined;
-  }
-
-  let accidentalSymbols = "";
-  let currentAlteration = noteAlterInteger;
-
-  while (currentAlteration > 0) {
-    if (currentAlteration >= 2) {
-      accidentalSymbols += "𝄪";
-      currentAlteration -= 2;
-    } else {
-      accidentalSymbols += "♯";
-      currentAlteration -= 1;
-    }
-  }
-
-  while (currentAlteration < 0) {
-    if (currentAlteration <= -2) {
-      accidentalSymbols += "𝄫";
-      currentAlteration += 2;
-    } else {
-      accidentalSymbols += "♭";
-      currentAlteration += 1;
-    }
   }
 
   const result = (noteLetter + accidentalSymbols) as NoteName;
 
   return noteNamesSet.has(result) ? result : undefined;
+}
+
+/**
+ * Parses an array of strings and returns an array of canonical `NoteName`s.
+ * Any invalid note name strings are filtered out from the result.
+ * @param names The array of strings to parse.
+ * @returns An array of canonical `NoteName`s.
+ */
+export function normalizeNoteNameStringArray(
+  names: readonly string[],
+): NoteName[] {
+  return names
+    .map((name) => normalizeNoteNameString(name))
+    .filter((name): name is NoteName => name !== undefined);
 }
 
 /**
@@ -120,6 +91,20 @@ export function normalizeRootNoteString(name: string): RootNote | undefined {
   }
 
   return undefined;
+}
+
+/**
+ * Parses an array of strings and returns an array of canonical `RootNote`s.
+ * Any invalid root note strings are filtered out from the result.
+ * @param names The array of strings to parse.
+ * @returns An array of canonical `RootNote`s.
+ */
+export function normalizeRootNoteStringArray(
+  names: readonly string[],
+): RootNote[] {
+  return names
+    .map((name) => normalizeRootNoteString(name))
+    .filter((name): name is RootNote => name !== undefined);
 }
 
 /**
@@ -164,7 +149,7 @@ function getNoteFromRootAndInterval(
 
     const enharmonicGroup = enharmonicNoteNameGroups[absoluteNoteInteger];
     selectedNote = enharmonicGroup.find((noteName) =>
-      noteName.startsWith(targetNoteLetter),
+      noteName.startsWith(targetNoteLetter)
     );
   }
 
@@ -201,15 +186,14 @@ export function getNoteNamesFromRootAndIntervals(
   // 2. Transform Intervals
   const enhancedOptions: TransformIntervalsOptions = options.fillChromatic
     ? ({
-        ...options,
-        ...(options.rotateToRootInteger0 ? { rootNoteInteger } : {}),
-      } as TransformIntervalsOptions)
+      ...options,
+      ...(options.rotateToRootInteger0 ? { rootNoteInteger } : {}),
+    } as TransformIntervalsOptions)
     : options;
 
-  const intervalsToConvert =
-    Object.keys(enhancedOptions).length > 0
-      ? transformIntervals(intervals, enhancedOptions)
-      : intervals;
+  const intervalsToConvert = Object.keys(enhancedOptions).length > 0
+    ? transformIntervals(intervals, enhancedOptions)
+    : intervals;
 
   // 3. Generate Note Names
   // Map intervals directly to note names
@@ -243,19 +227,17 @@ export function getNoteNamesFromRootAndCollectionKey(
   if (!isValidNoteCollectionKey(noteCollectionKey)) return [];
 
   const collection = noteCollections[noteCollectionKey];
-  const mostSimilarScale =
-    "mostSimilarScale" in collection ? collection.mostSimilarScale : undefined;
+  const mostSimilarScale = collection.mostSimilarScale;
 
-  const finalOptions: TransformIntervalsOptions =
-    options.fillChromatic &&
-    mostSimilarScale &&
-    mostSimilarScale !== noteCollectionKey
-      ? ({
-          ...options,
-          fillChromatic: true,
-          mostSimilarScale: mostSimilarScale,
-        } as TransformIntervalsOptions)
-      : (options as TransformIntervalsOptions);
+  const finalOptions: TransformIntervalsOptions = options.fillChromatic &&
+      mostSimilarScale &&
+      mostSimilarScale !== noteCollectionKey
+    ? ({
+      ...options,
+      fillChromatic: true,
+      mostSimilarScale: mostSimilarScale,
+    } as TransformIntervalsOptions)
+    : (options as TransformIntervalsOptions);
 
   return getNoteNamesFromRootAndIntervals(
     rootNote,

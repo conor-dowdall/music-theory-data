@@ -48,6 +48,11 @@ interface NoteCollectionBase {
    * - For chords/arpeggios, this is the sequence of stacked intervals (e.g., "m2", "M2", "m3", "M3").
    */
   readonly patternShort: readonly string[];
+  /**
+   * The key name (e.g., "ionian") of the parent scale from which this scale could be derived.
+   * This is the scale that contains the most notes in common with this scale.
+   */
+  readonly mostSimilarScale: NoteCollectionKey;
 }
 
 /** A scale that can be thought of as a mode of a parent scale (e.g., Ionian, Dorian, Lydian Augmented). */
@@ -65,31 +70,17 @@ interface ModalScaleCollection extends NoteCollectionBase {
    * The key name (e.g., "ionian") of the parent scale from which this mode is a rotation of.
    */
   readonly rotatedScale: NoteCollectionKey;
-  /**
-   * The key name (e.g., "ionian") of the parent scale from which this scale could be derived.
-   * This is the scale that contains the most notes in common with this scale.
-   */
-  readonly mostSimilarScale: NoteCollectionKey;
 }
 
 /** A scale that is not a mode of another scale in this collection. */
 interface NonModalScaleCollection extends NoteCollectionBase {
   readonly category: "scale";
   readonly rotation?: never;
-  /**
-   * The scale that contains the most notes in common with this scale.
-   * The scale that contains the most notes in common with this scale.
-   */
-  readonly mostSimilarScale: NoteCollectionKey;
 }
 
 export interface ChordCollection extends NoteCollectionBase {
   readonly category: "chord";
   readonly rotation?: never;
-  /**
-   * The scale that contains the most notes in common with this scale.
-   */
-  readonly mostSimilarScale: NoteCollectionKey;
 }
 
 export type ScaleCollection = ModalScaleCollection | NonModalScaleCollection;

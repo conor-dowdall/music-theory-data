@@ -2,6 +2,8 @@ import { assertEquals } from "@std/assert";
 import {
   getNoteIntegerFromString,
   normalizeNoteNameString,
+  normalizeNoteNameStringArray,
+  normalizeRootNoteStringArray,
 } from "../src/utils/note-names.ts";
 
 Deno.test("natural notes", () => {
@@ -133,4 +135,20 @@ Deno.test("normalize invalid note name strings", () => {
   assertEquals(normalizeNoteNameString("Ca♯♯"), undefined);
   assertEquals(normalizeNoteNameString("CCx"), undefined);
   assertEquals(normalizeNoteNameString("CXxxZX"), undefined);
+});
+
+Deno.test("normalize array of potential note name strings", () => {
+  const input = ["C", "Db", "invalid", "Fx", ""];
+  const expected = ["C", "D♭", "F𝄪"];
+  assertEquals(normalizeNoteNameStringArray(input), expected);
+});
+
+Deno.test("normalize array of potential root note strings", () => {
+  const input = ["C", "Db", "Fx", "invalid", "B#", "Dbb", "E##"];
+  // Fx is a valid NoteName (F𝄪) but NOT a valid RootNote.
+  // B# normalizes to B♯, which IS a valid RootNote.
+  // Dbb normalizes to D𝄫, which IS NOT a valid RootNote.
+  // E## normalizes to E𝄪, which IS NOT a valid RootNote.
+  const expected = ["C", "D♭", "B♯"];
+  assertEquals(normalizeRootNoteStringArray(input), expected);
 });

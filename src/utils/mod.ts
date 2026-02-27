@@ -6,3 +6,4 @@ export * from "./midi.ts";
 export * from "./note-collections.ts";
 export * from "./note-names.ts";
 export * from "./rotate-array.ts";
+export * from "./qualities.ts";
