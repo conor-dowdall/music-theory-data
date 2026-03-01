@@ -1,5 +1,5 @@
 import type { Interval } from "../data/labels/note-labels.ts";
-import type { NoteCollectionKey } from "@musodojo/music-theory-data";
+import type { NoteCollectionKey } from "../data/note-collections/mod.ts";
 
 export type CollectionCategory = "scale" | "chord";
 

@@ -14,8 +14,8 @@ import {
   type NoteCollectionKey,
   noteCollections,
 } from "../data/note-collections/mod.ts";
-import { noteLabelCollections } from "@musodojo/music-theory-data";
-import { rotateArrayLeft } from "./rotate-array.ts";
+import { noteLabelCollections } from "../data/labels/note-label-collections.ts";
+import { rotateArrayRight } from "./rotate-array.ts";
 import { normalizeAccidentalString } from "./accidentals.ts";
 
 const INTERVAL_NUMBER_REGEX = /\d+$/;
@@ -224,10 +224,11 @@ export type TransformIntervalsOptions =
      */
     shouldSort?: boolean;
     /**
-     * A fixed number of steps to rotate the array left (positive) or right (negative).
-     * Rotation pushes elements from the beginning of the array to the end (left) or vice versa.
+     * A fixed number of steps to rotate the array right (positive) or left (negative).
+     * Positive values loop elements at the end of the array to the front.
+     * Negative values loop elements at the front of the array to the end.
      */
-    rotateLeft?: number;
+    rotateRight?: number;
   }
   & (
     | {
@@ -280,7 +281,9 @@ export function transformIntervals(
     shouldSort = true,
     fillChromatic = false,
     mostSimilarScale,
-    rotateLeft,
+    rotateRight,
+    rotateToRootInteger0,
+    rootNoteInteger,
   } = options;
 
   const intervalMap: ReadonlyMap<Interval, Interval> = (() => {
@@ -335,12 +338,12 @@ export function transformIntervals(
       (interval) => intervalMap.get(interval) ?? interval,
     );
 
-    if (options.rotateToRootInteger0 && options.rootNoteInteger !== undefined) {
-      result = rotateArrayLeft(result, -options.rootNoteInteger);
+    if (rotateToRootInteger0 && rootNoteInteger !== undefined) {
+      result = rotateArrayRight(result, rootNoteInteger);
     }
 
-    if (rotateLeft !== undefined) {
-      result = rotateArrayLeft(result, rotateLeft);
+    if (rotateRight !== undefined) {
+      result = rotateArrayRight(result, rotateRight);
     }
 
     return result;
@@ -354,8 +357,8 @@ export function transformIntervals(
     ? sortIntervals(transformedIntervals)
     : transformedIntervals;
 
-  if (rotateLeft !== undefined) {
-    result = rotateArrayLeft(result, rotateLeft);
+  if (rotateRight !== undefined) {
+    result = rotateArrayRight(result, rotateRight);
   }
 
   return result;
