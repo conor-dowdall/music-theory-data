@@ -1,5 +1,6 @@
 import type { Interval } from "../data/labels/note-labels.ts";
 import type { MidiNoteNumber, MidiNoteSequence } from "../types/midi.d.ts";
+import { filterOutOctaveIntervals } from "./intervals.ts";
 import { getMidiFromNoteMidiAndInterval } from "./midi.ts";
 
 /** Specifies the musical contour or direction for generating a sequence of notes. */
@@ -125,7 +126,7 @@ export function getMidiNoteSequence(
   } = options;
 
   const fundamentalIntervals = filterOutOctave
-    ? intervals.filter((i) => i !== "8" && i !== "♮8")
+    ? filterOutOctaveIntervals(intervals)
     : intervals;
 
   if (fundamentalIntervals.length === 0) return [];

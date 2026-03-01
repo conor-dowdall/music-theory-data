@@ -18,29 +18,26 @@ try {
   Deno.exit(1);
 }
 
-// Run quality checks
-console.log("Running lint and type checks...");
-const lintCmd = new Deno.Command("deno", {
-  args: ["lint"],
-  stdout: "inherit",
-  stderr: "inherit",
-});
-const lintResult = await lintCmd.output();
-if (lintResult.code !== 0) {
-  console.error("%cError: specific lint issues found.", "color: red");
-  Deno.exit(lintResult.code);
+// Helper to run commands
+async function run(cmd: string, args: string[]) {
+  const command = new Deno.Command(cmd, {
+    args,
+    stdout: "inherit",
+    stderr: "inherit",
+  });
+  const { code } = await command.output();
+  if (code !== 0) {
+    console.error(
+      `%cError: Command failed: ${cmd} ${args.join(" ")}`,
+      "color: red",
+    );
+    Deno.exit(code);
+  }
 }
 
-const checkCmd = new Deno.Command("deno", {
-  args: ["check", "src/mod.ts"],
-  stdout: "inherit",
-  stderr: "inherit",
-});
-const checkResult = await checkCmd.output();
-if (checkResult.code !== 0) {
-  console.error("%cError: type check issues found.", "color: red");
-  Deno.exit(checkResult.code);
-}
+// Run quality checks
+console.log("Running quality checks (fmt, lint, check, test)...");
+await run("deno", ["task", "ok"]);
 
 // Check git status (capture output)
 const statusCmd = new Deno.Command("git", { args: ["status", "--porcelain"] });
@@ -78,21 +75,6 @@ const tagMessage = `Version ${version}\n\n${
 }`;
 
 // Helper to run commands
-async function run(cmd: string, args: string[]) {
-  const command = new Deno.Command(cmd, {
-    args,
-    stdout: "inherit",
-    stderr: "inherit",
-  });
-  const { code } = await command.output();
-  if (code !== 0) {
-    console.error(
-      `%cError: Command failed: ${cmd} ${args.join(" ")}`,
-      "color: red",
-    );
-    Deno.exit(code);
-  }
-}
 
 console.log("Creating commit and tag...");
 await run("git", ["add", "deno.json"]);

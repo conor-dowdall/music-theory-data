@@ -29,6 +29,7 @@ import {
   type DiatonicModeKey,
   diatonicModes,
 } from "../data/note-collections/diatonic-modes.ts";
+import { filterOutOctaveIntervals } from "./intervals.ts";
 
 /**
  * Converts standard triad qualities (e.g., "M", "m") into their corresponding Roman numeral representations
@@ -110,15 +111,13 @@ export function getChordDetailsForMode(
   romanTriads: readonly RomanTriad[],
   romanSeventhChords: readonly RomanSeventhChord[],
 ): ChordDetails[] {
-  return intervals
-    .filter((interval) => interval !== "8")
-    .map((interval, i) => ({
-      interval,
-      triad: triads[i],
-      seventh: sevenths[i],
-      romanTriad: romanTriads[i],
-      romanSeventhChord: romanSeventhChords[i],
-    }));
+  return filterOutOctaveIntervals(intervals).map((interval, i) => ({
+    interval,
+    triad: triads[i],
+    seventh: sevenths[i],
+    romanTriad: romanTriads[i],
+    romanSeventhChord: romanSeventhChords[i],
+  }));
 }
 
 /**
