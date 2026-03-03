@@ -9,7 +9,6 @@ import {
   upperCaseRomanNumerals,
 } from "../data/chords/mod.ts";
 import type {
-  ChordDetails,
   RomanSeventhChord,
   RomanTriad,
   SeventhChord,
@@ -24,7 +23,10 @@ import {
   type MelodicMinorModeKey,
   melodicMinorModes,
 } from "../data/note-collections/melodic-minor-modes.ts";
-import type { Interval } from "../data/labels/note-labels.ts";
+import {
+  type Interval,
+  intervalToIntegerMap,
+} from "../data/labels/note-labels.ts";
 import {
   type DiatonicModeKey,
   diatonicModes,
@@ -93,106 +95,35 @@ export function getRomanSeventhChords(
   }) as RomanSeventhChord[];
 }
 
-/**
- * Aggregates chord data (triads, sevenths, and roman numerals) for each specific pitch interval
- * of a scale or mode into a structured array of objects.
- *
- * @param intervals The intervals of the mode (excluding the octave).
- * @param triads The basic triad qualities for each interval.
- * @param sevenths The seventh chord qualities for each interval.
- * @param romanTriads The computed Roman numeral triads.
- * @param romanSeventhChords The computed Roman numeral seventh chords.
- * @returns An organized list of full chord details for each degree of the provided mode.
- */
-export function getChordDetailsForMode(
+function getChromaticArray<T>(
+  items: readonly T[],
   intervals: readonly Interval[],
-  triads: readonly Triad[],
-  sevenths: readonly SeventhChord[],
-  romanTriads: readonly RomanTriad[],
-  romanSeventhChords: readonly RomanSeventhChord[],
-): ChordDetails[] {
-  return filterOutOctaveIntervals(intervals).map((interval, i) => ({
-    interval,
-    triad: triads[i],
-    seventh: sevenths[i],
-    romanTriad: romanTriads[i],
-    romanSeventhChord: romanSeventhChords[i],
-  }));
-}
+): (T | undefined)[] {
+  const result: (T | undefined)[] = [
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+  ];
 
-/**
- * Computes and aggregates comprehensive chord details (triads and sevenths) for a specific
- * standard diatonic mode.
- *
- * @param diatonicModeKey The identifier for the diatonic mode (e.g. "ionian", "dorian").
- * @returns An array of detailed chord objects mapped to each scale degree.
- */
-export function getChordDetailsForDiatonicMode(
-  diatonicModeKey: DiatonicModeKey,
-): ChordDetails[] {
-  const mode = diatonicModes[diatonicModeKey];
-  const rotation = mode.rotation;
-  const rotatedTriads = rotateArrayLeft(diatonicTriads, rotation);
-  const rotatedSeventhChords = rotateArrayLeft(diatonicSeventhChords, rotation);
-  return getChordDetailsForMode(
-    mode.intervals,
-    rotatedTriads,
-    rotatedSeventhChords,
-    getRomanTriads(rotatedTriads),
-    getRomanSeventhChords(rotatedSeventhChords),
-  );
-}
+  const filteredIntervals = filterOutOctaveIntervals(intervals);
 
-/**
- * Computes and aggregates comprehensive chord details (triads and sevenths) for a specific
- * harmonic minor scale mode.
- *
- * @param harmonicMinorModeKey The identifier for the mode (e.g. "harmonicMinor", "phrygianDominant").
- * @returns An array of detailed chord objects mapped to each scale degree.
- */
-export function getChordDetailsForHarmonicMinorMode(
-  harmonicMinorModeKey: HarmonicMinorModeKey,
-): ChordDetails[] {
-  const mode = harmonicMinorModes[harmonicMinorModeKey];
-  const rotation = mode.rotation;
-  const rotatedTriads = rotateArrayLeft(harmonicMinorTriads, rotation);
-  const rotatedSeventhChords = rotateArrayLeft(
-    harmonicMinorSeventhChords,
-    rotation,
-  );
-  return getChordDetailsForMode(
-    mode.intervals,
-    rotatedTriads,
-    rotatedSeventhChords,
-    getRomanTriads(rotatedTriads),
-    getRomanSeventhChords(rotatedSeventhChords),
-  );
-}
+  filteredIntervals.forEach((interval, i) => {
+    const semitones = intervalToIntegerMap.get(interval);
+    if (semitones !== undefined) {
+      result[semitones % 12] = items[i];
+    }
+  });
 
-/**
- * Computes and aggregates comprehensive chord details (triads and sevenths) for a specific
- * melodic minor scale mode.
- *
- * @param melodicMinorModeKey The identifier for the mode (e.g. "melodicMinor", "superLocrian").
- * @returns An array of detailed chord objects mapped to each scale degree.
- */
-export function getChordDetailsForMelodicMinorMode(
-  melodicMinorModeKey: MelodicMinorModeKey,
-): ChordDetails[] {
-  const mode = melodicMinorModes[melodicMinorModeKey];
-  const rotation = mode.rotation;
-  const rotatedTriads = rotateArrayLeft(melodicMinorTriads, rotation);
-  const rotatedSeventhChords = rotateArrayLeft(
-    melodicMinorSeventhChords,
-    rotation,
-  );
-  return getChordDetailsForMode(
-    mode.intervals,
-    rotatedTriads,
-    rotatedSeventhChords,
-    getRomanTriads(rotatedTriads),
-    getRomanSeventhChords(rotatedSeventhChords),
-  );
+  return result;
 }
 
 /** A union of all valid identifiers for standard seven-note modal scales. */
@@ -201,22 +132,156 @@ export type AnyModeKey =
   | HarmonicMinorModeKey
   | MelodicMinorModeKey;
 
-/**
- * Resolves the given mode key to its parent scale type (diatonic, harmonic minor, or melodic minor)
- * and computes its chord details dynamically.
- *
- * @param modeKey The generic modal identifier.
- * @returns Complete chord details mapped per scale degree, or an empty array if invalid.
- */
-export function getChordDetailsForModeKey(modeKey: AnyModeKey): ChordDetails[] {
+type ModeData = {
+  intervals: readonly Interval[];
+  rotation: number;
+  triads: readonly Triad[];
+  sevenths: readonly SeventhChord[];
+};
+
+function getModeData(modeKey: AnyModeKey): ModeData | undefined {
   if (Object.prototype.hasOwnProperty.call(diatonicModes, modeKey)) {
-    return getChordDetailsForDiatonicMode(modeKey as DiatonicModeKey);
+    const mode = diatonicModes[modeKey as DiatonicModeKey];
+    return {
+      intervals: mode.intervals,
+      rotation: mode.rotation,
+      triads: diatonicTriads,
+      sevenths: diatonicSeventhChords,
+    };
   }
   if (Object.prototype.hasOwnProperty.call(harmonicMinorModes, modeKey)) {
-    return getChordDetailsForHarmonicMinorMode(modeKey as HarmonicMinorModeKey);
+    const mode = harmonicMinorModes[modeKey as HarmonicMinorModeKey];
+    return {
+      intervals: mode.intervals,
+      rotation: mode.rotation,
+      triads: harmonicMinorTriads,
+      sevenths: harmonicMinorSeventhChords,
+    };
   }
   if (Object.prototype.hasOwnProperty.call(melodicMinorModes, modeKey)) {
-    return getChordDetailsForMelodicMinorMode(modeKey as MelodicMinorModeKey);
+    const mode = melodicMinorModes[modeKey as MelodicMinorModeKey];
+    return {
+      intervals: mode.intervals,
+      rotation: mode.rotation,
+      triads: melodicMinorTriads,
+      sevenths: melodicMinorSeventhChords,
+    };
   }
-  return [];
+  return undefined;
+}
+
+/**
+ * Retrieves the triads for a given mode key.
+ */
+export function getTriads(
+  modeKey: AnyModeKey,
+  options?: { fillChromatic?: false },
+): Triad[];
+export function getTriads(
+  modeKey: AnyModeKey,
+  options: { fillChromatic: true },
+): (Triad | undefined)[];
+export function getTriads(
+  modeKey: AnyModeKey,
+  options: { fillChromatic?: boolean } = {},
+): Triad[] | (Triad | undefined)[] {
+  const data = getModeData(modeKey);
+  if (!data) return [];
+
+  const rotatedTriads = Array.from(rotateArrayLeft(data.triads, data.rotation));
+
+  if (options.fillChromatic) {
+    return getChromaticArray(rotatedTriads, data.intervals);
+  }
+
+  return rotatedTriads;
+}
+
+/**
+ * Retrieves the seventh chords for a given mode key.
+ */
+export function getSevenths(
+  modeKey: AnyModeKey,
+  options?: { fillChromatic?: false },
+): SeventhChord[];
+export function getSevenths(
+  modeKey: AnyModeKey,
+  options: { fillChromatic: true },
+): (SeventhChord | undefined)[];
+export function getSevenths(
+  modeKey: AnyModeKey,
+  options: { fillChromatic?: boolean } = {},
+): SeventhChord[] | (SeventhChord | undefined)[] {
+  const data = getModeData(modeKey);
+  if (!data) return [];
+
+  const rotatedSevenths = rotateArrayLeft(
+    data.sevenths,
+    data.rotation,
+  ) as SeventhChord[];
+
+  if (options.fillChromatic) {
+    return getChromaticArray(rotatedSevenths, data.intervals);
+  }
+
+  return rotatedSevenths;
+}
+
+/**
+ * Retrieves the Roman numeral triads for a given mode key.
+ */
+export function getRomanTriadsForMode(
+  modeKey: AnyModeKey,
+  options?: { fillChromatic?: false },
+): RomanTriad[];
+export function getRomanTriadsForMode(
+  modeKey: AnyModeKey,
+  options: { fillChromatic: true },
+): (RomanTriad | undefined)[];
+export function getRomanTriadsForMode(
+  modeKey: AnyModeKey,
+  options: { fillChromatic?: boolean } = {},
+): RomanTriad[] | (RomanTriad | undefined)[] {
+  const data = getModeData(modeKey);
+  if (!data) return [];
+
+  const rotatedTriads = Array.from(rotateArrayLeft(data.triads, data.rotation));
+  const romanTriads = getRomanTriads(rotatedTriads);
+
+  if (options.fillChromatic) {
+    return getChromaticArray(romanTriads, data.intervals);
+  }
+
+  return romanTriads;
+}
+
+/**
+ * Retrieves the Roman numeral seventh chords for a given mode key.
+ */
+export function getRomanSeventhsForMode(
+  modeKey: AnyModeKey,
+  options?: { fillChromatic?: false },
+): RomanSeventhChord[];
+export function getRomanSeventhsForMode(
+  modeKey: AnyModeKey,
+  options: { fillChromatic: true },
+): (RomanSeventhChord | undefined)[];
+export function getRomanSeventhsForMode(
+  modeKey: AnyModeKey,
+  options: { fillChromatic?: boolean } = {},
+): RomanSeventhChord[] | (RomanSeventhChord | undefined)[] {
+  const data = getModeData(modeKey);
+  if (!data) return [];
+
+  const rotatedSevenths = rotateArrayLeft(
+    data.sevenths,
+    data.rotation,
+  ) as SeventhChord[];
+  const romanSevenths = getRomanSeventhChords(rotatedSevenths);
+
+  if (options.fillChromatic) {
+    return getChromaticArray(romanSevenths, data.intervals);
+  }
+
+  return romanSevenths;
 }

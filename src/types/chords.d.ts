@@ -1,5 +1,3 @@
-import type { Interval } from "../data/labels/note-labels.ts";
-
 export type Triad = "M" | "m" | "°" | "+";
 
 export type SeventhChord =
@@ -33,16 +31,6 @@ export type LowerCaseRomanNumeral =
 
 export type RomanNumeral = UpperCaseRomanNumeral | LowerCaseRomanNumeral;
 
-export type RomanTriad =
-  | `${RomanNumeral}`
-  | `${RomanNumeral}${Triad}`;
+export type RomanTriad = `${RomanNumeral}` | `${RomanNumeral}${Triad}`;
 
 export type RomanSeventhChord = `${RomanNumeral}${SeventhChord}`;
-
-export interface ChordDetails {
-  interval: Interval;
-  triad: Triad;
-  seventh: SeventhChord;
-  romanTriad: RomanTriad;
-  romanSeventhChord: RomanSeventhChord;
-}

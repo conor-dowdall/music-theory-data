@@ -7,7 +7,7 @@
  * @param rotation The number of positions to rotate the array.
  * @returns A new array with the elements rotated.
  */
-export function rotateArrayLeft<T>(array: T[], rotation: number): T[] {
+export function rotateArrayLeft<T>(array: readonly T[], rotation: number): T[] {
   if (!array.length) return [...array];
   const r = ((rotation % array.length) + array.length) % array.length;
   return [...array.slice(r), ...array.slice(0, r)];
@@ -22,7 +22,10 @@ export function rotateArrayLeft<T>(array: T[], rotation: number): T[] {
  * @param rotation The number of positions to rotate the array.
  * @returns A new array with the elements rotated.
  */
-export function rotateArrayRight<T>(array: T[], rotation: number): T[] {
+export function rotateArrayRight<T>(
+  array: readonly T[],
+  rotation: number,
+): T[] {
   return rotateArrayLeft(array, -rotation);
 }
 
@@ -33,7 +36,7 @@ export function rotateArrayRight<T>(array: T[], rotation: number): T[] {
  * @returns A new array, rotated to begin with the `start` element.
  * @throws If the `start` element is not found in the array.
  */
-export function rotateArrayToStartWith<T>(array: T[], start: T): T[] {
+export function rotateArrayToStartWith<T>(array: readonly T[], start: T): T[] {
   const index = array.indexOf(start);
   if (index === -1) {
     throw new Error(`Element "${start}" not found in the array.`);

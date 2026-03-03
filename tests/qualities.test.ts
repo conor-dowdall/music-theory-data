@@ -10,10 +10,7 @@ import {
 } from "../src/utils/qualities.ts";
 import type { IntervalQuality } from "../src/data/labels/note-labels.ts";
 import { diatonicModes } from "../src/data/note-collections/diatonic-modes.ts";
-import {
-  type NoteCollectionKey,
-  noteCollections,
-} from "../src/data/note-collections/mod.ts";
+import { noteCollections } from "../src/data/note-collections/mod.ts";
 
 Deno.test("getQualitiesFromIntervals", () => {
   assertEquals(getQualitiesFromIntervals(["1", "3", "5"]), ["P1", "M3", "P5"]);
@@ -55,10 +52,7 @@ Deno.test("getQualitiesFromCollectionKey", () => {
     "P8",
   ]);
   // Invalid key yields empty array
-  assertEquals(
-    getQualitiesFromCollectionKey("invalidKey" as NoteCollectionKey),
-    [],
-  );
+  assertEquals(getQualitiesFromCollectionKey("invalid_key" as never), []);
 });
 
 Deno.test("getQualitiesFromCollectionKey with fillChromatic", () => {

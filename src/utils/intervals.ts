@@ -263,14 +263,6 @@ export type TransformIntervalsOptions =
     }
   );
 
-/**
- * Applies a series of formatting steps to an array of intervals, such as changing compound formats,
- * filtering octaves, and sorting.
- *
- * @param intervals The initial array of intervals.
- * @param options Configuration for the desired transformations.
- * @returns A new transformed array of intervals.
- */
 export function transformIntervals(
   intervals: readonly Interval[],
   options: TransformIntervalsOptions = {},
@@ -313,7 +305,8 @@ export function transformIntervals(
     if (mostSimilarScale) {
       const collection = noteCollections[mostSimilarScale];
       if (collection && collection.intervals !== intervals) {
-        collection.intervals.forEach((interval) => {
+        const filtered = filterOutOctaveIntervals(collection.intervals);
+        filtered.forEach((interval) => {
           const semitones = intervalToIntegerMap.get(interval);
           if (semitones !== undefined) {
             chromaticMap[semitones % 12] = interval;
@@ -323,8 +316,8 @@ export function transformIntervals(
     }
 
     // Now overlay the provided parsed intervals
-    const filteredIntervalsForOverlay = filterOutRootLikeIntervals(
-      fundamentalIntervals,
+    const filteredIntervalsForOverlay = filterOutOctaveIntervals(
+      filterOutRootLikeIntervals(fundamentalIntervals),
     );
 
     filteredIntervalsForOverlay.forEach((interval) => {
@@ -346,7 +339,7 @@ export function transformIntervals(
       result = rotateArrayRight(result, rotateRight);
     }
 
-    return result;
+    return result as Interval[];
   }
 
   const transformedIntervals = fundamentalIntervals.map(

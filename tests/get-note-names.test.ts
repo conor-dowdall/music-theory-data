@@ -4,7 +4,6 @@ import {
   getNoteNamesFromRootAndIntervals,
 } from "../src/utils/note-names.ts";
 import { diatonicModes } from "../src/data/note-collections/diatonic-modes.ts";
-import type { NoteCollectionKey } from "../src/data/note-collections/mod.ts";
 import { isValidNoteCollectionKey } from "../src/utils/note-collections.ts";
 
 Deno.test("getNoteNamesFromRootAndCollectionKey - Major Scales", () => {
@@ -314,10 +313,7 @@ Deno.test("getNoteNamesFromRootAndIntervals", () => {
 
 Deno.test("getNoteNamesFromRootAndCollectionKey - Invalid Key", () => {
   assertEquals(
-    getNoteNamesFromRootAndCollectionKey(
-      "C",
-      "invalidKey" as NoteCollectionKey,
-    ),
+    getNoteNamesFromRootAndCollectionKey("C", "invalid_key" as never),
     [],
   );
 });
@@ -325,7 +321,7 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Invalid Key", () => {
 Deno.test("isValidNoteCollectionKey", () => {
   assertEquals(isValidNoteCollectionKey("ionian"), true);
   assertEquals(isValidNoteCollectionKey("major"), true);
-  assertEquals(isValidNoteCollectionKey("invalidKey"), false);
+  assertEquals(isValidNoteCollectionKey("invalid_key"), false);
   assertEquals(isValidNoteCollectionKey(""), false);
 });
 
