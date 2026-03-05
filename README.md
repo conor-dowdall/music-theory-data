@@ -137,7 +137,7 @@ The code below shows how to access and print some of the data.
 import * as music_theory_data from "jsr:@musodojo/music-theory-data";
 
 // Get the notes of A Harmonic Minor
-const notes1 = music_theory_data.getNoteNamesFromRootAndCollectionKey(
+const notes1 = music_theory_data.getNoteNamesForRootAndNoteCollectionKey(
   "A",
   "harmonicMinor",
 );
@@ -145,7 +145,7 @@ console.log(notes1);
 // ["A", "B", "C", "D", "E", "F", "G♯", "A"]
 
 // Automatically knows whether to use flats or sharps
-const notes2 = music_theory_data.getNoteNamesFromRootAndCollectionKey(
+const notes2 = music_theory_data.getNoteNamesForRootAndNoteCollectionKey(
   "F",
   "ionian",
 );

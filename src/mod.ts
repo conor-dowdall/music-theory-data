@@ -9,63 +9,40 @@
  * @module
  * @example
  * ```ts
- * // Import the entire library
  * import * as music_theory_data from "jsr:@musodojo/music-theory-data";
  *
- * // You can now access all the data and functions.
+ * // Get the notes of A Harmonic Minor
+ * const notes1 = music_theory_data.getNoteNamesForRootAndNoteCollectionKey(
+ *   "A",
+ *   "harmonicMinor",
+ * );
+ * console.log(notes1);
+ * // ["A", "B", "C", "D", "E", "F", "G♯", "A"]
  *
- * // The details for the Ionian Diatonic Mode (Major Scale).
- * console.log("ionian details: ", music_theory_data.noteCollections.ionian);
- * // ionian details:  {
- * //   category: "scale",
- * //   rotation: 0,
- * //   primaryName: "Major",
- * //   names: [
- * //     "Major",
- * //     "Ionian",
- * //     "Major Scale",
- * //     "Ionian Mode",
- * //     "Diatonic Major",
- * //   ],
- * //   intervals: ["1", "2", "3", "4", "5", "6", "7", "8"],
- * //   integers: [0, 2, 4, 5, 7, 9, 11],
- * //   type: [
- * //     "major",
- * //     "ionian",
- * //     "mode",
- * //     "scale",
- * //     "church mode",
- * //     "diatonic mode",
- * //     "heptatonic",
- * //     "first diatonic mode",
- * //     "do mode",
- * //   ],
- * //   characteristics: [
- * //     "bright",
- * //     "happy",
- * //     "stable",
- * //     "uplifting",
- * //     "consonant",
- * //     "western",
- * //     "foundational",
- * //     "simple",
- * //     "pop music",
- * //     "major tonality",
- * //     "commonly used western scale",
- * //   ],
- * //   pattern: ["whole", "whole", "half", "whole", "whole", "whole", "half"],
- * //   patternShort: ["W", "W", "H", "W", "W", "W", "H"],
- * // }
+ * // Automatically knows whether to use flats or sharps
+ * const notes2 = music_theory_data.getNoteNamesForRootAndNoteCollectionKey(
+ *   "F",
+ *   "ionian",
+ * );
+ * console.log(notes2);
+ * //  ["F", "G", "A", "B♭", "C", "D", "E", "F"];
  *
- * // Get the notes of a stored chord, or scale.
- * console.log("A harmonic minor: ", music_theory_data.getNoteNamesForRootAndNoteCollectionKey("A", "harmonicMinor"))
- * // A harmonic minor: ["A", "B", "C", "D", "E", "F", "G♯", "A"]
+ * // Get the full data structure for the Ionian mode (Major Scale)
+ * const ionian = music_theory_data.noteCollections.ionian;
  *
- * // Log the array of all available Note Collection Keys
+ * console.log(ionian.primaryName);
+ * // "Major"
+ *
+ * console.log(ionian.intervals);
+ * // ["1", "2", "3", "4", "5", "6", "7", "8"]
+ *
+ * // Log an array of all available Note Collection Keys
  * console.log(Object.keys(music_theory_data.noteCollections));
+ * // ["ionian", "dorian", "phrygian", ...]
  *
- * // Log the array of all available Grouped Note Collections Keys
+ * // Log an array of all available Grouped Note Collections Keys
  * console.log(Object.keys(music_theory_data.groupedNoteCollections));
+ * // ["diatonicModes", "pentatonicVariants", ...]
  * ```
  */
 export * from "./data/mod.ts";
