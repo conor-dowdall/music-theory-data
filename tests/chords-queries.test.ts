@@ -1,9 +1,9 @@
 import { assertEquals } from "@std/assert";
 import {
-  getRomanSeventhsForMode,
-  getRomanTriadsForMode,
-  getSevenths,
-  getTriads,
+  getRomanSeventhChordsForNoteCollectionKey,
+  getRomanTriadsForNoteCollectionKey,
+  getSeventhChordsForNoteCollectionKey,
+  getTriadsForNoteCollectionKey,
 } from "../src/utils/chords.ts";
 import type {
   RomanSeventhChord,
@@ -12,60 +12,68 @@ import type {
   Triad,
 } from "../src/types/chords.d.ts";
 
-Deno.test("getTriads and getSevenths - Ionian", () => {
-  const triads = getTriads("ionian");
-  const sevenths = getSevenths("ionian");
+Deno.test(
+  "getTriadsForNoteCollectionKey and getSeventhChordsForNoteCollectionKey - Ionian",
+  () => {
+    const triads = getTriadsForNoteCollectionKey("ionian");
+    const sevenths = getSeventhChordsForNoteCollectionKey("ionian");
 
-  const expectedTriads: Triad[] = ["M", "m", "m", "M", "M", "m", "°"];
-  const expectedSevenths: SeventhChord[] = [
-    "M7",
-    "m7",
-    "m7",
-    "M7",
-    "7",
-    "m7",
-    "ø7",
-  ];
+    const expectedTriads: Triad[] = ["M", "m", "m", "M", "M", "m", "°"];
+    const expectedSevenths: SeventhChord[] = [
+      "M7",
+      "m7",
+      "m7",
+      "M7",
+      "7",
+      "m7",
+      "ø7",
+    ];
 
-  assertEquals(triads, expectedTriads);
-  assertEquals(sevenths, expectedSevenths);
-});
+    assertEquals(triads, expectedTriads);
+    assertEquals(sevenths, expectedSevenths);
+  },
+);
 
-Deno.test("getRomanTriadsForMode and getRomanSeventhsForMode - Dorian", () => {
-  const romanTriads = getRomanTriadsForMode("dorian");
-  const romanSevenths = getRomanSeventhsForMode("dorian");
+Deno.test(
+  "getRomanTriadsForNoteCollectionKey and getRomanSeventhChordsForNoteCollectionKey - Dorian",
+  () => {
+    const romanTriads = getRomanTriadsForNoteCollectionKey("dorian");
+    const romanSevenths = getRomanSeventhChordsForNoteCollectionKey("dorian");
 
-  const expectedRomanTriads: RomanTriad[] = [
-    "i",
-    "ii",
-    "III",
-    "IV",
-    "v",
-    "vi°",
-    "VII",
-  ];
-  const expectedRomanSevenths: RomanSeventhChord[] = [
-    "im7",
-    "iim7",
-    "IIIM7",
-    "IV7",
-    "vm7",
-    "viø7",
-    "VIIM7",
-  ];
+    const expectedRomanTriads: RomanTriad[] = [
+      "i",
+      "ii",
+      "III",
+      "IV",
+      "v",
+      "vi°",
+      "VII",
+    ];
+    const expectedRomanSevenths: RomanSeventhChord[] = [
+      "im7",
+      "iim7",
+      "IIIM7",
+      "IV7",
+      "vm7",
+      "viø7",
+      "VIIM7",
+    ];
 
-  assertEquals(romanTriads, expectedRomanTriads);
-  assertEquals(romanSevenths, expectedRomanSevenths);
-});
+    assertEquals(romanTriads, expectedRomanTriads);
+    assertEquals(romanSevenths, expectedRomanSevenths);
+  },
+);
 
-Deno.test("getTriads - Locrian", () => {
-  const triads = getTriads("locrian");
+Deno.test("getTriadsForNoteCollectionKey - Locrian", () => {
+  const triads = getTriadsForNoteCollectionKey("locrian");
   const expectedTriads: Triad[] = ["°", "M", "m", "m", "M", "M", "m"];
   assertEquals(triads, expectedTriads);
 });
 
-Deno.test("getRomanSeventhsForMode - Harmonic Minor", () => {
-  const romanSevenths = getRomanSeventhsForMode("harmonicMinor");
+Deno.test("getRomanSeventhChordsForNoteCollectionKey - Harmonic Minor", () => {
+  const romanSevenths = getRomanSeventhChordsForNoteCollectionKey(
+    "harmonicMinor",
+  );
 
   const expectedRomanSevenths: RomanSeventhChord[] = [
     "iM7",
@@ -80,8 +88,8 @@ Deno.test("getRomanSeventhsForMode - Harmonic Minor", () => {
   assertEquals(romanSevenths, expectedRomanSevenths);
 });
 
-Deno.test("getRomanTriadsForMode - Phrygian Dominant", () => {
-  const romanTriads = getRomanTriadsForMode("phrygianDominant");
+Deno.test("getRomanTriadsForNoteCollectionKey - Phrygian Dominant", () => {
+  const romanTriads = getRomanTriadsForNoteCollectionKey("phrygianDominant");
 
   const expectedRomanTriads: RomanTriad[] = [
     "I",
@@ -96,8 +104,8 @@ Deno.test("getRomanTriadsForMode - Phrygian Dominant", () => {
   assertEquals(romanTriads, expectedRomanTriads);
 });
 
-Deno.test("getSevenths - Melodic Minor", () => {
-  const sevenths = getSevenths("melodicMinor");
+Deno.test("getSeventhChordsForNoteCollectionKey - Melodic Minor", () => {
+  const sevenths = getSeventhChordsForNoteCollectionKey("melodicMinor");
 
   const expectedSevenths: SeventhChord[] = [
     "m(M7)",
@@ -112,8 +120,8 @@ Deno.test("getSevenths - Melodic Minor", () => {
   assertEquals(sevenths, expectedSevenths);
 });
 
-Deno.test("getRomanTriadsForMode - fillChromatic", () => {
-  const chords = getRomanTriadsForMode("ionian", {
+Deno.test("getRomanTriadsForNoteCollectionKey - fillChromatic", () => {
+  const chords = getRomanTriadsForNoteCollectionKey("ionian", {
     fillChromatic: true,
   });
 
@@ -132,16 +140,55 @@ Deno.test("getRomanTriadsForMode - fillChromatic", () => {
   assertEquals(chords[11], "vii°");
 });
 
+Deno.test("Fallback to mostSimilarScale - Major Triad Collection", () => {
+  const triads = getTriadsForNoteCollectionKey("major");
+  const romanTriads = getRomanTriadsForNoteCollectionKey("major");
+
+  // A major triad has intervals "1", "3", "5".
+  // Its mostSimilarScale is "ionian", which has triads: ["M", "m", "m", "M", "M", "m", "°"]
+  // Index 0 ("1") -> "M", Index 2 ("3") -> "m", Index 4 ("5") -> "M"
+  assertEquals(triads, ["M", "m", "M"]);
+  assertEquals(romanTriads, ["I", "iii", "V"]);
+});
+
+Deno.test(
+  "Fallback to mostSimilarScale - Minor Triad Collection with fillChromatic",
+  () => {
+    const romanSevenths = getRomanSeventhChordsForNoteCollectionKey("minor", {
+      fillChromatic: true,
+    });
+    // A minor triad has intervals "1", "b3", "5".
+    // mostSimilarScale is "aeolian", which has seventh chords: ["m7", "ø7", "M7", "m7", "m7", "M7", "7"]
+    // Roman sevenths for aeolian: ["im7", "iiø7", "IIIM7", "ivm7", "vm7", "VIM7", "VII7"]
+    // "1" (0 semitones) -> "im7", "b3" (3 semitones) -> "IIIM7", "5" (7 semitones) -> "vm7"
+
+    assertEquals(romanSevenths.length, 12);
+    assertEquals(romanSevenths[0], "im7");
+    assertEquals(romanSevenths[3], "IIIM7");
+    assertEquals(romanSevenths[7], "vm7");
+    assertEquals(romanSevenths[1], undefined);
+  },
+);
+
 Deno.test(
   "Fallback tests - invalid keys gracefully return empty arrays",
   () => {
-    assertEquals(getTriads("invalid_key" as never), []);
-    assertEquals(getSevenths("invalid_key" as never), []);
-    assertEquals(getRomanTriadsForMode("invalid_key" as never), []);
-    assertEquals(getRomanSeventhsForMode("invalid_key" as never), []);
+    assertEquals(getTriadsForNoteCollectionKey("invalid_key" as never), []);
+    assertEquals(
+      getSeventhChordsForNoteCollectionKey("invalid_key" as never),
+      [],
+    );
+    assertEquals(
+      getRomanTriadsForNoteCollectionKey("invalid_key" as never),
+      [],
+    );
+    assertEquals(
+      getRomanSeventhChordsForNoteCollectionKey("invalid_key" as never),
+      [],
+    );
 
     assertEquals(
-      getTriads("invalid_key" as never, {
+      getTriadsForNoteCollectionKey("invalid_key" as never, {
         fillChromatic: true,
       }),
       [] as never,

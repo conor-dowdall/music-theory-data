@@ -8,6 +8,10 @@ import {
   melodicMinorTriads,
   upperCaseRomanNumerals,
 } from "../data/chords/mod.ts";
+import {
+  type NoteCollectionKey,
+  noteCollections,
+} from "../data/note-collections/mod.ts";
 import type {
   RomanSeventhChord,
   RomanTriad,
@@ -126,12 +130,6 @@ function getChromaticArray<T>(
   return result;
 }
 
-/** A union of all valid identifiers for standard seven-note modal scales. */
-export type AnyModeKey =
-  | DiatonicModeKey
-  | HarmonicMinorModeKey
-  | MelodicMinorModeKey;
-
 type ModeData = {
   intervals: readonly Interval[];
   rotation: number;
@@ -139,7 +137,7 @@ type ModeData = {
   sevenths: readonly SeventhChord[];
 };
 
-function getModeData(modeKey: AnyModeKey): ModeData | undefined {
+function getModeData(modeKey: NoteCollectionKey): ModeData | undefined {
   if (Object.prototype.hasOwnProperty.call(diatonicModes, modeKey)) {
     const mode = diatonicModes[modeKey as DiatonicModeKey];
     return {
@@ -171,117 +169,114 @@ function getModeData(modeKey: AnyModeKey): ModeData | undefined {
 }
 
 /**
- * Retrieves the triads for a given mode key.
+ * A generic core helper function to evaluate and return chords for any given NoteCollectionKey.
+ *
+ * @template T The underlying chord type extracted automatically from ModeData (e.g., `Triad` or `SeventhChord`).
+ * @template U The final returned array type. If `transformRoman` is provided, this represents the Roman numeral type (e.g., `RomanTriad`). If no transformation is applied, `U` defaults to `T`.
  */
-export function getTriads(
-  modeKey: AnyModeKey,
-  options?: { fillChromatic?: false },
-): Triad[];
-export function getTriads(
-  modeKey: AnyModeKey,
-  options: { fillChromatic: true },
-): (Triad | undefined)[];
-export function getTriads(
-  modeKey: AnyModeKey,
-  options: { fillChromatic?: boolean } = {},
-): Triad[] | (Triad | undefined)[] {
-  const data = getModeData(modeKey);
-  if (!data) return [];
+function getChordsForNoteCollection<T, U = T>(
+  collectionKey: NoteCollectionKey,
+  options: { fillChromatic?: boolean },
+  extractChords: (data: ModeData) => readonly T[],
+  transformRoman?: (chords: T[]) => U[],
+): (U | undefined)[] {
+  const collection = noteCollections[collectionKey];
+  if (!collection) return [];
 
-  const rotatedTriads = Array.from(rotateArrayLeft(data.triads, data.rotation));
+  const data = getModeData(collectionKey);
+  if (data) {
+    const rotatedChords = Array.from(
+      rotateArrayLeft(extractChords(data), data.rotation),
+    ) as T[];
+    const processedChords = transformRoman
+      ? transformRoman(rotatedChords)
+      : (rotatedChords as unknown as U[]);
 
-  if (options.fillChromatic) {
-    return getChromaticArray(rotatedTriads, data.intervals);
+    if (options.fillChromatic) {
+      return getChromaticArray(processedChords, data.intervals);
+    }
+    return processedChords;
   }
 
-  return rotatedTriads;
+  const similarScaleKey = collection.mostSimilarScale;
+  const similarData = getModeData(similarScaleKey);
+  if (!similarData) return [];
+
+  const similarChords = Array.from(
+    rotateArrayLeft(extractChords(similarData), similarData.rotation),
+  ) as T[];
+  const similarProcessedChords = transformRoman
+    ? transformRoman(similarChords)
+    : (similarChords as unknown as U[]);
+
+  const collectionChords = collection.intervals
+    .map((interval) => {
+      const index = similarData.intervals.indexOf(interval);
+      return index !== -1 ? similarProcessedChords[index] : undefined;
+    })
+    .filter((chord) => chord !== undefined) as U[];
+
+  if (options.fillChromatic) {
+    return getChromaticArray(collectionChords, collection.intervals);
+  }
+
+  return collectionChords;
 }
 
 /**
- * Retrieves the seventh chords for a given mode key.
+ * Retrieves the triads for a given note collection key.
  */
-export function getSevenths(
-  modeKey: AnyModeKey,
-  options?: { fillChromatic?: false },
-): SeventhChord[];
-export function getSevenths(
-  modeKey: AnyModeKey,
-  options: { fillChromatic: true },
-): (SeventhChord | undefined)[];
-export function getSevenths(
-  modeKey: AnyModeKey,
+export function getTriadsForNoteCollectionKey(
+  collectionKey: NoteCollectionKey,
   options: { fillChromatic?: boolean } = {},
-): SeventhChord[] | (SeventhChord | undefined)[] {
-  const data = getModeData(modeKey);
-  if (!data) return [];
-
-  const rotatedSevenths = rotateArrayLeft(
-    data.sevenths,
-    data.rotation,
-  ) as SeventhChord[];
-
-  if (options.fillChromatic) {
-    return getChromaticArray(rotatedSevenths, data.intervals);
-  }
-
-  return rotatedSevenths;
+): (Triad | undefined)[] {
+  return getChordsForNoteCollection<Triad>(
+    collectionKey,
+    options,
+    (data) => data.triads,
+  );
 }
 
 /**
- * Retrieves the Roman numeral triads for a given mode key.
+ * Retrieves the seventh chords for a given note collection key.
  */
-export function getRomanTriadsForMode(
-  modeKey: AnyModeKey,
-  options?: { fillChromatic?: false },
-): RomanTriad[];
-export function getRomanTriadsForMode(
-  modeKey: AnyModeKey,
-  options: { fillChromatic: true },
-): (RomanTriad | undefined)[];
-export function getRomanTriadsForMode(
-  modeKey: AnyModeKey,
+export function getSeventhChordsForNoteCollectionKey(
+  collectionKey: NoteCollectionKey,
   options: { fillChromatic?: boolean } = {},
-): RomanTriad[] | (RomanTriad | undefined)[] {
-  const data = getModeData(modeKey);
-  if (!data) return [];
-
-  const rotatedTriads = Array.from(rotateArrayLeft(data.triads, data.rotation));
-  const romanTriads = getRomanTriads(rotatedTriads);
-
-  if (options.fillChromatic) {
-    return getChromaticArray(romanTriads, data.intervals);
-  }
-
-  return romanTriads;
+): (SeventhChord | undefined)[] {
+  return getChordsForNoteCollection<SeventhChord>(
+    collectionKey,
+    options,
+    (data) => data.sevenths,
+  );
 }
 
 /**
- * Retrieves the Roman numeral seventh chords for a given mode key.
+ * Retrieves the Roman numeral triads for a given note collection key.
  */
-export function getRomanSeventhsForMode(
-  modeKey: AnyModeKey,
-  options?: { fillChromatic?: false },
-): RomanSeventhChord[];
-export function getRomanSeventhsForMode(
-  modeKey: AnyModeKey,
-  options: { fillChromatic: true },
-): (RomanSeventhChord | undefined)[];
-export function getRomanSeventhsForMode(
-  modeKey: AnyModeKey,
+export function getRomanTriadsForNoteCollectionKey(
+  collectionKey: NoteCollectionKey,
   options: { fillChromatic?: boolean } = {},
-): RomanSeventhChord[] | (RomanSeventhChord | undefined)[] {
-  const data = getModeData(modeKey);
-  if (!data) return [];
+): (RomanTriad | undefined)[] {
+  return getChordsForNoteCollection<Triad, RomanTriad>(
+    collectionKey,
+    options,
+    (data) => data.triads,
+    getRomanTriads,
+  );
+}
 
-  const rotatedSevenths = rotateArrayLeft(
-    data.sevenths,
-    data.rotation,
-  ) as SeventhChord[];
-  const romanSevenths = getRomanSeventhChords(rotatedSevenths);
-
-  if (options.fillChromatic) {
-    return getChromaticArray(romanSevenths, data.intervals);
-  }
-
-  return romanSevenths;
+/**
+ * Retrieves the Roman numeral seventh chords for a given note collection key.
+ */
+export function getRomanSeventhChordsForNoteCollectionKey(
+  collectionKey: NoteCollectionKey,
+  options: { fillChromatic?: boolean } = {},
+): (RomanSeventhChord | undefined)[] {
+  return getChordsForNoteCollection<SeventhChord, RomanSeventhChord>(
+    collectionKey,
+    options,
+    (data) => data.sevenths,
+    getRomanSeventhChords,
+  );
 }
