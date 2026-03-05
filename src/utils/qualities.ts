@@ -22,7 +22,7 @@ import { isValidNoteCollectionKey } from "./note-collections.ts";
  * @param options Optional settings for formatting the output, such as chromatic filling.
  * @returns An array of computed interval qualities.
  */
-export function getQualitiesFromIntervals(
+export function getQualitiesForIntervals(
   intervals: readonly Interval[],
   options: TransformIntervalsOptions = {},
 ): IntervalQuality[] {
@@ -44,14 +44,14 @@ export function getQualitiesFromIntervals(
  * @param options Optional settings for interval transformations or output formatting.
  * @returns An array of computed interval qualities.
  */
-export function getQualitiesFromCollectionKey(
+export function getQualitiesForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
   options: Omit<TransformIntervalsOptions, "mostSimilarScale"> = {},
 ): IntervalQuality[] {
   if (!isValidNoteCollectionKey(noteCollectionKey)) return [];
 
   const collection = noteCollections[noteCollectionKey];
-  return getQualitiesFromNoteCollection(collection, options);
+  return getQualitiesForNoteCollection(collection, options);
 }
 
 /**
@@ -61,7 +61,7 @@ export function getQualitiesFromCollectionKey(
  * @param options Optional settings for interval transformations or output formatting.
  * @returns An array of IntervalQuality strings.
  */
-export function getQualitiesFromNoteCollection(
+export function getQualitiesForNoteCollection(
   collection: NoteCollection,
   options: Omit<TransformIntervalsOptions, "mostSimilarScale"> = {},
 ): IntervalQuality[] {
@@ -76,5 +76,5 @@ export function getQualitiesFromNoteCollection(
       } as TransformIntervalsOptions)
       : (options as TransformIntervalsOptions);
 
-  return getQualitiesFromIntervals(collection.intervals, finalOptions);
+  return getQualitiesForIntervals(collection.intervals, finalOptions);
 }

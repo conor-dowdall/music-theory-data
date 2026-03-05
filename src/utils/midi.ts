@@ -16,7 +16,7 @@ import type { MidiNoteNumber } from "../types/midi.d.ts";
  * @param interval The interval to apply.
  * @returns The computed MIDI note number, or `undefined` if the interval is invalid.
  */
-export function getMidiFromNoteIntegerAndInterval(
+export function getMidiForNoteIntegerAndInterval(
   noteInteger: number,
   noteOctaveNumber: number,
   interval: Interval,
@@ -36,14 +36,14 @@ export function getMidiFromNoteIntegerAndInterval(
  * @param interval The interval to apply.
  * @returns The computed MIDI note number, or `undefined` if the note name or interval is invalid.
  */
-export function getMidiFromNoteNameAndInterval(
+export function getMidiForNoteNameAndInterval(
   noteName: NoteName,
   noteOctaveNumber: number,
   interval: Interval,
 ): MidiNoteNumber | undefined {
   const noteInteger = noteNameToIntegerMap.get(noteName);
   if (noteInteger === undefined) return undefined;
-  return getMidiFromNoteIntegerAndInterval(
+  return getMidiForNoteIntegerAndInterval(
     noteInteger,
     noteOctaveNumber,
     interval,
@@ -57,7 +57,7 @@ export function getMidiFromNoteNameAndInterval(
  * @param interval The interval to add.
  * @returns The new computed MIDI note number, or `undefined` if the interval is invalid.
  */
-export function getMidiFromNoteMidiAndInterval(
+export function getMidiForNoteMidiAndInterval(
   noteMidi: MidiNoteNumber,
   interval: Interval,
 ): MidiNoteNumber | undefined {
@@ -73,7 +73,7 @@ export function getMidiFromNoteMidiAndInterval(
  * @param noteOctaveNumber The scientific pitch octave number.
  * @returns The standard MIDI note number, or `undefined` if the note name is invalid.
  */
-export function getMidiFromNoteName(
+export function getMidiForNoteName(
   noteName: NoteName,
   noteOctaveNumber: number,
 ): MidiNoteNumber | undefined {

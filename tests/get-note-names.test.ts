@@ -1,13 +1,13 @@
 import { assertEquals } from "@std/assert";
 import {
-  getNoteNamesFromRootAndCollectionKey,
-  getNoteNamesFromRootAndIntervals,
+  getNoteNamesForRootAndIntervals,
+  getNoteNamesForRootAndNoteCollectionKey,
 } from "../src/utils/note-names.ts";
 import { diatonicModes } from "../src/data/note-collections/diatonic-modes.ts";
 import { isValidNoteCollectionKey } from "../src/utils/note-collections.ts";
 
-Deno.test("getNoteNamesFromRootAndCollectionKey - Major Scales", () => {
-  assertEquals(getNoteNamesFromRootAndCollectionKey("C", "ionian"), [
+Deno.test("getNoteNamesForRootAndNoteCollectionKey - Major Scales", () => {
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("C", "ionian"), [
     "C",
     "D",
     "E",
@@ -17,7 +17,7 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Major Scales", () => {
     "B",
     "C",
   ]);
-  assertEquals(getNoteNamesFromRootAndCollectionKey("G", "ionian"), [
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("G", "ionian"), [
     "G",
     "A",
     "B",
@@ -27,7 +27,7 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Major Scales", () => {
     "F♯",
     "G",
   ]);
-  assertEquals(getNoteNamesFromRootAndCollectionKey("D", "ionian"), [
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("D", "ionian"), [
     "D",
     "E",
     "F♯",
@@ -37,7 +37,7 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Major Scales", () => {
     "C♯",
     "D",
   ]);
-  assertEquals(getNoteNamesFromRootAndCollectionKey("A", "ionian"), [
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("A", "ionian"), [
     "A",
     "B",
     "C♯",
@@ -47,7 +47,7 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Major Scales", () => {
     "G♯",
     "A",
   ]);
-  assertEquals(getNoteNamesFromRootAndCollectionKey("E", "ionian"), [
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("E", "ionian"), [
     "E",
     "F♯",
     "G♯",
@@ -57,7 +57,7 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Major Scales", () => {
     "D♯",
     "E",
   ]);
-  assertEquals(getNoteNamesFromRootAndCollectionKey("B", "ionian"), [
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("B", "ionian"), [
     "B",
     "C♯",
     "D♯",
@@ -67,7 +67,7 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Major Scales", () => {
     "A♯",
     "B",
   ]);
-  assertEquals(getNoteNamesFromRootAndCollectionKey("F♯", "ionian"), [
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("F♯", "ionian"), [
     "F♯",
     "G♯",
     "A♯",
@@ -77,7 +77,7 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Major Scales", () => {
     "E♯",
     "F♯",
   ]);
-  assertEquals(getNoteNamesFromRootAndCollectionKey("C♯", "ionian"), [
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("C♯", "ionian"), [
     "C♯",
     "D♯",
     "E♯",
@@ -88,7 +88,7 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Major Scales", () => {
     "C♯",
   ]);
 
-  assertEquals(getNoteNamesFromRootAndCollectionKey("F", "ionian"), [
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("F", "ionian"), [
     "F",
     "G",
     "A",
@@ -98,7 +98,7 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Major Scales", () => {
     "E",
     "F",
   ]);
-  assertEquals(getNoteNamesFromRootAndCollectionKey("B♭", "ionian"), [
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("B♭", "ionian"), [
     "B♭",
     "C",
     "D",
@@ -108,7 +108,7 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Major Scales", () => {
     "A",
     "B♭",
   ]);
-  assertEquals(getNoteNamesFromRootAndCollectionKey("E♭", "ionian"), [
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("E♭", "ionian"), [
     "E♭",
     "F",
     "G",
@@ -118,7 +118,7 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Major Scales", () => {
     "D",
     "E♭",
   ]);
-  assertEquals(getNoteNamesFromRootAndCollectionKey("A♭", "ionian"), [
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("A♭", "ionian"), [
     "A♭",
     "B♭",
     "C",
@@ -128,7 +128,7 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Major Scales", () => {
     "G",
     "A♭",
   ]);
-  assertEquals(getNoteNamesFromRootAndCollectionKey("D♭", "ionian"), [
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("D♭", "ionian"), [
     "D♭",
     "E♭",
     "F",
@@ -138,7 +138,7 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Major Scales", () => {
     "C",
     "D♭",
   ]);
-  assertEquals(getNoteNamesFromRootAndCollectionKey("G♭", "ionian"), [
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("G♭", "ionian"), [
     "G♭",
     "A♭",
     "B♭",
@@ -148,7 +148,7 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Major Scales", () => {
     "F",
     "G♭",
   ]);
-  assertEquals(getNoteNamesFromRootAndCollectionKey("C♭", "ionian"), [
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("C♭", "ionian"), [
     "C♭",
     "D♭",
     "E♭",
@@ -160,8 +160,8 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Major Scales", () => {
   ]);
 });
 
-Deno.test("getNoteNamesFromRootAndCollectionKey - Minor Scales", () => {
-  assertEquals(getNoteNamesFromRootAndCollectionKey("C", "aeolian"), [
+Deno.test("getNoteNamesForRootAndNoteCollectionKey - Minor Scales", () => {
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("C", "aeolian"), [
     "C",
     "D",
     "E♭",
@@ -171,7 +171,7 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Minor Scales", () => {
     "B♭",
     "C",
   ]);
-  assertEquals(getNoteNamesFromRootAndCollectionKey("A", "aeolian"), [
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("A", "aeolian"), [
     "A",
     "B",
     "C",
@@ -183,8 +183,8 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Minor Scales", () => {
   ]);
 });
 
-Deno.test("getNoteNamesFromRootAndCollectionKey - Mixolydian Modes", () => {
-  assertEquals(getNoteNamesFromRootAndCollectionKey("G♭", "mixolydian"), [
+Deno.test("getNoteNamesForRootAndNoteCollectionKey - Mixolydian Modes", () => {
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("G♭", "mixolydian"), [
     "G♭",
     "A♭",
     "B♭",
@@ -194,7 +194,7 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Mixolydian Modes", () => {
     "F♭",
     "G♭",
   ]);
-  assertEquals(getNoteNamesFromRootAndCollectionKey("D♭", "mixolydian"), [
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("D♭", "mixolydian"), [
     "D♭",
     "E♭",
     "F",
@@ -206,8 +206,8 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Mixolydian Modes", () => {
   ]);
 });
 
-Deno.test("getNoteNamesFromRootAndCollectionKey - Lydian Modes", () => {
-  assertEquals(getNoteNamesFromRootAndCollectionKey("F", "lydian"), [
+Deno.test("getNoteNamesForRootAndNoteCollectionKey - Lydian Modes", () => {
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("F", "lydian"), [
     "F",
     "G",
     "A",
@@ -219,16 +219,16 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Lydian Modes", () => {
   ]);
 });
 
-Deno.test("getNoteNamesFromRootAndCollectionKey - Major Chord", () => {
-  assertEquals(getNoteNamesFromRootAndCollectionKey("D", "major"), [
+Deno.test("getNoteNamesForRootAndNoteCollectionKey - Major Chord", () => {
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("D", "major"), [
     "D",
     "F♯",
     "A",
   ]);
 });
 
-Deno.test("getNoteNamesFromRootAndCollectionKey - Major Seventh Chord", () => {
-  assertEquals(getNoteNamesFromRootAndCollectionKey("G", "major7"), [
+Deno.test("getNoteNamesForRootAndNoteCollectionKey - Major Seventh Chord", () => {
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("G", "major7"), [
     "G",
     "B",
     "D",
@@ -236,8 +236,8 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Major Seventh Chord", () => {
   ]);
 });
 
-Deno.test("getNoteNamesFromRootAndCollectionKey - Dominant 13th Chord", () => {
-  assertEquals(getNoteNamesFromRootAndCollectionKey("C", "dominant13"), [
+Deno.test("getNoteNamesForRootAndNoteCollectionKey - Dominant 13th Chord", () => {
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("C", "dominant13"), [
     "C",
     "E",
     "G",
@@ -248,8 +248,8 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Dominant 13th Chord", () => {
   ]);
 });
 
-Deno.test("getNoteNamesFromRootAndCollectionKey - Locrian Modes", () => {
-  assertEquals(getNoteNamesFromRootAndCollectionKey("B", "locrian"), [
+Deno.test("getNoteNamesForRootAndNoteCollectionKey - Locrian Modes", () => {
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("B", "locrian"), [
     "B",
     "C",
     "D",
@@ -259,7 +259,7 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Locrian Modes", () => {
     "A",
     "B",
   ]);
-  assertEquals(getNoteNamesFromRootAndCollectionKey("F", "locrian"), [
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("F", "locrian"), [
     "F",
     "G♭",
     "A♭",
@@ -272,18 +272,18 @@ Deno.test("getNoteNamesFromRootAndCollectionKey - Locrian Modes", () => {
 });
 
 Deno.test(
-  "getNoteNamesFromRootAndCollectionKey - Super Locrian Double Flat 7 Modes",
+  "getNoteNamesForRootAndNoteCollectionKey - Super Locrian Double Flat 7 Modes",
   () => {
     assertEquals(
-      getNoteNamesFromRootAndCollectionKey("D♭", "superLocrianDoubleFlat7"),
+      getNoteNamesForRootAndNoteCollectionKey("D♭", "superLocrianDoubleFlat7"),
       ["D♭", "E𝄫", "F♭", "G𝄫", "A𝄫", "B𝄫", "C𝄫", "D♭"],
     );
     assertEquals(
-      getNoteNamesFromRootAndCollectionKey("A", "superLocrianDoubleFlat7"),
+      getNoteNamesForRootAndNoteCollectionKey("A", "superLocrianDoubleFlat7"),
       ["A", "B♭", "C", "D♭", "E♭", "F", "G♭", "A"],
     );
     assertEquals(
-      getNoteNamesFromRootAndCollectionKey("C♭", "superLocrianDoubleFlat7"),
+      getNoteNamesForRootAndNoteCollectionKey("C♭", "superLocrianDoubleFlat7"),
       [
         "C♭",
         "D𝄫",
@@ -298,22 +298,22 @@ Deno.test(
   },
 );
 
-Deno.test("getNoteNamesFromRootAndIntervals", () => {
+Deno.test("getNoteNamesForRootAndIntervals", () => {
   assertEquals(
-    getNoteNamesFromRootAndIntervals("B♭", diatonicModes.aeolian.intervals, {
+    getNoteNamesForRootAndIntervals("B♭", diatonicModes.aeolian.intervals, {
       filterOutOctave: true,
     }),
     ["B♭", "C", "D♭", "E♭", "F", "G♭", "A♭"],
   );
   assertEquals(
-    getNoteNamesFromRootAndIntervals("B♭", diatonicModes.aeolian.intervals),
+    getNoteNamesForRootAndIntervals("B♭", diatonicModes.aeolian.intervals),
     ["B♭", "C", "D♭", "E♭", "F", "G♭", "A♭", "B♭"],
   );
 });
 
-Deno.test("getNoteNamesFromRootAndCollectionKey - Invalid Key", () => {
+Deno.test("getNoteNamesForRootAndNoteCollectionKey - Invalid Key", () => {
   assertEquals(
-    getNoteNamesFromRootAndCollectionKey("C", "invalid_key" as never),
+    getNoteNamesForRootAndNoteCollectionKey("C", "invalid_key" as never),
     [],
   );
 });
@@ -325,13 +325,13 @@ Deno.test("isValidNoteCollectionKey", () => {
   assertEquals(isValidNoteCollectionKey(""), false);
 });
 
-Deno.test("getNoteNamesFromRootAndIntervals - fillChromatic", () => {
+Deno.test("getNoteNamesForRootAndIntervals - fillChromatic", () => {
   // C Major: C, D, E, F, G, A, B
   // Defaults (C-based): C, Db, D, Eb, E, F, Gb, G, Ab, A, Bb, B
   // Result should be mixed.
   // C (0), Db (1), D (2), Eb (3), E (4), F (5), Gb (6), G (7), Ab (8), A (9), Bb (10), B (11)
   const ionianIntervals = diatonicModes.ionian.intervals;
-  const cMajorChromatic = getNoteNamesFromRootAndIntervals(
+  const cMajorChromatic = getNoteNamesForRootAndIntervals(
     "C",
     ionianIntervals,
     { fillChromatic: true },
@@ -361,7 +361,7 @@ Deno.test("getNoteNamesFromRootAndIntervals - fillChromatic", () => {
   // 9 (M6) -> B (matches default)
   // 11 (M7) -> C# (overwrites Db)
   // Result: D, Eb, E, F, F#, G, Ab, A, Bb, B, C, C#
-  const dMajorChromatic = getNoteNamesFromRootAndIntervals(
+  const dMajorChromatic = getNoteNamesForRootAndIntervals(
     "D",
     ionianIntervals, // Ionian is Major
     { fillChromatic: true },
@@ -382,7 +382,7 @@ Deno.test("getNoteNamesFromRootAndIntervals - fillChromatic", () => {
   ]);
 
   // Test F with empty intervals - should just return defaults relative to root
-  const fDefaults = getNoteNamesFromRootAndIntervals("F", [], {
+  const fDefaults = getNoteNamesForRootAndIntervals("F", [], {
     fillChromatic: true,
   });
   // F chromatic with flats: F, Gb, G, Ab, A, Bb, B, C, Db, D, Eb, E
@@ -402,7 +402,7 @@ Deno.test("getNoteNamesFromRootAndIntervals - fillChromatic", () => {
   ]);
 
   // Test F with ionian intervals
-  const fMajorChromatic = getNoteNamesFromRootAndIntervals(
+  const fMajorChromatic = getNoteNamesForRootAndIntervals(
     "F",
     ionianIntervals,
     {
@@ -426,12 +426,12 @@ Deno.test("getNoteNamesFromRootAndIntervals - fillChromatic", () => {
   ]);
 });
 
-Deno.test("getNoteNamesFromRootAndIntervals - rotateToRootInteger0", () => {
+Deno.test("getNoteNamesForRootAndIntervals - rotateToRootInteger0", () => {
   const ionianIntervals = diatonicModes.ionian.intervals;
 
   // C Major (fillChromatic, rotate) - Should be standard C Chromatic
   // C (0). Rotate by 0. No change.
-  const cMajorRotated = getNoteNamesFromRootAndIntervals("C", ionianIntervals, {
+  const cMajorRotated = getNoteNamesForRootAndIntervals("C", ionianIntervals, {
     fillChromatic: true,
     rotateToRootInteger0: true,
   });
@@ -453,7 +453,7 @@ Deno.test("getNoteNamesFromRootAndIntervals - rotateToRootInteger0", () => {
   // D Major (fillChromatic, rotate)
   // D Major filled: [D, Eb, E, F, F#, G, Ab, A, Bb, B, C, C#]
   // Rotated to C (Right shift 2): [C, C#, D, Eb, E, F, F#, G, Ab, A, Bb, B]
-  const dMajorRotated = getNoteNamesFromRootAndIntervals("D", ionianIntervals, {
+  const dMajorRotated = getNoteNamesForRootAndIntervals("D", ionianIntervals, {
     fillChromatic: true,
     rotateToRootInteger0: true,
   });
@@ -479,7 +479,7 @@ Deno.test("getNoteNamesFromRootAndIntervals - rotateToRootInteger0", () => {
   // Shift 5. Old 7 becomes (7+5)%12 = 0. So C becomes 0.
   // Result should start with C.
   // C, Db, D, Eb, E, F, Gb, G, Ab, A, Bb, B
-  const fDefaultsRotated = getNoteNamesFromRootAndIntervals("F", [], {
+  const fDefaultsRotated = getNoteNamesForRootAndIntervals("F", [], {
     fillChromatic: true,
     rotateToRootInteger0: true,
   });
@@ -500,14 +500,14 @@ Deno.test("getNoteNamesFromRootAndIntervals - rotateToRootInteger0", () => {
 });
 
 Deno.test(
-  "getNoteNamesFromRootAndCollectionKey - fillChromatic with mostSimilarScale",
+  "getNoteNamesForRootAndNoteCollectionKey - fillChromatic with mostSimilarScale",
   () => {
     // D major chord has mostSimilarScale "ionian" (D, E, F#, G, A, B, C#)
     // Without mostSimilarScale, D major chord with fillChromatic would be:
     // D, Eb, E, F, F#, G, Ab, A, Bb, B, C, Db
     // With mostSimilarScale "ionian", the Db is overwritten by C# (and E, G, B are provided by the scale)
     assertEquals(
-      getNoteNamesFromRootAndCollectionKey("D", "major", {
+      getNoteNamesForRootAndNoteCollectionKey("D", "major", {
         fillChromatic: true,
       }),
       [
