@@ -177,15 +177,15 @@ function getModeData(modeKey: NoteCollectionKey): ModeData | undefined {
  * @template U The final returned array type. If `transformRoman` is provided, this represents the Roman numeral type (e.g., `RomanTriad`). If no transformation is applied, `U` defaults to `T`.
  */
 function getChordsForNoteCollection<T, U = T>(
-  collectionKey: NoteCollectionKey,
+  noteCollectionKey: NoteCollectionKey,
   options: { fillChromatic?: boolean },
   extractChords: (data: ModeData) => readonly T[],
   transformRoman?: (chords: T[]) => U[],
 ): (U | undefined)[] {
-  const collection = noteCollections[collectionKey];
+  const collection = noteCollections[noteCollectionKey];
   if (!collection) return [];
 
-  const data = getModeData(collectionKey);
+  const data = getModeData(noteCollectionKey);
   if (data) {
     const rotatedChords = Array.from(
       rotateArrayLeft(extractChords(data), data.rotation),
@@ -229,11 +229,11 @@ function getChordsForNoteCollection<T, U = T>(
  * Retrieves the triads for a given note collection key.
  */
 export function getTriadsForNoteCollectionKey(
-  collectionKey: NoteCollectionKey,
+  noteCollectionKey: NoteCollectionKey,
   options: { fillChromatic?: boolean } = {},
 ): (Triad | undefined)[] {
   return getChordsForNoteCollection<Triad>(
-    collectionKey,
+    noteCollectionKey,
     options,
     (data) => data.triads,
   );
@@ -243,11 +243,11 @@ export function getTriadsForNoteCollectionKey(
  * Retrieves the seventh chords for a given note collection key.
  */
 export function getSeventhChordsForNoteCollectionKey(
-  collectionKey: NoteCollectionKey,
+  noteCollectionKey: NoteCollectionKey,
   options: { fillChromatic?: boolean } = {},
 ): (SeventhChord | undefined)[] {
   return getChordsForNoteCollection<SeventhChord>(
-    collectionKey,
+    noteCollectionKey,
     options,
     (data) => data.sevenths,
   );
@@ -257,11 +257,11 @@ export function getSeventhChordsForNoteCollectionKey(
  * Retrieves the Roman numeral triads for a given note collection key.
  */
 export function getRomanTriadsForNoteCollectionKey(
-  collectionKey: NoteCollectionKey,
+  noteCollectionKey: NoteCollectionKey,
   options: { fillChromatic?: boolean } = {},
 ): (RomanTriad | undefined)[] {
   return getChordsForNoteCollection<Triad, RomanTriad>(
-    collectionKey,
+    noteCollectionKey,
     options,
     (data) => data.triads,
     getRomanTriads,
@@ -272,11 +272,11 @@ export function getRomanTriadsForNoteCollectionKey(
  * Retrieves the Roman numeral seventh chords for a given note collection key.
  */
 export function getRomanSeventhChordsForNoteCollectionKey(
-  collectionKey: NoteCollectionKey,
+  noteCollectionKey: NoteCollectionKey,
   options: { fillChromatic?: boolean } = {},
 ): (RomanSeventhChord | undefined)[] {
   return getChordsForNoteCollection<SeventhChord, RomanSeventhChord>(
-    collectionKey,
+    noteCollectionKey,
     options,
     (data) => data.sevenths,
     getRomanSeventhChords,
@@ -289,15 +289,15 @@ export function getRomanSeventhChordsForNoteCollectionKey(
  */
 export function getTriadsForRootAndNoteCollectionKey(
   rootNote: RootNote,
-  collectionKey: NoteCollectionKey,
+  noteCollectionKey: NoteCollectionKey,
   options: { fillChromatic?: boolean } = {},
 ): (string | undefined)[] {
   const noteNames = getNoteNamesForRootAndNoteCollectionKey(
     rootNote,
-    collectionKey,
+    noteCollectionKey,
     options,
   );
-  const chords = getTriadsForNoteCollectionKey(collectionKey, options);
+  const chords = getTriadsForNoteCollectionKey(noteCollectionKey, options);
 
   return chords.map((chord, i) => {
     if (chord === undefined) return undefined;
@@ -311,15 +311,18 @@ export function getTriadsForRootAndNoteCollectionKey(
  */
 export function getSeventhChordsForRootAndNoteCollectionKey(
   rootNote: RootNote,
-  collectionKey: NoteCollectionKey,
+  noteCollectionKey: NoteCollectionKey,
   options: { fillChromatic?: boolean } = {},
 ): (string | undefined)[] {
   const noteNames = getNoteNamesForRootAndNoteCollectionKey(
     rootNote,
-    collectionKey,
+    noteCollectionKey,
     options,
   );
-  const chords = getSeventhChordsForNoteCollectionKey(collectionKey, options);
+  const chords = getSeventhChordsForNoteCollectionKey(
+    noteCollectionKey,
+    options,
+  );
 
   return chords.map((chord, i) => {
     if (chord === undefined) return undefined;
