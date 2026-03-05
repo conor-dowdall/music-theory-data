@@ -363,7 +363,7 @@ export function transformIntervals(
  * @param qualities An array of generic interval qualities.
  * @returns An array of corresponding base intervals.
  */
-export function getIntervalsFromQualities(
+export function getIntervalsForQualities(
   qualities: readonly IntervalQuality[],
 ): Interval[] {
   return qualities.flatMap((quality) => {

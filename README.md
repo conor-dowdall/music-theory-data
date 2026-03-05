@@ -44,7 +44,8 @@ intervals, integer notations, and common names.
 const ionian: ModalScaleCollection = {
   category: "scale",
   rotation: 0,
-  parentScale: "ionian",
+  rotatedScale: "ionian",
+  mostSimilarScale: "ionian",
   primaryName: "Major",
   names: ["Major", "Ionian", "Major Scale", "Ionian Mode", "Diatonic Major"],
   intervals: ["1", "2", "3", "4", "5", "6", "7", "8"],

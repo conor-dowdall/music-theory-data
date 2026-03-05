@@ -127,7 +127,7 @@ export function getNoteIntegerFromString(
  * @param interval The interval to calculate the note from.
  * @returns An object containing the note name and its semitone offset from the root, or undefined if invalid.
  */
-function getNoteFromRootAndInterval(
+function getNoteForRootAndInterval(
   rootNoteInteger: number,
   rootNoteLetterIndex: number,
   interval: string,
@@ -172,7 +172,7 @@ function getNoteFromRootAndInterval(
  * @param options Optional settings for formatting the output, such as chromatic filling.
  * @returns An array of computed note names.
  */
-export function getNoteNamesFromRootAndIntervals(
+export function getNoteNamesForRootAndIntervals(
   rootNote: RootNote,
   intervals: readonly Interval[],
   options: TransformIntervalsOptions = {},
@@ -198,7 +198,7 @@ export function getNoteNamesFromRootAndIntervals(
   // 3. Generate Note Names
   // Map intervals directly to note names
   const noteNames: NoteName[] = intervalsToConvert.flatMap((interval) => {
-    const result = getNoteFromRootAndInterval(
+    const result = getNoteForRootAndInterval(
       rootNoteInteger,
       rootNoteLetterIndex,
       interval,
@@ -219,7 +219,7 @@ export function getNoteNamesFromRootAndIntervals(
  * @param options Optional settings for interval transformations or output formatting.
  * @returns An array of computed note names.
  */
-export function getNoteNamesFromRootAndCollectionKey(
+export function getNoteNamesForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
   options: Omit<TransformIntervalsOptions, "mostSimilarScale"> = {},
@@ -239,7 +239,7 @@ export function getNoteNamesFromRootAndCollectionKey(
     } as TransformIntervalsOptions)
     : (options as TransformIntervalsOptions);
 
-  return getNoteNamesFromRootAndIntervals(
+  return getNoteNamesForRootAndIntervals(
     rootNote,
     collection.intervals,
     finalOptions,

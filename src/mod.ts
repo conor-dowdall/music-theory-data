@@ -58,7 +58,7 @@
  * // }
  *
  * // Get the notes of a stored chord, or scale.
- * console.log("A harmonic minor: ", music_theory_data.getNoteNamesFromRootAndCollectionKey("A", "harmonicMinor"))
+ * console.log("A harmonic minor: ", music_theory_data.getNoteNamesForRootAndNoteCollectionKey("A", "harmonicMinor"))
  * // A harmonic minor: ["A", "B", "C", "D", "E", "F", "G♯", "A"]
  *
  * // Log the array of all available Note Collection Keys
