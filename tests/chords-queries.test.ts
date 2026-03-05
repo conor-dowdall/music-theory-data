@@ -3,7 +3,9 @@ import {
   getRomanSeventhChordsForNoteCollectionKey,
   getRomanTriadsForNoteCollectionKey,
   getSeventhChordsForNoteCollectionKey,
+  getSeventhChordsForRootAndNoteCollectionKey,
   getTriadsForNoteCollectionKey,
+  getTriadsForRootAndNoteCollectionKey,
 } from "../src/utils/chords.ts";
 import type {
   RomanSeventhChord,
@@ -193,5 +195,37 @@ Deno.test(
       }),
       [] as never,
     );
+  },
+);
+
+Deno.test("getTriadsForRootAndNoteCollectionKey - C Ionian", () => {
+  const triads = getTriadsForRootAndNoteCollectionKey("C", "ionian");
+  assertEquals(triads, ["CM", "Dm", "Em", "FM", "GM", "Am", "B°"]);
+});
+
+Deno.test("getSeventhChordsForRootAndNoteCollectionKey - G Ionian", () => {
+  const sevenths = getSeventhChordsForRootAndNoteCollectionKey("G", "ionian");
+  assertEquals(sevenths, ["GM7", "Am7", "Bm7", "CM7", "D7", "Em7", "F♯ø7"]);
+});
+
+Deno.test(
+  "getTriadsForRootAndNoteCollectionKey - C Ionian with fillChromatic",
+  () => {
+    const triads = getTriadsForRootAndNoteCollectionKey("C", "ionian", {
+      fillChromatic: true,
+    });
+    assertEquals(triads.length, 12);
+    assertEquals(triads[0], "CM");
+    assertEquals(triads[1], undefined);
+    assertEquals(triads[2], "Dm");
+    assertEquals(triads[3], undefined);
+    assertEquals(triads[4], "Em");
+    assertEquals(triads[5], "FM");
+    assertEquals(triads[6], undefined);
+    assertEquals(triads[7], "GM");
+    assertEquals(triads[8], undefined);
+    assertEquals(triads[9], "Am");
+    assertEquals(triads[10], undefined);
+    assertEquals(triads[11], "B°");
   },
 );
