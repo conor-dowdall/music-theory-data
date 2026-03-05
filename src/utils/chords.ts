@@ -36,6 +36,8 @@ import {
   diatonicModes,
 } from "../data/note-collections/diatonic-modes.ts";
 import { filterOutOctaveIntervals } from "./intervals.ts";
+import { getNoteNamesForRootAndNoteCollectionKey } from "./note-names.ts";
+import type { RootNote } from "../data/labels/note-labels.ts";
 
 /**
  * Converts standard triad qualities (e.g., "M", "m") into their corresponding Roman numeral representations
@@ -279,4 +281,48 @@ export function getRomanSeventhChordsForNoteCollectionKey(
     (data) => data.sevenths,
     getRomanSeventhChords,
   );
+}
+
+/**
+ * Retrieves the triads with prepended note names for a given root note and note collection key.
+ * Example: ["CM", "Dm", "Em", "FM", "GM", "Am", "B°"]
+ */
+export function getTriadsForRootAndNoteCollectionKey(
+  rootNote: RootNote,
+  collectionKey: NoteCollectionKey,
+  options: { fillChromatic?: boolean } = {},
+): (string | undefined)[] {
+  const noteNames = getNoteNamesForRootAndNoteCollectionKey(
+    rootNote,
+    collectionKey,
+    options,
+  );
+  const chords = getTriadsForNoteCollectionKey(collectionKey, options);
+
+  return chords.map((chord, i) => {
+    if (chord === undefined) return undefined;
+    return noteNames[i] + chord;
+  });
+}
+
+/**
+ * Retrieves the seventh chords with prepended note names for a given root note and note collection key.
+ * Example: ["CM7", "Dm7", "Em7", "FM7", "G7", "Am7", "Bø7"]
+ */
+export function getSeventhChordsForRootAndNoteCollectionKey(
+  rootNote: RootNote,
+  collectionKey: NoteCollectionKey,
+  options: { fillChromatic?: boolean } = {},
+): (string | undefined)[] {
+  const noteNames = getNoteNamesForRootAndNoteCollectionKey(
+    rootNote,
+    collectionKey,
+    options,
+  );
+  const chords = getSeventhChordsForNoteCollectionKey(collectionKey, options);
+
+  return chords.map((chord, i) => {
+    if (chord === undefined) return undefined;
+    return noteNames[i] + chord;
+  });
 }
