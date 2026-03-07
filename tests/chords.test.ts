@@ -73,8 +73,9 @@ Deno.test("getTriadsForNoteCollectionKey - Locrian", () => {
 });
 
 Deno.test("getRomanSeventhChordsForNoteCollectionKey - Harmonic Minor", () => {
-  const romanSevenths =
-    getRomanSeventhChordsForNoteCollectionKey("harmonicMinor");
+  const romanSevenths = getRomanSeventhChordsForNoteCollectionKey(
+    "harmonicMinor",
+  );
 
   const expectedRomanSevenths: RomanSeventhChord[] = [
     "iM7",

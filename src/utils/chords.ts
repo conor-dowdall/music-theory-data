@@ -188,52 +188,70 @@ function getChordsForNoteCollection<T, U = T>(
   extractChords: (data: ModeData) => readonly T[],
   transformRoman?: (chords: T[]) => U[],
 ): (U | undefined)[] {
+  // 1. Verify that the requested note collection exists.
   const collection = noteCollections[noteCollectionKey];
   if (!collection) return [];
 
   const { rotateRight, rotateToRootInteger0, rootNoteInteger, fillChromatic } =
     options;
 
+  // Helper function to apply requested rotations after the chord array is cleanly generated.
   const applyRotations = (chordsArray: (U | undefined)[]) => {
     let result = chordsArray;
+
+    // If fillChromatic is true, the array represents the 12 absolute semitones (where index 0 = the root note relative to itself).
     if (fillChromatic) {
       if (rotateToRootInteger0 && rootNoteInteger !== undefined) {
+        // Shift the array so that the absolute root note (rootNoteInteger) sits at index 0.
         result = rotateArrayRight(result, rootNoteInteger);
       }
     }
 
+    // Apply any explicit arbitrary rightward rotations requested by the user.
     if (rotateRight !== undefined) {
       result = rotateArrayRight(result, rotateRight);
     }
     return result;
   };
 
+  // 2. Check if the collection is a fundamental, complete mode (Diatonic, Harmonic/Melodic Minor).
+  // These modes have predefined, strictly defined chord arrays (triads/sevenths) that we can extract directly.
   const data = getModeData(noteCollectionKey);
   if (data) {
-    const rotatedChords = Array.from(
-      rotateArrayLeft(extractChords(data), data.rotation),
-    ) as T[];
+    // 2a. Rotate the base mode chords by the mode's inherent rotation (e.g., Dorian is rotation 1 of Diatonic parent).
+    const rotatedChords = rotateArrayLeft(extractChords(data), data.rotation);
+
+    // 2b. Map the standard chords to Roman Numerals if a transform function was provided.
     const processedChords = transformRoman
       ? transformRoman(rotatedChords)
       : (rotatedChords as unknown as U[]);
 
+    // 2c. If requested, map the sequential chord list into a 12-semitone chromatic sparse array.
     if (fillChromatic) {
       return applyRotations(getChromaticArray(processedChords, data.intervals));
     }
+
+    // 2d. Otherwise, return the sequentially packed list.
     return applyRotations(processedChords);
   }
 
+  // 3. If the collection is NOT a primary mode (e.g., a custom scale like Minor Pentatonic),
+  // we cannot look up predefined chords. Instead, we fall back to its "most Similar Scale".
   const similarScaleKey = collection.mostSimilarScale;
   const similarData = getModeData(similarScaleKey);
   if (!similarData) return [];
 
-  const similarChords = Array.from(
-    rotateArrayLeft(extractChords(similarData), similarData.rotation),
-  ) as T[];
+  // 3a. Retrieve and rotate the chords for the similar scale exactly like step 2.
+  const similarChords = rotateArrayLeft(
+    extractChords(similarData),
+    similarData.rotation,
+  );
   const similarProcessedChords = transformRoman
     ? transformRoman(similarChords)
     : (similarChords as unknown as U[]);
 
+  // 3b. Pluck out only the chords that align with the intervals actually present in the custom scale.
+  // E.g. For Minor Pentatonic (intervals 1, b3, 4, 5, b7), we grab the 1st, 3rd, 4th, 5th, and 7th chords of Aeolian.
   const collectionChords = collection.intervals
     .map((interval) => {
       const index = similarData.intervals.indexOf(interval);
@@ -241,6 +259,7 @@ function getChordsForNoteCollection<T, U = T>(
     })
     .filter((chord) => chord !== undefined) as U[];
 
+  // 3c. Format and return just like step 2.
   if (fillChromatic) {
     return applyRotations(
       getChromaticArray(collectionChords, collection.intervals),
