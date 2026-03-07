@@ -17,6 +17,7 @@ import {
 import { noteLabelCollections } from "../data/labels/note-label-collections.ts";
 import { rotateArrayRight } from "./rotate-array.ts";
 import { normalizeAccidentalString } from "./accidentals.ts";
+import { isValidNoteCollectionKey } from "./note-collections.ts";
 
 const INTERVAL_NUMBER_REGEX = /\d+$/;
 
@@ -370,4 +371,93 @@ export function getIntervalsForQualities(
     const interval = intervalQualityToIntervalMap.get(quality);
     return interval ? [interval] : [];
   });
+}
+
+/**
+ * Retrieves an array of intervals for a given note collection key.
+ * Can optionally fill chromatically.
+ *
+ * @param noteCollectionKey The key representing the note collection.
+ * @param options Optional parameter for interval transformations.
+ * @returns An array of intervals.
+ */
+export function getIntervalsForNoteCollectionKey(
+  noteCollectionKey: NoteCollectionKey,
+  options: Omit<
+    TransformIntervalsOptions,
+    "mostSimilarScale" | "rootNoteInteger" | "rotateToRootInteger0"
+  > = {},
+): Interval[] {
+  if (!isValidNoteCollectionKey(noteCollectionKey)) return [];
+
+  const collection = noteCollections[noteCollectionKey];
+  const mostSimilarScale = collection.mostSimilarScale;
+
+  const finalOptions: TransformIntervalsOptions = options.fillChromatic &&
+      mostSimilarScale &&
+      mostSimilarScale !== noteCollectionKey
+    ? ({
+      ...options,
+      fillChromatic: true,
+      mostSimilarScale: mostSimilarScale,
+    } as TransformIntervalsOptions)
+    : (options as TransformIntervalsOptions);
+
+  return transformIntervals(collection.intervals, finalOptions);
+}
+
+/**
+ * Retrieves an array of extended intervals for a given note collection key.
+ * All simple intervals are transformed to their extension equivalents where applicable (e.g. 2 -> 9).
+ *
+ * @param noteCollectionKey The key representing the note collection.
+ * @param options Optional parameter for interval transformations (intervalTransformation is overridden).
+ * @returns An array of extended intervals.
+ */
+export function getExtensionsForNoteCollectionKey(
+  noteCollectionKey: NoteCollectionKey,
+  options: Omit<
+    TransformIntervalsOptions,
+    | "mostSimilarScale"
+    | "rootNoteInteger"
+    | "rotateToRootInteger0"
+    | "intervalTransformation"
+  > = {},
+): Interval[] {
+  return getIntervalsForNoteCollectionKey(noteCollectionKey, {
+    filterOutOctave: true,
+    ...options,
+    intervalTransformation: "simpleToExtension",
+  } as Omit<
+    TransformIntervalsOptions,
+    "mostSimilarScale" | "rootNoteInteger" | "rotateToRootInteger0"
+  >);
+}
+
+/**
+ * Retrieves an array of compound intervals for a given note collection key.
+ * All simple intervals are transformed to their compound equivalents where applicable (e.g. 2 -> 9, 3 -> 10).
+ *
+ * @param noteCollectionKey The key representing the note collection.
+ * @param options Optional parameter for interval transformations (intervalTransformation is overridden).
+ * @returns An array of compound intervals.
+ */
+export function getCompoundIntervalsForNoteCollectionKey(
+  noteCollectionKey: NoteCollectionKey,
+  options: Omit<
+    TransformIntervalsOptions,
+    | "mostSimilarScale"
+    | "rootNoteInteger"
+    | "rotateToRootInteger0"
+    | "intervalTransformation"
+  > = {},
+): Interval[] {
+  return getIntervalsForNoteCollectionKey(noteCollectionKey, {
+    filterOutOctave: true,
+    ...options,
+    intervalTransformation: "simpleToCompound",
+  } as Omit<
+    TransformIntervalsOptions,
+    "mostSimilarScale" | "rootNoteInteger" | "rotateToRootInteger0"
+  >);
 }
