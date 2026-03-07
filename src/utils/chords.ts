@@ -18,7 +18,7 @@ import type {
   SeventhChord,
   Triad,
 } from "../types/chords.d.ts";
-import { rotateArrayLeft } from "./rotate-array.ts";
+import { rotateArrayLeft, rotateArrayRight } from "./rotate-array.ts";
 import {
   type HarmonicMinorModeKey,
   harmonicMinorModes,
@@ -35,9 +35,15 @@ import {
   type DiatonicModeKey,
   diatonicModes,
 } from "../data/note-collections/diatonic-modes.ts";
-import { filterOutOctaveIntervals } from "./intervals.ts";
+import {
+  filterOutOctaveIntervals,
+  type TransformIntervalsOptions,
+} from "./intervals.ts";
 import { getNoteNamesForRootAndNoteCollectionKey } from "./note-names.ts";
-import type { RootNote } from "../data/labels/note-labels.ts";
+import {
+  noteNameToIntegerMap,
+  type RootNote,
+} from "../data/labels/note-labels.ts";
 
 /**
  * Converts standard triad qualities (e.g., "M", "m") into their corresponding Roman numeral representations
@@ -178,12 +184,29 @@ function getModeData(modeKey: NoteCollectionKey): ModeData | undefined {
  */
 function getChordsForNoteCollection<T, U = T>(
   noteCollectionKey: NoteCollectionKey,
-  options: { fillChromatic?: boolean },
+  options: Omit<TransformIntervalsOptions, "mostSimilarScale">,
   extractChords: (data: ModeData) => readonly T[],
   transformRoman?: (chords: T[]) => U[],
 ): (U | undefined)[] {
   const collection = noteCollections[noteCollectionKey];
   if (!collection) return [];
+
+  const { rotateRight, rotateToRootInteger0, rootNoteInteger, fillChromatic } =
+    options;
+
+  const applyRotations = (chordsArray: (U | undefined)[]) => {
+    let result = chordsArray;
+    if (fillChromatic) {
+      if (rotateToRootInteger0 && rootNoteInteger !== undefined) {
+        result = rotateArrayRight(result, rootNoteInteger);
+      }
+    }
+
+    if (rotateRight !== undefined) {
+      result = rotateArrayRight(result, rotateRight);
+    }
+    return result;
+  };
 
   const data = getModeData(noteCollectionKey);
   if (data) {
@@ -194,10 +217,10 @@ function getChordsForNoteCollection<T, U = T>(
       ? transformRoman(rotatedChords)
       : (rotatedChords as unknown as U[]);
 
-    if (options.fillChromatic) {
-      return getChromaticArray(processedChords, data.intervals);
+    if (fillChromatic) {
+      return applyRotations(getChromaticArray(processedChords, data.intervals));
     }
-    return processedChords;
+    return applyRotations(processedChords);
   }
 
   const similarScaleKey = collection.mostSimilarScale;
@@ -218,11 +241,13 @@ function getChordsForNoteCollection<T, U = T>(
     })
     .filter((chord) => chord !== undefined) as U[];
 
-  if (options.fillChromatic) {
-    return getChromaticArray(collectionChords, collection.intervals);
+  if (fillChromatic) {
+    return applyRotations(
+      getChromaticArray(collectionChords, collection.intervals),
+    );
   }
 
-  return collectionChords;
+  return applyRotations(collectionChords);
 }
 
 /**
@@ -230,7 +255,7 @@ function getChordsForNoteCollection<T, U = T>(
  */
 export function getTriadsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
-  options: { fillChromatic?: boolean } = {},
+  options: Omit<TransformIntervalsOptions, "mostSimilarScale"> = {},
 ): (Triad | undefined)[] {
   return getChordsForNoteCollection<Triad>(
     noteCollectionKey,
@@ -244,7 +269,7 @@ export function getTriadsForNoteCollectionKey(
  */
 export function getSeventhChordsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
-  options: { fillChromatic?: boolean } = {},
+  options: Omit<TransformIntervalsOptions, "mostSimilarScale"> = {},
 ): (SeventhChord | undefined)[] {
   return getChordsForNoteCollection<SeventhChord>(
     noteCollectionKey,
@@ -258,7 +283,7 @@ export function getSeventhChordsForNoteCollectionKey(
  */
 export function getRomanTriadsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
-  options: { fillChromatic?: boolean } = {},
+  options: Omit<TransformIntervalsOptions, "mostSimilarScale"> = {},
 ): (RomanTriad | undefined)[] {
   return getChordsForNoteCollection<Triad, RomanTriad>(
     noteCollectionKey,
@@ -273,7 +298,7 @@ export function getRomanTriadsForNoteCollectionKey(
  */
 export function getRomanSeventhChordsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
-  options: { fillChromatic?: boolean } = {},
+  options: Omit<TransformIntervalsOptions, "mostSimilarScale"> = {},
 ): (RomanSeventhChord | undefined)[] {
   return getChordsForNoteCollection<SeventhChord, RomanSeventhChord>(
     noteCollectionKey,
@@ -290,14 +315,17 @@ export function getRomanSeventhChordsForNoteCollectionKey(
 export function getTriadsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
-  options: { fillChromatic?: boolean } = {},
+  options: Omit<TransformIntervalsOptions, "mostSimilarScale"> = {},
 ): (string | undefined)[] {
   const noteNames = getNoteNamesForRootAndNoteCollectionKey(
     rootNote,
     noteCollectionKey,
     options,
   );
-  const chords = getTriadsForNoteCollectionKey(noteCollectionKey, options);
+  const chords = getTriadsForNoteCollectionKey(noteCollectionKey, {
+    ...options,
+    rootNoteInteger: noteNameToIntegerMap.get(rootNote),
+  });
 
   return chords.map((chord, i) => {
     if (chord === undefined) return undefined;
@@ -312,17 +340,17 @@ export function getTriadsForRootAndNoteCollectionKey(
 export function getSeventhChordsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
-  options: { fillChromatic?: boolean } = {},
+  options: Omit<TransformIntervalsOptions, "mostSimilarScale"> = {},
 ): (string | undefined)[] {
   const noteNames = getNoteNamesForRootAndNoteCollectionKey(
     rootNote,
     noteCollectionKey,
     options,
   );
-  const chords = getSeventhChordsForNoteCollectionKey(
-    noteCollectionKey,
-    options,
-  );
+  const chords = getSeventhChordsForNoteCollectionKey(noteCollectionKey, {
+    ...options,
+    rootNoteInteger: noteNameToIntegerMap.get(rootNote),
+  });
 
   return chords.map((chord, i) => {
     if (chord === undefined) return undefined;
