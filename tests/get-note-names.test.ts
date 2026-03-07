@@ -4,7 +4,6 @@ import {
   getNoteNamesForRootAndNoteCollectionKey,
 } from "../src/utils/note-names.ts";
 import { diatonicModes } from "../src/data/note-collections/diatonic-modes.ts";
-import { isValidNoteCollectionKey } from "../src/utils/note-collections.ts";
 
 Deno.test("getNoteNamesForRootAndNoteCollectionKey - Major Scales", () => {
   assertEquals(getNoteNamesForRootAndNoteCollectionKey("C", "ionian"), [
@@ -227,26 +226,32 @@ Deno.test("getNoteNamesForRootAndNoteCollectionKey - Major Chord", () => {
   ]);
 });
 
-Deno.test("getNoteNamesForRootAndNoteCollectionKey - Major Seventh Chord", () => {
-  assertEquals(getNoteNamesForRootAndNoteCollectionKey("G", "major7"), [
-    "G",
-    "B",
-    "D",
-    "F♯",
-  ]);
-});
+Deno.test(
+  "getNoteNamesForRootAndNoteCollectionKey - Major Seventh Chord",
+  () => {
+    assertEquals(getNoteNamesForRootAndNoteCollectionKey("G", "major7"), [
+      "G",
+      "B",
+      "D",
+      "F♯",
+    ]);
+  },
+);
 
-Deno.test("getNoteNamesForRootAndNoteCollectionKey - Dominant 13th Chord", () => {
-  assertEquals(getNoteNamesForRootAndNoteCollectionKey("C", "dominant13"), [
-    "C",
-    "E",
-    "G",
-    "B♭",
-    "D",
-    "F",
-    "A",
-  ]);
-});
+Deno.test(
+  "getNoteNamesForRootAndNoteCollectionKey - Dominant 13th Chord",
+  () => {
+    assertEquals(getNoteNamesForRootAndNoteCollectionKey("C", "dominant13"), [
+      "C",
+      "E",
+      "G",
+      "B♭",
+      "D",
+      "F",
+      "A",
+    ]);
+  },
+);
 
 Deno.test("getNoteNamesForRootAndNoteCollectionKey - Locrian Modes", () => {
   assertEquals(getNoteNamesForRootAndNoteCollectionKey("B", "locrian"), [
@@ -316,13 +321,6 @@ Deno.test("getNoteNamesForRootAndNoteCollectionKey - Invalid Key", () => {
     getNoteNamesForRootAndNoteCollectionKey("C", "invalid_key" as never),
     [],
   );
-});
-
-Deno.test("isValidNoteCollectionKey", () => {
-  assertEquals(isValidNoteCollectionKey("ionian"), true);
-  assertEquals(isValidNoteCollectionKey("major"), true);
-  assertEquals(isValidNoteCollectionKey("invalid_key"), false);
-  assertEquals(isValidNoteCollectionKey(""), false);
 });
 
 Deno.test("getNoteNamesForRootAndIntervals - fillChromatic", () => {

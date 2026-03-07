@@ -37,7 +37,8 @@ import {
 } from "../data/note-collections/diatonic-modes.ts";
 import {
   filterOutOctaveIntervals,
-  type TransformIntervalsOptions,
+  type NoteCollectionTransformOptions,
+  type RootNoteCollectionTransformOptions,
 } from "./intervals.ts";
 import { getNoteNamesForRootAndNoteCollectionKey } from "./note-names.ts";
 import {
@@ -184,25 +185,39 @@ function getModeData(modeKey: NoteCollectionKey): ModeData | undefined {
  */
 function getChordsForNoteCollection<T, U = T>(
   noteCollectionKey: NoteCollectionKey,
-  options: Omit<TransformIntervalsOptions, "mostSimilarScale">,
+  options: NoteCollectionTransformOptions,
   extractChords: (data: ModeData) => readonly T[],
   transformRoman?: (chords: T[]) => U[],
+  rootOptions?: {
+    rotateToRootInteger0?: boolean;
+    rootNoteInteger?: number;
+  },
 ): (U | undefined)[] {
   // 1. Verify that the requested note collection exists.
   const collection = noteCollections[noteCollectionKey];
   if (!collection) return [];
 
-  const { rotateRight, rotateToRootInteger0, rootNoteInteger, fillChromatic } =
-    options;
+  const { rotateRight, fillChromatic } = options;
+  const { rotateToRootInteger0, rootNoteInteger } = rootOptions ?? {};
 
   // Helper function to apply requested rotations after the chord array is cleanly generated.
-  const applyRotations = (chordsArray: (U | undefined)[]) => {
+  const applyRotations = (
+    chordsArray: (U | undefined)[],
+    isChromatic: boolean,
+  ) => {
     let result = chordsArray;
 
     // If fillChromatic is true, the array represents the 12 absolute semitones (where index 0 = the root note relative to itself).
-    if (fillChromatic) {
+    if (isChromatic) {
       if (rotateToRootInteger0 && rootNoteInteger !== undefined) {
         // Shift the array so that the absolute root note (rootNoteInteger) sits at index 0.
+        result = rotateArrayRight(result, rootNoteInteger);
+      }
+    } else {
+      // NOTE: When fillChromatic is false, rotateToRootInteger0 doesn't make geometric sense
+      // because the array isn't guaranteed to be 12 elements. But if the user explicitly provided it
+      // we should simply shift the array elements by `rootNoteInteger` positions to satisfy the API.
+      if (rotateToRootInteger0 && rootNoteInteger !== undefined) {
         result = rotateArrayRight(result, rootNoteInteger);
       }
     }
@@ -228,11 +243,14 @@ function getChordsForNoteCollection<T, U = T>(
 
     // 2c. If requested, map the sequential chord list into a 12-semitone chromatic sparse array.
     if (fillChromatic) {
-      return applyRotations(getChromaticArray(processedChords, data.intervals));
+      return applyRotations(
+        getChromaticArray(processedChords, data.intervals),
+        true,
+      );
     }
 
     // 2d. Otherwise, return the sequentially packed list.
-    return applyRotations(processedChords);
+    return applyRotations(processedChords, false);
   }
 
   // 3. If the collection is NOT a primary mode (e.g., a custom scale like Minor Pentatonic),
@@ -263,10 +281,11 @@ function getChordsForNoteCollection<T, U = T>(
   if (fillChromatic) {
     return applyRotations(
       getChromaticArray(collectionChords, collection.intervals),
+      true,
     );
   }
 
-  return applyRotations(collectionChords);
+  return applyRotations(collectionChords, false);
 }
 
 /**
@@ -274,7 +293,7 @@ function getChordsForNoteCollection<T, U = T>(
  */
 export function getTriadsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
-  options: Omit<TransformIntervalsOptions, "mostSimilarScale"> = {},
+  options: NoteCollectionTransformOptions = {},
 ): (Triad | undefined)[] {
   return getChordsForNoteCollection<Triad>(
     noteCollectionKey,
@@ -288,7 +307,7 @@ export function getTriadsForNoteCollectionKey(
  */
 export function getSeventhChordsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
-  options: Omit<TransformIntervalsOptions, "mostSimilarScale"> = {},
+  options: NoteCollectionTransformOptions = {},
 ): (SeventhChord | undefined)[] {
   return getChordsForNoteCollection<SeventhChord>(
     noteCollectionKey,
@@ -302,7 +321,7 @@ export function getSeventhChordsForNoteCollectionKey(
  */
 export function getRomanTriadsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
-  options: Omit<TransformIntervalsOptions, "mostSimilarScale"> = {},
+  options: NoteCollectionTransformOptions = {},
 ): (RomanTriad | undefined)[] {
   return getChordsForNoteCollection<Triad, RomanTriad>(
     noteCollectionKey,
@@ -317,7 +336,7 @@ export function getRomanTriadsForNoteCollectionKey(
  */
 export function getRomanSeventhChordsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
-  options: Omit<TransformIntervalsOptions, "mostSimilarScale"> = {},
+  options: NoteCollectionTransformOptions = {},
 ): (RomanSeventhChord | undefined)[] {
   return getChordsForNoteCollection<SeventhChord, RomanSeventhChord>(
     noteCollectionKey,
@@ -334,17 +353,24 @@ export function getRomanSeventhChordsForNoteCollectionKey(
 export function getTriadsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
-  options: Omit<TransformIntervalsOptions, "mostSimilarScale"> = {},
+  options: RootNoteCollectionTransformOptions = {},
 ): (string | undefined)[] {
   const noteNames = getNoteNamesForRootAndNoteCollectionKey(
     rootNote,
     noteCollectionKey,
     options,
   );
-  const chords = getTriadsForNoteCollectionKey(noteCollectionKey, {
-    ...options,
-    rootNoteInteger: noteNameToIntegerMap.get(rootNote),
-  });
+  const { rotateToRootInteger0, ...restOptions } = options;
+  const chords = getChordsForNoteCollection<Triad>(
+    noteCollectionKey,
+    restOptions,
+    (data) => data.triads,
+    undefined,
+    {
+      rootNoteInteger: noteNameToIntegerMap.get(rootNote),
+      rotateToRootInteger0,
+    },
+  );
 
   return chords.map((chord, i) => {
     if (chord === undefined) return undefined;
@@ -359,20 +385,73 @@ export function getTriadsForRootAndNoteCollectionKey(
 export function getSeventhChordsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
-  options: Omit<TransformIntervalsOptions, "mostSimilarScale"> = {},
+  options: RootNoteCollectionTransformOptions = {},
 ): (string | undefined)[] {
   const noteNames = getNoteNamesForRootAndNoteCollectionKey(
     rootNote,
     noteCollectionKey,
     options,
   );
-  const chords = getSeventhChordsForNoteCollectionKey(noteCollectionKey, {
-    ...options,
-    rootNoteInteger: noteNameToIntegerMap.get(rootNote),
-  });
+  const { rotateToRootInteger0, ...restOptions } = options;
+  const chords = getChordsForNoteCollection<SeventhChord>(
+    noteCollectionKey,
+    restOptions,
+    (data) => data.sevenths,
+    undefined,
+    {
+      rootNoteInteger: noteNameToIntegerMap.get(rootNote),
+      rotateToRootInteger0,
+    },
+  );
 
   return chords.map((chord, i) => {
     if (chord === undefined) return undefined;
     return noteNames[i] + chord;
   });
+}
+
+/**
+ * Retrieves the Roman numeral triads for a given root note and note collection key.
+ * This is particularly useful when options.fillChromatic is true, as it positions the chords
+ * at their correct absolute pitch degrees.
+ */
+export function getRomanTriadsForRootAndNoteCollectionKey(
+  rootNote: RootNote,
+  noteCollectionKey: NoteCollectionKey,
+  options: RootNoteCollectionTransformOptions = {},
+): (RomanTriad | undefined)[] {
+  const { rotateToRootInteger0, ...restOptions } = options;
+  return getChordsForNoteCollection<Triad, RomanTriad>(
+    noteCollectionKey,
+    restOptions,
+    (data) => data.triads,
+    getRomanTriads,
+    {
+      rootNoteInteger: noteNameToIntegerMap.get(rootNote),
+      rotateToRootInteger0,
+    },
+  );
+}
+
+/**
+ * Retrieves the Roman numeral seventh chords for a given root note and note collection key.
+ * This is particularly useful when options.fillChromatic is true, as it positions the chords
+ * at their correct absolute pitch degrees.
+ */
+export function getRomanSeventhChordsForRootAndNoteCollectionKey(
+  rootNote: RootNote,
+  noteCollectionKey: NoteCollectionKey,
+  options: RootNoteCollectionTransformOptions = {},
+): (RomanSeventhChord | undefined)[] {
+  const { rotateToRootInteger0, ...restOptions } = options;
+  return getChordsForNoteCollection<SeventhChord, RomanSeventhChord>(
+    noteCollectionKey,
+    restOptions,
+    (data) => data.sevenths,
+    getRomanSeventhChords,
+    {
+      rootNoteInteger: noteNameToIntegerMap.get(rootNote),
+      rotateToRootInteger0,
+    },
+  );
 }

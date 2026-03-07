@@ -1,9 +1,17 @@
 import { assertEquals } from "@std/assert";
 import {
   findNoteCollection,
+  isValidNoteCollectionKey,
   searchNoteCollections,
 } from "../src/utils/note-collections.ts";
 import { noteCollections } from "../src/data/note-collections/mod.ts";
+
+Deno.test("isValidNoteCollectionKey", () => {
+  assertEquals(isValidNoteCollectionKey("ionian"), true);
+  assertEquals(isValidNoteCollectionKey("major"), true);
+  assertEquals(isValidNoteCollectionKey("invalid_key"), false);
+  assertEquals(isValidNoteCollectionKey(""), false);
+});
 
 Deno.test("searchNoteCollections - by query", () => {
   // "Major" is the primaryName for ionian

@@ -1,7 +1,9 @@
 import { assertEquals } from "@std/assert";
 import {
   getRomanSeventhChordsForNoteCollectionKey,
+  getRomanSeventhChordsForRootAndNoteCollectionKey,
   getRomanTriadsForNoteCollectionKey,
+  getRomanTriadsForRootAndNoteCollectionKey,
   getSeventhChordsForNoteCollectionKey,
   getSeventhChordsForRootAndNoteCollectionKey,
   getTriadsForNoteCollectionKey,
@@ -263,17 +265,16 @@ Deno.test(
 );
 
 Deno.test(
-  "getRomanTriadsForNoteCollectionKey - fillChromatic with rotateToRootInteger0",
+  "getRomanTriadsForRootAndNoteCollectionKey - D Dorian with fillChromatic and rotateToRootInteger0",
   () => {
     // If we take D Dorian, "i" is at index 0 without rotation.
     // If we rotate to root 2 (D), the "i" should be at index 2.
     // Original without rotation:
     // 0:i, 1:-, 2:ii, 3:III, 4:-, ...
 
-    const chords = getRomanTriadsForNoteCollectionKey("dorian", {
+    const chords = getRomanTriadsForRootAndNoteCollectionKey("D", "dorian", {
       fillChromatic: true,
       rotateToRootInteger0: true,
-      rootNoteInteger: 2, // D
     });
 
     assertEquals(chords.length, 12);
@@ -314,5 +315,119 @@ Deno.test(
     assertEquals(triads[9], "Am");
     assertEquals(triads[10], undefined);
     assertEquals(triads[11], "B°");
+  },
+);
+
+Deno.test(
+  "getRomanTriadsForRootAndNoteCollectionKey - C Ionian with fillChromatic",
+  () => {
+    const triads = getRomanTriadsForRootAndNoteCollectionKey("C", "ionian", {
+      fillChromatic: true,
+      rotateToRootInteger0: true,
+    });
+    assertEquals(triads.length, 12);
+    assertEquals(triads[0], "I");
+    assertEquals(triads[1], undefined);
+    assertEquals(triads[2], "ii");
+    assertEquals(triads[3], undefined);
+    assertEquals(triads[4], "iii");
+    assertEquals(triads[5], "IV");
+    assertEquals(triads[6], undefined);
+    assertEquals(triads[7], "V");
+    assertEquals(triads[8], undefined);
+    assertEquals(triads[9], "vi");
+    assertEquals(triads[10], undefined);
+    assertEquals(triads[11], "vii°");
+  },
+);
+
+Deno.test(
+  "getRomanTriadsForRootAndNoteCollectionKey - F Ionian with fillChromatic and rotateToRootInteger0 = false",
+  () => {
+    // If we don't rotate to root integer 0, F Ionian stays relative to F.
+    // Index 0 is F, 2 is G, 4 is A, 5 is Bb
+    const triads = getRomanTriadsForRootAndNoteCollectionKey("F", "ionian", {
+      fillChromatic: true,
+      rotateToRootInteger0: false,
+    });
+    assertEquals(triads[0], "I"); // F
+    assertEquals(triads[2], "ii"); // G
+    assertEquals(triads[4], "iii"); // A
+    assertEquals(triads[5], "IV"); // Bb
+    assertEquals(triads[7], "V"); // C
+  },
+);
+
+Deno.test(
+  "getRomanSeventhChordsForRootAndNoteCollectionKey - F Ionian with fillChromatic and rotateToRootInteger0 = true",
+  () => {
+    const sevenths = getRomanSeventhChordsForRootAndNoteCollectionKey(
+      "F",
+      "ionian",
+      {
+        fillChromatic: true,
+        rotateToRootInteger0: true,
+      },
+    );
+    // Rotating F to root integer 0 pushes F (index 5) past index 0.
+    // In F major: F=I, G=ii, A=iii, Bb=IV, C=V, D=vi, E=vii°
+    // Absolute positions:
+    // C=0 -> V
+    // D=2 -> vi
+    // E=4 -> vii°
+    // F=5 -> I
+    // G=7 -> ii
+    // A=9 -> iii
+    // Bb=10 -> IV
+
+    assertEquals(sevenths.length, 12);
+    assertEquals(sevenths[0], "V7"); // C
+    assertEquals(sevenths[1], undefined);
+    assertEquals(sevenths[2], "vim7"); // D
+    assertEquals(sevenths[3], undefined);
+    assertEquals(sevenths[4], "viiø7"); // E
+    assertEquals(sevenths[5], "IM7"); // F
+    assertEquals(sevenths[6], undefined);
+    assertEquals(sevenths[7], "iim7"); // G
+    assertEquals(sevenths[8], undefined);
+    assertEquals(sevenths[9], "iiim7"); // A
+    assertEquals(sevenths[10], "IVM7"); // Bb
+    assertEquals(sevenths[11], undefined);
+  },
+);
+
+Deno.test(
+  "Fallback to mostSimilarScale - getRomanSeventhChordsForRootAndNoteCollectionKey - A Minor Pentatonic with fillChromatic",
+  () => {
+    // A Minor Pentatonic: A (root, index 9), C (12, index 0), D (2), E (4), G (7)
+    // mostSimilarScale: aeolian
+    // A Aeolian seventh chords: i, ii°, III, iv, v, VI, VII
+    // Kept notes: 1 (i), b3 (III), 4 (iv), 5 (v), b7 (VII)
+    const sevenths = getRomanSeventhChordsForRootAndNoteCollectionKey(
+      "A",
+      "minorPentatonic",
+      {
+        fillChromatic: true,
+        rotateToRootInteger0: true,
+      },
+    );
+
+    // Absolute positions:
+    // C=0 -> III
+    // D=2 -> iv
+    // E=4 -> v
+    // G=7 -> VII
+    // A=9 -> i
+
+    assertEquals(sevenths.length, 12);
+    assertEquals(sevenths[0], "IIIM7"); // C
+    assertEquals(sevenths[2], "ivm7"); // D
+    assertEquals(sevenths[4], "vm7"); // E
+    assertEquals(sevenths[7], "VII7"); // G
+    assertEquals(sevenths[9], "im7"); // A
+
+    // Unused pentatonic notes in aeolian
+    assertEquals(sevenths[11], undefined); // B
+    assertEquals(sevenths[5], undefined); // F
   },
 );
