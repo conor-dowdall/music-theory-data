@@ -35,6 +35,42 @@ export function filterOutOctaveIntervals(
 }
 
 /**
+ * Removes any intervals that mathematically resolve to the root note (0 modulo 12),
+ * except for the unison ("1" or "♮1") itself if it is present.
+ * This effectively prevents octaves ("8", "15") from overwriting the explicit unison
+ * slot when mapping intervals into a strict 12-semitone chromatic scale.
+ *
+ * @param intervals The array of intervals to filter.
+ * @returns A new array excluding higher root-equivalent intervals.
+ */
+export function filterOutRootLikeIntervals(
+  intervals: readonly Interval[],
+): Interval[] {
+  const hasUnison = intervals.some(
+    (i) => i === "1" || i === "♮1" || i === "𝄫2",
+  );
+
+  return intervals.filter((interval) => {
+    const semitones = intervalToIntegerMap.get(interval);
+    if (semitones === undefined) return true; // keep it if invalid, though shouldn't happen
+    const isRootSlot = semitones % 12 === 0;
+
+    // If it falls on the root slot, we only keep it if it IS the unison
+    if (isRootSlot) {
+      if (
+        hasUnison &&
+        interval !== "1" &&
+        interval !== "♮1" &&
+        interval !== "𝄫2"
+      ) {
+        return false;
+      }
+    }
+    return true;
+  });
+}
+
+/**
  * Parses a string and returns a canonical `Interval` if the string is a valid interval.
  * This handles ASCII accidentals like 'b' and '#' as well as qualities like 'M3', 'm3'.
  * @param name The string to parse.
@@ -145,42 +181,6 @@ export function normalizeCompoundIntervalStringArray(
   return names
     .map((name) => normalizeCompoundIntervalString(name))
     .filter((name): name is CompoundInterval => name !== undefined);
-}
-
-/**
- * Removes any intervals that mathematically resolve to the root note (0 modulo 12),
- * except for the unison ("1" or "♮1") itself if it is present.
- * This effectively prevents octaves ("8", "15") from overwriting the explicit unison
- * slot when mapping intervals into a strict 12-semitone chromatic scale.
- *
- * @param intervals The array of intervals to filter.
- * @returns A new array excluding higher root-equivalent intervals.
- */
-export function filterOutRootLikeIntervals(
-  intervals: readonly Interval[],
-): Interval[] {
-  const hasUnison = intervals.some(
-    (i) => i === "1" || i === "♮1" || i === "𝄫2",
-  );
-
-  return intervals.filter((interval) => {
-    const semitones = intervalToIntegerMap.get(interval);
-    if (semitones === undefined) return true; // keep it if invalid, though shouldn't happen
-    const isRootSlot = semitones % 12 === 0;
-
-    // If it falls on the root slot, we only keep it if it IS the unison
-    if (isRootSlot) {
-      if (
-        hasUnison &&
-        interval !== "1" &&
-        interval !== "♮1" &&
-        interval !== "𝄫2"
-      ) {
-        return false;
-      }
-    }
-    return true;
-  });
 }
 
 /**

@@ -229,3 +229,25 @@ Deno.test(
     assertEquals(triads[11], "B°");
   },
 );
+
+Deno.test(
+  "getTriadsForRootAndNoteCollectionKey - D Ionian with fillChromatic",
+  () => {
+    const triads = getTriadsForRootAndNoteCollectionKey("D", "ionian", {
+      fillChromatic: true,
+    });
+    assertEquals(triads.length, 12);
+    assertEquals(triads[0], "DM");
+    assertEquals(triads[1], undefined);
+    assertEquals(triads[2], "Em");
+    assertEquals(triads[3], undefined);
+    assertEquals(triads[4], "F♯m");
+    assertEquals(triads[5], "GM");
+    assertEquals(triads[6], undefined);
+    assertEquals(triads[7], "AM");
+    assertEquals(triads[8], undefined);
+    assertEquals(triads[9], "Bm");
+    assertEquals(triads[10], undefined);
+    assertEquals(triads[11], "C♯°");
+  },
+);
