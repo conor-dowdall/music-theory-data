@@ -73,9 +73,8 @@ Deno.test("getTriadsForNoteCollectionKey - Locrian", () => {
 });
 
 Deno.test("getRomanSeventhChordsForNoteCollectionKey - Harmonic Minor", () => {
-  const romanSevenths = getRomanSeventhChordsForNoteCollectionKey(
-    "harmonicMinor",
-  );
+  const romanSevenths =
+    getRomanSeventhChordsForNoteCollectionKey("harmonicMinor");
 
   const expectedRomanSevenths: RomanSeventhChord[] = [
     "iM7",
@@ -249,5 +248,70 @@ Deno.test(
     assertEquals(triads[9], "Bm");
     assertEquals(triads[10], undefined);
     assertEquals(triads[11], "C♯°");
+  },
+);
+
+Deno.test(
+  "getTriadsForNoteCollectionKey - rotateRight shifts chord array",
+  () => {
+    const triads = getTriadsForNoteCollectionKey("ionian", { rotateRight: 2 });
+    // Instead of ["M", "m", "m", "M", "M", "m", "°"]
+    // Rotating right by 2 shifts the end to the front: ["m", "°", "M", "m", "m", "M", "M"]
+    assertEquals(triads, ["m", "°", "M", "m", "m", "M", "M"]);
+  },
+);
+
+Deno.test(
+  "getRomanTriadsForNoteCollectionKey - fillChromatic with rotateToRootInteger0",
+  () => {
+    // If we take D Dorian, "i" is at index 0 without rotation.
+    // If we rotate to root 2 (D), the "i" should be at index 2.
+    // Original without rotation:
+    // 0:i, 1:-, 2:ii, 3:III, 4:-, ...
+
+    const chords = getRomanTriadsForNoteCollectionKey("dorian", {
+      fillChromatic: true,
+      rotateToRootInteger0: true,
+      rootNoteInteger: 2, // D
+    });
+
+    assertEquals(chords.length, 12);
+    assertEquals(chords[0], "VII");
+    assertEquals(chords[1], undefined);
+    assertEquals(chords[2], "i"); // Root D
+    assertEquals(chords[3], undefined);
+    assertEquals(chords[4], "ii");
+    assertEquals(chords[5], "III");
+    assertEquals(chords[6], undefined);
+    assertEquals(chords[7], "IV");
+    assertEquals(chords[8], undefined);
+    assertEquals(chords[9], "v");
+    assertEquals(chords[10], undefined);
+    assertEquals(chords[11], "vi°");
+  },
+);
+
+Deno.test(
+  "getTriadsForRootAndNoteCollectionKey - D Dorian with fillChromatic and rotateToRootInteger0",
+  () => {
+    // Similarly, "Dm" should be at index 2
+    const triads = getTriadsForRootAndNoteCollectionKey("D", "dorian", {
+      fillChromatic: true,
+      rotateToRootInteger0: true,
+    });
+
+    assertEquals(triads.length, 12);
+    assertEquals(triads[0], "CM");
+    assertEquals(triads[1], undefined);
+    assertEquals(triads[2], "Dm");
+    assertEquals(triads[3], undefined);
+    assertEquals(triads[4], "Em");
+    assertEquals(triads[5], "FM");
+    assertEquals(triads[6], undefined);
+    assertEquals(triads[7], "GM");
+    assertEquals(triads[8], undefined);
+    assertEquals(triads[9], "Am");
+    assertEquals(triads[10], undefined);
+    assertEquals(triads[11], "B°");
   },
 );
