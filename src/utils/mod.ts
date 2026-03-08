@@ -1,5 +1,6 @@
 export * from "./colors.ts";
 export * from "./chords.ts";
+export * from "./conversion-registry.ts";
 export * from "./intervals.ts";
 export * from "./midi-note-sequences.ts";
 export * from "./midi.ts";
