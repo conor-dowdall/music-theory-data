@@ -16,6 +16,7 @@ import {
   noteCollections,
 } from "../data/note-collections/mod.ts";
 import {
+  type RootAndNoteCollectionKeyTransformOptions,
   transformIntervals,
   type TransformIntervalsOptions,
 } from "./intervals.ts";
@@ -222,7 +223,7 @@ export function getNoteNamesForRootAndIntervals(
 export function getNoteNamesForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
-  options: Omit<TransformIntervalsOptions, "mostSimilarScale"> = {},
+  options: RootAndNoteCollectionKeyTransformOptions = {},
 ): NoteName[] {
   if (!isValidNoteCollectionKey(noteCollectionKey)) return [];
 

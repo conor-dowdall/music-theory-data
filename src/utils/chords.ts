@@ -37,8 +37,8 @@ import {
 } from "../data/note-collections/diatonic-modes.ts";
 import {
   filterOutOctaveIntervals,
-  type NoteCollectionTransformOptions,
-  type RootNoteCollectionTransformOptions,
+  type NoteCollectionKeyTransformOptions,
+  type RootAndNoteCollectionKeyTransformOptions,
 } from "./intervals.ts";
 import { getNoteNamesForRootAndNoteCollectionKey } from "./note-names.ts";
 import {
@@ -183,9 +183,9 @@ function getModeData(modeKey: NoteCollectionKey): ModeData | undefined {
  * @template T The underlying chord type extracted automatically from ModeData (e.g., `Triad` or `SeventhChord`).
  * @template U The final returned array type. If `transformRoman` is provided, this represents the Roman numeral type (e.g., `RomanTriad`). If no transformation is applied, `U` defaults to `T`.
  */
-function getChordsForNoteCollection<T, U = T>(
+function getChordsForNoteCollectionKey<T, U = T>(
   noteCollectionKey: NoteCollectionKey,
-  options: NoteCollectionTransformOptions,
+  options: NoteCollectionKeyTransformOptions,
   extractChords: (data: ModeData) => readonly T[],
   transformRoman?: (chords: T[]) => U[],
   rootOptions?: {
@@ -293,9 +293,9 @@ function getChordsForNoteCollection<T, U = T>(
  */
 export function getTriadsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
-  options: NoteCollectionTransformOptions = {},
+  options: NoteCollectionKeyTransformOptions = {},
 ): (Triad | undefined)[] {
-  return getChordsForNoteCollection<Triad>(
+  return getChordsForNoteCollectionKey<Triad>(
     noteCollectionKey,
     options,
     (data) => data.triads,
@@ -307,9 +307,9 @@ export function getTriadsForNoteCollectionKey(
  */
 export function getSeventhChordsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
-  options: NoteCollectionTransformOptions = {},
+  options: NoteCollectionKeyTransformOptions = {},
 ): (SeventhChord | undefined)[] {
-  return getChordsForNoteCollection<SeventhChord>(
+  return getChordsForNoteCollectionKey<SeventhChord>(
     noteCollectionKey,
     options,
     (data) => data.sevenths,
@@ -321,9 +321,9 @@ export function getSeventhChordsForNoteCollectionKey(
  */
 export function getRomanTriadsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
-  options: NoteCollectionTransformOptions = {},
+  options: NoteCollectionKeyTransformOptions = {},
 ): (RomanTriad | undefined)[] {
-  return getChordsForNoteCollection<Triad, RomanTriad>(
+  return getChordsForNoteCollectionKey<Triad, RomanTriad>(
     noteCollectionKey,
     options,
     (data) => data.triads,
@@ -336,9 +336,9 @@ export function getRomanTriadsForNoteCollectionKey(
  */
 export function getRomanSeventhChordsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
-  options: NoteCollectionTransformOptions = {},
+  options: NoteCollectionKeyTransformOptions = {},
 ): (RomanSeventhChord | undefined)[] {
-  return getChordsForNoteCollection<SeventhChord, RomanSeventhChord>(
+  return getChordsForNoteCollectionKey<SeventhChord, RomanSeventhChord>(
     noteCollectionKey,
     options,
     (data) => data.sevenths,
@@ -353,7 +353,7 @@ export function getRomanSeventhChordsForNoteCollectionKey(
 export function getTriadsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
-  options: RootNoteCollectionTransformOptions = {},
+  options: RootAndNoteCollectionKeyTransformOptions = {},
 ): (string | undefined)[] {
   const noteNames = getNoteNamesForRootAndNoteCollectionKey(
     rootNote,
@@ -361,7 +361,7 @@ export function getTriadsForRootAndNoteCollectionKey(
     options,
   );
   const { rotateToRootInteger0, ...restOptions } = options;
-  const chords = getChordsForNoteCollection<Triad>(
+  const chords = getChordsForNoteCollectionKey<Triad>(
     noteCollectionKey,
     restOptions,
     (data) => data.triads,
@@ -385,7 +385,7 @@ export function getTriadsForRootAndNoteCollectionKey(
 export function getSeventhChordsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
-  options: RootNoteCollectionTransformOptions = {},
+  options: RootAndNoteCollectionKeyTransformOptions = {},
 ): (string | undefined)[] {
   const noteNames = getNoteNamesForRootAndNoteCollectionKey(
     rootNote,
@@ -393,7 +393,7 @@ export function getSeventhChordsForRootAndNoteCollectionKey(
     options,
   );
   const { rotateToRootInteger0, ...restOptions } = options;
-  const chords = getChordsForNoteCollection<SeventhChord>(
+  const chords = getChordsForNoteCollectionKey<SeventhChord>(
     noteCollectionKey,
     restOptions,
     (data) => data.sevenths,
@@ -418,10 +418,10 @@ export function getSeventhChordsForRootAndNoteCollectionKey(
 export function getRomanTriadsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
-  options: RootNoteCollectionTransformOptions = {},
+  options: RootAndNoteCollectionKeyTransformOptions = {},
 ): (RomanTriad | undefined)[] {
   const { rotateToRootInteger0, ...restOptions } = options;
-  return getChordsForNoteCollection<Triad, RomanTriad>(
+  return getChordsForNoteCollectionKey<Triad, RomanTriad>(
     noteCollectionKey,
     restOptions,
     (data) => data.triads,
@@ -441,10 +441,10 @@ export function getRomanTriadsForRootAndNoteCollectionKey(
 export function getRomanSeventhChordsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
-  options: RootNoteCollectionTransformOptions = {},
+  options: RootAndNoteCollectionKeyTransformOptions = {},
 ): (RomanSeventhChord | undefined)[] {
   const { rotateToRootInteger0, ...restOptions } = options;
-  return getChordsForNoteCollection<SeventhChord, RomanSeventhChord>(
+  return getChordsForNoteCollectionKey<SeventhChord, RomanSeventhChord>(
     noteCollectionKey,
     restOptions,
     (data) => data.sevenths,
