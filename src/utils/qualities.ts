@@ -9,6 +9,7 @@ import {
 } from "../data/note-collections/mod.ts";
 import type { NoteCollection } from "../types/note-collections.d.ts";
 import {
+  type NoteCollectionKeyTransformOptions,
   transformIntervals,
   type TransformIntervalsOptions,
 } from "./intervals.ts";
@@ -46,7 +47,7 @@ export function getQualitiesForIntervals(
  */
 export function getQualitiesForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
-  options: Omit<TransformIntervalsOptions, "mostSimilarScale"> = {},
+  options: NoteCollectionKeyTransformOptions = {},
 ): IntervalQuality[] {
   if (!isValidNoteCollectionKey(noteCollectionKey)) return [];
 
@@ -63,7 +64,7 @@ export function getQualitiesForNoteCollectionKey(
  */
 export function getQualitiesForNoteCollection(
   collection: NoteCollection,
-  options: Omit<TransformIntervalsOptions, "mostSimilarScale"> = {},
+  options: NoteCollectionKeyTransformOptions = {},
 ): IntervalQuality[] {
   const mostSimilarScale = collection.mostSimilarScale;
 

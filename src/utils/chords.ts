@@ -37,8 +37,8 @@ import {
 } from "../data/note-collections/diatonic-modes.ts";
 import {
   filterOutOctaveIntervals,
-  type NoteCollectionTransformOptions,
-  type RootNoteCollectionTransformOptions,
+  type NoteCollectionKeyTransformOptions,
+  type RootAndNoteCollectionKeyTransformOptions,
 } from "./intervals.ts";
 import { getNoteNamesForRootAndNoteCollectionKey } from "./note-names.ts";
 import {
@@ -185,7 +185,7 @@ function getModeData(modeKey: NoteCollectionKey): ModeData | undefined {
  */
 function getChordsForNoteCollection<T, U = T>(
   noteCollectionKey: NoteCollectionKey,
-  options: NoteCollectionTransformOptions,
+  options: NoteCollectionKeyTransformOptions,
   extractChords: (data: ModeData) => readonly T[],
   transformRoman?: (chords: T[]) => U[],
   rootOptions?: {
@@ -293,7 +293,7 @@ function getChordsForNoteCollection<T, U = T>(
  */
 export function getTriadsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
-  options: NoteCollectionTransformOptions = {},
+  options: NoteCollectionKeyTransformOptions = {},
 ): (Triad | undefined)[] {
   return getChordsForNoteCollection<Triad>(
     noteCollectionKey,
@@ -307,7 +307,7 @@ export function getTriadsForNoteCollectionKey(
  */
 export function getSeventhChordsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
-  options: NoteCollectionTransformOptions = {},
+  options: NoteCollectionKeyTransformOptions = {},
 ): (SeventhChord | undefined)[] {
   return getChordsForNoteCollection<SeventhChord>(
     noteCollectionKey,
@@ -321,7 +321,7 @@ export function getSeventhChordsForNoteCollectionKey(
  */
 export function getRomanTriadsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
-  options: NoteCollectionTransformOptions = {},
+  options: NoteCollectionKeyTransformOptions = {},
 ): (RomanTriad | undefined)[] {
   return getChordsForNoteCollection<Triad, RomanTriad>(
     noteCollectionKey,
@@ -336,7 +336,7 @@ export function getRomanTriadsForNoteCollectionKey(
  */
 export function getRomanSeventhChordsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
-  options: NoteCollectionTransformOptions = {},
+  options: NoteCollectionKeyTransformOptions = {},
 ): (RomanSeventhChord | undefined)[] {
   return getChordsForNoteCollection<SeventhChord, RomanSeventhChord>(
     noteCollectionKey,
@@ -353,7 +353,7 @@ export function getRomanSeventhChordsForNoteCollectionKey(
 export function getTriadsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
-  options: RootNoteCollectionTransformOptions = {},
+  options: RootAndNoteCollectionKeyTransformOptions = {},
 ): (string | undefined)[] {
   const noteNames = getNoteNamesForRootAndNoteCollectionKey(
     rootNote,
@@ -385,7 +385,7 @@ export function getTriadsForRootAndNoteCollectionKey(
 export function getSeventhChordsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
-  options: RootNoteCollectionTransformOptions = {},
+  options: RootAndNoteCollectionKeyTransformOptions = {},
 ): (string | undefined)[] {
   const noteNames = getNoteNamesForRootAndNoteCollectionKey(
     rootNote,
@@ -418,7 +418,7 @@ export function getSeventhChordsForRootAndNoteCollectionKey(
 export function getRomanTriadsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
-  options: RootNoteCollectionTransformOptions = {},
+  options: RootAndNoteCollectionKeyTransformOptions = {},
 ): (RomanTriad | undefined)[] {
   const { rotateToRootInteger0, ...restOptions } = options;
   return getChordsForNoteCollection<Triad, RomanTriad>(
@@ -441,7 +441,7 @@ export function getRomanTriadsForRootAndNoteCollectionKey(
 export function getRomanSeventhChordsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
-  options: RootNoteCollectionTransformOptions = {},
+  options: RootAndNoteCollectionKeyTransformOptions = {},
 ): (RomanSeventhChord | undefined)[] {
   const { rotateToRootInteger0, ...restOptions } = options;
   return getChordsForNoteCollection<SeventhChord, RomanSeventhChord>(

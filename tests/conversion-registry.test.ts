@@ -25,11 +25,15 @@ Deno.test("Conversion Registry - Functions operate as expected", () => {
 
 Deno.test("Conversion Registry - Options affect output length", () => {
   // Rotate by 1 right
-  const rotatedResult = conversions.rootAndNoteCollection.noteNames.get("C", "ionian", {
-    fillChromatic: true,
-    rotateToRootInteger0: true,
-    rotateRight: 1,
-  });
+  const rotatedResult = conversions.rootAndNoteCollection.noteNames.get(
+    "C",
+    "ionian",
+    {
+      fillChromatic: true,
+      rotateToRootInteger0: true,
+      rotateRight: 1,
+    },
+  );
 
   assertEquals(rotatedResult.length, 12);
   // It rotates right, so B which was at the end (index 11) moves to index 0. C moves to index 1.

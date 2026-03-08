@@ -266,7 +266,7 @@ export type TransformIntervalsOptions =
     }
   );
 
-export type NoteCollectionTransformOptions = Pick<
+export type NoteCollectionKeyTransformOptions = Pick<
   TransformIntervalsOptions,
   | "intervalTransformation"
   | "filterOutOctave"
@@ -275,7 +275,7 @@ export type NoteCollectionTransformOptions = Pick<
   | "fillChromatic"
 >;
 
-export type RootNoteCollectionTransformOptions = Pick<
+export type RootAndNoteCollectionKeyTransformOptions = Pick<
   TransformIntervalsOptions,
   | "intervalTransformation"
   | "filterOutOctave"
@@ -405,7 +405,7 @@ export function getIntervalsForQualities(
  */
 export function getIntervalsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
-  options: NoteCollectionTransformOptions = {},
+  options: NoteCollectionKeyTransformOptions = {},
 ): Interval[] {
   if (!isValidNoteCollectionKey(noteCollectionKey)) return [];
 
@@ -435,7 +435,10 @@ export function getIntervalsForNoteCollectionKey(
  */
 export function getExtensionsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
-  options: Omit<NoteCollectionTransformOptions, "intervalTransformation"> = {},
+  options: Omit<
+    NoteCollectionKeyTransformOptions,
+    "intervalTransformation"
+  > = {},
 ): Interval[] {
   return getIntervalsForNoteCollectionKey(noteCollectionKey, {
     filterOutOctave: true,
@@ -454,7 +457,10 @@ export function getExtensionsForNoteCollectionKey(
  */
 export function getCompoundIntervalsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
-  options: Omit<NoteCollectionTransformOptions, "intervalTransformation"> = {},
+  options: Omit<
+    NoteCollectionKeyTransformOptions,
+    "intervalTransformation"
+  > = {},
 ): Interval[] {
   return getIntervalsForNoteCollectionKey(noteCollectionKey, {
     filterOutOctave: true,
@@ -475,7 +481,7 @@ export function getCompoundIntervalsForNoteCollectionKey(
 export function getIntervalsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
-  options: RootNoteCollectionTransformOptions = {},
+  options: RootAndNoteCollectionKeyTransformOptions = {},
 ): Interval[] {
   if (!isValidNoteCollectionKey(noteCollectionKey)) return [];
 
@@ -511,8 +517,10 @@ export function getIntervalsForRootAndNoteCollectionKey(
 export function getExtensionsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
-  options: Omit<RootNoteCollectionTransformOptions, "intervalTransformation"> =
-    {},
+  options: Omit<
+    RootAndNoteCollectionKeyTransformOptions,
+    "intervalTransformation"
+  > = {},
 ): Interval[] {
   return getIntervalsForRootAndNoteCollectionKey(rootNote, noteCollectionKey, {
     filterOutOctave: true,
@@ -533,8 +541,10 @@ export function getExtensionsForRootAndNoteCollectionKey(
 export function getCompoundIntervalsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
-  options: Omit<RootNoteCollectionTransformOptions, "intervalTransformation"> =
-    {},
+  options: Omit<
+    RootAndNoteCollectionKeyTransformOptions,
+    "intervalTransformation"
+  > = {},
 ): Interval[] {
   return getIntervalsForRootAndNoteCollectionKey(rootNote, noteCollectionKey, {
     filterOutOctave: true,
