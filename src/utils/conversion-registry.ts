@@ -93,8 +93,8 @@ export const conversions = {
       name: "Triads",
       shortName: "Triads",
       description:
-        "Returns the triads with prepended note names (e.g., 'Cm', 'E♭M', 'GM').",
-      example: "Cm, E♭M, GM",
+        "Returns the triads with prepended note names (e.g., 'Cm', 'E♭M').",
+      example: "Cm, E♭M",
       get: (root, key, opts) =>
         getTriadsForRootAndNoteCollectionKey(root, key, opts),
     } as ConversionRegistryEntry<string>,
@@ -103,8 +103,8 @@ export const conversions = {
       name: "Seventh Chords",
       shortName: "Sevenths",
       description:
-        "Returns the seventh chords with prepended note names (e.g., 'Cm7', 'E♭M7', 'GM7').",
-      example: "Cm7, E♭M7, GM7",
+        "Returns the seventh chords with prepended note names (e.g., 'Cm7', 'E♭M7').",
+      example: "Cm7, E♭M7",
       get: (root, key, opts) =>
         getSeventhChordsForRootAndNoteCollectionKey(root, key, opts),
     } as ConversionRegistryEntry<string>,
