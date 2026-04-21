@@ -35,7 +35,7 @@ const guitarDoubleDropD: StringInstrumentTuning = {
 const guitarHalfStepDown: StringInstrumentTuning = {
   instrument: "guitar",
   primaryName: "Half Step Down",
-  names: ["Half Step Down", "E Flat Standard", "Eb Standard"],
+  names: ["Half Step Down", "E Flat Standard", "E♭ Standard"],
   openNoteNames: ["E♭", "A♭", "D♭", "G♭", "B♭", "E♭"],
   openMidiNotes: [39, 44, 49, 54, 58, 63],
 } as const;
@@ -59,7 +59,7 @@ const guitarOpenG: StringInstrumentTuning = {
 const guitarOpenGMinor: StringInstrumentTuning = {
   instrument: "guitar",
   primaryName: "Open G minor",
-  names: ["Open G minor", "DGDGBbD"],
+  names: ["Open G minor", "DGDGB♭D"],
   openNoteNames: ["D", "G", "D", "G", "B♭", "D"],
   openMidiNotes: [38, 43, 50, 55, 58, 62],
 } as const;
@@ -67,7 +67,7 @@ const guitarOpenGMinor: StringInstrumentTuning = {
 const guitarOpenD: StringInstrumentTuning = {
   instrument: "guitar",
   primaryName: "Open D",
-  names: ["Open D", "DADF#AD", "Vestapol"],
+  names: ["Open D", "DADF♯AD", "Vestapol"],
   openNoteNames: ["D", "A", "D", "F♯", "A", "D"],
   openMidiNotes: [38, 45, 50, 54, 57, 62],
 } as const;
