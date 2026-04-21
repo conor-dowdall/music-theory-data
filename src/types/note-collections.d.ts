@@ -56,7 +56,7 @@ interface NoteCollectionBase {
 }
 
 /** A scale that can be thought of as a mode of a parent scale (e.g., Ionian, Dorian, Lydian Augmented). */
-interface ModalScaleCollection extends NoteCollectionBase {
+export interface ModalScaleCollection extends NoteCollectionBase {
   /**
    * The fundamental classification of the collection. For scales, this is always "scale".
    */
@@ -73,7 +73,7 @@ interface ModalScaleCollection extends NoteCollectionBase {
 }
 
 /** A scale that is not a mode of another scale in this collection. */
-interface NonModalScaleCollection extends NoteCollectionBase {
+export interface NonModalScaleCollection extends NoteCollectionBase {
   readonly category: "scale";
   readonly rotation?: never;
 }
