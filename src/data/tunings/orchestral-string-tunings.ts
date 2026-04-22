@@ -1,8 +1,9 @@
 import type {
-  StringInstrumentGroup,
   StringInstrumentKey,
   StringInstrumentTuning,
 } from "../../types/string-instruments.d.ts";
+
+export { orchestralStringsInstrumentGroup } from "./string-instrument-groups.ts";
 
 export type OrchestralStringInstrumentKey = Extract<
   StringInstrumentKey,
@@ -69,10 +70,3 @@ export const orchestralStringTuningKeysByInstrument:
     cello: ["celloStandardCgda"],
     doubleBass: ["doubleBassStandardEadg"],
   };
-
-export const orchestralStringsInstrumentGroup: StringInstrumentGroup = {
-  displayName: "Orchestral Strings",
-  description:
-    "Violin, viola, cello, and double bass as the standard bowed string section of the orchestra.",
-  instrumentKeys: ["violin", "viola", "cello", "doubleBass"],
-} as const;
