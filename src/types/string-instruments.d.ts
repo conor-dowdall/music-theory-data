@@ -3,9 +3,10 @@ import type { MidiNoteNumber } from "./midi.d.ts";
 /**
  * One or more MIDI note numbers for open strings or courses.
  *
- * The order is the instrument tuning order used throughout this package,
- * not a guarantee of ascending pitch. Re-entrant tunings, such as high-G
- * ukulele, can move down and then back up in MIDI value.
+ * Entries follow the written spelling of the tuning, such as guitar EADGBE
+ * or violin GDAE. That is usually low-to-high, but it is not a promise that
+ * the MIDI values are sorted. Re-entrant tunings, such as high-G ukulele,
+ * can move down and then back up in pitch.
  */
 export type OpenStringMidiNotes = readonly [
   MidiNoteNumber,
@@ -52,17 +53,21 @@ export interface StringInstrumentTuning {
    * Display note names for the open strings/courses.
    *
    * This array uses the same index order as openMidiNotes:
-   * openNoteNames[i] names openMidiNotes[i]. The order is conventional tuning
-   * order, generally bass-to-treble for linear tunings. Many string UIs draw
-   * the treble/high string first or on top, so a tab or fretboard view may
-   * intentionally render these arrays in reverse.
+   * openNoteNames[i] names openMidiNotes[i]. Entries follow the written
+   * spelling of the tuning, for example guitar EADGBE or DADGAD. For many
+   * linear tunings that means low-to-high, but string numbering and UI layout
+   * often run the other way: guitar string 1 is the high E, and many tab or
+   * fretboard views draw the highest-pitched string first or on top. Those
+   * views may intentionally render these arrays in reverse.
    */
   readonly openNoteNames: readonly string[];
   /**
    * MIDI note numbers for the open strings/courses.
    *
-   * Values are in the same instrument tuning order as openNoteNames. Do not
-   * sort them for display: re-entrant tunings may not be numerically ascending.
+   * Values use the same index order as openNoteNames. Do not sort them for
+   * display: written tuning order, string-number order, visual order, and
+   * numerical pitch order are separate concerns, especially for re-entrant
+   * tunings.
    */
   readonly openMidiNotes: OpenStringMidiNotes;
   /**
