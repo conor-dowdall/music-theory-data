@@ -56,6 +56,20 @@ const guitarOpenG: StringInstrumentTuning = {
   openMidiNotes: [38, 43, 50, 55, 59, 62],
 } as const;
 
+const guitarKeithRichardsRollingStonesTuning: StringInstrumentTuning = {
+  instrument: "guitar",
+  primaryName: "Keith Richards",
+  names: [
+    "Keith Richards",
+    "Keith Richards Tuning",
+    "Rolling Stones Tuning",
+    "5-String Open G",
+    "GDGBD",
+  ],
+  openNoteNames: ["G", "D", "G", "B", "D"],
+  openMidiNotes: [43, 50, 55, 59, 62],
+} as const;
+
 const guitarOpenGMinor: StringInstrumentTuning = {
   instrument: "guitar",
   primaryName: "Open G minor",
@@ -80,6 +94,14 @@ const guitarOpenDMinor: StringInstrumentTuning = {
   openMidiNotes: [38, 45, 50, 53, 57, 62],
 } as const;
 
+const guitarJacobCollierTuning: StringInstrumentTuning = {
+  instrument: "guitar",
+  primaryName: "Jacob Collier",
+  names: ["Jacob Collier", "Jacob Collier Tuning", "DAEAD"],
+  openNoteNames: ["D", "A", "E", "A", "D"],
+  openMidiNotes: [38, 45, 52, 57, 62],
+} as const;
+
 const _guitarTunings = {
   guitarStandardE,
   guitarHalfStepDown,
@@ -88,9 +110,11 @@ const _guitarTunings = {
   guitarDoubleDropD,
   guitarDadgad,
   guitarOpenG,
+  guitarKeithRichardsRollingStonesTuning,
   guitarOpenGMinor,
   guitarOpenD,
   guitarOpenDMinor,
+  guitarJacobCollierTuning,
 } as const;
 
 export type GuitarTuningKey = keyof typeof _guitarTunings;
@@ -124,13 +148,14 @@ const dropGuitarTuningGroup: GuitarTuningGroup = {
 
 const modalGuitarTuningGroup: GuitarTuningGroup = {
   displayName: "Modal",
-  tuningKeys: ["guitarDadgad"],
+  tuningKeys: ["guitarDadgad", "guitarJacobCollierTuning"],
 } as const;
 
 const openGuitarTuningGroup: GuitarTuningGroup = {
   displayName: "Open",
   tuningKeys: [
     "guitarOpenG",
+    "guitarKeithRichardsRollingStonesTuning",
     "guitarOpenGMinor",
     "guitarOpenD",
     "guitarOpenDMinor",
