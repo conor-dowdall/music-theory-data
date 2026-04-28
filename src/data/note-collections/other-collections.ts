@@ -18,17 +18,17 @@ const root: NoteOnlyCollection = {
   patternShort: [],
 };
 
-const rootAndTritone: DyadCollection = {
+const rootAndFifth: DyadCollection = {
   category: "dyad",
-  mostSimilarScale: "locrian",
-  primaryName: "Root and Tritone",
-  names: ["Root and Tritone", "Tritone", "♭5", "Root and Flat Fifth"],
-  intervals: ["1", "♭5"],
-  integers: [0, 6],
-  type: ["dyad", "tritone"],
-  characteristics: ["tense", "unstable", "dissonant"],
-  pattern: ["tritone"],
-  patternShort: ["TT"],
+  mostSimilarScale: "ionian",
+  primaryName: "Root and Fifth",
+  names: ["Root and Fifth", "5", "Power Chord"],
+  intervals: ["1", "5"],
+  integers: [0, 7],
+  type: ["dyad", "power chord"],
+  characteristics: ["consonant", "rock", "blues", "metal"],
+  pattern: ["perfect fifth"],
+  patternShort: ["P5"],
 };
 
 const rootAndFourth: DyadCollection = {
@@ -44,17 +44,17 @@ const rootAndFourth: DyadCollection = {
   patternShort: ["P4"],
 };
 
-const rootAndFifth: DyadCollection = {
+const rootAndTritone: DyadCollection = {
   category: "dyad",
-  mostSimilarScale: "ionian",
-  primaryName: "Root and Fifth",
-  names: ["Root and Fifth", "5", "Power Chord"],
-  intervals: ["1", "5"],
-  integers: [0, 7],
-  type: ["dyad", "power chord"],
-  characteristics: ["consonant", "rock", "blues", "metal"],
-  pattern: ["perfect fifth"],
-  patternShort: ["P5"],
+  mostSimilarScale: "locrian",
+  primaryName: "Root and Tritone",
+  names: ["Root and Tritone", "Tritone", "♭5", "Root and Flat Fifth"],
+  intervals: ["1", "♭5"],
+  integers: [0, 6],
+  type: ["dyad", "tritone"],
+  characteristics: ["tense", "unstable", "dissonant"],
+  pattern: ["tritone"],
+  patternShort: ["TT"],
 };
 
 const bluesPentatonic: NonModalScaleCollection = {
@@ -138,9 +138,9 @@ const wholeTone: NonModalScaleCollection = {
 
 export const _otherNoteCollections = {
   root,
-  rootAndTritone,
-  rootAndFourth,
   rootAndFifth,
+  rootAndFourth,
+  rootAndTritone,
   bluesPentatonic,
   chromatic,
   wholeTone,
