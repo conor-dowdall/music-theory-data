@@ -2,7 +2,7 @@
 
 **Empower your music applications with a comprehensive, type-safe, and
 musician-friendly TypeScript/JavaScript library for notes, dyads, modes, scales,
-chords, and more.**
+chord pitch collections, chord progression templates, and more.**
 
 ## Community & Support
 
@@ -26,6 +26,13 @@ Have a question, a suggestion, or want to report a bug? Get in touch!
 - ✅ Augmented Variants
 - ✅ Other Note Collections, including notes and dyads
 
+## Available Chord Progression Templates
+
+- ✅ Basic Progressions
+- ✅ Pop Progressions
+- ✅ Blues Progressions
+- ✅ Jazz Progressions
+
 ## Features
 
 - **Fully Typed:** Written in TypeScript with comprehensive type definitions for
@@ -35,8 +42,9 @@ Have a question, a suggestion, or want to report a bug? Get in touch!
 
 ### Rich Data Structures
 
-Access detailed information for notes, dyads, scales, modes, chords, and more,
-including intervals, integer notations, and common names.
+Access detailed information for notes, dyads, scales, modes, chord pitch
+collections, chord progression templates, and more, including intervals, integer
+notations, and common names.
 
 ```ts
 // src/data/note-collections/diatonic-modes.ts
@@ -168,6 +176,22 @@ console.log(Object.keys(music_theory_data.noteCollections));
 // Log an array of all available Grouped Note Collections Keys
 console.log(Object.keys(music_theory_data.groupedNoteCollections));
 // ["diatonicModes", "pentatonicVariants", ...]
+
+// Get a beginner-friendly chord progression template
+const oneFourFive = music_theory_data.chordProgressionTemplates.oneFourFive;
+
+console.log(oneFourFive.primaryName);
+// "One Four Five"
+
+console.log(
+  music_theory_data.getChordProgressionTemplateRomanNames("oneFourFive"),
+);
+// ["I", "IV", "V"]
+
+console.log(
+  music_theory_data.getChordProgressionTemplateChordNames("C", "oneFourFive"),
+);
+// ["CM", "FM", "GM"]
 ```
 
 ## API Documentation

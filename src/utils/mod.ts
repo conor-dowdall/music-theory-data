@@ -1,4 +1,5 @@
 export * from "./colors.ts";
+export * from "./chord-progressions.ts";
 export * from "./chords.ts";
 export * from "./conversion-registry.ts";
 export * from "./intervals.ts";

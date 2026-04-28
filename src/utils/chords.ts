@@ -1,4 +1,5 @@
 import {
+  chordQualityRomanRenderings,
   diatonicSeventhChords,
   diatonicTriads,
   harmonicMinorSeventhChords,
@@ -13,6 +14,7 @@ import {
   noteCollections,
 } from "../data/note-collections/mod.ts";
 import type {
+  ChordQuality,
   RomanSeventhChord,
   RomanTriad,
   SeventhChord,
@@ -46,6 +48,23 @@ import {
   type RootNote,
 } from "../data/labels/note-labels.ts";
 
+export function getRomanNumeralForScaleIndexAndChordQuality(
+  scaleIndex: number,
+  quality: ChordQuality,
+): string | undefined {
+  const rendering = chordQualityRomanRenderings.get(quality);
+  if (rendering === undefined) return undefined;
+
+  const numerals = rendering.numeralCase === "lower"
+    ? lowerCaseRomanNumerals
+    : upperCaseRomanNumerals;
+  const romanNumeral = numerals[scaleIndex];
+
+  if (romanNumeral === undefined) return undefined;
+
+  return romanNumeral + rendering.suffix;
+}
+
 /**
  * Converts standard triad qualities (e.g., "M", "m") into their corresponding Roman numeral representations
  * based on their scale degree index.
@@ -55,19 +74,11 @@ import {
  */
 export function getRomanTriads(triads: Triad[]): RomanTriad[] {
   return triads.map((quality, i) => {
-    switch (quality) {
-      case "M":
-        return upperCaseRomanNumerals[i];
-      case "m":
-        return lowerCaseRomanNumerals[i];
-      case "°":
-        return lowerCaseRomanNumerals[i] + quality;
-      case "+":
-        return upperCaseRomanNumerals[i] + quality;
-      default:
-        // This should not happen with valid data. Fail fast if it does.
-        throw new Error(`Unhandled triad quality: ${quality}`);
+    const roman = getRomanNumeralForScaleIndexAndChordQuality(i, quality);
+    if (roman === undefined) {
+      throw new Error(`Unhandled triad quality: ${quality}`);
     }
+    return roman;
   }) as RomanTriad[];
 }
 
@@ -82,29 +93,11 @@ export function getRomanSeventhChords(
   sevenths: SeventhChord[],
 ): RomanSeventhChord[] {
   return sevenths.map((quality, i) => {
-    switch (quality) {
-      case "M7":
-        return upperCaseRomanNumerals[i] + quality;
-      case "m7":
-        return lowerCaseRomanNumerals[i] + quality;
-      case "7":
-        return upperCaseRomanNumerals[i] + quality;
-      case "ø7":
-        return lowerCaseRomanNumerals[i] + quality;
-      case "m7♭5":
-        return lowerCaseRomanNumerals[i] + quality;
-      case "°7":
-        return lowerCaseRomanNumerals[i] + quality;
-      case "m(M7)":
-        return lowerCaseRomanNumerals[i] + "M7";
-      case "+M7":
-        return upperCaseRomanNumerals[i] + quality;
-      case "M7♯5":
-        return upperCaseRomanNumerals[i] + quality;
-      default:
-        // This should not happen with valid data. Fail fast if it does.
-        throw new Error(`Unhandled seventh chord quality: ${quality}`);
+    const roman = getRomanNumeralForScaleIndexAndChordQuality(i, quality);
+    if (roman === undefined) {
+      throw new Error(`Unhandled seventh chord quality: ${quality}`);
     }
+    return roman;
   }) as RomanSeventhChord[];
 }
 

@@ -82,6 +82,7 @@ export interface NonModalScaleCollection extends NoteCollectionBase {
   readonly rotation?: never;
 }
 
+/** A single rooted chord quality represented as intervals from its root. */
 export interface ChordCollection extends NoteCollectionBase {
   readonly category: "chord";
   readonly rotation?: never;
