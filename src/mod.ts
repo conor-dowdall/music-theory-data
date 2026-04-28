@@ -1,5 +1,5 @@
 /**
- * A comprehensive library of music theory data, including scales, chords, and notes.
+ * A comprehensive library of music theory data, including notes, dyads, scales, and chords.
  *
  * This package provides a collection of datasets and utility functions
  * to work with fundamental concepts of music theory. It's designed to be

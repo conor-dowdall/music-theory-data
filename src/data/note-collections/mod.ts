@@ -20,7 +20,7 @@ export { diminishedVariants } from "./diminished-variants.ts";
 export { augmentedVariants } from "./augmented-variants.ts";
 export { otherNoteCollections } from "./other-collections.ts";
 
-/** A massive, flattened dictionary of every pre-defined musical scale, mode, chord, and arpeggio inside the library. */
+/** A massive, flattened dictionary of every pre-defined musical note, dyad, scale, mode, chord, and arpeggio inside the library. */
 export const noteCollections = {
   ...diatonicModes,
   ...pentatonicVariants,
@@ -108,6 +108,6 @@ export const noteCollectionGroupsMetadata: Record<
   otherNoteCollections: {
     displayName: "Other",
     description:
-      "Other note collections that don't fall into a specific category.",
+      "Single notes, dyads, and other useful collections that don't belong to a larger theory family.",
   },
 } as const;

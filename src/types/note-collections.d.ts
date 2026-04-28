@@ -5,6 +5,10 @@ export type CollectionCategory = "note" | "dyad" | "chord" | "scale";
 
 interface NoteCollectionBase {
   /**
+   * The top-level musical category for this collection.
+   */
+  readonly category: CollectionCategory;
+  /**
    * The primary, most common, or abbreviated name for the collection.
    * e.g., "Major" for the major scale, "M" for a major triad.
    */

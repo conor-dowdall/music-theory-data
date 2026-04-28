@@ -3,7 +3,10 @@ import {
   noteCollections,
 } from "../data/note-collections/mod.ts";
 import type { Interval } from "../data/labels/note-labels.ts";
-import type { NoteCollection } from "../types/note-collections.d.ts";
+import type {
+  CollectionCategory,
+  NoteCollection,
+} from "../types/note-collections.d.ts";
 
 /**
  * Checks if a given string is a valid `NoteCollectionKey`.
@@ -70,6 +73,8 @@ function normalizeSearchTerm(str: string): string {
 export interface SearchOptions {
   /** A text string to search against collection names, aliases, and characteristics. */
   query?: string;
+  /** A top-level collection category to match exactly. */
+  category?: CollectionCategory;
   /** An array of specific intervals that the matching collection must contain. */
   intervals?: Interval[];
   /** A string to filter collections by their mathematical or theoretical type (e.g. "heptatonic"). */
@@ -78,17 +83,21 @@ export interface SearchOptions {
 
 /**
  * Searches the library of musical note collections (scales, chords, modes) based on the provided matching criteria.
- * Supports filtering by text query, required theoretical intervals, and category type.
+ * Supports filtering by text query, top-level category, required theoretical intervals, and type tags.
  * @param options The criteria to use for filtering the collections.
  * @returns An array of `NoteCollection` objects that match the criteria, ranked by relevance if a text query was provided.
  */
 export function searchNoteCollections(
   options: SearchOptions,
 ): NoteCollection[] {
-  const { query, intervals, type } = options;
+  const { query, category, intervals, type } = options;
   let candidates = Object.values(noteCollections);
 
   // 1. Apply hard filters first to narrow down the candidate pool
+  if (category) {
+    candidates = candidates.filter((theme) => theme.category === category);
+  }
+
   if (type) {
     const normalizedType = normalizeSearchTerm(type);
     const searchWords = normalizedType.split(" ");

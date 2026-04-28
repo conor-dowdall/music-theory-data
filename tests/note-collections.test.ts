@@ -78,6 +78,24 @@ Deno.test("searchNoteCollections - by type", () => {
   assertEquals(majorScaleSearch.includes(noteCollections.major), false);
 });
 
+Deno.test("searchNoteCollections - by category", () => {
+  const noteSearch = searchNoteCollections({ category: "note" });
+  assertEquals(noteSearch, [noteCollections.root]);
+
+  const dyadSearch = searchNoteCollections({ category: "dyad" });
+  assertEquals(dyadSearch.includes(noteCollections.rootAndTritone), true);
+  assertEquals(dyadSearch.includes(noteCollections.rootAndFourth), true);
+  assertEquals(dyadSearch.includes(noteCollections.rootAndFifth), true);
+  assertEquals(dyadSearch.includes(noteCollections.major), false);
+
+  const chordSearch = searchNoteCollections({
+    category: "chord",
+    query: "major",
+  });
+  assertEquals(chordSearch.includes(noteCollections.major), true);
+  assertEquals(chordSearch.includes(noteCollections.ionian), false);
+});
+
 Deno.test("searchNoteCollections - by intervals", () => {
   // Ionian/Major scale intervals
   const majorIntervals = searchNoteCollections({

@@ -1,8 +1,8 @@
 # Muso Dojo | Music Theory Data
 
 **Empower your music applications with a comprehensive, type-safe, and
-musician-friendly TypeScript/JavaScript library for modes, scales, chords, and
-more.**
+musician-friendly TypeScript/JavaScript library for notes, dyads, modes, scales,
+chords, and more.**
 
 ## Community & Support
 
@@ -24,7 +24,7 @@ Have a question, a suggestion, or want to report a bug? Get in touch!
 - ✅ Melodic Minor Modes
 - ✅ Diminished Variants
 - ✅ Augmented Variants
-- ✅ Other Note Collections
+- ✅ Other Note Collections, including notes and dyads
 
 ## Features
 
@@ -35,8 +35,8 @@ Have a question, a suggestion, or want to report a bug? Get in touch!
 
 ### Rich Data Structures
 
-Access detailed information for scales, modes, chords, and more, including
-intervals, integer notations, and common names.
+Access detailed information for notes, dyads, scales, modes, chords, and more,
+including intervals, integer notations, and common names.
 
 ```ts
 // src/data/note-collections/diatonic-modes.ts

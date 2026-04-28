@@ -226,6 +226,22 @@ Deno.test("getNoteNamesForRootAndNoteCollectionKey - Major Chord", () => {
   ]);
 });
 
+Deno.test("getNoteNamesForRootAndNoteCollectionKey - Notes and Dyads", () => {
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("C", "root"), ["C"]);
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("C", "rootAndFourth"), [
+    "C",
+    "F",
+  ]);
+  assertEquals(getNoteNamesForRootAndNoteCollectionKey("C", "rootAndFifth"), [
+    "C",
+    "G",
+  ]);
+  assertEquals(
+    getNoteNamesForRootAndNoteCollectionKey("C", "rootAndTritone"),
+    ["C", "G♭"],
+  );
+});
+
 Deno.test(
   "getNoteNamesForRootAndNoteCollectionKey - Major Seventh Chord",
   () => {
