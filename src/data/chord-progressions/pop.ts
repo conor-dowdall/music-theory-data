@@ -3,8 +3,8 @@ import type { ChordProgressionTemplate } from "../../types/chord-progressions.d.
 const dooWop: ChordProgressionTemplate = {
   templateType: "loop",
   category: "pop",
-  primaryName: "Doo Wop",
-  names: ["Doo Wop", "I vi IV V", "1 6 4 5", "50s Progression"],
+  primaryName: "I vi IV V",
+  names: ["I vi IV V", "Doo Wop", "1 6 4 5", "50s Progression"],
   type: ["pop", "loop", "major key", "songwriting", "beginner"],
   characteristics: ["nostalgic", "stable", "songwriting", "common"],
   sections: [
@@ -23,8 +23,8 @@ const dooWop: ChordProgressionTemplate = {
 const axisProgression: ChordProgressionTemplate = {
   templateType: "loop",
   category: "pop",
-  primaryName: "Axis Progression",
-  names: ["Axis Progression", "I V vi IV", "1 5 6 4", "Pop Punk Progression"],
+  primaryName: "I V vi IV",
+  names: ["I V vi IV", "Axis Progression", "1 5 6 4", "Pop Punk Progression"],
   type: ["pop", "loop", "major key", "songwriting", "beginner"],
   characteristics: ["anthemic", "common", "songwriting", "stable"],
   sections: [

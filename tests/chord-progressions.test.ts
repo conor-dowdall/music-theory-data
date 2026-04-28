@@ -1,6 +1,9 @@
 import { assertEquals } from "@std/assert";
 import {
+  chordProgressionTemplateCategoryMetadata,
+  chordProgressionTemplateGroupsMetadata,
   chordProgressionTemplates,
+  chordProgressionTemplateTypeMetadata,
   groupedChordProgressionTemplates,
 } from "../src/data/chord-progressions/mod.ts";
 import {
@@ -15,13 +18,13 @@ import {
 
 Deno.test("isValidChordProgressionTemplateKey", () => {
   assertEquals(isValidChordProgressionTemplateKey("oneFourFive"), true);
+  assertEquals(isValidChordProgressionTemplateKey("oneFive"), true);
+  assertEquals(isValidChordProgressionTemplateKey("oneFour"), true);
   assertEquals(isValidChordProgressionTemplateKey("oneOneFiveFive"), true);
   assertEquals(isValidChordProgressionTemplateKey("oneOneFiveFiveSeven"), true);
+  assertEquals(isValidChordProgressionTemplateKey("oneFourOneFive"), true);
   assertEquals(isValidChordProgressionTemplateKey("twoFiveOneMajor"), true);
-  assertEquals(
-    isValidChordProgressionTemplateKey("rhythmChangesBSection"),
-    true,
-  );
+  assertEquals(isValidChordProgressionTemplateKey("rhythmChanges"), true);
   assertEquals(isValidChordProgressionTemplateKey("jazzBluesBasic"), true);
   assertEquals(isValidChordProgressionTemplateKey("ionian"), false);
   assertEquals(isValidChordProgressionTemplateKey(""), false);
@@ -30,20 +33,42 @@ Deno.test("isValidChordProgressionTemplateKey", () => {
 Deno.test("chord progression template exports", () => {
   assertEquals(
     chordProgressionTemplates.oneFourFive.primaryName,
-    "One Four Five",
+    "I IV V",
   );
   assertEquals(
     groupedChordProgressionTemplates.basicChordProgressionTemplates.oneFourFive,
     chordProgressionTemplates.oneFourFive,
   );
+  assertEquals(
+    groupedChordProgressionTemplates.basicChordProgressionTemplates.oneFive,
+    chordProgressionTemplates.oneFive,
+  );
   assertEquals(chordProgressionTemplates.oneFourFive.templateType, "formula");
+  assertEquals(chordProgressionTemplates.oneFive.templateType, "formula");
   assertEquals(chordProgressionTemplates.oneOneFiveFive.templateType, "loop");
   assertEquals(chordProgressionTemplates.twelveBarBlues.templateType, "form");
   assertEquals(
     groupedChordProgressionTemplates.jazzChordProgressionTemplates
-      .rhythmChangesASection.sections[0].name,
-    "A",
+      .rhythmChanges.sections.map((section) => section.name),
+    ["A1", "A2", "B", "A3"],
   );
+});
+
+Deno.test("chord progression template metadata matches exported groups", () => {
+  assertEquals(
+    Object.keys(chordProgressionTemplateGroupsMetadata),
+    Object.keys(groupedChordProgressionTemplates),
+  );
+  assertEquals(
+    chordProgressionTemplateCategoryMetadata.basic.displayName,
+    "Basic",
+  );
+  assertEquals(
+    chordProgressionTemplateCategoryMetadata.jazz.displayName,
+    "Jazz",
+  );
+  assertEquals(chordProgressionTemplateTypeMetadata.form.displayName, "Form");
+  assertEquals(chordProgressionTemplateTypeMetadata.loop.displayName, "Loop");
 });
 
 Deno.test("searchChordProgressionTemplates - by query and category", () => {
@@ -54,6 +79,10 @@ Deno.test("searchChordProgressionTemplates - by query and category", () => {
   assertEquals(
     searchChordProgressionTemplates({ query: "1 4 5" })[0],
     chordProgressionTemplates.oneFourFive,
+  );
+  assertEquals(
+    searchChordProgressionTemplates({ query: "one five" })[0],
+    chordProgressionTemplates.oneFive,
   );
   assertEquals(
     searchChordProgressionTemplates({ query: "two five one" })[0],
@@ -86,6 +115,10 @@ Deno.test("searchChordProgressionTemplates - by query and category", () => {
     true,
   );
   assertEquals(
+    loopTemplates.includes(chordProgressionTemplates.oneFourOneFive),
+    true,
+  );
+  assertEquals(
     loopTemplates.includes(chordProgressionTemplates.oneFourFive),
     false,
   );
@@ -94,13 +127,21 @@ Deno.test("searchChordProgressionTemplates - by query and category", () => {
     templateType: "form",
   });
   assertEquals(
-    formTemplates.includes(chordProgressionTemplates.rhythmChangesBSection),
+    formTemplates.includes(chordProgressionTemplates.rhythmChanges),
     true,
   );
   assertEquals(formTemplates.includes(chordProgressionTemplates.dooWop), false);
 });
 
 Deno.test("chord progression template render helpers", () => {
+  assertEquals(getChordProgressionTemplateDegreeNames("oneFive"), [
+    "1M",
+    "5M",
+  ]);
+  assertEquals(getChordProgressionTemplateRomanNames("oneFour"), [
+    "I",
+    "IV",
+  ]);
   assertEquals(getChordProgressionTemplateDegreeNames("oneFourFive"), [
     "1M",
     "4M",
@@ -119,6 +160,18 @@ Deno.test("chord progression template render helpers", () => {
 });
 
 Deno.test("chord progression template render helpers - playable loops", () => {
+  assertEquals(getChordProgressionTemplateRomanNames("oneFourOneFive"), [
+    "I",
+    "IV",
+    "I",
+    "V",
+  ]);
+  assertEquals(getChordProgressionTemplateChordNames("D", "oneFourOneFive"), [
+    "DM",
+    "GM",
+    "DM",
+    "AM",
+  ]);
   assertEquals(getChordProgressionTemplateRomanNames("oneOneFiveFive"), [
     "I",
     "I",
@@ -168,9 +221,48 @@ Deno.test("getRomanNumeralForIntervalAndChordQuality", () => {
 });
 
 Deno.test("sectioned templates preserve section labels and order", () => {
-  assertEquals(chordProgressionTemplates.rhythmChangesASection.sections, [
+  assertEquals(chordProgressionTemplates.rhythmChanges.sections, [
     {
-      name: "A",
+      name: "A1",
+      chords: [
+        { interval: "1", quality: "M7" },
+        { interval: "6", quality: "m7" },
+        { interval: "2", quality: "m7" },
+        { interval: "5", quality: "7" },
+        { interval: "3", quality: "m7" },
+        { interval: "6", quality: "7" },
+        { interval: "2", quality: "m7" },
+        { interval: "5", quality: "7" },
+      ],
+    },
+    {
+      name: "A2",
+      chords: [
+        { interval: "1", quality: "M7" },
+        { interval: "6", quality: "m7" },
+        { interval: "2", quality: "m7" },
+        { interval: "5", quality: "7" },
+        { interval: "3", quality: "m7" },
+        { interval: "6", quality: "7" },
+        { interval: "2", quality: "m7" },
+        { interval: "5", quality: "7" },
+      ],
+    },
+    {
+      name: "B",
+      chords: [
+        { interval: "3", quality: "7" },
+        { interval: "3", quality: "7" },
+        { interval: "6", quality: "7" },
+        { interval: "6", quality: "7" },
+        { interval: "2", quality: "7" },
+        { interval: "2", quality: "7" },
+        { interval: "5", quality: "7" },
+        { interval: "5", quality: "7" },
+      ],
+    },
+    {
+      name: "A3",
       chords: [
         { interval: "1", quality: "M7" },
         { interval: "6", quality: "m7" },
@@ -183,7 +275,31 @@ Deno.test("sectioned templates preserve section labels and order", () => {
       ],
     },
   ]);
-  assertEquals(getChordProgressionTemplateRomanNames("rhythmChangesASection"), [
+  assertEquals(getChordProgressionTemplateRomanNames("rhythmChanges"), [
+    "IM7",
+    "vim7",
+    "iim7",
+    "V7",
+    "iiim7",
+    "VI7",
+    "iim7",
+    "V7",
+    "IM7",
+    "vim7",
+    "iim7",
+    "V7",
+    "iiim7",
+    "VI7",
+    "iim7",
+    "V7",
+    "III7",
+    "III7",
+    "VI7",
+    "VI7",
+    "II7",
+    "II7",
+    "V7",
+    "V7",
     "IM7",
     "vim7",
     "iim7",
@@ -194,30 +310,7 @@ Deno.test("sectioned templates preserve section labels and order", () => {
     "V7",
   ]);
   assertEquals(
-    chordProgressionTemplates.rhythmChangesBSection.sections[0].name,
-    "B",
-  );
-  assertEquals(getChordProgressionTemplateRomanNames("rhythmChangesBSection"), [
-    "III7",
-    "III7",
-    "VI7",
-    "VI7",
-    "II7",
-    "II7",
-    "V7",
-    "V7",
-  ]);
-  assertEquals(
-    getChordProgressionTemplateChordNames("B♭", "rhythmChangesBSection"),
-    [
-      "D7",
-      "D7",
-      "G7",
-      "G7",
-      "C7",
-      "C7",
-      "F7",
-      "F7",
-    ],
+    getChordProgressionTemplateChordNames("B♭", "rhythmChanges").slice(16, 24),
+    ["D7", "D7", "G7", "G7", "C7", "C7", "F7", "F7"],
   );
 });

@@ -3,8 +3,14 @@ import type { ChordProgressionTemplate } from "../../types/chord-progressions.d.
 const twoFiveOneMajor: ChordProgressionTemplate = {
   templateType: "formula",
   category: "jazz",
-  primaryName: "Two Five One Major",
-  names: ["Two Five One Major", "ii V I", "2 5 1", "2m7 57 1M7"],
+  primaryName: "iim7 V7 IM7",
+  names: [
+    "iim7 V7 IM7",
+    "ii V I",
+    "Two Five One",
+    "Major Two Five One",
+    "2 5 1",
+  ],
   type: ["jazz", "formula", "major key", "cadence", "seventh chords"],
   characteristics: ["functional", "resolving", "foundational", "jazz"],
   sections: [
@@ -22,8 +28,8 @@ const twoFiveOneMajor: ChordProgressionTemplate = {
 const minorTwoFiveOne: ChordProgressionTemplate = {
   templateType: "formula",
   category: "jazz",
-  primaryName: "Minor Two Five One",
-  names: ["Minor Two Five One", "iiø V i", "2ø7 57 1m", "Minor ii V i"],
+  primaryName: "iiø7 V7 i",
+  names: ["iiø7 V7 i", "iiø V i", "Minor Two Five One", "2 5 1 minor"],
   type: ["jazz", "formula", "minor key", "cadence", "seventh chords"],
   characteristics: ["functional", "minor", "resolving", "jazz"],
   sections: [
@@ -38,16 +44,61 @@ const minorTwoFiveOne: ChordProgressionTemplate = {
   ],
 };
 
-const rhythmChangesASection: ChordProgressionTemplate = {
+const rhythmChanges: ChordProgressionTemplate = {
   templateType: "form",
   category: "jazz",
-  primaryName: "Rhythm Changes A Section",
-  names: ["Rhythm Changes A Section", "Rhythm A", "I vi ii V"],
-  type: ["jazz", "form", "major key", "turnaround", "A section"],
-  characteristics: ["cyclical", "functional", "jazz", "standard"],
+  primaryName: "Rhythm Changes",
+  names: ["Rhythm Changes", "AABA Rhythm Changes", "Rhythm Changes Form"],
+  type: ["jazz", "form", "major key", "turnaround", "AABA"],
+  characteristics: [
+    "cyclical",
+    "functional",
+    "jazz",
+    "standard",
+    "song form",
+  ],
   sections: [
     {
-      name: "A",
+      name: "A1",
+      chords: [
+        { interval: "1", quality: "M7" },
+        { interval: "6", quality: "m7" },
+        { interval: "2", quality: "m7" },
+        { interval: "5", quality: "7" },
+        { interval: "3", quality: "m7" },
+        { interval: "6", quality: "7" },
+        { interval: "2", quality: "m7" },
+        { interval: "5", quality: "7" },
+      ],
+    },
+    {
+      name: "A2",
+      chords: [
+        { interval: "1", quality: "M7" },
+        { interval: "6", quality: "m7" },
+        { interval: "2", quality: "m7" },
+        { interval: "5", quality: "7" },
+        { interval: "3", quality: "m7" },
+        { interval: "6", quality: "7" },
+        { interval: "2", quality: "m7" },
+        { interval: "5", quality: "7" },
+      ],
+    },
+    {
+      name: "B",
+      chords: [
+        { interval: "3", quality: "7" },
+        { interval: "3", quality: "7" },
+        { interval: "6", quality: "7" },
+        { interval: "6", quality: "7" },
+        { interval: "2", quality: "7" },
+        { interval: "2", quality: "7" },
+        { interval: "5", quality: "7" },
+        { interval: "5", quality: "7" },
+      ],
+    },
+    {
+      name: "A3",
       chords: [
         { interval: "1", quality: "M7" },
         { interval: "6", quality: "m7" },
@@ -62,46 +113,11 @@ const rhythmChangesASection: ChordProgressionTemplate = {
   ],
 };
 
-const rhythmChangesBSection: ChordProgressionTemplate = {
-  templateType: "form",
-  category: "jazz",
-  primaryName: "Rhythm Changes B Section",
-  names: [
-    "Rhythm Changes B Section",
-    "Rhythm Bridge",
-    "III7 VI7 II7 V7",
-    "3 6 2 5",
-  ],
-  type: ["jazz", "form", "bridge", "dominant cycle", "B section"],
-  characteristics: [
-    "functional",
-    "circle of fifths",
-    "secondary dominants",
-    "jazz",
-    "standard",
-  ],
-  sections: [
-    {
-      name: "B",
-      chords: [
-        { interval: "3", quality: "7" },
-        { interval: "3", quality: "7" },
-        { interval: "6", quality: "7" },
-        { interval: "6", quality: "7" },
-        { interval: "2", quality: "7" },
-        { interval: "2", quality: "7" },
-        { interval: "5", quality: "7" },
-        { interval: "5", quality: "7" },
-      ],
-    },
-  ],
-};
-
 const jazzBluesBasic: ChordProgressionTemplate = {
   templateType: "form",
   category: "jazz",
   primaryName: "Jazz Blues Basic",
-  names: ["Jazz Blues Basic", "Jazz Blues", "Basic Jazz Blues"],
+  names: ["Jazz Blues Basic", "Jazz Blues"],
   type: ["jazz", "blues", "form", "dominant seventh", "turnaround"],
   characteristics: ["functional", "blues", "jazz", "cyclical"],
   sections: [
@@ -128,7 +144,6 @@ const jazzBluesBasic: ChordProgressionTemplate = {
 export const jazzChordProgressionTemplates = {
   twoFiveOneMajor,
   minorTwoFiveOne,
-  rhythmChangesASection,
-  rhythmChangesBSection,
+  rhythmChanges,
   jazzBluesBasic,
 } as const;

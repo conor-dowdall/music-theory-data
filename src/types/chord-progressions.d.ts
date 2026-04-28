@@ -33,6 +33,11 @@ export interface ChordProgressionTemplateSection {
 export interface ChordProgressionTemplate {
   readonly templateType: ChordProgressionTemplateType;
   readonly category: ChordProgressionTemplateCategory;
+  /**
+   * The main display name.
+   * - Formula and loop templates should use Roman numeral form.
+   * - Form templates should use their conventional musical form name.
+   */
   readonly primaryName: string;
   readonly names: readonly string[];
   readonly type: readonly string[];
