@@ -1,18 +1,58 @@
 import type {
-  ChordCollection,
+  DyadCollection,
   NonModalScaleCollection,
   NoteCollection,
+  NoteOnlyCollection,
 } from "../../types/note-collections.d.ts";
 
-const rootAndFifth: ChordCollection = {
-  category: "chord",
+const root: NoteOnlyCollection = {
+  category: "note",
+  mostSimilarScale: "ionian",
+  primaryName: "Root",
+  names: ["Root", "Root Note", "Unison"],
+  intervals: ["1"],
+  integers: [0],
+  type: ["single note", "root note", "unison"],
+  characteristics: ["tonal center", "fundamental"],
+  pattern: [],
+  patternShort: [],
+};
+
+const rootAndTritone: DyadCollection = {
+  category: "dyad",
+  mostSimilarScale: "locrian",
+  primaryName: "Root and Tritone",
+  names: ["Root and Tritone", "Tritone", "♭5", "Root and Flat Fifth"],
+  intervals: ["1", "♭5"],
+  integers: [0, 6],
+  type: ["dyad", "tritone"],
+  characteristics: ["tense", "unstable", "dissonant"],
+  pattern: ["tritone"],
+  patternShort: ["TT"],
+};
+
+const rootAndFourth: DyadCollection = {
+  category: "dyad",
+  mostSimilarScale: "ionian",
+  primaryName: "Root and Fourth",
+  names: ["Root and Fourth", "4", "Perfect Fourth"],
+  intervals: ["1", "4"],
+  integers: [0, 5],
+  type: ["dyad", "perfect fourth"],
+  characteristics: ["open", "suspended"],
+  pattern: ["perfect fourth"],
+  patternShort: ["P4"],
+};
+
+const rootAndFifth: DyadCollection = {
+  category: "dyad",
   mostSimilarScale: "ionian",
   primaryName: "Root and Fifth",
-  names: ["Root and Fifth", "Power Chord"],
+  names: ["Root and Fifth", "5", "Power Chord"],
   intervals: ["1", "5"],
   integers: [0, 7],
-  type: ["chord", "power chord"],
-  characteristics: ["rock", "blues", "metal"],
+  type: ["dyad", "power chord"],
+  characteristics: ["consonant", "rock", "blues", "metal"],
   pattern: ["perfect fifth"],
   patternShort: ["P5"],
 };
@@ -97,6 +137,9 @@ const wholeTone: NonModalScaleCollection = {
 } as const;
 
 export const _otherNoteCollections = {
+  root,
+  rootAndTritone,
+  rootAndFourth,
   rootAndFifth,
   bluesPentatonic,
   chromatic,

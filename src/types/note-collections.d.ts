@@ -1,7 +1,7 @@
 import type { Interval } from "../data/labels/note-labels.ts";
 import type { NoteCollectionKey } from "../data/note-collections/mod.ts";
 
-export type CollectionCategory = "scale" | "chord";
+export type CollectionCategory = "note" | "dyad" | "chord" | "scale";
 
 interface NoteCollectionBase {
   /**
@@ -17,13 +17,13 @@ interface NoteCollectionBase {
   /**
    * The intervals from the root note that constitute the collection.
    * - For scales/modes, this conventionally includes the octave ("8").
-   * - For chords/arpeggios, this typically does not include the octave.
+   * - For notes, dyads, and chords/arpeggios, this typically does not include the octave.
    */
   readonly intervals: readonly Interval[];
   /**
    * The set of semitone values from the root.
    * - For **scales**, this is a pitch class set (0-11) and does not include the octave.
-   * - For **chords**, this can include values > 11 to represent extensions (e.g., 14 for a 9th).
+   * - For **notes**, **dyads**, and **chords**, this can include values > 11 to represent extensions (e.g., 14 for a 9th).
    */
   readonly integers: readonly number[];
   /**
@@ -39,13 +39,13 @@ interface NoteCollectionBase {
   /**
    * The pattern of intervals between adjacent notes.
    * - For scales/modes, this is the sequence of steps (e.g., "half", "whole", "augmented second", "minor third").
-   * - For chords/arpeggios, this is the sequence of stacked intervals (e.g., "minor second", "major second", "minor third", "major third").
+   * - For notes, dyads, and chords/arpeggios, this is the sequence of stacked intervals (e.g., "minor second", "major second", "minor third", "major third").
    */
   readonly pattern: readonly string[];
   /**
    * A short-hand version of the pattern.
    * - For scales/modes, this is the sequence of steps (e.g., "H", "W", "A2", "m3").
-   * - For chords/arpeggios, this is the sequence of stacked intervals (e.g., "m2", "M2", "m3", "M3").
+   * - For notes, dyads, and chords/arpeggios, this is the sequence of stacked intervals (e.g., "m2", "M2", "m3", "M3").
    */
   readonly patternShort: readonly string[];
   /**
@@ -83,6 +83,20 @@ export interface ChordCollection extends NoteCollectionBase {
   readonly rotation?: never;
 }
 
+export interface DyadCollection extends NoteCollectionBase {
+  readonly category: "dyad";
+  readonly rotation?: never;
+}
+
+export interface NoteOnlyCollection extends NoteCollectionBase {
+  readonly category: "note";
+  readonly rotation?: never;
+}
+
 export type ScaleCollection = ModalScaleCollection | NonModalScaleCollection;
 
-export type NoteCollection = ScaleCollection | ChordCollection;
+export type NoteCollection =
+  | ScaleCollection
+  | ChordCollection
+  | DyadCollection
+  | NoteOnlyCollection;

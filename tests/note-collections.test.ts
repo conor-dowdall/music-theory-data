@@ -9,6 +9,9 @@ import { noteCollections } from "../src/data/note-collections/mod.ts";
 Deno.test("isValidNoteCollectionKey", () => {
   assertEquals(isValidNoteCollectionKey("ionian"), true);
   assertEquals(isValidNoteCollectionKey("major"), true);
+  assertEquals(isValidNoteCollectionKey("root"), true);
+  assertEquals(isValidNoteCollectionKey("rootAndTritone"), true);
+  assertEquals(isValidNoteCollectionKey("rootAndFourth"), true);
   assertEquals(isValidNoteCollectionKey("invalid_key"), false);
   assertEquals(isValidNoteCollectionKey(""), false);
 });
@@ -29,6 +32,20 @@ Deno.test("searchNoteCollections - by query", () => {
   // "min" is an alias for "minor"
   const minSearch = searchNoteCollections({ query: "min" });
   assertEquals(minSearch[0], noteCollections.aeolian);
+
+  // "Root Note" is an alias for the root-only collection
+  const rootNoteSearch = searchNoteCollections({ query: "Root Note" });
+  assertEquals(rootNoteSearch[0], noteCollections.root);
+  assertEquals(noteCollections.root.category, "note");
+
+  const tritoneSearch = searchNoteCollections({ query: "Root and Tritone" });
+  assertEquals(tritoneSearch[0], noteCollections.rootAndTritone);
+  assertEquals(noteCollections.rootAndTritone.category, "dyad");
+
+  const fourthSearch = searchNoteCollections({ query: "Root and Fourth" });
+  assertEquals(fourthSearch[0], noteCollections.rootAndFourth);
+  assertEquals(noteCollections.rootAndFourth.category, "dyad");
+  assertEquals(noteCollections.rootAndFifth.category, "dyad");
 
   // "dominant" is a type for mixolydian and dominant chords
   const dominantSearch = searchNoteCollections({
