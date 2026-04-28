@@ -17,9 +17,9 @@ const oneFourFive: ChordProgressionTemplate = {
     {
       name: "Main",
       chords: [
-        { interval: "1", quality: "M" },
-        { interval: "4", quality: "M" },
-        { interval: "5", quality: "M" },
+        { interval: "1", quality: "M", noteCollectionKey: "major" },
+        { interval: "4", quality: "M", noteCollectionKey: "major" },
+        { interval: "5", quality: "M", noteCollectionKey: "major" },
       ],
     },
   ],
@@ -42,8 +42,8 @@ const oneFive: ChordProgressionTemplate = {
     {
       name: "Main",
       chords: [
-        { interval: "1", quality: "M" },
-        { interval: "5", quality: "M" },
+        { interval: "1", quality: "M", noteCollectionKey: "major" },
+        { interval: "5", quality: "M", noteCollectionKey: "major" },
       ],
     },
   ],
@@ -66,8 +66,8 @@ const oneFour: ChordProgressionTemplate = {
     {
       name: "Main",
       chords: [
-        { interval: "1", quality: "M" },
-        { interval: "4", quality: "M" },
+        { interval: "1", quality: "M", noteCollectionKey: "major" },
+        { interval: "4", quality: "M", noteCollectionKey: "major" },
       ],
     },
   ],
@@ -90,10 +90,10 @@ const oneOneFiveFive: ChordProgressionTemplate = {
     {
       name: "Main",
       chords: [
-        { interval: "1", quality: "M" },
-        { interval: "1", quality: "M" },
-        { interval: "5", quality: "M" },
-        { interval: "5", quality: "M" },
+        { interval: "1", quality: "M", noteCollectionKey: "major" },
+        { interval: "1", quality: "M", noteCollectionKey: "major" },
+        { interval: "5", quality: "M", noteCollectionKey: "major" },
+        { interval: "5", quality: "M", noteCollectionKey: "major" },
       ],
     },
   ],
@@ -127,10 +127,10 @@ const oneOneFiveFiveSeven: ChordProgressionTemplate = {
     {
       name: "Main",
       chords: [
-        { interval: "1", quality: "M" },
-        { interval: "1", quality: "M" },
-        { interval: "5", quality: "M" },
-        { interval: "5", quality: "7" },
+        { interval: "1", quality: "M", noteCollectionKey: "major" },
+        { interval: "1", quality: "M", noteCollectionKey: "major" },
+        { interval: "5", quality: "M", noteCollectionKey: "major" },
+        { interval: "5", quality: "7", noteCollectionKey: "dominant7" },
       ],
     },
   ],
@@ -153,10 +153,10 @@ const oneFourOneFive: ChordProgressionTemplate = {
     {
       name: "Main",
       chords: [
-        { interval: "1", quality: "M" },
-        { interval: "4", quality: "M" },
-        { interval: "1", quality: "M" },
-        { interval: "5", quality: "M" },
+        { interval: "1", quality: "M", noteCollectionKey: "major" },
+        { interval: "4", quality: "M", noteCollectionKey: "major" },
+        { interval: "1", quality: "M", noteCollectionKey: "major" },
+        { interval: "5", quality: "M", noteCollectionKey: "major" },
       ],
     },
   ],

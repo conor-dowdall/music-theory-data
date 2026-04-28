@@ -1,4 +1,5 @@
 import type { Interval } from "../data/labels/note-labels.ts";
+import type { NoteCollectionKey } from "../data/note-collections/mod.ts";
 import type { ChordQuality } from "./chords.d.ts";
 
 export type ChordProgressionTemplateCategory =
@@ -20,6 +21,13 @@ export interface ChordProgressionTemplateStep {
    * e.g., "M", "m", "7", "M7", "ø7".
    */
   readonly quality: ChordQuality;
+  /**
+   * The canonical chord/arpeggio collection this step is derived from.
+   * This describes the chord itself, not every scale or mode that could be
+   * compatible with it.
+   * e.g., "major" for "M", "minor" for "m", "dominant7" for "7".
+   */
+  readonly noteCollectionKey: NoteCollectionKey;
 }
 
 export interface ChordProgressionTemplateSection {

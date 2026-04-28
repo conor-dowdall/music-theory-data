@@ -1,5 +1,6 @@
 import { assertEquals } from "@std/assert";
 import {
+  chordProgressionStepNoteCollectionKeys,
   chordProgressionTemplateCategoryMetadata,
   chordProgressionTemplateGroupsMetadata,
   chordProgressionTemplates,
@@ -69,6 +70,19 @@ Deno.test("chord progression template metadata matches exported groups", () => {
   );
   assertEquals(chordProgressionTemplateTypeMetadata.form.displayName, "Form");
   assertEquals(chordProgressionTemplateTypeMetadata.loop.displayName, "Loop");
+});
+
+Deno.test("chord progression steps use canonical chord collection keys", () => {
+  for (const template of Object.values(chordProgressionTemplates)) {
+    for (const section of template.sections) {
+      for (const step of section.chords) {
+        assertEquals(
+          step.noteCollectionKey,
+          chordProgressionStepNoteCollectionKeys[step.quality],
+        );
+      }
+    }
+  }
 });
 
 Deno.test("searchChordProgressionTemplates - by query and category", () => {
@@ -225,53 +239,53 @@ Deno.test("sectioned templates preserve section labels and order", () => {
     {
       name: "A1",
       chords: [
-        { interval: "1", quality: "M7" },
-        { interval: "6", quality: "m7" },
-        { interval: "2", quality: "m7" },
-        { interval: "5", quality: "7" },
-        { interval: "3", quality: "m7" },
-        { interval: "6", quality: "7" },
-        { interval: "2", quality: "m7" },
-        { interval: "5", quality: "7" },
+        { interval: "1", quality: "M7", noteCollectionKey: "major7" },
+        { interval: "6", quality: "m7", noteCollectionKey: "minor7" },
+        { interval: "2", quality: "m7", noteCollectionKey: "minor7" },
+        { interval: "5", quality: "7", noteCollectionKey: "dominant7" },
+        { interval: "3", quality: "m7", noteCollectionKey: "minor7" },
+        { interval: "6", quality: "7", noteCollectionKey: "dominant7" },
+        { interval: "2", quality: "m7", noteCollectionKey: "minor7" },
+        { interval: "5", quality: "7", noteCollectionKey: "dominant7" },
       ],
     },
     {
       name: "A2",
       chords: [
-        { interval: "1", quality: "M7" },
-        { interval: "6", quality: "m7" },
-        { interval: "2", quality: "m7" },
-        { interval: "5", quality: "7" },
-        { interval: "3", quality: "m7" },
-        { interval: "6", quality: "7" },
-        { interval: "2", quality: "m7" },
-        { interval: "5", quality: "7" },
+        { interval: "1", quality: "M7", noteCollectionKey: "major7" },
+        { interval: "6", quality: "m7", noteCollectionKey: "minor7" },
+        { interval: "2", quality: "m7", noteCollectionKey: "minor7" },
+        { interval: "5", quality: "7", noteCollectionKey: "dominant7" },
+        { interval: "3", quality: "m7", noteCollectionKey: "minor7" },
+        { interval: "6", quality: "7", noteCollectionKey: "dominant7" },
+        { interval: "2", quality: "m7", noteCollectionKey: "minor7" },
+        { interval: "5", quality: "7", noteCollectionKey: "dominant7" },
       ],
     },
     {
       name: "B",
       chords: [
-        { interval: "3", quality: "7" },
-        { interval: "3", quality: "7" },
-        { interval: "6", quality: "7" },
-        { interval: "6", quality: "7" },
-        { interval: "2", quality: "7" },
-        { interval: "2", quality: "7" },
-        { interval: "5", quality: "7" },
-        { interval: "5", quality: "7" },
+        { interval: "3", quality: "7", noteCollectionKey: "dominant7" },
+        { interval: "3", quality: "7", noteCollectionKey: "dominant7" },
+        { interval: "6", quality: "7", noteCollectionKey: "dominant7" },
+        { interval: "6", quality: "7", noteCollectionKey: "dominant7" },
+        { interval: "2", quality: "7", noteCollectionKey: "dominant7" },
+        { interval: "2", quality: "7", noteCollectionKey: "dominant7" },
+        { interval: "5", quality: "7", noteCollectionKey: "dominant7" },
+        { interval: "5", quality: "7", noteCollectionKey: "dominant7" },
       ],
     },
     {
       name: "A3",
       chords: [
-        { interval: "1", quality: "M7" },
-        { interval: "6", quality: "m7" },
-        { interval: "2", quality: "m7" },
-        { interval: "5", quality: "7" },
-        { interval: "3", quality: "m7" },
-        { interval: "6", quality: "7" },
-        { interval: "2", quality: "m7" },
-        { interval: "5", quality: "7" },
+        { interval: "1", quality: "M7", noteCollectionKey: "major7" },
+        { interval: "6", quality: "m7", noteCollectionKey: "minor7" },
+        { interval: "2", quality: "m7", noteCollectionKey: "minor7" },
+        { interval: "5", quality: "7", noteCollectionKey: "dominant7" },
+        { interval: "3", quality: "m7", noteCollectionKey: "minor7" },
+        { interval: "6", quality: "7", noteCollectionKey: "dominant7" },
+        { interval: "2", quality: "m7", noteCollectionKey: "minor7" },
+        { interval: "5", quality: "7", noteCollectionKey: "dominant7" },
       ],
     },
   ]);

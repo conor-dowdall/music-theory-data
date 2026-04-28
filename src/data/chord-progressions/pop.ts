@@ -11,10 +11,10 @@ const dooWop: ChordProgressionTemplate = {
     {
       name: "Main",
       chords: [
-        { interval: "1", quality: "M" },
-        { interval: "6", quality: "m" },
-        { interval: "4", quality: "M" },
-        { interval: "5", quality: "M" },
+        { interval: "1", quality: "M", noteCollectionKey: "major" },
+        { interval: "6", quality: "m", noteCollectionKey: "minor" },
+        { interval: "4", quality: "M", noteCollectionKey: "major" },
+        { interval: "5", quality: "M", noteCollectionKey: "major" },
       ],
     },
   ],
@@ -31,10 +31,10 @@ const axisProgression: ChordProgressionTemplate = {
     {
       name: "Main",
       chords: [
-        { interval: "1", quality: "M" },
-        { interval: "5", quality: "M" },
-        { interval: "6", quality: "m" },
-        { interval: "4", quality: "M" },
+        { interval: "1", quality: "M", noteCollectionKey: "major" },
+        { interval: "5", quality: "M", noteCollectionKey: "major" },
+        { interval: "6", quality: "m", noteCollectionKey: "minor" },
+        { interval: "4", quality: "M", noteCollectionKey: "major" },
       ],
     },
   ],

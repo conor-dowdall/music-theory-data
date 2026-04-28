@@ -6,6 +6,8 @@ import type {
   ChordProgressionTemplateCategory,
   ChordProgressionTemplateType,
 } from "../../types/chord-progressions.d.ts";
+import type { ChordQuality } from "../../types/chords.d.ts";
+import type { NoteCollectionKey } from "../note-collections/mod.ts";
 
 export { basicChordProgressionTemplates } from "./basic.ts";
 export { bluesChordProgressionTemplates } from "./blues.ts";
@@ -21,6 +23,22 @@ export const chordProgressionTemplates = {
 
 export type ChordProgressionTemplateKey =
   keyof typeof chordProgressionTemplates;
+
+export type ChordProgressionStepNoteCollectionKeyMap = Partial<
+  Record<ChordQuality, NoteCollectionKey>
+>;
+
+/** Canonical chord/arpeggio collection keys for chord qualities used by progression steps. */
+export const chordProgressionStepNoteCollectionKeys:
+  ChordProgressionStepNoteCollectionKeyMap = {
+    M: "major",
+    m: "minor",
+    "7": "dominant7",
+    M7: "major7",
+    m7: "minor7",
+    "ø7": "halfDiminished7",
+    "°7": "diminished7",
+  } as const;
 
 export const groupedChordProgressionTemplates = {
   basicChordProgressionTemplates,
