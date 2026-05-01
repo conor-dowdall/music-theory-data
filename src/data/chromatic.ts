@@ -15,6 +15,9 @@ export type ChromaticIndex =
   | 10
   | 11;
 
+/** How a chromatic index should be interpreted. */
+export type ChromaticMode = "absolute" | "relative";
+
 /** A fixed 12-slot tuple indexed by chromatic pitch class or relative degree. */
 export type ChromaticTuple<T> = readonly [
   T,

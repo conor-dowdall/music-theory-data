@@ -3,9 +3,9 @@ import {
   noteLabelCollections,
   type NoteLabelGroup,
 } from "../labels/note-label-collections.ts";
-import type { ChromaticTuple } from "../chromatic.ts";
+import type { ChromaticMode, ChromaticTuple } from "../chromatic.ts";
 
-export type NoteColorMode = "absolute" | "relative";
+export type NoteColorMode = ChromaticMode;
 export type NoteColorValue = string | null;
 export type NoteColorTuple = ChromaticTuple<NoteColorValue>;
 
@@ -16,9 +16,6 @@ export interface NoteColorCollection {
   readonly mode: NoteColorMode;
   readonly labelCollectionKey?: NoteLabelCollectionKey;
   readonly colors: NoteColorTuple;
-
-  /** @deprecated Use mode === "relative" instead. */
-  readonly relative?: boolean;
 }
 
 export type Color = NoteColorValue;
@@ -51,10 +48,7 @@ export function getNoteColorLabelCollectionKey(
     return collection.labelCollectionKey;
   }
 
-  const mode = collection.mode ??
-    (collection.relative ? "relative" : "absolute");
-
-  return getDefaultNoteColorLabelCollectionKey(mode);
+  return getDefaultNoteColorLabelCollectionKey(collection.mode);
 }
 
 export function getNoteColorLabels(
@@ -71,7 +65,6 @@ const _colorCollections = {
     description: "A custom absolute chromatic palette designed by Muso Dojo.",
     mode: "absolute",
     labelCollectionKey: "noteNamesFlat",
-    relative: false,
     colors: [
       "#ED2929",
       "#9F000F",
@@ -94,7 +87,6 @@ const _colorCollections = {
       "Use the red color from Muso Dojo's colors on just the root note.",
     mode: "relative",
     labelCollectionKey: "intervalsFlat",
-    relative: true,
     colors: [
       "#ED2929",
       null,
@@ -117,7 +109,6 @@ const _colorCollections = {
       "Use the red-and-green colors from Muso Dojo's colors on the root-and-fifth notes.",
     mode: "relative",
     labelCollectionKey: "intervalsFlat",
-    relative: true,
     colors: [
       "#ED2929",
       null,
@@ -139,7 +130,6 @@ const _colorCollections = {
     description: "The colors used by Boomwhackers.",
     mode: "absolute",
     labelCollectionKey: "noteNamesFlat",
-    relative: false,
     colors: [
       "#E21C48",
       "#F26622",

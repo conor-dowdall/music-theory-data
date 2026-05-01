@@ -11,6 +11,7 @@ import {
 import type { IntervalQuality } from "../src/data/labels/note-labels.ts";
 import { diatonicModes } from "../src/data/note-collections/diatonic-modes.ts";
 import { noteCollections } from "../src/data/note-collections/mod.ts";
+import { isChromaticTuple } from "../src/utils/chromatic.ts";
 
 Deno.test("getQualitiesForIntervals", () => {
   assertEquals(getQualitiesForIntervals(["1", "3", "5"]), ["P1", "M3", "P5"]);
@@ -56,10 +57,24 @@ Deno.test("getQualitiesForNoteCollectionKey", () => {
 });
 
 Deno.test("getQualitiesForNoteCollectionKey with fillChromatic", () => {
-  assertEquals(
-    getQualitiesForNoteCollectionKey("ionian", { fillChromatic: true }),
-    ["P1", "m2", "M2", "m3", "M3", "P4", "d5", "P5", "m6", "M6", "m7", "M7"],
-  );
+  const ionianQualities = getQualitiesForNoteCollectionKey("ionian", {
+    fillChromatic: true,
+  });
+  assertEquals(isChromaticTuple(ionianQualities), true);
+  assertEquals(ionianQualities, [
+    "P1",
+    "m2",
+    "M2",
+    "m3",
+    "M3",
+    "P4",
+    "d5",
+    "P5",
+    "m6",
+    "M6",
+    "m7",
+    "M7",
+  ]);
   assertEquals(
     getQualitiesForNoteCollectionKey("dominant13", { fillChromatic: true }),
     ["P1", "m2", "M9", "m3", "M3", "P11", "d5", "P5", "m6", "M13", "m7", "M7"],

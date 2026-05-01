@@ -175,6 +175,24 @@ Deno.test(
 );
 
 Deno.test(
+  "Fallback to mostSimilarScale keeps chromatic chord slots aligned when intervals are missing",
+  () => {
+    const romanSevenths = getRomanSeventhChordsForNoteCollectionKey(
+      "bluesPentatonic",
+      { fillChromatic: true },
+    );
+
+    assertEquals(romanSevenths.length, 12);
+    assertEquals(romanSevenths[0], "im7");
+    assertEquals(romanSevenths[3], "IIIM7");
+    assertEquals(romanSevenths[5], "ivm7");
+    assertEquals(romanSevenths[6], undefined);
+    assertEquals(romanSevenths[7], "vm7");
+    assertEquals(romanSevenths[10], "VII7");
+  },
+);
+
+Deno.test(
   "Fallback tests - invalid keys gracefully return empty arrays",
   () => {
     assertEquals(getTriadsForNoteCollectionKey("invalid_key" as never), []);

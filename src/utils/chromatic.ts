@@ -13,7 +13,11 @@ export function normalizeChromaticIndex(value: number): ChromaticIndex {
     throw new Error(`Chromatic index must be finite. Received ${value}.`);
   }
 
-  const integer = Math.trunc(value);
+  if (!Number.isInteger(value)) {
+    throw new Error(`Chromatic index must be an integer. Received ${value}.`);
+  }
+
+  const integer = value;
   return (
     (integer % CHROMATIC_NOTE_COUNT + CHROMATIC_NOTE_COUNT) %
     CHROMATIC_NOTE_COUNT

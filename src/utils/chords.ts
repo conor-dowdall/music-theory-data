@@ -38,10 +38,9 @@ import {
   type DiatonicModeKey,
   diatonicModes,
 } from "../data/note-collections/diatonic-modes.ts";
-import {
-  filterOutOctaveIntervals,
-  type NoteCollectionKeyTransformOptions,
-  type RootAndNoteCollectionKeyTransformOptions,
+import type {
+  NoteCollectionKeyTransformOptions,
+  RootAndNoteCollectionKeyTransformOptions,
 } from "./intervals.ts";
 import { createChromaticTuple, normalizeChromaticIndex } from "./chromatic.ts";
 import { getNoteNamesForRootAndNoteCollectionKey } from "./note-names.ts";
@@ -122,9 +121,11 @@ function getChromaticArray<T>(
     undefined,
   ];
 
-  const filteredIntervals = filterOutOctaveIntervals(intervals);
+  intervals.forEach((interval, i) => {
+    if (interval === "8" || interval === "♮8") {
+      return;
+    }
 
-  filteredIntervals.forEach((interval, i) => {
     const semitones = intervalToIntegerMap.get(interval);
     if (semitones !== undefined) {
       result[normalizeChromaticIndex(semitones)] = items[i];
@@ -265,17 +266,20 @@ function getChordsForNoteCollectionKey<T, U = T>(
 
   // 3b. Pluck out only the chords that align with the intervals actually present in the custom scale.
   // E.g. For Minor Pentatonic (intervals 1, b3, 4, 5, b7), we grab the 1st, 3rd, 4th, 5th, and 7th chords of Aeolian.
-  const collectionChords = collection.intervals
+  const collectionChordsByInterval = collection.intervals
     .map((interval) => {
       const index = similarData.intervals.indexOf(interval);
       return index !== -1 ? similarProcessedChords[index] : undefined;
-    })
-    .filter((chord) => chord !== undefined) as U[];
+    });
+  // Keep a placeholder-preserving array for fillChromatic;
+  // otherwise a missing interval, such as the blues scale ♭5, shifts later chords.
+  const collectionChords = collectionChordsByInterval
+    .filter((chord): chord is U => chord !== undefined);
 
   // 3c. Format and return just like step 2.
   if (fillChromatic) {
     return applyRotations(
-      getChromaticArray(collectionChords, collection.intervals),
+      getChromaticArray(collectionChordsByInterval, collection.intervals),
       true,
     );
   }

@@ -1,4 +1,4 @@
-import type { ChromaticTuple } from "../chromatic.ts";
+import type { ChromaticMode, ChromaticTuple } from "../chromatic.ts";
 
 /** A fixed 12-element tuple of strings representing each note in the chromatic scale. */
 export type NoteLabelGroup = ChromaticTuple<string>;
@@ -7,7 +7,7 @@ export type NoteLabelGroup = ChromaticTuple<string>;
 export interface NoteLabelCollection {
   readonly name: string;
   readonly shortName: string;
-  readonly isRelative: boolean;
+  readonly mode: ChromaticMode;
   readonly labels: NoteLabelGroup;
 }
 
@@ -15,35 +15,35 @@ const _noteLabelCollections = {
   noteNamesFlat: {
     name: "Flat Note Names",
     shortName: "Flat Notes",
-    isRelative: false,
+    mode: "absolute",
     labels: ["C", "D♭", "D", "E♭", "E", "F", "G♭", "G", "A♭", "A", "B♭", "B"],
   },
 
   noteNamesSharp: {
     name: "Sharp Note Names",
     shortName: "Sharp Notes",
-    isRelative: false,
+    mode: "absolute",
     labels: ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B"],
   },
 
   intervalsFlat: {
     name: "Flat Note Intervals",
     shortName: "Flat Intervals",
-    isRelative: true,
+    mode: "relative",
     labels: ["1", "♭2", "2", "♭3", "3", "4", "♭5", "5", "♭6", "6", "♭7", "7"],
   },
 
   intervalsSharp: {
     name: "Sharp Note Intervals",
     shortName: "Sharp Intervals",
-    isRelative: true,
+    mode: "relative",
     labels: ["1", "♯1", "2", "♯2", "3", "4", "♯4", "5", "♯5", "6", "♯6", "7"],
   },
 
   extensionsFlat: {
     name: "Flat Note Extensions",
     shortName: "Flat Extensions",
-    isRelative: true,
+    mode: "relative",
     labels: [
       "1",
       "♭9",
@@ -63,7 +63,7 @@ const _noteLabelCollections = {
   extensionsSharp: {
     name: "Sharp Note Extensions",
     shortName: "Sharp Extensions",
-    isRelative: true,
+    mode: "relative",
     labels: [
       "1",
       "♯1",
@@ -83,7 +83,7 @@ const _noteLabelCollections = {
   fixedDoFlat: {
     name: "Solfege Fixed Do Flat Notes",
     shortName: "Fixed Do Flat",
-    isRelative: false,
+    mode: "absolute",
     labels: [
       "do",
       "re♭",
@@ -103,7 +103,7 @@ const _noteLabelCollections = {
   fixedDoSharp: {
     name: "Solfege Fixed Do Sharp Notes",
     shortName: "Fixed Do Sharp",
-    isRelative: false,
+    mode: "absolute",
     labels: [
       "do",
       "do♯",
@@ -123,7 +123,7 @@ const _noteLabelCollections = {
   movableDo: {
     name: "Solfege Movable Do Notes",
     shortName: "Movable Do",
-    isRelative: true,
+    mode: "relative",
     labels: [
       "do",
       "ra",
@@ -143,7 +143,7 @@ const _noteLabelCollections = {
   movableLa: {
     name: "Solfege Movable La Notes",
     shortName: "Movable La",
-    isRelative: true,
+    mode: "relative",
     labels: [
       "la",
       "te",

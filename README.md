@@ -205,7 +205,12 @@ is the fifth.
 colors, and `noteLabelCollections.intervalsFlat` is the default label set for
 relative note colors. `ChromaticIndex` is the shared `0`-to-`11` pitch-class
 shape used by chromatic tuples, note labels, root-note integers, and filled
-chromatic interval helpers.
+chromatic interval helpers. `ChromaticMode` is the shared `"absolute"` or
+`"relative"` mode used by note colors and label collections.
+
+Chromatic indexes must be integers. Helpers such as `normalizeChromaticIndex`
+wrap negative or large semitone values into the `0`-to-`11` range, but reject
+fractional or non-finite values.
 
 ```ts
 import {

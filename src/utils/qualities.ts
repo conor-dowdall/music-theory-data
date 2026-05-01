@@ -3,17 +3,30 @@ import {
   type IntervalQuality,
   intervalToIntervalQualityMap,
 } from "../data/labels/note-labels.ts";
+import type { ChromaticTuple } from "../data/chromatic.ts";
 import {
   type NoteCollectionKey,
   noteCollections,
 } from "../data/note-collections/mod.ts";
 import type { NoteCollection } from "../types/note-collections.d.ts";
 import {
+  type FillChromaticTransformIntervalsOptions,
   type NoteCollectionKeyTransformOptions,
   transformIntervals,
   type TransformIntervalsOptions,
 } from "./intervals.ts";
+import { createChromaticTuple } from "./chromatic.ts";
 import { isValidNoteCollectionKey } from "./note-collections.ts";
+
+export type ChromaticIntervalQualityTuple = ChromaticTuple<IntervalQuality>;
+
+function getQualityForInterval(interval: Interval): IntervalQuality {
+  const quality = intervalToIntervalQualityMap.get(interval);
+  if (quality === undefined) {
+    throw new Error(`Unhandled interval quality for interval ${interval}.`);
+  }
+  return quality;
+}
 
 /**
  * Calculates an array of specific interval qualities given an array of intervals.
@@ -25,16 +38,23 @@ import { isValidNoteCollectionKey } from "./note-collections.ts";
  */
 export function getQualitiesForIntervals(
   intervals: readonly Interval[],
+  options: FillChromaticTransformIntervalsOptions,
+): ChromaticIntervalQualityTuple;
+export function getQualitiesForIntervals(
+  intervals: readonly Interval[],
+  options?: TransformIntervalsOptions,
+): IntervalQuality[];
+export function getQualitiesForIntervals(
+  intervals: readonly Interval[],
   options: TransformIntervalsOptions = {},
-): IntervalQuality[] {
+): IntervalQuality[] | ChromaticIntervalQualityTuple {
   const intervalsToConvert = Object.keys(options).length > 0
     ? transformIntervals(intervals, options)
     : intervals;
 
-  return intervalsToConvert.flatMap((interval) => {
-    const quality = intervalToIntervalQualityMap.get(interval);
-    return quality ? [quality] : [];
-  });
+  const qualities = intervalsToConvert.map(getQualityForInterval);
+
+  return options.fillChromatic ? createChromaticTuple(qualities) : qualities;
 }
 
 /**
@@ -47,8 +67,16 @@ export function getQualitiesForIntervals(
  */
 export function getQualitiesForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
+  options: NoteCollectionKeyTransformOptions & { fillChromatic: true },
+): ChromaticIntervalQualityTuple;
+export function getQualitiesForNoteCollectionKey(
+  noteCollectionKey: NoteCollectionKey,
+  options?: NoteCollectionKeyTransformOptions,
+): IntervalQuality[];
+export function getQualitiesForNoteCollectionKey(
+  noteCollectionKey: NoteCollectionKey,
   options: NoteCollectionKeyTransformOptions = {},
-): IntervalQuality[] {
+): IntervalQuality[] | ChromaticIntervalQualityTuple {
   if (!isValidNoteCollectionKey(noteCollectionKey)) return [];
 
   const collection = noteCollections[noteCollectionKey];
@@ -64,8 +92,16 @@ export function getQualitiesForNoteCollectionKey(
  */
 export function getQualitiesForNoteCollection(
   collection: NoteCollection,
+  options: NoteCollectionKeyTransformOptions & { fillChromatic: true },
+): ChromaticIntervalQualityTuple;
+export function getQualitiesForNoteCollection(
+  collection: NoteCollection,
+  options?: NoteCollectionKeyTransformOptions,
+): IntervalQuality[];
+export function getQualitiesForNoteCollection(
+  collection: NoteCollection,
   options: NoteCollectionKeyTransformOptions = {},
-): IntervalQuality[] {
+): IntervalQuality[] | ChromaticIntervalQualityTuple {
   const mostSimilarScale = collection.mostSimilarScale;
 
   const finalOptions: TransformIntervalsOptions =

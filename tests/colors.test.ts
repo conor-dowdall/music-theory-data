@@ -1,4 +1,4 @@
-import { assertEquals } from "@std/assert";
+import { assertEquals, assertThrows } from "@std/assert";
 import {
   CHROMATIC_INDEXES,
   CHROMATIC_NOTE_COUNT,
@@ -33,9 +33,9 @@ import {
   getRelativeNoteColorIndex,
 } from "../src/utils/note-colors.ts";
 
-Deno.test("color collections expose chromatic note color metadata", () => {
-  const validModes = new Set(["absolute", "relative"]);
+const validModes = new Set(["absolute", "relative"]);
 
+Deno.test("color collections expose chromatic note color metadata", () => {
   for (const [key, collection] of Object.entries(colorCollections)) {
     assertEquals(
       collection.colors.length,
@@ -46,11 +46,6 @@ Deno.test("color collections expose chromatic note color metadata", () => {
       validModes.has(collection.mode),
       true,
       `${key} should have a valid mode`,
-    );
-    assertEquals(
-      collection.relative,
-      collection.mode === "relative",
-      `${key} should keep relative aligned with mode`,
     );
     assertEquals(
       collection.labelCollectionKey,
@@ -105,14 +100,28 @@ Deno.test("default note color label mapping uses flat note names and intervals",
     }),
     noteLabelCollections.noteNamesSharp.labels,
   );
+  for (const [key, collection] of Object.entries(noteLabelCollections)) {
+    assertEquals(
+      validModes.has(collection.mode),
+      true,
+      `${key} should have a valid mode`,
+    );
+    assertEquals(
+      isChromaticTuple(collection.labels),
+      true,
+      `${key} should expose a chromatic label tuple`,
+    );
+  }
   assertEquals(
     isChromaticTuple(noteLabelCollections.noteNamesFlat.labels),
     true,
   );
+  assertEquals(noteLabelCollections.noteNamesFlat.mode, "absolute");
   assertEquals(
     isChromaticTuple(noteLabelCollections.intervalsFlat.labels),
     true,
   );
+  assertEquals(noteLabelCollections.intervalsFlat.mode, "relative");
 });
 
 Deno.test("chromatic index helpers normalize pitch classes", () => {
@@ -129,6 +138,8 @@ Deno.test("chromatic index helpers normalize pitch classes", () => {
   assertEquals(isChromaticIndex(11), true);
   assertEquals(isChromaticIndex(12), false);
   assertEquals(isChromaticIndex(1.5), false);
+  assertThrows(() => normalizeChromaticIndex(1.5));
+  assertThrows(() => normalizeChromaticIndex(Number.POSITIVE_INFINITY));
 });
 
 Deno.test("note color MIDI indexing supports absolute and relative modes", () => {
