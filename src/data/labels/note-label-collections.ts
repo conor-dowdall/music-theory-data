@@ -1,18 +1,7 @@
+import type { ChromaticTuple } from "../chromatic.ts";
+
 /** A fixed 12-element tuple of strings representing each note in the chromatic scale. */
-export type NoteLabelGroup = readonly [
-  string,
-  string,
-  string,
-  string,
-  string,
-  string,
-  string,
-  string,
-  string,
-  string,
-  string,
-  string,
-];
+export type NoteLabelGroup = ChromaticTuple<string>;
 
 /** The data interface governing an entire collection array of 12 note labels. */
 export interface NoteLabelCollection {

@@ -5,6 +5,7 @@ import {
   searchNoteCollections,
 } from "../src/utils/note-collections.ts";
 import { noteCollections } from "../src/data/note-collections/mod.ts";
+import { isChromaticIndex } from "../src/utils/chromatic.ts";
 
 Deno.test("isValidNoteCollectionKey", () => {
   assertEquals(isValidNoteCollectionKey("ionian"), true);
@@ -126,4 +127,16 @@ Deno.test("findNoteCollection - finds single best match", () => {
   // Returns undefined if no match
   const noMatch = findNoteCollection({ query: "nonexistent" });
   assertEquals(noMatch, undefined);
+});
+
+Deno.test("non-chord collection integers are chromatic pitch classes", () => {
+  for (const collection of Object.values(noteCollections)) {
+    if (collection.category === "chord") continue;
+
+    assertEquals(
+      collection.integers.every(isChromaticIndex),
+      true,
+      `${collection.primaryName} should use 0-11 chromatic integers`,
+    );
+  }
 });

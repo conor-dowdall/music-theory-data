@@ -10,6 +10,7 @@ import {
 } from "../src/utils/intervals.ts";
 import { diatonicModes } from "../src/data/note-collections/diatonic-modes.ts";
 import { dominantVariants } from "../src/data/note-collections/dominant-variants.ts";
+import { isChromaticTuple } from "../src/utils/chromatic.ts";
 
 Deno.test("simpleToExtension ionian", () => {
   const spread = transformIntervals(diatonicModes.ionian.intervals, {
@@ -67,6 +68,7 @@ Deno.test("getIntervalsForNoteCollectionKey", () => {
   const intervals3 = getIntervalsForNoteCollectionKey("ionian", {
     fillChromatic: true,
   });
+  assertEquals(isChromaticTuple(intervals3), true);
   assertEquals(intervals3, [
     "1",
     "♭2",
@@ -113,6 +115,7 @@ Deno.test("getExtensionsForNoteCollectionKey", () => {
   const intervals = getExtensionsForNoteCollectionKey("ionian", {
     fillChromatic: true,
   });
+  assertEquals(isChromaticTuple(intervals), true);
   assertEquals(intervals, [
     "1",
     "♭9",
@@ -138,6 +141,7 @@ Deno.test("getCompoundIntervalsForNoteCollectionKey", () => {
   const intervals = getCompoundIntervalsForNoteCollectionKey("ionian", {
     fillChromatic: true,
   });
+  assertEquals(isChromaticTuple(intervals), true);
   assertEquals(intervals, [
     "1",
     "♭9",

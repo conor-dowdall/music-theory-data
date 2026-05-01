@@ -4,6 +4,7 @@ import {
   getNoteNamesForRootAndNoteCollectionKey,
 } from "../src/utils/note-names.ts";
 import { diatonicModes } from "../src/data/note-collections/diatonic-modes.ts";
+import { isChromaticTuple } from "../src/utils/chromatic.ts";
 
 Deno.test("getNoteNamesForRootAndNoteCollectionKey - Major Scales", () => {
   assertEquals(getNoteNamesForRootAndNoteCollectionKey("C", "ionian"), [
@@ -350,6 +351,7 @@ Deno.test("getNoteNamesForRootAndIntervals - fillChromatic", () => {
     ionianIntervals,
     { fillChromatic: true },
   );
+  assertEquals(isChromaticTuple(cMajorChromatic), true);
   assertEquals(cMajorChromatic, [
     "C",
     "D♭",

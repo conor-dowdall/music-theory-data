@@ -33,6 +33,7 @@ import {
   type Interval,
   intervalToIntegerMap,
 } from "../data/labels/note-labels.ts";
+import type { ChromaticIndex, ChromaticTuple } from "../data/chromatic.ts";
 import {
   type DiatonicModeKey,
   diatonicModes,
@@ -42,6 +43,7 @@ import {
   type NoteCollectionKeyTransformOptions,
   type RootAndNoteCollectionKeyTransformOptions,
 } from "./intervals.ts";
+import { createChromaticTuple, normalizeChromaticIndex } from "./chromatic.ts";
 import { getNoteNamesForRootAndNoteCollectionKey } from "./note-names.ts";
 import {
   noteNameToIntegerMap,
@@ -104,7 +106,7 @@ export function getRomanSeventhChords(
 function getChromaticArray<T>(
   items: readonly T[],
   intervals: readonly Interval[],
-): (T | undefined)[] {
+): ChromaticTuple<T | undefined> {
   const result: (T | undefined)[] = [
     undefined,
     undefined,
@@ -125,11 +127,11 @@ function getChromaticArray<T>(
   filteredIntervals.forEach((interval, i) => {
     const semitones = intervalToIntegerMap.get(interval);
     if (semitones !== undefined) {
-      result[semitones % 12] = items[i];
+      result[normalizeChromaticIndex(semitones)] = items[i];
     }
   });
 
-  return result;
+  return createChromaticTuple(result);
 }
 
 type ModeData = {
@@ -183,7 +185,7 @@ function getChordsForNoteCollectionKey<T, U = T>(
   transformRoman?: (chords: T[]) => U[],
   rootOptions?: {
     rotateToRootInteger0?: boolean;
-    rootNoteInteger?: number;
+    rootNoteInteger?: ChromaticIndex;
   },
 ): (U | undefined)[] {
   // 1. Verify that the requested note collection exists.
@@ -195,10 +197,10 @@ function getChordsForNoteCollectionKey<T, U = T>(
 
   // Helper function to apply requested rotations after the chord array is cleanly generated.
   const applyRotations = (
-    chordsArray: (U | undefined)[],
+    chordsArray: readonly (U | undefined)[],
     isChromatic: boolean,
   ) => {
-    let result = chordsArray;
+    let result = [...chordsArray];
 
     // If fillChromatic is true, the array represents the 12 absolute semitones (where index 0 = the root note relative to itself).
     if (isChromatic) {

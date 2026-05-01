@@ -11,11 +11,13 @@ import {
   type RootNoteInteger,
   rootNotesSet,
 } from "../data/labels/note-labels.ts";
+import type { ChromaticIndex, ChromaticTuple } from "../data/chromatic.ts";
 import {
   type NoteCollectionKey,
   noteCollections,
 } from "../data/note-collections/mod.ts";
 import {
+  type FillChromaticTransformIntervalsOptions,
   type RootAndNoteCollectionKeyTransformOptions,
   transformIntervals,
   type TransformIntervalsOptions,
@@ -23,9 +25,12 @@ import {
 
 import { isValidNoteCollectionKey } from "./note-collections.ts";
 import { normalizeAccidentalString } from "./accidentals.ts";
+import { createChromaticTuple, normalizeChromaticIndex } from "./chromatic.ts";
 
 const NOTE_LETTER_REGEX = /^[A-Ga-g]/;
 const INTERVAL_NUMBER_REGEX = /\d+/;
+
+export type ChromaticNoteNameTuple = ChromaticTuple<NoteName>;
 
 /**
  * Parses a string and returns a canonical `NoteName` if the string is a valid note name.
@@ -132,12 +137,14 @@ function getNoteForRootAndInterval(
   rootNoteInteger: number,
   rootNoteLetterIndex: number,
   interval: string,
-): { noteName: NoteName; semitoneOffset: number } | undefined {
+): { noteName: NoteName; semitoneOffset: ChromaticIndex } | undefined {
   const intervalInteger = intervalToIntegerMap.get(interval as Interval);
   if (intervalInteger === undefined) return undefined;
 
-  const semitoneOffset = intervalInteger % 12;
-  const absoluteNoteInteger = (rootNoteInteger + intervalInteger) % 12;
+  const semitoneOffset = normalizeChromaticIndex(intervalInteger);
+  const absoluteNoteInteger = normalizeChromaticIndex(
+    rootNoteInteger + intervalInteger,
+  );
 
   const intervalNumberMatch = interval.match(INTERVAL_NUMBER_REGEX);
   let selectedNote: NoteName | undefined;
@@ -176,8 +183,18 @@ function getNoteForRootAndInterval(
 export function getNoteNamesForRootAndIntervals(
   rootNote: RootNote,
   intervals: readonly Interval[],
+  options: FillChromaticTransformIntervalsOptions,
+): ChromaticNoteNameTuple;
+export function getNoteNamesForRootAndIntervals(
+  rootNote: RootNote,
+  intervals: readonly Interval[],
+  options?: TransformIntervalsOptions,
+): NoteName[];
+export function getNoteNamesForRootAndIntervals(
+  rootNote: RootNote,
+  intervals: readonly Interval[],
   options: TransformIntervalsOptions = {},
-): NoteName[] {
+): NoteName[] | ChromaticNoteNameTuple {
   // 1. Resolve Root Note
   const rootNoteInteger = noteNameToIntegerMap.get(rootNote);
   if (rootNoteInteger === undefined) return [];
@@ -207,7 +224,7 @@ export function getNoteNamesForRootAndIntervals(
     return result ? [result.noteName] : [];
   });
 
-  return noteNames;
+  return options.fillChromatic ? createChromaticTuple(noteNames) : noteNames;
 }
 
 /**
@@ -223,8 +240,18 @@ export function getNoteNamesForRootAndIntervals(
 export function getNoteNamesForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
+  options: RootAndNoteCollectionKeyTransformOptions & { fillChromatic: true },
+): ChromaticNoteNameTuple;
+export function getNoteNamesForRootAndNoteCollectionKey(
+  rootNote: RootNote,
+  noteCollectionKey: NoteCollectionKey,
+  options?: RootAndNoteCollectionKeyTransformOptions,
+): NoteName[];
+export function getNoteNamesForRootAndNoteCollectionKey(
+  rootNote: RootNote,
+  noteCollectionKey: NoteCollectionKey,
   options: RootAndNoteCollectionKeyTransformOptions = {},
-): NoteName[] {
+): NoteName[] | ChromaticNoteNameTuple {
   if (!isValidNoteCollectionKey(noteCollectionKey)) return [];
 
   const collection = noteCollections[noteCollectionKey];
@@ -240,9 +267,11 @@ export function getNoteNamesForRootAndNoteCollectionKey(
     } as TransformIntervalsOptions)
     : (options as TransformIntervalsOptions);
 
-  return getNoteNamesForRootAndIntervals(
+  const noteNames = getNoteNamesForRootAndIntervals(
     rootNote,
     collection.intervals,
     finalOptions,
   );
+
+  return options.fillChromatic ? createChromaticTuple(noteNames) : noteNames;
 }

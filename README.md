@@ -194,6 +194,53 @@ console.log(
 // ["CM", "FM", "GM"]
 ```
 
+## Note Colors And Chromatic Indexes
+
+Note color collections use 12 chromatic slots. In absolute mode, each index is a
+pitch class where index `0` is C and index `7` is G. In relative mode, each
+index is measured from a musical root where index `0` is the root and index `7`
+is the fifth.
+
+`noteLabelCollections.noteNamesFlat` is the default label set for absolute note
+colors, and `noteLabelCollections.intervalsFlat` is the default label set for
+relative note colors. `ChromaticIndex` is the shared `0`-to-`11` pitch-class
+shape used by chromatic tuples, note labels, root-note integers, and filled
+chromatic interval helpers.
+
+```ts
+import {
+  colorCollections,
+  getNoteColorIndex,
+  getNoteColorLabels,
+} from "jsr:@musodojo/music-theory-data";
+
+const absoluteIndex = getNoteColorIndex({
+  midi: 67,
+  mode: "absolute",
+});
+console.log(absoluteIndex);
+// 7, the pitch class G
+
+const relativeIndex = getNoteColorIndex({
+  midi: 69,
+  mode: "relative",
+  rootPitchClass: 2,
+});
+console.log(relativeIndex);
+// 7, A as the fifth above D
+
+console.log(getNoteColorLabels(colorCollections.musoDojoRootAndFifth));
+// ["1", "♭2", "2", "♭3", "3", "4", "♭5", "5", "♭6", "6", "♭7", "7"]
+```
+
+Color values may be hex strings or `null`. A `null` value means there is
+intentionally no semantic color for that pitch or degree; consuming apps should
+choose their own visual fallback through theme or UI settings.
+
+Regular note collection interval arrays remain variable length because chords,
+dyads, arpeggios, and scales have different natural sizes. Helpers that opt into
+`fillChromatic: true` return a fixed 12-slot chromatic tuple.
+
 ## API Documentation
 
 For a full list of all available data, types, and utility functions, please see

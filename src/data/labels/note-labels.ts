@@ -1,5 +1,7 @@
+import type { ChromaticIndex } from "../chromatic.ts";
+
 /** Represents the mathematical zero-indexed pitch class of a root note, where C is 0 and B is 11. */
-export type RootNoteInteger = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
+export type RootNoteInteger = ChromaticIndex;
 
 const _noteLetters = ["C", "D", "E", "F", "G", "A", "B"] as const;
 

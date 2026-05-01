@@ -1,9 +1,10 @@
+import type { ChromaticIndex } from "../data/chromatic.ts";
 import type { Interval } from "../data/labels/note-labels.ts";
 import type { NoteCollectionKey } from "../data/note-collections/mod.ts";
 
 export type CollectionCategory = "note" | "dyad" | "chord" | "scale";
 
-interface NoteCollectionBase {
+interface NoteCollectionBase<TInteger extends number = number> {
   /**
    * The top-level musical category for this collection.
    */
@@ -29,7 +30,7 @@ interface NoteCollectionBase {
    * - For **scales**, this is a pitch class set (0-11) and does not include the octave.
    * - For **notes**, **dyads**, and **chords**, this can include values > 11 to represent extensions (e.g., 14 for a 9th).
    */
-  readonly integers: readonly number[];
+  readonly integers: readonly TInteger[];
   /**
    * An array of tags used for classification and filtering.
    * e.g., ["major", "scale", "heptatonic", "diatonic mode"]
@@ -60,7 +61,8 @@ interface NoteCollectionBase {
 }
 
 /** A scale that can be thought of as a mode of a parent scale (e.g., Ionian, Dorian, Lydian Augmented). */
-export interface ModalScaleCollection extends NoteCollectionBase {
+export interface ModalScaleCollection
+  extends NoteCollectionBase<ChromaticIndex> {
   /**
    * The fundamental classification of the collection. For scales, this is always "scale".
    */
@@ -77,7 +79,8 @@ export interface ModalScaleCollection extends NoteCollectionBase {
 }
 
 /** A scale that is not a mode of another scale in this collection. */
-export interface NonModalScaleCollection extends NoteCollectionBase {
+export interface NonModalScaleCollection
+  extends NoteCollectionBase<ChromaticIndex> {
   readonly category: "scale";
   readonly rotation?: never;
 }
@@ -88,12 +91,12 @@ export interface ChordCollection extends NoteCollectionBase {
   readonly rotation?: never;
 }
 
-export interface DyadCollection extends NoteCollectionBase {
+export interface DyadCollection extends NoteCollectionBase<ChromaticIndex> {
   readonly category: "dyad";
   readonly rotation?: never;
 }
 
-export interface NoteOnlyCollection extends NoteCollectionBase {
+export interface NoteOnlyCollection extends NoteCollectionBase<ChromaticIndex> {
   readonly category: "note";
   readonly rotation?: never;
 }

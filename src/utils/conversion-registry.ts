@@ -35,7 +35,7 @@ export type ConversionFunction<T> = (
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
   options: ConversionRegistryOptions,
-) => (T | undefined)[];
+) => readonly (T | undefined)[];
 
 export interface ConversionRegistryEntry<T> {
   id: string;

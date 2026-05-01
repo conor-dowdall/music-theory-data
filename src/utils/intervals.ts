@@ -12,6 +12,7 @@ import {
   simpleToCompoundIntervalMap,
   simpleToExtensionIntervalMap,
 } from "../data/labels/note-labels.ts";
+import type { ChromaticIndex, ChromaticTuple } from "../data/chromatic.ts";
 import {
   type NoteCollectionKey,
   noteCollections,
@@ -20,8 +21,11 @@ import { noteLabelCollections } from "../data/labels/note-label-collections.ts";
 import { rotateArrayRight } from "./rotate-array.ts";
 import { normalizeAccidentalString } from "./accidentals.ts";
 import { isValidNoteCollectionKey } from "./note-collections.ts";
+import { createChromaticTuple, normalizeChromaticIndex } from "./chromatic.ts";
 
 const INTERVAL_NUMBER_REGEX = /\d+$/;
+
+export type ChromaticIntervalTuple = ChromaticTuple<Interval>;
 
 /**
  * Removes octave intervals (such as "8" or "♮8") from a given list of intervals.
@@ -56,7 +60,7 @@ export function filterOutRootLikeIntervals(
   return intervals.filter((interval) => {
     const semitones = intervalToIntegerMap.get(interval);
     if (semitones === undefined) return true; // keep it if invalid, though shouldn't happen
-    const isRootSlot = semitones % 12 === 0;
+    const isRootSlot = normalizeChromaticIndex(semitones) === 0;
 
     // If it falls on the root slot, we only keep it if it IS the unison
     if (isRootSlot) {
@@ -208,63 +212,71 @@ export type IntervalTransformation =
   | "simpleToCompound"
   | "compoundToSimple";
 
+/** Options shared by sparse and chromatic interval transforms. */
+export interface TransformIntervalsBaseOptions {
+  /**
+   * Transforms intervals between simple, compound, and extended forms.
+   * For example, "simpleToExtension" might change "2" into "9".
+   */
+  intervalTransformation?: IntervalTransformation;
+  /**
+   * Continues to filter out octave intervals (like "8") from the results.
+   * Typically useful for scales where octaves are included by default but not needed for some applications.
+   */
+  filterOutOctave?: boolean;
+  /**
+   * Will sort intervals in ascending order based on their integer value.
+   * If `fillChromatic` is true, sorting is ignored as the array is fixed to the 12 semitones.
+   */
+  shouldSort?: boolean;
+  /**
+   * A fixed number of steps to rotate the array right (positive) or left (negative).
+   * Positive values loop elements at the end of the array to the front.
+   * Negative values loop elements at the front of the array to the end.
+   */
+  rotateRight?: number;
+}
+
+/** Options for transforms that return a fixed 12-slot chromatic interval tuple. */
+export interface FillChromaticTransformIntervalsOptions
+  extends TransformIntervalsBaseOptions {
+  /**
+   * When true, generates a 12-element array representing the chromatic scale (0-11).
+   * Missing semitones are filled with standard flat intervals (like "♭2").
+   * Compound intervals are placed in their respective chromatic slot.
+   */
+  fillChromatic: true;
+  /**
+   * If `fillChromatic` is true, this optionally overlays intervals from a known
+   * note collection (like a major scale) to provide better enharmonic spelling
+   * for the "background" chromatic notes.
+   */
+  mostSimilarScale?: NoteCollectionKey;
+  /**
+   * If provided, allows for absolute rotations (like rotating to C=0).
+   */
+  rootNoteInteger?: ChromaticIndex;
+  /**
+   * Rotates the returned array so that the note corresponding to root C (integer 0)
+   * is positioned at index 0. Has no semantic effect on purely relative intervals.
+   * Only applicable when fillChromatic is true and rootNoteInteger is provided.
+   */
+  rotateToRootInteger0?: boolean;
+}
+
+/** Options for transforms that return only the supplied collection's intervals. */
+export interface SparseTransformIntervalsOptions
+  extends TransformIntervalsBaseOptions {
+  fillChromatic?: false;
+  mostSimilarScale?: never;
+  rootNoteInteger?: never;
+  rotateToRootInteger0?: never;
+}
+
 /** Options for grouping and preprocessing intervals before they are evaluated. */
 export type TransformIntervalsOptions =
-  & {
-    /**
-     * Transforms intervals between simple, compound, and extended forms.
-     * For example, "simpleToExtension" might change "2" into "9".
-     */
-    intervalTransformation?: IntervalTransformation;
-    /**
-     * Continues to filter out octave intervals (like "8") from the results.
-     * Typically useful for scales where octaves are included by default but not needed for some applications.
-     */
-    filterOutOctave?: boolean;
-    /**
-     * Will sort intervals in ascending order based on their integer value.
-     * If `fillChromatic` is true, sorting is ignored as the array is fixed to the 12 semitones.
-     */
-    shouldSort?: boolean;
-    /**
-     * A fixed number of steps to rotate the array right (positive) or left (negative).
-     * Positive values loop elements at the end of the array to the front.
-     * Negative values loop elements at the front of the array to the end.
-     */
-    rotateRight?: number;
-  }
-  & (
-    | {
-      /**
-       * When true, generates a 12-element array representing the chromatic scale (0-11).
-       * Missing semitones are filled with standard flat intervals (like "♭2").
-       * Compound intervals are placed in their respective integer modulo 12 slot.
-       */
-      fillChromatic: true;
-      /**
-       * If `fillChromatic` is true, this optionally overlays intervals from a known
-       * note collection (like a major scale) to provide better enharmonic spelling
-       * for the "background" chromatic notes.
-       */
-      mostSimilarScale?: NoteCollectionKey;
-      /**
-       * If provided, allows for absolute rotations (like rotating to C=0).
-       */
-      rootNoteInteger?: number;
-      /**
-       * Rotates the returned array so that the note corresponding to root C (integer 0)
-       * is positioned at index 0. Has no semantic effect on purely relative intervals.
-       * Only applicable when fillChromatic is true and rootNoteInteger is provided.
-       */
-      rotateToRootInteger0?: boolean;
-    }
-    | {
-      fillChromatic?: false;
-      mostSimilarScale?: never;
-      rootNoteInteger?: never;
-      rotateToRootInteger0?: never;
-    }
-  );
+  | FillChromaticTransformIntervalsOptions
+  | SparseTransformIntervalsOptions;
 
 export type NoteCollectionKeyTransformOptions = Pick<
   TransformIntervalsOptions,
@@ -288,8 +300,16 @@ export type RootAndNoteCollectionKeyTransformOptions = Pick<
 
 export function transformIntervals(
   intervals: readonly Interval[],
+  options: FillChromaticTransformIntervalsOptions,
+): ChromaticIntervalTuple;
+export function transformIntervals(
+  intervals: readonly Interval[],
+  options?: TransformIntervalsOptions,
+): Interval[];
+export function transformIntervals(
+  intervals: readonly Interval[],
   options: TransformIntervalsOptions = {},
-): Interval[] {
+): Interval[] | ChromaticIntervalTuple {
   const {
     intervalTransformation,
     filterOutOctave = false,
@@ -332,7 +352,7 @@ export function transformIntervals(
         filtered.forEach((interval) => {
           const semitones = intervalToIntegerMap.get(interval);
           if (semitones !== undefined) {
-            chromaticMap[semitones % 12] = interval;
+            chromaticMap[normalizeChromaticIndex(semitones)] = interval;
           }
         });
       }
@@ -346,7 +366,7 @@ export function transformIntervals(
     filteredIntervalsForOverlay.forEach((interval) => {
       const semitones = intervalToIntegerMap.get(interval);
       if (semitones !== undefined) {
-        chromaticMap[semitones % 12] = interval;
+        chromaticMap[normalizeChromaticIndex(semitones)] = interval;
       }
     });
 
@@ -362,7 +382,7 @@ export function transformIntervals(
       result = rotateArrayRight(result, rotateRight);
     }
 
-    return result as Interval[];
+    return createChromaticTuple(result);
   }
 
   const transformedIntervals = fundamentalIntervals.map(
@@ -405,8 +425,16 @@ export function getIntervalsForQualities(
  */
 export function getIntervalsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
+  options: NoteCollectionKeyTransformOptions & { fillChromatic: true },
+): ChromaticIntervalTuple;
+export function getIntervalsForNoteCollectionKey(
+  noteCollectionKey: NoteCollectionKey,
+  options?: NoteCollectionKeyTransformOptions,
+): Interval[];
+export function getIntervalsForNoteCollectionKey(
+  noteCollectionKey: NoteCollectionKey,
   options: NoteCollectionKeyTransformOptions = {},
-): Interval[] {
+): Interval[] | ChromaticIntervalTuple {
   if (!isValidNoteCollectionKey(noteCollectionKey)) return [];
 
   const collection = noteCollections[noteCollectionKey];
@@ -435,11 +463,27 @@ export function getIntervalsForNoteCollectionKey(
  */
 export function getExtensionsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
+  options:
+    & Omit<
+      NoteCollectionKeyTransformOptions,
+      "intervalTransformation"
+    >
+    & { fillChromatic: true },
+): ChromaticIntervalTuple;
+export function getExtensionsForNoteCollectionKey(
+  noteCollectionKey: NoteCollectionKey,
+  options?: Omit<
+    NoteCollectionKeyTransformOptions,
+    "intervalTransformation"
+  >,
+): Interval[];
+export function getExtensionsForNoteCollectionKey(
+  noteCollectionKey: NoteCollectionKey,
   options: Omit<
     NoteCollectionKeyTransformOptions,
     "intervalTransformation"
   > = {},
-): Interval[] {
+): Interval[] | ChromaticIntervalTuple {
   return getIntervalsForNoteCollectionKey(noteCollectionKey, {
     filterOutOctave: true,
     ...options,
@@ -457,11 +501,27 @@ export function getExtensionsForNoteCollectionKey(
  */
 export function getCompoundIntervalsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
+  options:
+    & Omit<
+      NoteCollectionKeyTransformOptions,
+      "intervalTransformation"
+    >
+    & { fillChromatic: true },
+): ChromaticIntervalTuple;
+export function getCompoundIntervalsForNoteCollectionKey(
+  noteCollectionKey: NoteCollectionKey,
+  options?: Omit<
+    NoteCollectionKeyTransformOptions,
+    "intervalTransformation"
+  >,
+): Interval[];
+export function getCompoundIntervalsForNoteCollectionKey(
+  noteCollectionKey: NoteCollectionKey,
   options: Omit<
     NoteCollectionKeyTransformOptions,
     "intervalTransformation"
   > = {},
-): Interval[] {
+): Interval[] | ChromaticIntervalTuple {
   return getIntervalsForNoteCollectionKey(noteCollectionKey, {
     filterOutOctave: true,
     ...options,
@@ -481,8 +541,18 @@ export function getCompoundIntervalsForNoteCollectionKey(
 export function getIntervalsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
+  options: RootAndNoteCollectionKeyTransformOptions & { fillChromatic: true },
+): ChromaticIntervalTuple;
+export function getIntervalsForRootAndNoteCollectionKey(
+  rootNote: RootNote,
+  noteCollectionKey: NoteCollectionKey,
+  options?: RootAndNoteCollectionKeyTransformOptions,
+): Interval[];
+export function getIntervalsForRootAndNoteCollectionKey(
+  rootNote: RootNote,
+  noteCollectionKey: NoteCollectionKey,
   options: RootAndNoteCollectionKeyTransformOptions = {},
-): Interval[] {
+): Interval[] | ChromaticIntervalTuple {
   if (!isValidNoteCollectionKey(noteCollectionKey)) return [];
 
   const collection = noteCollections[noteCollectionKey];
@@ -517,11 +587,29 @@ export function getIntervalsForRootAndNoteCollectionKey(
 export function getExtensionsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
+  options:
+    & Omit<
+      RootAndNoteCollectionKeyTransformOptions,
+      "intervalTransformation"
+    >
+    & { fillChromatic: true },
+): ChromaticIntervalTuple;
+export function getExtensionsForRootAndNoteCollectionKey(
+  rootNote: RootNote,
+  noteCollectionKey: NoteCollectionKey,
+  options?: Omit<
+    RootAndNoteCollectionKeyTransformOptions,
+    "intervalTransformation"
+  >,
+): Interval[];
+export function getExtensionsForRootAndNoteCollectionKey(
+  rootNote: RootNote,
+  noteCollectionKey: NoteCollectionKey,
   options: Omit<
     RootAndNoteCollectionKeyTransformOptions,
     "intervalTransformation"
   > = {},
-): Interval[] {
+): Interval[] | ChromaticIntervalTuple {
   return getIntervalsForRootAndNoteCollectionKey(rootNote, noteCollectionKey, {
     filterOutOctave: true,
     ...options,
@@ -541,11 +629,29 @@ export function getExtensionsForRootAndNoteCollectionKey(
 export function getCompoundIntervalsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
+  options:
+    & Omit<
+      RootAndNoteCollectionKeyTransformOptions,
+      "intervalTransformation"
+    >
+    & { fillChromatic: true },
+): ChromaticIntervalTuple;
+export function getCompoundIntervalsForRootAndNoteCollectionKey(
+  rootNote: RootNote,
+  noteCollectionKey: NoteCollectionKey,
+  options?: Omit<
+    RootAndNoteCollectionKeyTransformOptions,
+    "intervalTransformation"
+  >,
+): Interval[];
+export function getCompoundIntervalsForRootAndNoteCollectionKey(
+  rootNote: RootNote,
+  noteCollectionKey: NoteCollectionKey,
   options: Omit<
     RootAndNoteCollectionKeyTransformOptions,
     "intervalTransformation"
   > = {},
-): Interval[] {
+): Interval[] | ChromaticIntervalTuple {
   return getIntervalsForRootAndNoteCollectionKey(rootNote, noteCollectionKey, {
     filterOutOctave: true,
     ...options,
