@@ -177,12 +177,12 @@ console.log(Object.keys(music_theory_data.groupedNoteCollections));
 // ["diatonicModes", "pentatonicVariants", ...]
 
 // Get a chord progression
-const dooWop = music_theory_data.chordProgressions.dooWop;
+const oneSixFourFive = music_theory_data.chordProgressions.oneSixFourFive;
 
-console.log(dooWop.primaryName);
-// "I vi IV V"
+console.log(oneSixFourFive.primaryName);
+// "I | vi | IV | V"
 
-console.log(dooWop.chords);
+console.log(oneSixFourFive.chords);
 // [
 //   { degree: "1", quality: "M", durationInBars: 1 },
 //   { degree: "6", quality: "m", durationInBars: 1 },
@@ -193,7 +193,7 @@ console.log(dooWop.chords);
 console.log(
   music_theory_data.getChordProgressionPaletteChordNames(
     "C",
-    "dooWop",
+    "oneSixFourFive",
   ),
 );
 // ["CM", "Am", "FM", "GM"]

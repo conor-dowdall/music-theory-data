@@ -16,7 +16,7 @@ function chord(
 }
 
 const oneOneFiveFive: ChordProgression = {
-  primaryName: "I I V V",
+  primaryName: "I | I | V | V",
   chords: [
     chord("1", "M", 2),
     chord("5", "M", 2),
@@ -24,7 +24,7 @@ const oneOneFiveFive: ChordProgression = {
 };
 
 const oneOneFiveFiveDominant7: ChordProgression = {
-  primaryName: "I I V V7",
+  primaryName: "I | I | V | V7",
   chords: [
     chord("1", "M", 2),
     chord("5", "M", 1),
@@ -33,7 +33,7 @@ const oneOneFiveFiveDominant7: ChordProgression = {
 };
 
 const oneOneFourFour: ChordProgression = {
-  primaryName: "I I IV IV",
+  primaryName: "I | I | IV | IV",
   chords: [
     chord("1", "M", 2),
     chord("4", "M", 2),
@@ -41,7 +41,7 @@ const oneOneFourFour: ChordProgression = {
 };
 
 const oneOneFourFive: ChordProgression = {
-  primaryName: "I I IV V",
+  primaryName: "I | I | IV | V",
   chords: [
     chord("1", "M", 2),
     chord("4", "M", 1),
@@ -50,7 +50,7 @@ const oneOneFourFive: ChordProgression = {
 };
 
 const oneFourOneFive: ChordProgression = {
-  primaryName: "I IV I V",
+  primaryName: "I | IV | I | V",
   chords: [
     chord("1", "M", 1),
     chord("4", "M", 1),
@@ -59,8 +59,8 @@ const oneFourOneFive: ChordProgression = {
   ],
 };
 
-const dooWop: ChordProgression = {
-  primaryName: "I vi IV V",
+const oneSixFourFive: ChordProgression = {
+  primaryName: "I | vi | IV | V",
   chords: [
     chord("1", "M", 1),
     chord("6", "m", 1),
@@ -69,8 +69,8 @@ const dooWop: ChordProgression = {
   ],
 };
 
-const axisProgression: ChordProgression = {
-  primaryName: "I V vi IV",
+const oneFiveSixFour: ChordProgression = {
+  primaryName: "I | V | vi | IV",
   chords: [
     chord("1", "M", 1),
     chord("5", "M", 1),
@@ -80,7 +80,7 @@ const axisProgression: ChordProgression = {
 };
 
 const majorTwoFiveOne: ChordProgression = {
-  primaryName: "ii V I",
+  primaryName: "ii7 | V7 | Imaj7 | Imaj7",
   chords: [
     chord("2", "m7", 1),
     chord("5", "7", 1),
@@ -89,7 +89,7 @@ const majorTwoFiveOne: ChordProgression = {
 };
 
 const minorTwoFiveOne: ChordProgression = {
-  primaryName: "iiø V i",
+  primaryName: "iiø7 | V7 | i | i",
   chords: [
     chord("2", "ø7", 1),
     chord("5", "7", 1),
@@ -98,7 +98,7 @@ const minorTwoFiveOne: ChordProgression = {
 };
 
 const oneFourOneFiveSplitReturn: ChordProgression = {
-  primaryName: "I IV I V / I IV [I V] I",
+  primaryName: "I | IV | I | V | I | IV | I / V | I",
   chords: [
     chord("1", "M", 1),
     chord("4", "M", 1),
@@ -113,7 +113,7 @@ const oneFourOneFiveSplitReturn: ChordProgression = {
 };
 
 const twelveBarBlues: ChordProgression = {
-  primaryName: "12 Bar Blues",
+  primaryName: "I7 | I7 | I7 | I7 | IV7 | IV7 | I7 | I7 | V7 | IV7 | I7 | V7",
   chords: [
     chord("1", "7", 4),
     chord("4", "7", 2),
@@ -131,8 +131,8 @@ const _chordProgressions = {
   oneOneFourFour,
   oneOneFourFive,
   oneFourOneFive,
-  dooWop,
-  axisProgression,
+  oneSixFourFive,
+  oneFiveSixFour,
   majorTwoFiveOne,
   minorTwoFiveOne,
   oneFourOneFiveSplitReturn,

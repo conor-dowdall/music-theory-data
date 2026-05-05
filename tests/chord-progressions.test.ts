@@ -5,8 +5,6 @@ import {
   getChordQualityNoteCollectionKey,
 } from "../src/data/chords/mod.ts";
 import {
-  findChordProgression,
-  findChordProgressionEntry,
   getChordProgressionChordTimeline,
   getChordProgressionDegreeNames,
   getChordProgressionDurationGroups,
@@ -18,12 +16,11 @@ import {
   getChordProgressionTotalDurationInBars,
   getRomanNumeralForIntervalAndChordQuality,
   isValidChordProgressionKey,
-  searchChordProgressionEntries,
-  searchChordProgressions,
 } from "../src/utils/chord-progressions.ts";
 
 Deno.test("progression key validation reflects the current dataset", () => {
-  assertEquals(isValidChordProgressionKey("dooWop"), true);
+  assertEquals(isValidChordProgressionKey("oneSixFourFive"), true);
+  assertEquals(isValidChordProgressionKey("oneFiveSixFour"), true);
   assertEquals(isValidChordProgressionKey("oneOneFiveFiveDominant7"), true);
   assertEquals(isValidChordProgressionKey("oneFourOneFiveSplitReturn"), true);
   assertEquals(isValidChordProgressionKey("rhythmChanges"), false);
@@ -31,8 +28,8 @@ Deno.test("progression key validation reflects the current dataset", () => {
 });
 
 Deno.test("progression exports are available directly", () => {
-  assertEquals(chordProgressions.oneOneFourFive.primaryName, "I I IV V");
-  assertEquals(chordProgressions.dooWop.primaryName, "I vi IV V");
+  assertEquals(chordProgressions.oneOneFourFive.primaryName, "I | I | IV | V");
+  assertEquals(chordProgressions.oneSixFourFive.primaryName, "I | vi | IV | V");
   assertEquals(chordProgressions.oneFourOneFiveSplitReturn.chords, [
     { degree: "1", quality: "M", durationInBars: 1 },
     { degree: "4", quality: "M", durationInBars: 1 },
@@ -59,49 +56,6 @@ Deno.test("canonical note collection keys still resolve from chord quality", () 
   assertEquals(getChordQualityNoteCollectionKey("+M7"), "augmentedMajor7");
   assertEquals(getChordQualityNoteCollectionKey("M7♯5"), "augmentedMajor7");
   assertEquals(chordQualityNoteCollectionKeys["°7"], "diminished7");
-});
-
-Deno.test("progression search supports text lookup and structural filters", () => {
-  assertEquals(
-    searchChordProgressions({ query: "ii v i" })[0],
-    chordProgressions.majorTwoFiveOne,
-  );
-  assertEquals(
-    findChordProgression({ query: "doo wop" }),
-    chordProgressions.dooWop,
-  );
-  assertEquals(
-    searchChordProgressions({ query: "I IV V" })[0],
-    chordProgressions.oneOneFourFive,
-  );
-  assertEquals(
-    searchChordProgressions({ query: "12 bar blues" })[0],
-    chordProgressions.twelveBarBlues,
-  );
-  assertEquals(
-    searchChordProgressions({ query: "axis progression" })[0],
-    chordProgressions.axisProgression,
-  );
-  assertEquals(
-    searchChordProgressions({ totalDurationInBars: 8 }),
-    [chordProgressions.oneFourOneFiveSplitReturn],
-  );
-  assertEquals(
-    searchChordProgressionEntries({ totalDurationInBars: 8 }),
-    [
-      {
-        key: "oneFourOneFiveSplitReturn",
-        progression: chordProgressions.oneFourOneFiveSplitReturn,
-      },
-    ],
-  );
-  assertEquals(
-    findChordProgressionEntry({ query: "doo wop" }),
-    {
-      key: "dooWop",
-      progression: chordProgressions.dooWop,
-    },
-  );
 });
 
 Deno.test("progression entry and duration groups support downstream UI", () => {
@@ -134,10 +88,13 @@ Deno.test("progression entry and duration groups support downstream UI", () => {
           key: "oneFourOneFive",
           progression: chordProgressions.oneFourOneFive,
         },
-        { key: "dooWop", progression: chordProgressions.dooWop },
         {
-          key: "axisProgression",
-          progression: chordProgressions.axisProgression,
+          key: "oneSixFourFive",
+          progression: chordProgressions.oneSixFourFive,
+        },
+        {
+          key: "oneFiveSixFour",
+          progression: chordProgressions.oneFiveSixFour,
         },
         {
           key: "majorTwoFiveOne",
@@ -170,6 +127,15 @@ Deno.test("progression entry and duration groups support downstream UI", () => {
       ],
     },
   ]);
+  assertEquals(
+    getChordProgressionDurationGroups()[1].progressions,
+    [
+      {
+        key: "oneFourOneFiveSplitReturn",
+        progression: chordProgressions.oneFourOneFiveSplitReturn,
+      },
+    ],
+  );
 });
 
 Deno.test("progression helpers expose harmonic identity from chords", () => {

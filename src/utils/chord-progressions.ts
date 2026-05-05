@@ -16,11 +16,6 @@ import { getNoteNamesForRootAndIntervals } from "./note-names.ts";
 
 const INTERVAL_REGEX = /^([𝄫♭♮♯𝄪]*)([1-7])$/;
 
-export interface ChordProgressionSearchOptions {
-  query?: string;
-  totalDurationInBars?: number;
-}
-
 export interface ChordProgressionEntry {
   readonly key: ChordProgressionKey;
   readonly progression: ChordProgression;
@@ -45,25 +40,6 @@ export function isValidChordProgressionKey(
   return Object.prototype.hasOwnProperty.call(chordProgressions, key);
 }
 
-function normalizeSearchTerm(str: string): string {
-  return str
-    .trim()
-    .replace(/[-/()[\],]/g, " ")
-    .replace(/\s+/g, " ")
-    .toLowerCase();
-}
-
-function humanizeIdentifier(identifier: string): string {
-  return identifier
-    .replace(/([a-z])([A-Z0-9])/g, "$1 $2")
-    .replace(/([0-9])([A-Z])/g, "$1 $2");
-}
-
-function getSearchTokens(str: string): string[] {
-  const normalized = normalizeSearchTerm(str);
-  return normalized ? normalized.split(" ") : [];
-}
-
 function getRomanNumeralNamesForChords(
   chords: readonly Pick<ChordProgressionChord, "degree" | "quality">[],
 ): string[] {
@@ -82,121 +58,17 @@ function getDegreeNamesForChords(
   return chords.map((chord) => chord.degree + chord.quality);
 }
 
-function getSearchableProgressionText(
-  key: ChordProgressionKey,
-  progression: ChordProgression,
-): string {
-  const totalDurationInBars = progression.chords.reduce(
-    (total, chord) => total + chord.durationInBars,
-    0,
-  );
-
-  return [
-    key,
-    humanizeIdentifier(key),
-    progression.primaryName,
-    ...getDegreeNamesForChords(progression.chords),
-    ...getRomanNumeralNamesForChords(progression.chords),
-    `${totalDurationInBars} bar`,
-  ]
-    .map(normalizeSearchTerm)
-    .join(" ");
-}
-
-function getChordProgressionEntriesInternal(): ChordProgressionEntry[] {
+export function getChordProgressionEntries(): ChordProgressionEntry[] {
   return Object.entries(chordProgressions).map(([key, progression]) => ({
     key: key as ChordProgressionKey,
     progression,
   }));
 }
 
-function applyTextSearch<T>(
-  items: readonly T[],
-  query: string | undefined,
-  getSearchableText: (item: T) => string,
-  getPrimaryName: (item: T) => string,
-): T[] {
-  if (!query) return [...items];
-
-  const normalizedQuery = normalizeSearchTerm(query);
-  if (!normalizedQuery) return [...items];
-
-  const queryWords = getSearchTokens(normalizedQuery);
-  const filtered = items.filter((item) => {
-    const searchableTokens = getSearchTokens(getSearchableText(item));
-    return queryWords.every((word) =>
-      searchableTokens.some((token) => token.startsWith(word))
-    );
-  });
-
-  const prioritized = new Set<T>();
-  const passes = [
-    (item: T) => normalizeSearchTerm(getPrimaryName(item)) === normalizedQuery,
-    (item: T) =>
-      normalizeSearchTerm(getPrimaryName(item)).startsWith(normalizedQuery),
-  ];
-
-  for (const pass of passes) {
-    for (const item of filtered) {
-      if (pass(item)) prioritized.add(item);
-    }
-  }
-
-  for (const item of filtered) {
-    prioritized.add(item);
-  }
-
-  return Array.from(prioritized);
-}
-
-export function searchChordProgressions(
-  options: ChordProgressionSearchOptions = {},
-): ChordProgression[] {
-  return searchChordProgressionEntries(options).map((entry) =>
-    entry.progression
-  );
-}
-
-export function findChordProgression(
-  options: ChordProgressionSearchOptions = {},
-): ChordProgression | undefined {
-  return findChordProgressionEntry(options)?.progression;
-}
-
-export function getChordProgressionEntries(): ChordProgressionEntry[] {
-  return getChordProgressionEntriesInternal();
-}
-
-export function searchChordProgressionEntries(
-  options: ChordProgressionSearchOptions = {},
-): ChordProgressionEntry[] {
-  let filtered = getChordProgressionEntriesInternal();
-
-  if (options.totalDurationInBars !== undefined) {
-    filtered = filtered.filter(({ progression }) =>
-      getChordProgressionTotalDurationInBars(progression) ===
-        options.totalDurationInBars
-    );
-  }
-
-  return applyTextSearch(
-    filtered,
-    options.query,
-    (entry) => getSearchableProgressionText(entry.key, entry.progression),
-    (entry) => entry.progression.primaryName,
-  );
-}
-
-export function findChordProgressionEntry(
-  options: ChordProgressionSearchOptions = {},
-): ChordProgressionEntry | undefined {
-  return searchChordProgressionEntries(options)[0];
-}
-
 export function getChordProgressionDurationGroups(): ChordProgressionDurationGroup[] {
   const groups = new Map<number, ChordProgressionEntry[]>();
 
-  for (const entry of getChordProgressionEntriesInternal()) {
+  for (const entry of getChordProgressionEntries()) {
     const totalDurationInBars = getChordProgressionTotalDurationInBars(
       entry.progression,
     );
