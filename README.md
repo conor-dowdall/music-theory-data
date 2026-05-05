@@ -177,21 +177,37 @@ console.log(Object.keys(music_theory_data.noteCollections));
 console.log(Object.keys(music_theory_data.groupedNoteCollections));
 // ["diatonicModes", "pentatonicVariants", ...]
 
-// Get a beginner-friendly chord progression template
-const oneFourFive = music_theory_data.chordProgressionTemplates.oneFourFive;
+// Get an abstract chord progression family
+const oneFourFive = music_theory_data.chordProgressionFamilies.oneFourFiveMajor;
 
 console.log(oneFourFive.primaryName);
-// "One Four Five"
+// "I-IV-V foundation"
 
 console.log(
-  music_theory_data.getChordProgressionTemplateRomanNames("oneFourFive"),
+  music_theory_data.getChordProgressionFamilyRomanNames("oneFourFiveMajor"),
 );
 // ["I", "IV", "V"]
 
+// Get a concrete playable realization and the deduped workspace chord palette
+const dooWop = music_theory_data.chordProgressionRealizations.dooWopLoopBasic;
+
+console.log(dooWop.primaryName);
+// "Doo-wop loop"
+
 console.log(
-  music_theory_data.getChordProgressionTemplateChordNames("C", "oneFourFive"),
+  music_theory_data.getChordProgressionRealizationPaletteChordNames(
+    "C",
+    "dooWopLoopBasic",
+  ),
 );
-// ["CM", "FM", "GM"]
+// ["CM", "Am", "FM", "GM"]
+
+console.log(
+  music_theory_data.getChordProgressionRealizationTotalBars(
+    "twelveBarBluesBasic",
+  ),
+);
+// 12
 ```
 
 ## Note Colors And Chromatic Indexes

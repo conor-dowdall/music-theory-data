@@ -1,230 +1,286 @@
 import { assertEquals } from "@std/assert";
 import {
+  chordProgressionFamilies,
+  chordProgressionForms,
+  chordProgressionIdiomMetadata,
+  chordProgressionPedagogyLevelMetadata,
+  chordProgressionRealizations,
   chordProgressionStepNoteCollectionKeys,
-  chordProgressionTemplateCategoryMetadata,
-  chordProgressionTemplateGroupsMetadata,
-  chordProgressionTemplates,
-  chordProgressionTemplateTypeMetadata,
-  groupedChordProgressionTemplates,
+  chordProgressionTonalContextMetadata,
+  chordProgressionUsageMetadata,
+  curatedChordProgressionCollections,
+  getChordProgressionStepNoteCollectionKey,
 } from "../src/data/chord-progressions/mod.ts";
 import {
-  findChordProgressionTemplate,
-  getChordProgressionTemplateChordNames,
-  getChordProgressionTemplateDegreeNames,
-  getChordProgressionTemplateRomanNames,
+  findChordProgressionFamily,
+  findChordProgressionRealization,
+  findCuratedChordProgressionCollection,
+  getChordProgressionFamilyDegreeNames,
+  getChordProgressionFamilyForRealization,
+  getChordProgressionFamilyRomanNames,
+  getChordProgressionFormForRealization,
+  getChordProgressionFormTotalBars,
+  getChordProgressionRealizationChordTimeline,
+  getChordProgressionRealizationDegreeNames,
+  getChordProgressionRealizationNoteCollectionKeys,
+  getChordProgressionRealizationPaletteChordNames,
+  getChordProgressionRealizationRomanNames,
+  getChordProgressionRealizationsForCuratedCollection,
+  getChordProgressionRealizationTimeline,
+  getChordProgressionRealizationTotalBars,
   getRomanNumeralForIntervalAndChordQuality,
-  isValidChordProgressionTemplateKey,
-  searchChordProgressionTemplates,
+  isValidChordProgressionCuratedCollectionKey,
+  isValidChordProgressionFamilyKey,
+  isValidChordProgressionFormKey,
+  isValidChordProgressionRealizationKey,
+  searchChordProgressionFamilies,
+  searchChordProgressionForms,
+  searchChordProgressionRealizations,
+  searchCuratedChordProgressionCollections,
 } from "../src/utils/chord-progressions.ts";
 
-Deno.test("isValidChordProgressionTemplateKey", () => {
-  assertEquals(isValidChordProgressionTemplateKey("oneFourFive"), true);
-  assertEquals(isValidChordProgressionTemplateKey("oneFive"), true);
-  assertEquals(isValidChordProgressionTemplateKey("oneFour"), true);
-  assertEquals(isValidChordProgressionTemplateKey("oneOneFiveFive"), true);
-  assertEquals(isValidChordProgressionTemplateKey("oneOneFiveFiveSeven"), true);
-  assertEquals(isValidChordProgressionTemplateKey("oneFourOneFive"), true);
-  assertEquals(isValidChordProgressionTemplateKey("twoFiveOneMajor"), true);
-  assertEquals(isValidChordProgressionTemplateKey("rhythmChanges"), true);
-  assertEquals(isValidChordProgressionTemplateKey("jazzBluesBasic"), true);
-  assertEquals(isValidChordProgressionTemplateKey("ionian"), false);
-  assertEquals(isValidChordProgressionTemplateKey(""), false);
-});
-
-Deno.test("chord progression template exports", () => {
+Deno.test("progression key validation reflects the new split datasets", () => {
+  assertEquals(isValidChordProgressionFamilyKey("oneFourFiveMajor"), true);
   assertEquals(
-    chordProgressionTemplates.oneFourFive.primaryName,
-    "I IV V",
-  );
-  assertEquals(
-    groupedChordProgressionTemplates.basicChordProgressionTemplates.oneFourFive,
-    chordProgressionTemplates.oneFourFive,
-  );
-  assertEquals(
-    groupedChordProgressionTemplates.basicChordProgressionTemplates.oneFive,
-    chordProgressionTemplates.oneFive,
-  );
-  assertEquals(chordProgressionTemplates.oneFourFive.templateType, "formula");
-  assertEquals(chordProgressionTemplates.oneFive.templateType, "formula");
-  assertEquals(chordProgressionTemplates.oneOneFiveFive.templateType, "loop");
-  assertEquals(chordProgressionTemplates.twelveBarBlues.templateType, "form");
-  assertEquals(
-    groupedChordProgressionTemplates.jazzChordProgressionTemplates
-      .rhythmChanges.sections.map((section) => section.name),
-    ["A1", "A2", "B", "A3"],
-  );
-});
-
-Deno.test("chord progression template metadata matches exported groups", () => {
-  assertEquals(
-    Object.keys(chordProgressionTemplateGroupsMetadata),
-    Object.keys(groupedChordProgressionTemplates),
-  );
-  assertEquals(
-    chordProgressionTemplateCategoryMetadata.basic.displayName,
-    "Basic",
-  );
-  assertEquals(
-    chordProgressionTemplateCategoryMetadata.jazz.displayName,
-    "Jazz",
-  );
-  assertEquals(chordProgressionTemplateTypeMetadata.form.displayName, "Form");
-  assertEquals(chordProgressionTemplateTypeMetadata.loop.displayName, "Loop");
-});
-
-Deno.test("chord progression steps use canonical chord collection keys", () => {
-  for (const template of Object.values(chordProgressionTemplates)) {
-    for (const section of template.sections) {
-      for (const step of section.chords) {
-        assertEquals(
-          step.noteCollectionKey,
-          chordProgressionStepNoteCollectionKeys[step.quality],
-        );
-      }
-    }
-  }
-});
-
-Deno.test("searchChordProgressionTemplates - by query and category", () => {
-  assertEquals(
-    searchChordProgressionTemplates({ query: "I IV V" })[0],
-    chordProgressionTemplates.oneFourFive,
-  );
-  assertEquals(
-    searchChordProgressionTemplates({ query: "1 4 5" })[0],
-    chordProgressionTemplates.oneFourFive,
-  );
-  assertEquals(
-    searchChordProgressionTemplates({ query: "one five" })[0],
-    chordProgressionTemplates.oneFive,
-  );
-  assertEquals(
-    searchChordProgressionTemplates({ query: "two five one" })[0],
-    chordProgressionTemplates.twoFiveOneMajor,
-  );
-  assertEquals(
-    findChordProgressionTemplate({ query: "jazz blues" }),
-    chordProgressionTemplates.jazzBluesBasic,
-  );
-
-  const jazzTemplates = searchChordProgressionTemplates({ category: "jazz" });
-  assertEquals(
-    jazzTemplates.includes(chordProgressionTemplates.twoFiveOneMajor),
+    isValidChordProgressionRealizationKey("rhythmChangesBasicAaba"),
     true,
   );
+  assertEquals(isValidChordProgressionFormKey("aaba32"), true);
   assertEquals(
-    jazzTemplates.includes(chordProgressionTemplates.oneFourFive),
-    false,
+    isValidChordProgressionCuratedCollectionKey("firstPlayableLoops"),
+    true,
+  );
+  assertEquals(isValidChordProgressionFamilyKey("oneFourFive"), false);
+  assertEquals(isValidChordProgressionRealizationKey("ionian"), false);
+});
+
+Deno.test("facet metadata exports cover the new classification model", () => {
+  assertEquals(
+    chordProgressionIdiomMetadata["pop-rock"].displayName,
+    "Pop / Rock",
+  );
+  assertEquals(
+    chordProgressionTonalContextMetadata["dominant-blues"].displayName,
+    "Dominant Blues",
+  );
+  assertEquals(
+    chordProgressionPedagogyLevelMetadata["early-intermediate"].displayName,
+    "Early Intermediate",
+  );
+  assertEquals(
+    chordProgressionUsageMetadata["ear-training"].displayName,
+    "Ear Training",
+  );
+});
+
+Deno.test("family, form, and curated exports are available directly", () => {
+  assertEquals(
+    chordProgressionFamilies.oneFourFiveMajor.primaryName,
+    "I-IV-V foundation",
+  );
+  assertEquals(
+    chordProgressionForms.aaba32.sections.map((section) => section.label),
+    [
+      "A1",
+      "A2",
+      "B",
+      "A3",
+    ],
+  );
+  assertEquals(
+    curatedChordProgressionCollections.songwriterCoreLoops.realizationIds,
+    ["oneFourOneFiveLoopBasic", "dooWopLoopBasic", "axisLoopBasic"],
+  );
+});
+
+Deno.test("canonical note collection keys still resolve from chord quality", () => {
+  assertEquals(getChordProgressionStepNoteCollectionKey("M"), "major");
+  assertEquals(getChordProgressionStepNoteCollectionKey("7"), "dominant7");
+  assertEquals(
+    getChordProgressionStepNoteCollectionKey("ø7"),
+    "halfDiminished7",
+  );
+  assertEquals(chordProgressionStepNoteCollectionKeys["°7"], "diminished7");
+});
+
+Deno.test("family search supports query and facet filters", () => {
+  assertEquals(
+    searchChordProgressionFamilies({ query: "ii v i" })[0],
+    chordProgressionFamilies.majorTwoFiveOne,
+  );
+  assertEquals(
+    findChordProgressionFamily({ query: "nostalgic relative minor pop" }),
+    chordProgressionFamilies.dooWop,
   );
 
-  const loopTemplates = searchChordProgressionTemplates({
-    templateType: "loop",
+  const bluesFamilies = searchChordProgressionFamilies({
+    idiom: "blues",
+    tonalContext: "dominant-blues",
   });
   assertEquals(
-    loopTemplates.includes(chordProgressionTemplates.oneOneFiveFive),
+    bluesFamilies.includes(chordProgressionFamilies.twelveBarBlues),
     true,
   );
   assertEquals(
-    loopTemplates.includes(chordProgressionTemplates.oneOneFiveFiveSeven),
-    true,
-  );
-  assertEquals(
-    loopTemplates.includes(chordProgressionTemplates.oneFourOneFive),
-    true,
-  );
-  assertEquals(
-    loopTemplates.includes(chordProgressionTemplates.oneFourFive),
+    bluesFamilies.includes(chordProgressionFamilies.axisProgression),
     false,
   );
-
-  const formTemplates = searchChordProgressionTemplates({
-    templateType: "form",
-  });
-  assertEquals(
-    formTemplates.includes(chordProgressionTemplates.rhythmChanges),
-    true,
-  );
-  assertEquals(formTemplates.includes(chordProgressionTemplates.dooWop), false);
 });
 
-Deno.test("chord progression template render helpers", () => {
-  assertEquals(getChordProgressionTemplateDegreeNames("oneFive"), [
-    "1M",
-    "5M",
+Deno.test("realization search supports family, form, idiom, and text lookups", () => {
+  assertEquals(
+    searchChordProgressionRealizations({ query: "quick change blues" })[0],
+    chordProgressionRealizations.twelveBarBluesQuickChange,
+  );
+  assertEquals(
+    findChordProgressionRealization({
+      query: "dominant seventh resolution setup",
+    }),
+    chordProgressionRealizations.tonicDominantLoopWithV7,
+  );
+
+  const popLoops = searchChordProgressionRealizations({
+    idiom: "pop-rock",
+    formId: "fourBarLoop",
+  });
+  assertEquals(
+    popLoops.includes(chordProgressionRealizations.axisLoopBasic),
+    true,
+  );
+  assertEquals(
+    popLoops.includes(chordProgressionRealizations.majorTwoFiveOneBasic),
+    false,
+  );
+  assertEquals(
+    popLoops.includes(chordProgressionRealizations.oneFourLiftLoopBasic),
+    true,
+  );
+
+  const aabaEntries = searchChordProgressionRealizations({ formId: "aaba32" });
+  assertEquals(aabaEntries, [
+    chordProgressionRealizations.rhythmChangesBasicAaba,
   ]);
-  assertEquals(getChordProgressionTemplateRomanNames("oneFour"), [
-    "I",
-    "IV",
-  ]);
-  assertEquals(getChordProgressionTemplateDegreeNames("oneFourFive"), [
+});
+
+Deno.test("form and curated collection search stay useful for downstream UI", () => {
+  assertEquals(
+    searchChordProgressionForms({ query: "32 bar aaba" })[0],
+    chordProgressionForms.aaba32,
+  );
+  assertEquals(
+    searchCuratedChordProgressionCollections({ query: "songwriting loops" })[0],
+    curatedChordProgressionCollections.songwriterCoreLoops,
+  );
+  assertEquals(
+    findCuratedChordProgressionCollection({ realizationId: "jazzBluesBasic" }),
+    curatedChordProgressionCollections.bluesFoundations,
+  );
+});
+
+Deno.test("family helpers expose the abstract harmonic identity", () => {
+  assertEquals(getChordProgressionFamilyDegreeNames("oneFourFiveMajor"), [
     "1M",
     "4M",
     "5M",
   ]);
-  assertEquals(getChordProgressionTemplateRomanNames("oneFourFive"), [
+  assertEquals(getChordProgressionFamilyRomanNames("oneFourFiveMajor"), [
     "I",
     "IV",
     "V",
   ]);
-  assertEquals(getChordProgressionTemplateChordNames("C", "oneFourFive"), [
-    "CM",
-    "FM",
-    "GM",
-  ]);
-});
-
-Deno.test("chord progression template render helpers - playable loops", () => {
-  assertEquals(getChordProgressionTemplateRomanNames("oneFourOneFive"), [
-    "I",
-    "IV",
-    "I",
-    "V",
-  ]);
-  assertEquals(getChordProgressionTemplateChordNames("D", "oneFourOneFive"), [
-    "DM",
-    "GM",
-    "DM",
-    "AM",
-  ]);
-  assertEquals(getChordProgressionTemplateRomanNames("oneOneFiveFive"), [
-    "I",
-    "I",
-    "V",
-    "V",
-  ]);
-  assertEquals(getChordProgressionTemplateRomanNames("oneOneFiveFiveSeven"), [
-    "I",
-    "I",
-    "V",
-    "V7",
-  ]);
-  assertEquals(
-    getChordProgressionTemplateChordNames("G", "oneOneFiveFiveSeven"),
-    [
-      "GM",
-      "GM",
-      "DM",
-      "D7",
-    ],
-  );
-});
-
-Deno.test("chord progression template render helpers - seventh chords", () => {
-  assertEquals(getChordProgressionTemplateDegreeNames("twoFiveOneMajor"), [
-    "2m7",
-    "57",
-    "1M7",
-  ]);
-  assertEquals(getChordProgressionTemplateRomanNames("twoFiveOneMajor"), [
+  assertEquals(getChordProgressionFamilyRomanNames("majorTwoFiveOne"), [
     "iim7",
     "V7",
     "IM7",
   ]);
-  assertEquals(getChordProgressionTemplateChordNames("B♭", "twoFiveOneMajor"), [
-    "Cm7",
-    "F7",
-    "B♭M7",
+});
+
+Deno.test("realization helpers expose timeline, palette, and note collection views", () => {
+  assertEquals(
+    getChordProgressionRealizationDegreeNames("twelveBarBluesBasic"),
+    ["17", "47", "17", "57", "47", "17", "57"],
+  );
+  assertEquals(
+    getChordProgressionRealizationRomanNames("twelveBarBluesQuickChange"),
+    ["I7", "IV7", "I7", "IV7", "I7", "V7", "IV7", "I7", "V7"],
+  );
+
+  const bluesTimeline = getChordProgressionRealizationTimeline(
+    "twelveBarBluesBasic",
+  );
+  assertEquals(bluesTimeline.length, 7);
+  assertEquals(bluesTimeline[0], {
+    degree: "1",
+    quality: "7",
+    bars: 4,
+    harmonicFunction: "tonic",
+    cue: undefined,
+    sectionId: "main",
+    sectionLabel: "Main",
+    startBar: 1,
+    endBar: 5,
+  });
+  assertEquals(
+    getChordProgressionRealizationTotalBars("twelveBarBluesBasic"),
+    12,
+  );
+  assertEquals(
+    getChordProgressionRealizationTotalBars("majorTwoFiveOneBasic"),
+    4,
+  );
+
+  const oneLoopTimeline = getChordProgressionRealizationChordTimeline(
+    "G",
+    "tonicDominantLoopWithV7",
+  );
+  assertEquals(oneLoopTimeline.map((span) => span.chordName), [
+    "GM",
+    "DM",
+    "D7",
   ]);
+  assertEquals(
+    getChordProgressionRealizationPaletteChordNames(
+      "G",
+      "tonicDominantLoopWithV7",
+    ),
+    ["GM", "DM", "D7"],
+  );
+  assertEquals(
+    getChordProgressionRealizationNoteCollectionKeys("tonicDominantLoopWithV7"),
+    ["major", "major", "dominant7"],
+  );
+});
+
+Deno.test("realizations stay linked to their abstract family and optional form", () => {
+  assertEquals(
+    getChordProgressionFamilyForRealization("rhythmChangesBasicAaba"),
+    chordProgressionFamilies.rhythmChanges,
+  );
+  assertEquals(
+    getChordProgressionFamilyForRealization("tonicDominantLoopBasic"),
+    chordProgressionFamilies.oneFiveMajor,
+  );
+  assertEquals(
+    getChordProgressionFormForRealization("rhythmChangesBasicAaba"),
+    chordProgressionForms.aaba32,
+  );
+  assertEquals(getChordProgressionFormTotalBars("aaba32"), 32);
+});
+
+Deno.test("curated collections resolve to concrete playable realizations", () => {
+  assertEquals(
+    getChordProgressionRealizationsForCuratedCollection("firstPlayableLoops")
+      .map((realization) => realization.id),
+    [
+      "tonicDominantLoopBasic",
+      "tonicDominantLoopWithV7",
+      "oneFourLiftLoopBasic",
+      "oneFourFiveStarterLoop",
+      "oneFourOneFiveLoopBasic",
+      "dooWopLoopBasic",
+      "axisLoopBasic",
+    ],
+  );
 });
 
 Deno.test("getRomanNumeralForIntervalAndChordQuality", () => {
@@ -232,99 +288,4 @@ Deno.test("getRomanNumeralForIntervalAndChordQuality", () => {
   assertEquals(getRomanNumeralForIntervalAndChordQuality("2", "ø7"), "iiø7");
   assertEquals(getRomanNumeralForIntervalAndChordQuality("5", "7"), "V7");
   assertEquals(getRomanNumeralForIntervalAndChordQuality("♯4", "°7"), "♯iv°7");
-});
-
-Deno.test("sectioned templates preserve section labels and order", () => {
-  assertEquals(chordProgressionTemplates.rhythmChanges.sections, [
-    {
-      name: "A1",
-      chords: [
-        { interval: "1", quality: "M7", noteCollectionKey: "major7" },
-        { interval: "6", quality: "m7", noteCollectionKey: "minor7" },
-        { interval: "2", quality: "m7", noteCollectionKey: "minor7" },
-        { interval: "5", quality: "7", noteCollectionKey: "dominant7" },
-        { interval: "3", quality: "m7", noteCollectionKey: "minor7" },
-        { interval: "6", quality: "7", noteCollectionKey: "dominant7" },
-        { interval: "2", quality: "m7", noteCollectionKey: "minor7" },
-        { interval: "5", quality: "7", noteCollectionKey: "dominant7" },
-      ],
-    },
-    {
-      name: "A2",
-      chords: [
-        { interval: "1", quality: "M7", noteCollectionKey: "major7" },
-        { interval: "6", quality: "m7", noteCollectionKey: "minor7" },
-        { interval: "2", quality: "m7", noteCollectionKey: "minor7" },
-        { interval: "5", quality: "7", noteCollectionKey: "dominant7" },
-        { interval: "3", quality: "m7", noteCollectionKey: "minor7" },
-        { interval: "6", quality: "7", noteCollectionKey: "dominant7" },
-        { interval: "2", quality: "m7", noteCollectionKey: "minor7" },
-        { interval: "5", quality: "7", noteCollectionKey: "dominant7" },
-      ],
-    },
-    {
-      name: "B",
-      chords: [
-        { interval: "3", quality: "7", noteCollectionKey: "dominant7" },
-        { interval: "3", quality: "7", noteCollectionKey: "dominant7" },
-        { interval: "6", quality: "7", noteCollectionKey: "dominant7" },
-        { interval: "6", quality: "7", noteCollectionKey: "dominant7" },
-        { interval: "2", quality: "7", noteCollectionKey: "dominant7" },
-        { interval: "2", quality: "7", noteCollectionKey: "dominant7" },
-        { interval: "5", quality: "7", noteCollectionKey: "dominant7" },
-        { interval: "5", quality: "7", noteCollectionKey: "dominant7" },
-      ],
-    },
-    {
-      name: "A3",
-      chords: [
-        { interval: "1", quality: "M7", noteCollectionKey: "major7" },
-        { interval: "6", quality: "m7", noteCollectionKey: "minor7" },
-        { interval: "2", quality: "m7", noteCollectionKey: "minor7" },
-        { interval: "5", quality: "7", noteCollectionKey: "dominant7" },
-        { interval: "3", quality: "m7", noteCollectionKey: "minor7" },
-        { interval: "6", quality: "7", noteCollectionKey: "dominant7" },
-        { interval: "2", quality: "m7", noteCollectionKey: "minor7" },
-        { interval: "5", quality: "7", noteCollectionKey: "dominant7" },
-      ],
-    },
-  ]);
-  assertEquals(getChordProgressionTemplateRomanNames("rhythmChanges"), [
-    "IM7",
-    "vim7",
-    "iim7",
-    "V7",
-    "iiim7",
-    "VI7",
-    "iim7",
-    "V7",
-    "IM7",
-    "vim7",
-    "iim7",
-    "V7",
-    "iiim7",
-    "VI7",
-    "iim7",
-    "V7",
-    "III7",
-    "III7",
-    "VI7",
-    "VI7",
-    "II7",
-    "II7",
-    "V7",
-    "V7",
-    "IM7",
-    "vim7",
-    "iim7",
-    "V7",
-    "iiim7",
-    "VI7",
-    "iim7",
-    "V7",
-  ]);
-  assertEquals(
-    getChordProgressionTemplateChordNames("B♭", "rhythmChanges").slice(16, 24),
-    ["D7", "D7", "G7", "G7", "C7", "C7", "F7", "F7"],
-  );
 });

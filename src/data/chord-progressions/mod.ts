@@ -1,34 +1,32 @@
-import { basicChordProgressionTemplates } from "./basic.ts";
-import { bluesChordProgressionTemplates } from "./blues.ts";
-import { jazzChordProgressionTemplates } from "./jazz.ts";
-import { popChordProgressionTemplates } from "./pop.ts";
+import { curatedChordProgressionCollections } from "./curated.ts";
+import { chordProgressionFamilies } from "./families.ts";
+import { chordProgressionForms } from "./forms.ts";
+import { chordProgressionRealizations } from "./realizations.ts";
 import type {
-  ChordProgressionTemplateCategory,
-  ChordProgressionTemplateType,
+  ChordProgressionIdiom,
+  ChordProgressionPedagogyLevel,
+  ChordProgressionTonalContext,
+  ChordProgressionUsage,
 } from "../../types/chord-progressions.d.ts";
 import type { ChordQuality } from "../../types/chords.d.ts";
 import type { NoteCollectionKey } from "../note-collections/mod.ts";
 
-export { basicChordProgressionTemplates } from "./basic.ts";
-export { bluesChordProgressionTemplates } from "./blues.ts";
-export { jazzChordProgressionTemplates } from "./jazz.ts";
-export { popChordProgressionTemplates } from "./pop.ts";
+export { curatedChordProgressionCollections } from "./curated.ts";
+export { chordProgressionFamilies } from "./families.ts";
+export { chordProgressionForms } from "./forms.ts";
+export { chordProgressionRealizations } from "./realizations.ts";
 
-export const chordProgressionTemplates = {
-  ...basicChordProgressionTemplates,
-  ...popChordProgressionTemplates,
-  ...bluesChordProgressionTemplates,
-  ...jazzChordProgressionTemplates,
-} as const;
-
-export type ChordProgressionTemplateKey =
-  keyof typeof chordProgressionTemplates;
+export type ChordProgressionFamilyKey = keyof typeof chordProgressionFamilies;
+export type ChordProgressionRealizationKey =
+  keyof typeof chordProgressionRealizations;
+export type ChordProgressionFormKey = keyof typeof chordProgressionForms;
+export type ChordProgressionCuratedCollectionKey =
+  keyof typeof curatedChordProgressionCollections;
 
 export type ChordProgressionStepNoteCollectionKeyMap = Partial<
   Record<ChordQuality, NoteCollectionKey>
 >;
 
-/** Canonical chord/arpeggio collection keys for chord qualities used by progression steps. */
 export const chordProgressionStepNoteCollectionKeys:
   ChordProgressionStepNoteCollectionKeyMap = {
     M: "major",
@@ -40,80 +38,117 @@ export const chordProgressionStepNoteCollectionKeys:
     "°7": "diminished7",
   } as const;
 
-export const groupedChordProgressionTemplates = {
-  basicChordProgressionTemplates,
-  popChordProgressionTemplates,
-  bluesChordProgressionTemplates,
-  jazzChordProgressionTemplates,
-} as const;
+export function getChordProgressionStepNoteCollectionKey(
+  quality: ChordQuality,
+): NoteCollectionKey | undefined {
+  return chordProgressionStepNoteCollectionKeys[quality];
+}
 
-export type ChordProgressionTemplateGroupKey =
-  keyof typeof groupedChordProgressionTemplates;
-
-/** Human-readable DisplayName and Description metadata for top-level chord progression groups. */
-export const chordProgressionTemplateGroupsMetadata: Record<
-  ChordProgressionTemplateGroupKey,
+export const chordProgressionIdiomMetadata: Record<
+  ChordProgressionIdiom,
   {
     displayName: string;
     description: string;
   }
 > = {
-  basicChordProgressionTemplates: {
-    displayName: "Basic",
+  "common-practice": {
+    displayName: "Common Practice",
     description:
-      "Simple beginner-friendly formulas and playable loops built from foundational harmonic movement.",
+      "Broadly tonal harmonic language that is not tied to one modern genre label.",
   },
-  popChordProgressionTemplates: {
-    displayName: "Pop",
-    description:
-      "Common songwriting loops used across pop, rock, folk, and related styles.",
-  },
-  bluesChordProgressionTemplates: {
+  blues: {
     displayName: "Blues",
     description:
-      "Blues forms and dominant-chord progressions, including twelve-bar templates.",
+      "Blues-based harmony, especially dominant-function sonorities used as stable colors.",
   },
-  jazzChordProgressionTemplates: {
+  jazz: {
     displayName: "Jazz",
     description:
-      "Functional harmony templates, turnarounds, cadences, and standard jazz forms.",
+      "Functional and idiomatic jazz harmony, including cadences, standards, and blues variants.",
+  },
+  "pop-rock": {
+    displayName: "Pop / Rock",
+    description:
+      "Common loops and progressions used across pop, rock, folk, and related songwriting traditions.",
   },
 } as const;
 
-/** Human-readable DisplayName and Description metadata for chord progression categories. */
-export const chordProgressionTemplateCategoryMetadata: Record<
-  ChordProgressionTemplateCategory,
+export const chordProgressionTonalContextMetadata: Record<
+  ChordProgressionTonalContext,
   {
     displayName: string;
     description: string;
   }
 > = {
-  basic: chordProgressionTemplateGroupsMetadata.basicChordProgressionTemplates,
-  pop: chordProgressionTemplateGroupsMetadata.popChordProgressionTemplates,
-  blues: chordProgressionTemplateGroupsMetadata.bluesChordProgressionTemplates,
-  jazz: chordProgressionTemplateGroupsMetadata.jazzChordProgressionTemplates,
+  major: {
+    displayName: "Major",
+    description: "Centered in a major-key harmonic world.",
+  },
+  minor: {
+    displayName: "Minor",
+    description: "Centered in a minor-key harmonic world.",
+  },
+  "dominant-blues": {
+    displayName: "Dominant Blues",
+    description:
+      "Uses blues harmony where dominant chords behave as stable centers rather than only dominant-function chords.",
+  },
+  mixed: {
+    displayName: "Mixed",
+    description:
+      "Combines multiple tonal colors or idioms that do not fit one plain major/minor label.",
+  },
 } as const;
 
-/** Human-readable DisplayName and Description metadata for chord progression template types. */
-export const chordProgressionTemplateTypeMetadata: Record<
-  ChordProgressionTemplateType,
+export const chordProgressionPedagogyLevelMetadata: Record<
+  ChordProgressionPedagogyLevel,
   {
     displayName: string;
     description: string;
   }
 > = {
-  formula: {
-    displayName: "Formula",
+  beginner: {
+    displayName: "Beginner",
     description:
-      "A reusable harmonic relationship, not necessarily a complete playable loop or song form.",
+      "Accessible to new players working with a small set of chord shapes and basic timekeeping.",
   },
-  loop: {
-    displayName: "Loop",
-    description: "A short playable chord progression intended to repeat.",
-  },
-  form: {
-    displayName: "Form",
+  "early-intermediate": {
+    displayName: "Early Intermediate",
     description:
-      "A longer structured progression with named sections or a conventional song form.",
+      "Introduces richer harmony or harmonic function while remaining manageable in guided practice.",
+  },
+  intermediate: {
+    displayName: "Intermediate",
+    description:
+      "Requires stronger form awareness, harmonic fluency, or faster changes.",
+  },
+} as const;
+
+export const chordProgressionUsageMetadata: Record<
+  ChordProgressionUsage,
+  {
+    displayName: string;
+    description: string;
+  }
+> = {
+  practice: {
+    displayName: "Practice",
+    description:
+      "Useful for repetition, play-along work, or structured skill-building.",
+  },
+  reference: {
+    displayName: "Reference",
+    description:
+      "Useful as a stable harmonic example or educational lookup entry.",
+  },
+  songwriting: {
+    displayName: "Songwriting",
+    description:
+      "Useful as a compositional building block or common song pattern.",
+  },
+  "ear-training": {
+    displayName: "Ear Training",
+    description:
+      "Useful for hearing harmonic function, tension, and resolution.",
   },
 } as const;
