@@ -26,9 +26,35 @@ const augmented7: ChordCollection = {
   patternShort: ["M3", "M3", "M2"],
 } as const;
 
+const augmentedMajor7: ChordCollection = {
+  category: "chord",
+  mostSimilarScale: "ionianSharp5",
+  primaryName: "+M7",
+  names: [
+    "+M7",
+    "M7♯5",
+    "maj7♯5",
+    "Augmented Major 7th",
+    "Augmented Major Seventh",
+  ],
+  intervals: ["1", "3", "♯5", "7"],
+  integers: [0, 4, 8, 11],
+  type: ["augmented", "major", "chord", "arpeggio", "tetrad"],
+  characteristics: [
+    "dreamy",
+    "unstable",
+    "lush",
+    "bright",
+    "used in jazz and film harmony",
+  ],
+  pattern: ["major third", "major third", "minor third"],
+  patternShort: ["M3", "M3", "m3"],
+} as const;
+
 export const _augmentedVariants = {
   augmentedTriad,
   augmented7,
+  augmentedMajor7,
 } as const;
 
 export type AugmentedVariantKey = keyof typeof _augmentedVariants;

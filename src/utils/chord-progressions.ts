@@ -1,15 +1,12 @@
 import {
   type ChordProgressionKey,
   chordProgressions,
-  type ChordProgressionSetKey,
-  chordProgressionSets,
-  getChordProgressionStepNoteCollectionKey,
 } from "../data/chord-progressions/mod.ts";
+import { getChordQualityNoteCollectionKey } from "../data/chords/mod.ts";
 import type {
   ChordProgression,
-  ChordProgressionChange,
-  ChordProgressionSet,
-  ChordProgressionTimelineChange,
+  ChordProgressionChord,
+  ChordProgressionTimelineChord,
 } from "../types/chord-progressions.d.ts";
 import type { ChordQuality } from "../types/chords.d.ts";
 import type { Interval, RootNote } from "../data/labels/note-labels.ts";
@@ -21,18 +18,14 @@ const INTERVAL_REGEX = /^([𝄫♭♮♯𝄪]*)([1-7])$/;
 
 export interface ChordProgressionSearchOptions {
   query?: string;
+  totalBars?: number;
 }
 
-export interface ChordProgressionSetSearchOptions {
-  query?: string;
-  progressionId?: string;
-}
-
-export interface ChordProgressionNamedTimelineChange
-  extends ChordProgressionTimelineChange {
+export interface ChordProgressionNamedTimelineChord
+  extends ChordProgressionTimelineChord {
   readonly chordName: string;
   readonly romanName?: string;
-  readonly noteCollectionKey?: NoteCollectionKey;
+  readonly noteCollectionKey: NoteCollectionKey;
 }
 
 export function isValidChordProgressionKey(
@@ -41,41 +34,35 @@ export function isValidChordProgressionKey(
   return Object.prototype.hasOwnProperty.call(chordProgressions, key);
 }
 
-export function isValidChordProgressionSetKey(
-  key: string,
-): key is ChordProgressionSetKey {
-  return Object.prototype.hasOwnProperty.call(chordProgressionSets, key);
-}
-
 function normalizeSearchTerm(str: string): string {
   return str
     .trim()
-    .replaceAll("-", " ")
+    .replace(/[-/()[\],]/g, " ")
     .replace(/\s+/g, " ")
     .toLowerCase();
 }
 
-function getRomanNumeralNamesForChanges(
-  changes: readonly Pick<ChordProgressionChange, "degree" | "quality">[],
+function getRomanNumeralNamesForChords(
+  chords: readonly Pick<ChordProgressionChord, "degree" | "quality">[],
 ): string[] {
-  return changes.flatMap((change) => {
+  return chords.flatMap((chord) => {
     const roman = getRomanNumeralForIntervalAndChordQuality(
-      change.degree,
-      change.quality,
+      chord.degree,
+      chord.quality,
     );
     return roman ? [roman] : [];
   });
 }
 
-function getDegreeNamesForChanges(
-  changes: readonly Pick<ChordProgressionChange, "degree" | "quality">[],
+function getDegreeNamesForChords(
+  chords: readonly Pick<ChordProgressionChord, "degree" | "quality">[],
 ): string[] {
-  return changes.map((change) => change.degree + change.quality);
+  return chords.map((chord) => chord.degree + chord.quality);
 }
 
 function getSearchableProgressionText(progression: ChordProgression): string {
-  const totalBars = progression.changes.reduce(
-    (total, change) => total + change.bars,
+  const totalBars = progression.chords.reduce(
+    (total, chord) => total + chord.bars,
     0,
   );
 
@@ -84,20 +71,9 @@ function getSearchableProgressionText(progression: ChordProgression): string {
     progression.primaryName,
     progression.summary ?? "",
     ...progression.aliases,
-    ...getDegreeNamesForChanges(progression.changes),
-    ...getRomanNumeralNamesForChanges(progression.changes),
+    ...getDegreeNamesForChords(progression.chords),
+    ...getRomanNumeralNamesForChords(progression.chords),
     `${totalBars} bar`,
-  ]
-    .map(normalizeSearchTerm)
-    .join(" ");
-}
-
-function getSearchableSetText(set: ChordProgressionSet): string {
-  return [
-    set.id,
-    set.displayName,
-    set.description,
-    ...set.progressionIds,
   ]
     .map(normalizeSearchTerm)
     .join(" ");
@@ -152,8 +128,16 @@ function applyTextSearch<T>(
 export function searchChordProgressions(
   options: ChordProgressionSearchOptions = {},
 ): ChordProgression[] {
+  let filtered = Object.values(chordProgressions);
+
+  if (options.totalBars !== undefined) {
+    filtered = filtered.filter((progression) =>
+      getChordProgressionTotalBars(progression) === options.totalBars
+    );
+  }
+
   return applyTextSearch(
-    Object.values(chordProgressions),
+    filtered,
     options.query,
     getSearchableProgressionText,
     (progression) => progression.primaryName,
@@ -167,55 +151,11 @@ export function findChordProgression(
   return searchChordProgressions(options)[0];
 }
 
-export function searchChordProgressionSets(
-  options: ChordProgressionSetSearchOptions = {},
-): ChordProgressionSet[] {
-  let filtered = Object.values(chordProgressionSets);
-
-  if (options.progressionId) {
-    filtered = filtered.filter((set) =>
-      set.progressionIds.includes(options.progressionId!)
-    ).sort((a, b) => a.progressionIds.length - b.progressionIds.length);
-  }
-
-  return applyTextSearch(
-    filtered,
-    options.query,
-    getSearchableSetText,
-    (set) => set.displayName,
-    () => [],
-  );
-}
-
-export function findChordProgressionSet(
-  options: ChordProgressionSetSearchOptions = {},
-): ChordProgressionSet | undefined {
-  return searchChordProgressionSets(options)[0];
-}
-
 function resolveProgression(
   progressionOrKey: ChordProgression | ChordProgressionKey,
 ): ChordProgression | undefined {
   if (typeof progressionOrKey !== "string") return progressionOrKey;
   return chordProgressions[progressionOrKey];
-}
-
-function resolveSet(
-  setOrKey: ChordProgressionSet | ChordProgressionSetKey,
-): ChordProgressionSet | undefined {
-  if (typeof setOrKey !== "string") return setOrKey;
-  return chordProgressionSets[setOrKey];
-}
-
-export function getChordProgressionsForSet(
-  setOrKey: ChordProgressionSet | ChordProgressionSetKey,
-): ChordProgression[] {
-  const set = resolveSet(setOrKey);
-  if (!set) return [];
-
-  return set.progressionIds.flatMap((id) =>
-    isValidChordProgressionKey(id) ? [chordProgressions[id]] : []
-  );
 }
 
 export function getRomanNumeralForIntervalAndChordQuality(
@@ -240,7 +180,7 @@ export function getChordProgressionDegreeNames(
   const progression = resolveProgression(progressionOrKey);
   if (!progression) return [];
 
-  return getDegreeNamesForChanges(progression.changes);
+  return getDegreeNamesForChords(progression.chords);
 }
 
 export function getChordProgressionRomanNames(
@@ -249,24 +189,24 @@ export function getChordProgressionRomanNames(
   const progression = resolveProgression(progressionOrKey);
   if (!progression) return [];
 
-  return getRomanNumeralNamesForChanges(progression.changes);
+  return getRomanNumeralNamesForChords(progression.chords);
 }
 
 export function getChordProgressionTimeline(
   progressionOrKey: ChordProgression | ChordProgressionKey,
-): ChordProgressionTimelineChange[] {
+): ChordProgressionTimelineChord[] {
   const progression = resolveProgression(progressionOrKey);
   if (!progression) return [];
 
   let barCursor = 1;
 
-  return progression.changes.map((change) => {
+  return progression.chords.map((chord) => {
     const startBar = barCursor;
-    const endBar = startBar + change.bars;
+    const endBar = startBar + chord.bars;
     barCursor = endBar;
 
     return {
-      ...change,
+      ...chord,
       startBar,
       endBar,
     };
@@ -276,23 +216,23 @@ export function getChordProgressionTimeline(
 export function getChordProgressionChordTimeline(
   rootNote: RootNote,
   progressionOrKey: ChordProgression | ChordProgressionKey,
-): ChordProgressionNamedTimelineChange[] {
+): ChordProgressionNamedTimelineChord[] {
   const timeline = getChordProgressionTimeline(progressionOrKey);
   if (!timeline.length) return [];
 
   const noteNames = getNoteNamesForRootAndIntervals(
     rootNote,
-    timeline.map((change) => change.degree),
+    timeline.map((chord) => chord.degree),
   );
 
-  return timeline.map((change, index) => ({
-    ...change,
-    chordName: noteNames[index] + change.quality,
+  return timeline.map((chord, index) => ({
+    ...chord,
+    chordName: noteNames[index] + chord.quality,
     romanName: getRomanNumeralForIntervalAndChordQuality(
-      change.degree,
-      change.quality,
+      chord.degree,
+      chord.quality,
     ),
-    noteCollectionKey: getChordProgressionStepNoteCollectionKey(change.quality),
+    noteCollectionKey: getChordQualityNoteCollectionKey(chord.quality),
   }));
 }
 
@@ -303,7 +243,7 @@ export function getChordProgressionPaletteChordNames(
   return Array.from(
     new Set(
       getChordProgressionChordTimeline(rootNote, progressionOrKey).map(
-        (change) => change.chordName,
+        (chord) => chord.chordName,
       ),
     ),
   );
@@ -315,12 +255,9 @@ export function getChordProgressionNoteCollectionKeys(
   const progression = resolveProgression(progressionOrKey);
   if (!progression) return [];
 
-  return progression.changes.flatMap((change) => {
-    const noteCollectionKey = getChordProgressionStepNoteCollectionKey(
-      change.quality,
-    );
-    return noteCollectionKey ? [noteCollectionKey] : [];
-  });
+  return progression.chords.map((chord) =>
+    getChordQualityNoteCollectionKey(chord.quality)
+  );
 }
 
 export function getChordProgressionTotalBars(
@@ -329,5 +266,5 @@ export function getChordProgressionTotalBars(
   const progression = resolveProgression(progressionOrKey);
   if (!progression) return 0;
 
-  return progression.changes.reduce((total, change) => total + change.bars, 0);
+  return progression.chords.reduce((total, chord) => total + chord.bars, 0);
 }

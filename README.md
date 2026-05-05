@@ -181,9 +181,9 @@ console.log(Object.keys(music_theory_data.groupedNoteCollections));
 const dooWop = music_theory_data.chordProgressions.dooWop;
 
 console.log(dooWop.primaryName);
-// "Doo-wop progression"
+// "I-vi-IV-V"
 
-console.log(dooWop.changes);
+console.log(dooWop.chords);
 // [
 //   { degree: "1", quality: "M", bars: 1 },
 //   { degree: "6", quality: "m", bars: 1 },

@@ -1,3 +1,5 @@
+import type { NoteCollectionKey } from "../note-collections/mod.ts";
+
 const _triadChordQualities = ["M", "m", "°", "+"] as const;
 
 const _seventhChordQualities = [
@@ -49,6 +51,22 @@ export interface ChordQualityRomanRendering {
   readonly suffix: string;
 }
 
+const _chordQualityNoteCollectionKeys = {
+  M: "major",
+  m: "minor",
+  "°": "diminishedTriad",
+  "+": "augmentedTriad",
+  M7: "major7",
+  m7: "minor7",
+  "7": "dominant7",
+  "ø7": "halfDiminished7",
+  "m7♭5": "halfDiminished7",
+  "°7": "diminished7",
+  "m(M7)": "minorMajor7",
+  "+M7": "augmentedMajor7",
+  "M7♯5": "augmentedMajor7",
+} as const;
+
 /** The complete set of supported triad chord qualities. */
 export const triadChordQualities: readonly Triad[] = _triadChordQualities;
 
@@ -61,6 +79,15 @@ export const chordQualities: readonly ChordQuality[] = [
   ...triadChordQualities,
   ...seventhChordQualities,
 ];
+
+export type ChordQualityNoteCollectionKeyMap = Record<
+  ChordQuality,
+  NoteCollectionKey
+>;
+
+/** Note-collection keys for every supported chord quality. */
+export const chordQualityNoteCollectionKeys: ChordQualityNoteCollectionKeyMap =
+  _chordQualityNoteCollectionKeys;
 
 /** Roman numeral rendering metadata for each supported chord quality. */
 export const chordQualityRomanRenderings: ReadonlyMap<
@@ -155,3 +182,9 @@ export const upperCaseRomanNumerals: readonly UpperCaseRomanNumeral[] =
 /** An array mapping 7 index scale degrees to their corresponding lower-case Roman numerals. */
 export const lowerCaseRomanNumerals: readonly LowerCaseRomanNumeral[] =
   _lowerCaseRomanNumerals;
+
+export function getChordQualityNoteCollectionKey(
+  quality: ChordQuality,
+): NoteCollectionKey {
+  return chordQualityNoteCollectionKeys[quality];
+}

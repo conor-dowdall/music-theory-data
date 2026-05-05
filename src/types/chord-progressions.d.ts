@@ -1,7 +1,7 @@
 import type { Interval } from "../data/labels/note-labels.ts";
 import type { ChordQuality } from "./chords.d.ts";
 
-export interface ChordProgressionChange {
+export interface ChordProgressionChord {
   /**
    * The chord root interval relative to the tonic.
    * e.g. "1", "4", "5", "♭7".
@@ -14,6 +14,7 @@ export interface ChordProgressionChange {
   readonly quality: ChordQuality;
   /**
    * Duration expressed in bars, independent of tempo.
+   * May be fractional when a bar contains more than one chord.
    */
   readonly bars: number;
 }
@@ -23,17 +24,10 @@ export interface ChordProgression {
   readonly primaryName: string;
   readonly aliases: readonly string[];
   readonly summary?: string;
-  readonly changes: readonly ChordProgressionChange[];
+  readonly chords: readonly ChordProgressionChord[];
 }
 
-export interface ChordProgressionSet {
-  readonly id: string;
-  readonly displayName: string;
-  readonly description: string;
-  readonly progressionIds: readonly string[];
-}
-
-export interface ChordProgressionTimelineChange extends ChordProgressionChange {
+export interface ChordProgressionTimelineChord extends ChordProgressionChord {
   readonly startBar: number;
   readonly endBar: number;
 }
