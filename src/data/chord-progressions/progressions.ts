@@ -6,17 +6,16 @@ import type {
 function chord(
   degree: ChordProgressionChord["degree"],
   quality: ChordProgressionChord["quality"],
-  bars: number,
+  durationInBars: number,
 ): ChordProgressionChord {
   return {
     degree,
     quality,
-    bars,
+    durationInBars,
   };
 }
 
 const oneOneFiveFive: ChordProgression = {
-  id: "oneOneFiveFive",
   primaryName: "I-I-V-V",
   aliases: ["1 1 5 5"],
   summary: "A four-bar loop with two bars on I followed by two bars on V.",
@@ -27,7 +26,6 @@ const oneOneFiveFive: ChordProgression = {
 };
 
 const oneOneFiveFiveDominant7: ChordProgression = {
-  id: "oneOneFiveFiveDominant7",
   primaryName: "I-I-V-V7",
   aliases: ["1 1 5 5 with V7"],
   summary:
@@ -40,7 +38,6 @@ const oneOneFiveFiveDominant7: ChordProgression = {
 };
 
 const oneOneFourFour: ChordProgression = {
-  id: "oneOneFourFour",
   primaryName: "I-I-IV-IV",
   aliases: ["1 1 4 4"],
   summary: "A four-bar loop with two bars on I followed by two bars on IV.",
@@ -51,7 +48,6 @@ const oneOneFourFour: ChordProgression = {
 };
 
 const oneOneFourFive: ChordProgression = {
-  id: "oneOneFourFive",
   primaryName: "I-I-IV-V",
   aliases: ["I IV V", "1 1 4 5"],
   summary:
@@ -64,7 +60,6 @@ const oneOneFourFive: ChordProgression = {
 };
 
 const oneFourOneFive: ChordProgression = {
-  id: "oneFourOneFive",
   primaryName: "I-IV-I-V",
   aliases: ["1 4 1 5"],
   summary: "A balanced four-bar loop that returns to I before ending on V.",
@@ -77,7 +72,6 @@ const oneFourOneFive: ChordProgression = {
 };
 
 const dooWop: ChordProgression = {
-  id: "dooWop",
   primaryName: "I-vi-IV-V",
   aliases: ["Doo-wop progression", "50s progression", "1 6 4 5"],
   summary:
@@ -91,7 +85,6 @@ const dooWop: ChordProgression = {
 };
 
 const axisProgression: ChordProgression = {
-  id: "axisProgression",
   primaryName: "I-V-vi-IV",
   aliases: ["Axis progression", "1 5 6 4"],
   summary:
@@ -105,7 +98,6 @@ const axisProgression: ChordProgression = {
 };
 
 const majorTwoFiveOne: ChordProgression = {
-  id: "majorTwoFiveOne",
   primaryName: "ii-V-I (major)",
   aliases: ["ii V I", "2 5 1"],
   summary: "A four-bar major-key cadence with a two-bar tonic resolution.",
@@ -117,7 +109,6 @@ const majorTwoFiveOne: ChordProgression = {
 };
 
 const minorTwoFiveOne: ChordProgression = {
-  id: "minorTwoFiveOne",
   primaryName: "iiø-V-i (minor)",
   aliases: ["Minor ii-V-i", "iiø V i", "iiø7 V7 i", "2 5 1 minor"],
   summary: "A four-bar minor-key cadence with a two-bar tonic resolution.",
@@ -129,7 +120,6 @@ const minorTwoFiveOne: ChordProgression = {
 };
 
 const oneFourOneFiveEightBar: ChordProgression = {
-  id: "oneFourOneFiveEightBar",
   primaryName: "I-IV-I-V / I-IV-[I-V]-I",
   aliases: [
     "1 4 1 5 / 1 4 [1 5] 1",
@@ -151,7 +141,6 @@ const oneFourOneFiveEightBar: ChordProgression = {
 };
 
 const twelveBarBlues: ChordProgression = {
-  id: "twelveBarBlues",
   primaryName: "12-bar blues",
   aliases: ["Twelve bar blues", "I7 IV7 V7 blues"],
   summary:

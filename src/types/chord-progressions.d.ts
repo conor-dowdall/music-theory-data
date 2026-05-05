@@ -16,11 +16,10 @@ export interface ChordProgressionChord {
    * Duration expressed in bars, independent of tempo.
    * May be fractional when a bar contains more than one chord.
    */
-  readonly bars: number;
+  readonly durationInBars: number;
 }
 
 export interface ChordProgression {
-  readonly id: string;
   readonly primaryName: string;
   readonly aliases: readonly string[];
   readonly summary?: string;

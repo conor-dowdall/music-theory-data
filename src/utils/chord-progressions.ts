@@ -18,7 +18,18 @@ const INTERVAL_REGEX = /^([𝄫♭♮♯𝄪]*)([1-7])$/;
 
 export interface ChordProgressionSearchOptions {
   query?: string;
-  totalBars?: number;
+  totalDurationInBars?: number;
+}
+
+export interface ChordProgressionEntry {
+  readonly key: ChordProgressionKey;
+  readonly progression: ChordProgression;
+}
+
+export interface ChordProgressionDurationGroup {
+  readonly totalDurationInBars: number;
+  readonly displayName: string;
+  readonly progressions: readonly ChordProgressionEntry[];
 }
 
 export interface ChordProgressionNamedTimelineChord
@@ -61,22 +72,28 @@ function getDegreeNamesForChords(
 }
 
 function getSearchableProgressionText(progression: ChordProgression): string {
-  const totalBars = progression.chords.reduce(
-    (total, chord) => total + chord.bars,
+  const totalDurationInBars = progression.chords.reduce(
+    (total, chord) => total + chord.durationInBars,
     0,
   );
 
   return [
-    progression.id,
     progression.primaryName,
     progression.summary ?? "",
     ...progression.aliases,
     ...getDegreeNamesForChords(progression.chords),
     ...getRomanNumeralNamesForChords(progression.chords),
-    `${totalBars} bar`,
+    `${totalDurationInBars} bar`,
   ]
     .map(normalizeSearchTerm)
     .join(" ");
+}
+
+function getChordProgressionEntriesInternal(): ChordProgressionEntry[] {
+  return Object.entries(chordProgressions).map(([key, progression]) => ({
+    key: key as ChordProgressionKey,
+    progression,
+  }));
 }
 
 function applyTextSearch<T>(
@@ -128,27 +145,78 @@ function applyTextSearch<T>(
 export function searchChordProgressions(
   options: ChordProgressionSearchOptions = {},
 ): ChordProgression[] {
-  let filtered = Object.values(chordProgressions);
-
-  if (options.totalBars !== undefined) {
-    filtered = filtered.filter((progression) =>
-      getChordProgressionTotalBars(progression) === options.totalBars
-    );
-  }
-
-  return applyTextSearch(
-    filtered,
-    options.query,
-    getSearchableProgressionText,
-    (progression) => progression.primaryName,
-    (progression) => progression.aliases,
+  return searchChordProgressionEntries(options).map((entry) =>
+    entry.progression
   );
 }
 
 export function findChordProgression(
   options: ChordProgressionSearchOptions = {},
 ): ChordProgression | undefined {
-  return searchChordProgressions(options)[0];
+  return findChordProgressionEntry(options)?.progression;
+}
+
+export function getChordProgressionEntries(): ChordProgressionEntry[] {
+  return getChordProgressionEntriesInternal();
+}
+
+export function searchChordProgressionEntries(
+  options: ChordProgressionSearchOptions = {},
+): ChordProgressionEntry[] {
+  let filtered = getChordProgressionEntriesInternal();
+
+  if (options.totalDurationInBars !== undefined) {
+    filtered = filtered.filter(({ progression }) =>
+      getChordProgressionTotalDurationInBars(progression) ===
+        options.totalDurationInBars
+    );
+  }
+
+  return applyTextSearch(
+    filtered,
+    options.query,
+    (entry) =>
+      [
+        entry.key,
+        getSearchableProgressionText(entry.progression),
+      ]
+        .map(normalizeSearchTerm)
+        .join(" "),
+    (entry) => entry.progression.primaryName,
+    (entry) => entry.progression.aliases,
+  );
+}
+
+export function findChordProgressionEntry(
+  options: ChordProgressionSearchOptions = {},
+): ChordProgressionEntry | undefined {
+  return searchChordProgressionEntries(options)[0];
+}
+
+export function getChordProgressionDurationGroups(): ChordProgressionDurationGroup[] {
+  const groups = new Map<number, ChordProgressionEntry[]>();
+
+  for (const entry of getChordProgressionEntriesInternal()) {
+    const totalDurationInBars = getChordProgressionTotalDurationInBars(
+      entry.progression,
+    );
+    const existing = groups.get(totalDurationInBars);
+
+    if (existing) {
+      existing.push(entry);
+      continue;
+    }
+
+    groups.set(totalDurationInBars, [entry]);
+  }
+
+  return Array.from(groups.entries())
+    .sort(([a], [b]) => a - b)
+    .map(([totalDurationInBars, progressions]) => ({
+      totalDurationInBars,
+      displayName: `${totalDurationInBars}-Bar Loops`,
+      progressions,
+    }));
 }
 
 function resolveProgression(
@@ -202,7 +270,7 @@ export function getChordProgressionTimeline(
 
   return progression.chords.map((chord) => {
     const startBar = barCursor;
-    const endBar = startBar + chord.bars;
+    const endBar = startBar + chord.durationInBars;
     barCursor = endBar;
 
     return {
@@ -260,11 +328,14 @@ export function getChordProgressionNoteCollectionKeys(
   );
 }
 
-export function getChordProgressionTotalBars(
+export function getChordProgressionTotalDurationInBars(
   progressionOrKey: ChordProgression | ChordProgressionKey,
 ): number {
   const progression = resolveProgression(progressionOrKey);
   if (!progression) return 0;
 
-  return progression.chords.reduce((total, chord) => total + chord.bars, 0);
+  return progression.chords.reduce(
+    (total, chord) => total + chord.durationInBars,
+    0,
+  );
 }

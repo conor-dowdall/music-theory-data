@@ -185,10 +185,10 @@ console.log(dooWop.primaryName);
 
 console.log(dooWop.chords);
 // [
-//   { degree: "1", quality: "M", bars: 1 },
-//   { degree: "6", quality: "m", bars: 1 },
-//   { degree: "4", quality: "M", bars: 1 },
-//   { degree: "5", quality: "M", bars: 1 },
+//   { degree: "1", quality: "M", durationInBars: 1 },
+//   { degree: "6", quality: "m", durationInBars: 1 },
+//   { degree: "4", quality: "M", durationInBars: 1 },
+//   { degree: "5", quality: "M", durationInBars: 1 },
 // ]
 
 console.log(
@@ -205,9 +205,21 @@ console.log(
 // ["iim7", "V7", "IM7"]
 
 console.log(
-  music_theory_data.getChordProgressionTotalBars("twelveBarBlues"),
+  music_theory_data.getChordProgressionTotalDurationInBars("twelveBarBlues"),
 );
 // 12
+
+console.log(
+  music_theory_data.getChordProgressionDurationGroups().map((group) => ({
+    displayName: group.displayName,
+    keys: group.progressions.map((entry) => entry.key),
+  })),
+);
+// [
+//   { displayName: "4-Bar Loops", keys: ["oneOneFiveFive", ...] },
+//   { displayName: "8-Bar Loops", keys: ["oneFourOneFiveEightBar"] },
+//   { displayName: "12-Bar Loops", keys: ["twelveBarBlues"] },
+// ]
 ```
 
 ## Note Colors And Chromatic Indexes
