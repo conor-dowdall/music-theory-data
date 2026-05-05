@@ -177,37 +177,35 @@ console.log(Object.keys(music_theory_data.noteCollections));
 console.log(Object.keys(music_theory_data.groupedNoteCollections));
 // ["diatonicModes", "pentatonicVariants", ...]
 
-// Get an abstract chord progression family
-const oneFourFive = music_theory_data.chordProgressionFamilies.oneFourFiveMajor;
-
-console.log(oneFourFive.primaryName);
-// "I-IV-V foundation"
-
-console.log(
-  music_theory_data.getChordProgressionFamilyRomanNames("oneFourFiveMajor"),
-);
-// ["I", "IV", "V"]
-
-// Get a concrete playable realization and the deduped workspace chord palette
-const dooWop = music_theory_data.chordProgressionRealizations.dooWopLoopBasic;
+// Get a chord progression
+const dooWop = music_theory_data.chordProgressions.dooWop;
 
 console.log(dooWop.primaryName);
-// "Doo-wop loop"
+// "Doo-wop progression"
 
 console.log(
-  music_theory_data.getChordProgressionRealizationPaletteChordNames(
+  music_theory_data.getChordProgressionPaletteChordNames(
     "C",
-    "dooWopLoopBasic",
+    "dooWop",
   ),
 );
 // ["CM", "Am", "FM", "GM"]
 
 console.log(
-  music_theory_data.getChordProgressionRealizationTotalBars(
-    "twelveBarBluesBasic",
-  ),
+  music_theory_data.getChordProgressionRomanNames("majorTwoFiveOne"),
+);
+// ["iim7", "V7", "IM7"]
+
+console.log(
+  music_theory_data.getChordProgressionTotalBars("twelveBarBlues"),
 );
 // 12
+
+console.log(
+  music_theory_data.getChordProgressionTimeline("rhythmChanges")[0]
+    .sectionLabel,
+);
+// "A1"
 ```
 
 ## Note Colors And Chromatic Indexes

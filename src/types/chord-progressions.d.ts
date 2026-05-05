@@ -14,17 +14,6 @@ export type ChordProgressionTonalContext =
   | "dominant-blues"
   | "mixed";
 
-export type ChordProgressionPedagogyLevel =
-  | "beginner"
-  | "early-intermediate"
-  | "intermediate";
-
-export type ChordProgressionUsage =
-  | "practice"
-  | "reference"
-  | "songwriting"
-  | "ear-training";
-
 export interface ChordProgressionDegreeShape {
   /**
    * The chord root interval relative to the tonic.
@@ -51,41 +40,13 @@ export interface ChordProgressionHarmonySpan
   extends ChordProgressionDegreeShape {
   /**
    * Duration expressed in bars, independent of tempo.
-   * This is the core authored timing unit for concrete realizations.
+   * This is the core authored timing unit for concrete progressions.
    */
   readonly bars: number;
   /**
    * Optional author note for the span, such as "turnaround".
    */
   readonly cue?: string;
-}
-
-export interface ChordProgressionSection {
-  readonly id: string;
-  readonly label: string;
-  readonly spans: readonly ChordProgressionHarmonySpan[];
-}
-
-export interface ChordProgressionFamily {
-  readonly id: string;
-  /**
-   * Best human-facing label for the family.
-   */
-  readonly primaryName: string;
-  /**
-   * Conventional alternate names and compact shorthand such as "I IV V".
-   */
-  readonly aliases: readonly string[];
-  readonly summary: string;
-  /**
-   * Canonical abstract harmonic identity, without concrete durations.
-   */
-  readonly formula: readonly ChordProgressionDegreeShape[];
-  readonly tags: readonly string[];
-  readonly idioms: readonly ChordProgressionIdiom[];
-  readonly tonalContext: ChordProgressionTonalContext;
-  readonly pedagogyLevel: ChordProgressionPedagogyLevel;
-  readonly usages: readonly ChordProgressionUsage[];
 }
 
 export interface ChordProgressionFormSection {
@@ -99,43 +60,37 @@ export interface ChordProgressionForm {
   readonly primaryName: string;
   readonly aliases: readonly string[];
   readonly summary: string;
-  readonly tags: readonly string[];
   readonly sections: readonly ChordProgressionFormSection[];
 }
 
-export interface ChordProgressionRealization {
+export interface ChordProgression {
   readonly id: string;
-  readonly familyId: string;
   readonly formId?: string;
   /**
-   * Best human-facing label for the playable realization.
+   * Best human-facing label for the progression.
    */
   readonly primaryName: string;
   /**
    * Conventional alternate names and compact shorthand such as "I I IV V".
    */
   readonly aliases: readonly string[];
-  readonly summary: string;
-  readonly tags: readonly string[];
-  readonly idioms: readonly ChordProgressionIdiom[];
-  readonly tonalContext: ChordProgressionTonalContext;
-  readonly pedagogyLevel: ChordProgressionPedagogyLevel;
-  readonly usages: readonly ChordProgressionUsage[];
-  readonly sections: readonly ChordProgressionSection[];
+  readonly summary?: string;
+  readonly idioms?: readonly ChordProgressionIdiom[];
+  readonly tonalContext?: ChordProgressionTonalContext;
+  readonly spans: readonly ChordProgressionHarmonySpan[];
 }
 
-export interface ChordProgressionCuratedCollection {
+export interface ChordProgressionSet {
   readonly id: string;
   readonly displayName: string;
   readonly description: string;
-  readonly tags: readonly string[];
-  readonly realizationIds: readonly string[];
+  readonly progressionIds: readonly string[];
 }
 
 export interface ChordProgressionTimelineSpan
   extends ChordProgressionHarmonySpan {
-  readonly sectionId: string;
-  readonly sectionLabel: string;
   readonly startBar: number;
   readonly endBar: number;
+  readonly sectionId?: string;
+  readonly sectionLabel?: string;
 }

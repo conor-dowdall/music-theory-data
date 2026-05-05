@@ -1,25 +1,20 @@
 import {
-  type ChordProgressionCuratedCollectionKey,
-  chordProgressionFamilies,
-  type ChordProgressionFamilyKey,
   type ChordProgressionFormKey,
   chordProgressionForms,
-  type ChordProgressionRealizationKey,
-  chordProgressionRealizations,
-  curatedChordProgressionCollections,
+  type ChordProgressionKey,
+  chordProgressions,
+  type ChordProgressionSetKey,
+  chordProgressionSets,
   getChordProgressionStepNoteCollectionKey,
 } from "../data/chord-progressions/mod.ts";
 import type {
-  ChordProgressionCuratedCollection,
-  ChordProgressionFamily,
+  ChordProgression,
   ChordProgressionForm,
   ChordProgressionHarmonySpan,
   ChordProgressionIdiom,
-  ChordProgressionPedagogyLevel,
-  ChordProgressionRealization,
+  ChordProgressionSet,
   ChordProgressionTimelineSpan,
   ChordProgressionTonalContext,
-  ChordProgressionUsage,
 } from "../types/chord-progressions.d.ts";
 import type { ChordQuality } from "../types/chords.d.ts";
 import type { Interval, RootNote } from "../data/labels/note-labels.ts";
@@ -29,33 +24,20 @@ import { getNoteNamesForRootAndIntervals } from "./note-names.ts";
 
 const INTERVAL_REGEX = /^([𝄫♭♮♯𝄪]*)([1-7])$/;
 
-interface ChordProgressionFacetSearchOptions {
+export interface ChordProgressionSearchOptions {
   query?: string;
   idiom?: ChordProgressionIdiom;
   tonalContext?: ChordProgressionTonalContext;
-  pedagogyLevel?: ChordProgressionPedagogyLevel;
-  usage?: ChordProgressionUsage;
-  tag?: string;
-}
-
-export interface ChordProgressionFamilySearchOptions
-  extends ChordProgressionFacetSearchOptions {}
-
-export interface ChordProgressionRealizationSearchOptions
-  extends ChordProgressionFacetSearchOptions {
-  familyId?: string;
   formId?: string;
 }
 
 export interface ChordProgressionFormSearchOptions {
   query?: string;
-  tag?: string;
 }
 
-export interface ChordProgressionCuratedCollectionSearchOptions {
+export interface ChordProgressionSetSearchOptions {
   query?: string;
-  tag?: string;
-  realizationId?: string;
+  progressionId?: string;
 }
 
 export interface ChordProgressionNamedTimelineSpan
@@ -65,19 +47,10 @@ export interface ChordProgressionNamedTimelineSpan
   readonly noteCollectionKey?: NoteCollectionKey;
 }
 
-export function isValidChordProgressionFamilyKey(
+export function isValidChordProgressionKey(
   key: string,
-): key is ChordProgressionFamilyKey {
-  return Object.prototype.hasOwnProperty.call(chordProgressionFamilies, key);
-}
-
-export function isValidChordProgressionRealizationKey(
-  key: string,
-): key is ChordProgressionRealizationKey {
-  return Object.prototype.hasOwnProperty.call(
-    chordProgressionRealizations,
-    key,
-  );
+): key is ChordProgressionKey {
+  return Object.prototype.hasOwnProperty.call(chordProgressions, key);
 }
 
 export function isValidChordProgressionFormKey(
@@ -86,13 +59,10 @@ export function isValidChordProgressionFormKey(
   return Object.prototype.hasOwnProperty.call(chordProgressionForms, key);
 }
 
-export function isValidChordProgressionCuratedCollectionKey(
+export function isValidChordProgressionSetKey(
   key: string,
-): key is ChordProgressionCuratedCollectionKey {
-  return Object.prototype.hasOwnProperty.call(
-    curatedChordProgressionCollections,
-    key,
-  );
+): key is ChordProgressionSetKey {
+  return Object.prototype.hasOwnProperty.call(chordProgressionSets, key);
 }
 
 function normalizeSearchTerm(str: string): string {
@@ -101,11 +71,6 @@ function normalizeSearchTerm(str: string): string {
     .replaceAll("-", " ")
     .replace(/\s+/g, " ")
     .toLowerCase();
-}
-
-function matchesNormalizedTag(tags: readonly string[], tag: string): boolean {
-  const normalizedTag = normalizeSearchTerm(tag);
-  return tags.map(normalizeSearchTerm).includes(normalizedTag);
 }
 
 function getRomanNumeralNamesForShapes(
@@ -126,61 +91,28 @@ function getDegreeNamesForShapes(
   return shapes.map((shape) => shape.degree + shape.quality);
 }
 
-function flattenRealizationSpans(
-  realization: ChordProgressionRealization,
-): ChordProgressionHarmonySpan[] {
-  return realization.sections.flatMap((section) => section.spans);
-}
-
-function getSearchableFamilyText(family: ChordProgressionFamily): string {
-  return [
-    family.id,
-    family.primaryName,
-    family.summary,
-    ...family.aliases,
-    ...family.tags,
-    ...family.idioms,
-    family.tonalContext,
-    family.pedagogyLevel,
-    ...family.usages,
-    ...getDegreeNamesForShapes(family.formula),
-    ...getRomanNumeralNamesForShapes(family.formula),
-  ]
-    .map(normalizeSearchTerm)
-    .join(" ");
-}
-
-function getSearchableRealizationText(
-  realization: ChordProgressionRealization,
-): string {
-  const family = getChordProgressionFamilyForRealization(realization);
-  const form = getChordProgressionFormForRealization(realization);
+function getSearchableProgressionText(progression: ChordProgression): string {
+  const form = getChordProgressionFormForProgression(progression);
+  const formSectionLabels = form?.sections.map((section) => section.label) ??
+    [];
 
   return [
-    realization.id,
-    realization.primaryName,
-    realization.summary,
-    ...realization.aliases,
-    ...realization.tags,
-    ...realization.idioms,
-    realization.tonalContext,
-    realization.pedagogyLevel,
-    ...realization.usages,
-    ...realization.sections.map((section) => section.label),
-    ...flattenRealizationSpans(realization).flatMap((span) => [
+    progression.id,
+    progression.primaryName,
+    progression.summary ?? "",
+    ...progression.aliases,
+    ...(progression.idioms ?? []),
+    progression.tonalContext ?? "",
+    ...progression.spans.flatMap((span) => [
       span.harmonicFunction ?? "",
       span.cue ?? "",
     ]),
-    ...getDegreeNamesForShapes(flattenRealizationSpans(realization)),
-    ...getRomanNumeralNamesForShapes(flattenRealizationSpans(realization)),
-    family?.primaryName ?? "",
-    family?.summary ?? "",
-    ...(family?.aliases ?? []),
-    ...(family?.tags ?? []),
+    ...getDegreeNamesForShapes(progression.spans),
+    ...getRomanNumeralNamesForShapes(progression.spans),
     form?.primaryName ?? "",
     form?.summary ?? "",
     ...(form?.aliases ?? []),
-    ...(form?.tags ?? []),
+    ...formSectionLabels,
   ]
     .map(normalizeSearchTerm)
     .join(" ");
@@ -192,51 +124,21 @@ function getSearchableFormText(form: ChordProgressionForm): string {
     form.primaryName,
     form.summary,
     ...form.aliases,
-    ...form.tags,
     ...form.sections.map((section) => section.label),
   ]
     .map(normalizeSearchTerm)
     .join(" ");
 }
 
-function getSearchableCuratedCollectionText(
-  collection: ChordProgressionCuratedCollection,
-): string {
+function getSearchableSetText(set: ChordProgressionSet): string {
   return [
-    collection.id,
-    collection.displayName,
-    collection.description,
-    ...collection.tags,
-    ...collection.realizationIds,
+    set.id,
+    set.displayName,
+    set.description,
+    ...set.progressionIds,
   ]
     .map(normalizeSearchTerm)
     .join(" ");
-}
-
-function passesFacetFilters(
-  item: {
-    idioms: readonly ChordProgressionIdiom[];
-    tonalContext: ChordProgressionTonalContext;
-    pedagogyLevel: ChordProgressionPedagogyLevel;
-    usages: readonly ChordProgressionUsage[];
-    tags: readonly string[];
-  },
-  options: ChordProgressionFacetSearchOptions,
-): boolean {
-  if (options.idiom && !item.idioms.includes(options.idiom)) return false;
-  if (options.tonalContext && item.tonalContext !== options.tonalContext) {
-    return false;
-  }
-  if (
-    options.pedagogyLevel && item.pedagogyLevel !== options.pedagogyLevel
-  ) {
-    return false;
-  }
-  if (options.usage && !item.usages.includes(options.usage)) return false;
-  if (options.tag && !matchesNormalizedTag(item.tags, options.tag)) {
-    return false;
-  }
-  return true;
 }
 
 function applyTextSearch<T>(
@@ -285,70 +187,43 @@ function applyTextSearch<T>(
   return Array.from(prioritized);
 }
 
-export function searchChordProgressionFamilies(
-  options: ChordProgressionFamilySearchOptions = {},
-): ChordProgressionFamily[] {
-  const filtered = Object.values(chordProgressionFamilies).filter((family) =>
-    passesFacetFilters(family, options)
-  );
+export function searchChordProgressions(
+  options: ChordProgressionSearchOptions = {},
+): ChordProgression[] {
+  const filtered = Object.values(chordProgressions).filter((progression) => {
+    if (options.idiom && !progression.idioms?.includes(options.idiom)) {
+      return false;
+    }
+    if (
+      options.tonalContext &&
+      progression.tonalContext !== options.tonalContext
+    ) {
+      return false;
+    }
+    if (options.formId && progression.formId !== options.formId) return false;
+    return true;
+  });
 
   return applyTextSearch(
     filtered,
     options.query,
-    getSearchableFamilyText,
-    (family) => family.primaryName,
-    (family) => family.aliases,
+    getSearchableProgressionText,
+    (progression) => progression.primaryName,
+    (progression) => progression.aliases,
   );
 }
 
-export function findChordProgressionFamily(
-  options: ChordProgressionFamilySearchOptions = {},
-): ChordProgressionFamily | undefined {
-  return searchChordProgressionFamilies(options)[0];
-}
-
-export function searchChordProgressionRealizations(
-  options: ChordProgressionRealizationSearchOptions = {},
-): ChordProgressionRealization[] {
-  const filtered = Object.values(chordProgressionRealizations).filter(
-    (realization) => {
-      if (!passesFacetFilters(realization, options)) return false;
-      if (options.familyId && realization.familyId !== options.familyId) {
-        return false;
-      }
-      if (options.formId && realization.formId !== options.formId) return false;
-      return true;
-    },
-  );
-
-  return applyTextSearch(
-    filtered,
-    options.query,
-    getSearchableRealizationText,
-    (realization) => realization.primaryName,
-    (realization) => realization.aliases,
-  );
-}
-
-export function findChordProgressionRealization(
-  options: ChordProgressionRealizationSearchOptions = {},
-): ChordProgressionRealization | undefined {
-  return searchChordProgressionRealizations(options)[0];
+export function findChordProgression(
+  options: ChordProgressionSearchOptions = {},
+): ChordProgression | undefined {
+  return searchChordProgressions(options)[0];
 }
 
 export function searchChordProgressionForms(
   options: ChordProgressionFormSearchOptions = {},
 ): ChordProgressionForm[] {
-  let filtered = Object.values(chordProgressionForms);
-
-  if (options.tag) {
-    filtered = filtered.filter((form) =>
-      matchesNormalizedTag(form.tags, options.tag!)
-    );
-  }
-
   return applyTextSearch(
-    filtered,
+    Object.values(chordProgressionForms),
     options.query,
     getSearchableFormText,
     (form) => form.primaryName,
@@ -362,52 +237,37 @@ export function findChordProgressionForm(
   return searchChordProgressionForms(options)[0];
 }
 
-export function searchCuratedChordProgressionCollections(
-  options: ChordProgressionCuratedCollectionSearchOptions = {},
-): ChordProgressionCuratedCollection[] {
-  let filtered = Object.values(curatedChordProgressionCollections);
+export function searchChordProgressionSets(
+  options: ChordProgressionSetSearchOptions = {},
+): ChordProgressionSet[] {
+  let filtered = Object.values(chordProgressionSets);
 
-  if (options.tag) {
-    filtered = filtered.filter((collection) =>
-      matchesNormalizedTag(collection.tags, options.tag!)
-    );
-  }
-
-  if (options.realizationId) {
-    filtered = filtered.filter((collection) =>
-      collection.realizationIds.includes(options.realizationId!)
+  if (options.progressionId) {
+    filtered = filtered.filter((set) =>
+      set.progressionIds.includes(options.progressionId!)
     );
   }
 
   return applyTextSearch(
     filtered,
     options.query,
-    getSearchableCuratedCollectionText,
-    (collection) => collection.displayName,
+    getSearchableSetText,
+    (set) => set.displayName,
     () => [],
   );
 }
 
-export function findCuratedChordProgressionCollection(
-  options: ChordProgressionCuratedCollectionSearchOptions = {},
-): ChordProgressionCuratedCollection | undefined {
-  return searchCuratedChordProgressionCollections(options)[0];
+export function findChordProgressionSet(
+  options: ChordProgressionSetSearchOptions = {},
+): ChordProgressionSet | undefined {
+  return searchChordProgressionSets(options)[0];
 }
 
-function resolveFamily(
-  familyOrKey: ChordProgressionFamily | ChordProgressionFamilyKey,
-): ChordProgressionFamily | undefined {
-  if (typeof familyOrKey !== "string") return familyOrKey;
-  return chordProgressionFamilies[familyOrKey];
-}
-
-function resolveRealization(
-  realizationOrKey:
-    | ChordProgressionRealization
-    | ChordProgressionRealizationKey,
-): ChordProgressionRealization | undefined {
-  if (typeof realizationOrKey !== "string") return realizationOrKey;
-  return chordProgressionRealizations[realizationOrKey];
+function resolveProgression(
+  progressionOrKey: ChordProgression | ChordProgressionKey,
+): ChordProgression | undefined {
+  if (typeof progressionOrKey !== "string") return progressionOrKey;
+  return chordProgressions[progressionOrKey];
 }
 
 function resolveForm(
@@ -417,53 +277,32 @@ function resolveForm(
   return chordProgressionForms[formOrKey];
 }
 
-function resolveCuratedCollection(
-  collectionOrKey:
-    | ChordProgressionCuratedCollection
-    | ChordProgressionCuratedCollectionKey,
-): ChordProgressionCuratedCollection | undefined {
-  if (typeof collectionOrKey !== "string") return collectionOrKey;
-  return curatedChordProgressionCollections[collectionOrKey];
+function resolveSet(
+  setOrKey: ChordProgressionSet | ChordProgressionSetKey,
+): ChordProgressionSet | undefined {
+  if (typeof setOrKey !== "string") return setOrKey;
+  return chordProgressionSets[setOrKey];
 }
 
-export function getChordProgressionFamilyForRealization(
-  realizationOrKey:
-    | ChordProgressionRealization
-    | ChordProgressionRealizationKey,
-): ChordProgressionFamily | undefined {
-  const realization = resolveRealization(realizationOrKey);
-  if (!realization) return undefined;
-
-  return isValidChordProgressionFamilyKey(realization.familyId)
-    ? chordProgressionFamilies[realization.familyId]
-    : undefined;
-}
-
-export function getChordProgressionFormForRealization(
-  realizationOrKey:
-    | ChordProgressionRealization
-    | ChordProgressionRealizationKey,
+export function getChordProgressionFormForProgression(
+  progressionOrKey: ChordProgression | ChordProgressionKey,
 ): ChordProgressionForm | undefined {
-  const realization = resolveRealization(realizationOrKey);
-  if (!realization?.formId) return undefined;
+  const progression = resolveProgression(progressionOrKey);
+  if (!progression?.formId) return undefined;
 
-  return isValidChordProgressionFormKey(realization.formId)
-    ? chordProgressionForms[realization.formId]
+  return isValidChordProgressionFormKey(progression.formId)
+    ? chordProgressionForms[progression.formId]
     : undefined;
 }
 
-export function getChordProgressionRealizationsForCuratedCollection(
-  collectionOrKey:
-    | ChordProgressionCuratedCollection
-    | ChordProgressionCuratedCollectionKey,
-): ChordProgressionRealization[] {
-  const collection = resolveCuratedCollection(collectionOrKey);
-  if (!collection) return [];
+export function getChordProgressionsForSet(
+  setOrKey: ChordProgressionSet | ChordProgressionSetKey,
+): ChordProgression[] {
+  const set = resolveSet(setOrKey);
+  if (!set) return [];
 
-  return collection.realizationIds.flatMap((id) =>
-    isValidChordProgressionRealizationKey(id)
-      ? [chordProgressionRealizations[id]]
-      : []
+  return set.progressionIds.flatMap((id) =>
+    isValidChordProgressionKey(id) ? [chordProgressions[id]] : []
   );
 }
 
@@ -483,79 +322,75 @@ export function getRomanNumeralForIntervalAndChordQuality(
   return roman === undefined ? undefined : accidental + roman;
 }
 
-export function getChordProgressionFamilyDegreeNames(
-  familyOrKey: ChordProgressionFamily | ChordProgressionFamilyKey,
+export function getChordProgressionDegreeNames(
+  progressionOrKey: ChordProgression | ChordProgressionKey,
 ): string[] {
-  const family = resolveFamily(familyOrKey);
-  if (!family) return [];
+  const progression = resolveProgression(progressionOrKey);
+  if (!progression) return [];
 
-  return getDegreeNamesForShapes(family.formula);
+  return getDegreeNamesForShapes(progression.spans);
 }
 
-export function getChordProgressionFamilyRomanNames(
-  familyOrKey: ChordProgressionFamily | ChordProgressionFamilyKey,
+export function getChordProgressionRomanNames(
+  progressionOrKey: ChordProgression | ChordProgressionKey,
 ): string[] {
-  const family = resolveFamily(familyOrKey);
-  if (!family) return [];
+  const progression = resolveProgression(progressionOrKey);
+  if (!progression) return [];
 
-  return getRomanNumeralNamesForShapes(family.formula);
+  return getRomanNumeralNamesForShapes(progression.spans);
 }
 
-export function getChordProgressionRealizationTimeline(
-  realizationOrKey:
-    | ChordProgressionRealization
-    | ChordProgressionRealizationKey,
-): ChordProgressionTimelineSpan[] {
-  const realization = resolveRealization(realizationOrKey);
-  if (!realization) return [];
-
+function getFormSectionRanges(form: ChordProgressionForm) {
   let barCursor = 1;
 
-  return realization.sections.flatMap((section) =>
-    section.spans.map((span) => {
-      const timelineSpan: ChordProgressionTimelineSpan = {
-        ...span,
-        sectionId: section.id,
-        sectionLabel: section.label,
-        startBar: barCursor,
-        endBar: barCursor + span.bars,
-      };
+  return form.sections.map((section) => {
+    const startBar = barCursor;
+    const endBar = startBar + section.bars;
+    barCursor = endBar;
 
-      barCursor += span.bars;
-      return timelineSpan;
-    })
-  );
+    return {
+      id: section.id,
+      label: section.label,
+      startBar,
+      endBar,
+    };
+  });
 }
 
-export function getChordProgressionRealizationDegreeNames(
-  realizationOrKey:
-    | ChordProgressionRealization
-    | ChordProgressionRealizationKey,
-): string[] {
-  const realization = resolveRealization(realizationOrKey);
-  if (!realization) return [];
+export function getChordProgressionTimeline(
+  progressionOrKey: ChordProgression | ChordProgressionKey,
+): ChordProgressionTimelineSpan[] {
+  const progression = resolveProgression(progressionOrKey);
+  if (!progression) return [];
 
-  return getDegreeNamesForShapes(flattenRealizationSpans(realization));
+  const form = getChordProgressionFormForProgression(progression);
+  const sectionRanges = form ? getFormSectionRanges(form) : [];
+  let barCursor = 1;
+
+  return progression.spans.map((span) => {
+    const startBar = barCursor;
+    const endBar = startBar + span.bars;
+    barCursor = endBar;
+
+    const section = sectionRanges.find((range) =>
+      startBar >= range.startBar && endBar <= range.endBar
+    );
+
+    return {
+      ...span,
+      startBar,
+      endBar,
+      sectionId: section?.id,
+      sectionLabel: section?.label,
+    };
+  });
 }
 
-export function getChordProgressionRealizationRomanNames(
-  realizationOrKey:
-    | ChordProgressionRealization
-    | ChordProgressionRealizationKey,
-): string[] {
-  const realization = resolveRealization(realizationOrKey);
-  if (!realization) return [];
-
-  return getRomanNumeralNamesForShapes(flattenRealizationSpans(realization));
-}
-
-export function getChordProgressionRealizationChordTimeline(
+export function getChordProgressionChordTimeline(
   rootNote: RootNote,
-  realizationOrKey:
-    | ChordProgressionRealization
-    | ChordProgressionRealizationKey,
+  progressionOrKey: ChordProgression | ChordProgressionKey,
 ): ChordProgressionNamedTimelineSpan[] {
-  const timeline = getChordProgressionRealizationTimeline(realizationOrKey);
+  const timeline = getChordProgressionTimeline(progressionOrKey);
   if (!timeline.length) return [];
 
   const noteNames = getNoteNamesForRootAndIntervals(
@@ -575,47 +410,39 @@ export function getChordProgressionRealizationChordTimeline(
   }));
 }
 
-export function getChordProgressionRealizationPaletteChordNames(
+export function getChordProgressionPaletteChordNames(
   rootNote: RootNote,
-  realizationOrKey:
-    | ChordProgressionRealization
-    | ChordProgressionRealizationKey,
+  progressionOrKey: ChordProgression | ChordProgressionKey,
 ): string[] {
   return Array.from(
     new Set(
-      getChordProgressionRealizationChordTimeline(rootNote, realizationOrKey)
-        .map((span) => span.chordName),
+      getChordProgressionChordTimeline(rootNote, progressionOrKey).map((span) =>
+        span.chordName
+      ),
     ),
   );
 }
 
-export function getChordProgressionRealizationNoteCollectionKeys(
-  realizationOrKey:
-    | ChordProgressionRealization
-    | ChordProgressionRealizationKey,
+export function getChordProgressionNoteCollectionKeys(
+  progressionOrKey: ChordProgression | ChordProgressionKey,
 ): NoteCollectionKey[] {
-  const realization = resolveRealization(realizationOrKey);
-  if (!realization) return [];
+  const progression = resolveProgression(progressionOrKey);
+  if (!progression) return [];
 
-  return flattenRealizationSpans(realization).flatMap((span) => {
+  return progression.spans.flatMap((span) => {
     const noteCollectionKey = span.noteCollectionKey ??
       getChordProgressionStepNoteCollectionKey(span.quality);
     return noteCollectionKey ? [noteCollectionKey] : [];
   });
 }
 
-export function getChordProgressionRealizationTotalBars(
-  realizationOrKey:
-    | ChordProgressionRealization
-    | ChordProgressionRealizationKey,
+export function getChordProgressionTotalBars(
+  progressionOrKey: ChordProgression | ChordProgressionKey,
 ): number {
-  const realization = resolveRealization(realizationOrKey);
-  if (!realization) return 0;
+  const progression = resolveProgression(progressionOrKey);
+  if (!progression) return 0;
 
-  return flattenRealizationSpans(realization).reduce(
-    (total, span) => total + span.bars,
-    0,
-  );
+  return progression.spans.reduce((total, span) => total + span.bars, 0);
 }
 
 export function getChordProgressionFormTotalBars(

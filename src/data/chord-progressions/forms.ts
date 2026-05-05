@@ -2,11 +2,10 @@ import type { ChordProgressionForm } from "../../types/chord-progressions.d.ts";
 
 const fourBarLoop: ChordProgressionForm = {
   id: "fourBarLoop",
-  primaryName: "Four Bar Loop",
-  aliases: ["4 Bar Loop"],
+  primaryName: "4-bar loop",
+  aliases: ["Four bar loop"],
   summary:
-    "A single-section four-bar cycle commonly used for repeating practice and songwriting loops.",
-  tags: ["loop", "four bar"],
+    "A single-section four-bar cycle commonly used as a short repeating progression.",
   sections: [
     {
       id: "main",
@@ -18,27 +17,35 @@ const fourBarLoop: ChordProgressionForm = {
 
 const twelveBarBlues: ChordProgressionForm = {
   id: "twelveBarBlues",
-  primaryName: "Twelve Bar Blues Form",
-  aliases: ["12 Bar Blues Form"],
+  primaryName: "12-bar blues form",
+  aliases: ["Twelve bar blues form"],
   summary:
     "A 12-bar form usually understood as three four-bar phrases in blues-based music.",
-  tags: ["blues", "twelve bar", "song form"],
   sections: [
     {
-      id: "main",
-      label: "Main",
-      bars: 12,
+      id: "phrase1",
+      label: "Phrase 1",
+      bars: 4,
+    },
+    {
+      id: "phrase2",
+      label: "Phrase 2",
+      bars: 4,
+    },
+    {
+      id: "phrase3",
+      label: "Phrase 3",
+      bars: 4,
     },
   ],
 };
 
 const aaba32: ChordProgressionForm = {
   id: "aaba32",
-  primaryName: "AABA 32 Bar Form",
-  aliases: ["32 Bar AABA"],
+  primaryName: "32-bar AABA form",
+  aliases: ["AABA 32 bar form"],
   summary:
     "A conventional 32-bar song form with three A sections and a contrasting bridge.",
-  tags: ["aaba", "thirty two bar", "song form"],
   sections: [
     {
       id: "a1",
