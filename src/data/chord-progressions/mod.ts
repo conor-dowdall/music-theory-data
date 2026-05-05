@@ -100,7 +100,7 @@ const sixTwoFiveOne: ChordProgression = {
 };
 
 const majorTwoFiveOne: ChordProgression = {
-  primaryName: "iim7 | V7 | IM7 | IM7",
+  primaryName: "iim7 | V7 | Imaj7 | Imaj7",
   chords: [
     chord("2", "m7", 1),
     chord("5", "7", 1),

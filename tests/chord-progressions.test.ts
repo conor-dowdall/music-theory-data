@@ -2,8 +2,10 @@ import { assertEquals } from "@std/assert";
 import { chordProgressions } from "../src/data/chord-progressions/mod.ts";
 import {
   getChordProgressionChordNames,
+  getChordProgressionChordReferences,
   getChordProgressionTotalDurationInBars,
   getChordProgressionUniqueChordNames,
+  getChordProgressionUniqueChordReferences,
   isValidChordProgressionKey,
 } from "../src/utils/chord-progressions.ts";
 
@@ -69,6 +71,46 @@ Deno.test("progression helpers expose chord names and total duration", () => {
   assertEquals(
     getChordProgressionUniqueChordNames("C", "oneFourOneFiveSplitReturn"),
     ["CM", "FM", "GM"],
+  );
+  assertEquals(
+    getChordProgressionChordReferences("G", "oneOneFiveFiveDominant7"),
+    [
+      {
+        rootNote: "G",
+        chordName: "GM",
+        noteCollectionKey: "major",
+      },
+      {
+        rootNote: "D",
+        chordName: "DM",
+        noteCollectionKey: "major",
+      },
+      {
+        rootNote: "D",
+        chordName: "D7",
+        noteCollectionKey: "dominant7",
+      },
+    ],
+  );
+  assertEquals(
+    getChordProgressionUniqueChordReferences("C", "oneFourOneFiveSplitReturn"),
+    [
+      {
+        rootNote: "C",
+        chordName: "CM",
+        noteCollectionKey: "major",
+      },
+      {
+        rootNote: "F",
+        chordName: "FM",
+        noteCollectionKey: "major",
+      },
+      {
+        rootNote: "G",
+        chordName: "GM",
+        noteCollectionKey: "major",
+      },
+    ],
   );
   assertEquals(getChordProgressionTotalDurationInBars("twelveBarBlues"), 12);
   assertEquals(

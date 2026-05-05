@@ -207,6 +207,18 @@ console.log(
 // ["CM", "FM", "GM"]
 
 console.log(
+  music_theory_data.getChordProgressionUniqueChordReferences(
+    "C",
+    "oneFourOneFiveSplitReturn",
+  ),
+);
+// [
+//   { rootNote: "C", chordName: "CM", noteCollectionKey: "major" },
+//   { rootNote: "C", chordName: "FM", noteCollectionKey: "major" },
+//   { rootNote: "C", chordName: "GM", noteCollectionKey: "major" },
+// ]
+
+console.log(
   music_theory_data.getChordProgressionTotalDurationInBars("twelveBarBlues"),
 );
 // 12
