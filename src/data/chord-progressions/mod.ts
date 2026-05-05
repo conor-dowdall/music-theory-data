@@ -79,8 +79,28 @@ const oneFiveSixFour: ChordProgression = {
   ],
 };
 
+const oneSixTwoFive: ChordProgression = {
+  primaryName: "I | vi | ii | V",
+  chords: [
+    chord("1", "M", 1),
+    chord("6", "m", 1),
+    chord("2", "m", 1),
+    chord("5", "M", 1),
+  ],
+};
+
+const sixTwoFiveOne: ChordProgression = {
+  primaryName: "vi | ii | V | I",
+  chords: [
+    chord("6", "m", 1),
+    chord("2", "m", 1),
+    chord("5", "M", 1),
+    chord("1", "M", 1),
+  ],
+};
+
 const majorTwoFiveOne: ChordProgression = {
-  primaryName: "ii7 | V7 | Imaj7 | Imaj7",
+  primaryName: "iim7 | V7 | Imaj7 | Imaj7",
   chords: [
     chord("2", "m7", 1),
     chord("5", "7", 1),
@@ -98,7 +118,7 @@ const minorTwoFiveOne: ChordProgression = {
 };
 
 const oneFourOneFiveSplitReturn: ChordProgression = {
-  primaryName: "I | IV | I | V | I | IV | I / V | I",
+  primaryName: "I | IV | I | V | I | IV | I V | I",
   chords: [
     chord("1", "M", 1),
     chord("4", "M", 1),
@@ -113,9 +133,24 @@ const oneFourOneFiveSplitReturn: ChordProgression = {
 };
 
 const twelveBarBlues: ChordProgression = {
-  primaryName: "I7 | I7 | I7 | I7 | IV7 | IV7 | I7 | I7 | V7 | IV7 | I7 | V7",
+  primaryName: "12 Bar Blues",
   chords: [
     chord("1", "7", 4),
+    chord("4", "7", 2),
+    chord("1", "7", 2),
+    chord("5", "7", 1),
+    chord("4", "7", 1),
+    chord("1", "7", 1),
+    chord("5", "7", 1),
+  ],
+};
+
+const twelveBarBluesQuickChange: ChordProgression = {
+  primaryName: "12 Bar Blues Quick Change",
+  chords: [
+    chord("1", "7", 1),
+    chord("4", "7", 1),
+    chord("1", "7", 2),
     chord("4", "7", 2),
     chord("1", "7", 2),
     chord("5", "7", 1),
@@ -133,10 +168,13 @@ const _chordProgressions = {
   oneFourOneFive,
   oneSixFourFive,
   oneFiveSixFour,
+  oneSixTwoFive,
+  sixTwoFiveOne,
   majorTwoFiveOne,
   minorTwoFiveOne,
   oneFourOneFiveSplitReturn,
   twelveBarBlues,
+  twelveBarBluesQuickChange,
 } as const;
 
 export type ChordProgressionKey = keyof typeof _chordProgressions;

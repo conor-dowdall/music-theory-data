@@ -191,7 +191,7 @@ console.log(oneSixFourFive.chords);
 // ]
 
 console.log(
-  music_theory_data.getChordProgressionPaletteChordNames(
+  music_theory_data.getChordProgressionChordNames(
     "C",
     "oneSixFourFive",
   ),
@@ -199,26 +199,17 @@ console.log(
 // ["CM", "Am", "FM", "GM"]
 
 console.log(
-  music_theory_data.getChordProgressionRomanNames("majorTwoFiveOne"),
+  music_theory_data.getChordProgressionUniqueChordNames(
+    "C",
+    "oneFourOneFiveSplitReturn",
+  ),
 );
-// ["iim7", "V7", "IM7"]
+// ["CM", "FM", "GM"]
 
 console.log(
   music_theory_data.getChordProgressionTotalDurationInBars("twelveBarBlues"),
 );
 // 12
-
-console.log(
-  music_theory_data.getChordProgressionDurationGroups().map((group) => ({
-    displayName: group.displayName,
-    keys: group.progressions.map((entry) => entry.key),
-  })),
-);
-// [
-//   { displayName: "4-Bar Loops", keys: ["oneOneFiveFive", ...] },
-//   { displayName: "8-Bar Loops", keys: ["oneFourOneFiveSplitReturn"] },
-//   { displayName: "12-Bar Loops", keys: ["twelveBarBlues"] },
-// ]
 ```
 
 ## Note Colors And Chromatic Indexes

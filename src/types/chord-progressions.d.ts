@@ -23,8 +23,3 @@ export interface ChordProgression {
   readonly primaryName: string;
   readonly chords: readonly ChordProgressionChord[];
 }
-
-export interface ChordProgressionTimelineChord extends ChordProgressionChord {
-  readonly startBar: number;
-  readonly endBar: number;
-}
