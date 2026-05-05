@@ -53,6 +53,17 @@ function normalizeSearchTerm(str: string): string {
     .toLowerCase();
 }
 
+function humanizeIdentifier(identifier: string): string {
+  return identifier
+    .replace(/([a-z])([A-Z0-9])/g, "$1 $2")
+    .replace(/([0-9])([A-Z])/g, "$1 $2");
+}
+
+function getSearchTokens(str: string): string[] {
+  const normalized = normalizeSearchTerm(str);
+  return normalized ? normalized.split(" ") : [];
+}
+
 function getRomanNumeralNamesForChords(
   chords: readonly Pick<ChordProgressionChord, "degree" | "quality">[],
 ): string[] {
@@ -71,16 +82,19 @@ function getDegreeNamesForChords(
   return chords.map((chord) => chord.degree + chord.quality);
 }
 
-function getSearchableProgressionText(progression: ChordProgression): string {
+function getSearchableProgressionText(
+  key: ChordProgressionKey,
+  progression: ChordProgression,
+): string {
   const totalDurationInBars = progression.chords.reduce(
     (total, chord) => total + chord.durationInBars,
     0,
   );
 
   return [
+    key,
+    humanizeIdentifier(key),
     progression.primaryName,
-    progression.summary ?? "",
-    ...progression.aliases,
     ...getDegreeNamesForChords(progression.chords),
     ...getRomanNumeralNamesForChords(progression.chords),
     `${totalDurationInBars} bar`,
@@ -101,32 +115,25 @@ function applyTextSearch<T>(
   query: string | undefined,
   getSearchableText: (item: T) => string,
   getPrimaryName: (item: T) => string,
-  getAliases: (item: T) => readonly string[],
 ): T[] {
   if (!query) return [...items];
 
   const normalizedQuery = normalizeSearchTerm(query);
   if (!normalizedQuery) return [...items];
 
-  const queryWords = normalizedQuery.split(" ");
+  const queryWords = getSearchTokens(normalizedQuery);
   const filtered = items.filter((item) => {
-    const searchableText = getSearchableText(item);
-    return queryWords.every((word) => searchableText.includes(word));
+    const searchableTokens = getSearchTokens(getSearchableText(item));
+    return queryWords.every((word) =>
+      searchableTokens.some((token) => token.startsWith(word))
+    );
   });
 
   const prioritized = new Set<T>();
   const passes = [
     (item: T) => normalizeSearchTerm(getPrimaryName(item)) === normalizedQuery,
     (item: T) =>
-      getAliases(item).some((alias) =>
-        normalizeSearchTerm(alias) === normalizedQuery
-      ),
-    (item: T) =>
       normalizeSearchTerm(getPrimaryName(item)).startsWith(normalizedQuery),
-    (item: T) =>
-      getAliases(item).some((alias) =>
-        normalizeSearchTerm(alias).startsWith(normalizedQuery)
-      ),
   ];
 
   for (const pass of passes) {
@@ -175,15 +182,8 @@ export function searchChordProgressionEntries(
   return applyTextSearch(
     filtered,
     options.query,
-    (entry) =>
-      [
-        entry.key,
-        getSearchableProgressionText(entry.progression),
-      ]
-        .map(normalizeSearchTerm)
-        .join(" "),
+    (entry) => getSearchableProgressionText(entry.key, entry.progression),
     (entry) => entry.progression.primaryName,
-    (entry) => entry.progression.aliases,
   );
 }
 

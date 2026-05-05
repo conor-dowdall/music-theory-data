@@ -25,15 +25,15 @@ import {
 Deno.test("progression key validation reflects the current dataset", () => {
   assertEquals(isValidChordProgressionKey("dooWop"), true);
   assertEquals(isValidChordProgressionKey("oneOneFiveFiveDominant7"), true);
-  assertEquals(isValidChordProgressionKey("oneFourOneFiveEightBar"), true);
+  assertEquals(isValidChordProgressionKey("oneFourOneFiveSplitReturn"), true);
   assertEquals(isValidChordProgressionKey("rhythmChanges"), false);
   assertEquals(isValidChordProgressionKey("ionian"), false);
 });
 
 Deno.test("progression exports are available directly", () => {
-  assertEquals(chordProgressions.oneOneFourFive.primaryName, "I-I-IV-V");
-  assertEquals(chordProgressions.dooWop.primaryName, "I-vi-IV-V");
-  assertEquals(chordProgressions.oneFourOneFiveEightBar.chords, [
+  assertEquals(chordProgressions.oneOneFourFive.primaryName, "I I IV V");
+  assertEquals(chordProgressions.dooWop.primaryName, "I vi IV V");
+  assertEquals(chordProgressions.oneFourOneFiveSplitReturn.chords, [
     { degree: "1", quality: "M", durationInBars: 1 },
     { degree: "4", quality: "M", durationInBars: 1 },
     { degree: "1", quality: "M", durationInBars: 1 },
@@ -67,7 +67,7 @@ Deno.test("progression search supports text lookup and structural filters", () =
     chordProgressions.majorTwoFiveOne,
   );
   assertEquals(
-    findChordProgression({ query: "50s progression" }),
+    findChordProgression({ query: "doo wop" }),
     chordProgressions.dooWop,
   );
   assertEquals(
@@ -84,19 +84,19 @@ Deno.test("progression search supports text lookup and structural filters", () =
   );
   assertEquals(
     searchChordProgressions({ totalDurationInBars: 8 }),
-    [chordProgressions.oneFourOneFiveEightBar],
+    [chordProgressions.oneFourOneFiveSplitReturn],
   );
   assertEquals(
     searchChordProgressionEntries({ totalDurationInBars: 8 }),
     [
       {
-        key: "oneFourOneFiveEightBar",
-        progression: chordProgressions.oneFourOneFiveEightBar,
+        key: "oneFourOneFiveSplitReturn",
+        progression: chordProgressions.oneFourOneFiveSplitReturn,
       },
     ],
   );
   assertEquals(
-    findChordProgressionEntry({ query: "50s progression" }),
+    findChordProgressionEntry({ query: "doo wop" }),
     {
       key: "dooWop",
       progression: chordProgressions.dooWop,
@@ -154,8 +154,8 @@ Deno.test("progression entry and duration groups support downstream UI", () => {
       displayName: "8-Bar Loops",
       progressions: [
         {
-          key: "oneFourOneFiveEightBar",
-          progression: chordProgressions.oneFourOneFiveEightBar,
+          key: "oneFourOneFiveSplitReturn",
+          progression: chordProgressions.oneFourOneFiveSplitReturn,
         },
       ],
     },
@@ -203,12 +203,12 @@ Deno.test("timeline helpers expose ordered chords and derived chord names", () =
   assertEquals(getChordProgressionTotalDurationInBars("twelveBarBlues"), 12);
   assertEquals(getChordProgressionTotalDurationInBars("majorTwoFiveOne"), 4);
   assertEquals(
-    getChordProgressionTotalDurationInBars("oneFourOneFiveEightBar"),
+    getChordProgressionTotalDurationInBars("oneFourOneFiveSplitReturn"),
     8,
   );
 
   const eightBarTimeline = getChordProgressionTimeline(
-    "oneFourOneFiveEightBar",
+    "oneFourOneFiveSplitReturn",
   );
   assertEquals(eightBarTimeline[6], {
     degree: "1",
@@ -243,7 +243,7 @@ Deno.test("timeline helpers expose ordered chords and derived chord names", () =
     ["major", "major", "dominant7"],
   );
   assertEquals(
-    getChordProgressionPaletteChordNames("C", "oneFourOneFiveEightBar"),
+    getChordProgressionPaletteChordNames("C", "oneFourOneFiveSplitReturn"),
     ["CM", "FM", "GM"],
   );
 });

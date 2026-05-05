@@ -26,12 +26,11 @@ Have a question, a suggestion, or want to report a bug? Get in touch!
 - ✅ Augmented Variants
 - ✅ Other Note Collections, including notes and dyads
 
-## Available Chord Progression Templates
+## Available Chord Progressions
 
-- ✅ Basic Progressions
-- ✅ Pop Progressions
-- ✅ Blues Progressions
-- ✅ Jazz Progressions
+- ✅ 4-bar foundational loops
+- ✅ 8-bar loops
+- ✅ 12-bar blues
 
 ## Features
 
@@ -181,7 +180,7 @@ console.log(Object.keys(music_theory_data.groupedNoteCollections));
 const dooWop = music_theory_data.chordProgressions.dooWop;
 
 console.log(dooWop.primaryName);
-// "I-vi-IV-V"
+// "I vi IV V"
 
 console.log(dooWop.chords);
 // [
@@ -217,7 +216,7 @@ console.log(
 );
 // [
 //   { displayName: "4-Bar Loops", keys: ["oneOneFiveFive", ...] },
-//   { displayName: "8-Bar Loops", keys: ["oneFourOneFiveEightBar"] },
+//   { displayName: "8-Bar Loops", keys: ["oneFourOneFiveSplitReturn"] },
 //   { displayName: "12-Bar Loops", keys: ["twelveBarBlues"] },
 // ]
 ```

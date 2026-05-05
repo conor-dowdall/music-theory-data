@@ -21,8 +21,6 @@ export interface ChordProgressionChord {
 
 export interface ChordProgression {
   readonly primaryName: string;
-  readonly aliases: readonly string[];
-  readonly summary?: string;
   readonly chords: readonly ChordProgressionChord[];
 }
 
