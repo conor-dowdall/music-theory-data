@@ -183,6 +183,14 @@ const dooWop = music_theory_data.chordProgressions.dooWop;
 console.log(dooWop.primaryName);
 // "Doo-wop progression"
 
+console.log(dooWop.changes);
+// [
+//   { degree: "1", quality: "M", bars: 1 },
+//   { degree: "6", quality: "m", bars: 1 },
+//   { degree: "4", quality: "M", bars: 1 },
+//   { degree: "5", quality: "M", bars: 1 },
+// ]
+
 console.log(
   music_theory_data.getChordProgressionPaletteChordNames(
     "C",
@@ -200,12 +208,6 @@ console.log(
   music_theory_data.getChordProgressionTotalBars("twelveBarBlues"),
 );
 // 12
-
-console.log(
-  music_theory_data.getChordProgressionTimeline("rhythmChanges")[0]
-    .sectionLabel,
-);
-// "A1"
 ```
 
 ## Note Colors And Chromatic Indexes

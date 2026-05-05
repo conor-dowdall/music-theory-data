@@ -1,11 +1,8 @@
 import { assertEquals } from "@std/assert";
 import {
-  chordProgressionForms,
-  chordProgressionIdiomMetadata,
   chordProgressions,
   chordProgressionSets,
   chordProgressionStepNoteCollectionKeys,
-  chordProgressionTonalContextMetadata,
   getChordProgressionStepNoteCollectionKey,
 } from "../src/data/chord-progressions/mod.ts";
 import {
@@ -13,8 +10,6 @@ import {
   findChordProgressionSet,
   getChordProgressionChordTimeline,
   getChordProgressionDegreeNames,
-  getChordProgressionFormForProgression,
-  getChordProgressionFormTotalBars,
   getChordProgressionNoteCollectionKeys,
   getChordProgressionPaletteChordNames,
   getChordProgressionRomanNames,
@@ -22,49 +17,33 @@ import {
   getChordProgressionTimeline,
   getChordProgressionTotalBars,
   getRomanNumeralForIntervalAndChordQuality,
-  isValidChordProgressionFormKey,
   isValidChordProgressionKey,
   isValidChordProgressionSetKey,
-  searchChordProgressionForms,
   searchChordProgressions,
   searchChordProgressionSets,
 } from "../src/utils/chord-progressions.ts";
 
-Deno.test("progression key validation reflects the simplified datasets", () => {
+Deno.test("progression key validation reflects the reduced datasets", () => {
   assertEquals(isValidChordProgressionKey("dooWop"), true);
-  assertEquals(isValidChordProgressionKey("rhythmChanges"), true);
-  assertEquals(isValidChordProgressionFormKey("aaba32"), true);
-  assertEquals(isValidChordProgressionSetKey("commonLoops"), true);
+  assertEquals(isValidChordProgressionKey("oneOneFiveFiveDominant7"), true);
+  assertEquals(isValidChordProgressionSetKey("fourBarProgressions"), true);
+  assertEquals(isValidChordProgressionKey("rhythmChanges"), false);
   assertEquals(isValidChordProgressionKey("ionian"), false);
-  assertEquals(isValidChordProgressionSetKey("beginnerFoundations"), false);
+  assertEquals(isValidChordProgressionSetKey("commonLoops"), false);
 });
 
-Deno.test("facet metadata exports cover the intrinsic classification model", () => {
-  assertEquals(
-    chordProgressionIdiomMetadata["pop-rock"].displayName,
-    "Pop / Rock",
-  );
-  assertEquals(
-    chordProgressionTonalContextMetadata["dominant-blues"].displayName,
-    "Dominant Blues",
-  );
-});
-
-Deno.test("progression, form, and set exports are available directly", () => {
+Deno.test("progression and set exports are available directly", () => {
   assertEquals(chordProgressions.oneOneFourFive.primaryName, "I-I-IV-V");
-  assertEquals(
-    chordProgressionForms.aaba32.sections.map((section) => section.label),
-    [
-      "A1",
-      "A2",
-      "B",
-      "A3",
-    ],
-  );
-  assertEquals(chordProgressionSets.songwritingLoops.progressionIds, [
+  assertEquals(chordProgressionSets.fourBarProgressions.progressionIds, [
+    "oneOneFiveFive",
+    "oneOneFiveFiveDominant7",
+    "oneOneFourFour",
+    "oneOneFourFive",
     "oneFourOneFive",
     "dooWop",
     "axisProgression",
+    "majorTwoFiveOne",
+    "minorTwoFiveOne",
   ]);
 });
 
@@ -78,7 +57,7 @@ Deno.test("canonical note collection keys still resolve from chord quality", () 
   assertEquals(chordProgressionStepNoteCollectionKeys["°7"], "diminished7");
 });
 
-Deno.test("progression search supports query and intrinsic facet filters", () => {
+Deno.test("progression search supports text lookup on names and formulas", () => {
   assertEquals(
     searchChordProgressions({ query: "ii v i" })[0],
     chordProgressions.majorTwoFiveOne,
@@ -87,34 +66,32 @@ Deno.test("progression search supports query and intrinsic facet filters", () =>
     findChordProgression({ query: "50s progression" }),
     chordProgressions.dooWop,
   );
-
-  const popLoops = searchChordProgressions({
-    idiom: "pop-rock",
-    formId: "fourBarLoop",
-  });
-  assertEquals(popLoops.includes(chordProgressions.axisProgression), true);
-  assertEquals(popLoops.includes(chordProgressions.majorTwoFiveOne), false);
-
-  const aabaEntries = searchChordProgressions({ formId: "aaba32" });
-  assertEquals(aabaEntries, [chordProgressions.rhythmChanges]);
-});
-
-Deno.test("form and set search stay useful for downstream UI", () => {
   assertEquals(
-    searchChordProgressionForms({ query: "32 bar aaba" })[0],
-    chordProgressionForms.aaba32,
+    searchChordProgressions({ query: "I IV V" })[0],
+    chordProgressions.oneOneFourFive,
   );
   assertEquals(
-    searchChordProgressionSets({ query: "songwriting loops" })[0],
-    chordProgressionSets.songwritingLoops,
-  );
-  assertEquals(
-    findChordProgressionSet({ progressionId: "jazzBlues" }),
-    chordProgressionSets.bluesForms,
+    searchChordProgressions({ query: "12 bar blues" })[0],
+    chordProgressions.twelveBarBlues,
   );
 });
 
-Deno.test("progression helpers expose harmonic identity from spans", () => {
+Deno.test("set search stays useful for downstream UI", () => {
+  assertEquals(
+    searchChordProgressionSets({ query: "4 bar" })[0],
+    chordProgressionSets.fourBarProgressions,
+  );
+  assertEquals(
+    findChordProgressionSet({ progressionId: "majorTwoFiveOne" }),
+    chordProgressionSets.cadences,
+  );
+  assertEquals(
+    findChordProgressionSet({ progressionId: "twelveBarBlues" }),
+    chordProgressionSets.twelveBarProgressions,
+  );
+});
+
+Deno.test("progression helpers expose harmonic identity from changes", () => {
   assertEquals(getChordProgressionDegreeNames("oneOneFourFive"), [
     "1M",
     "4M",
@@ -132,72 +109,53 @@ Deno.test("progression helpers expose harmonic identity from spans", () => {
   ]);
 });
 
-Deno.test("timeline helpers derive section labels from forms when available", () => {
+Deno.test("timeline helpers expose ordered changes and derived chord names", () => {
   const bluesTimeline = getChordProgressionTimeline("twelveBarBlues");
   assertEquals(bluesTimeline.length, 7);
   assertEquals(bluesTimeline[0], {
     degree: "1",
     quality: "7",
     bars: 4,
-    harmonicFunction: "tonic",
-    cue: undefined,
     startBar: 1,
     endBar: 5,
-    sectionId: "phrase1",
-    sectionLabel: "Phrase 1",
   });
   assertEquals(getChordProgressionTotalBars("twelveBarBlues"), 12);
   assertEquals(getChordProgressionTotalBars("majorTwoFiveOne"), 4);
 
-  const rhythmTimeline = getChordProgressionTimeline("rhythmChanges");
-  assertEquals(rhythmTimeline[0].sectionLabel, "A1");
-  assertEquals(rhythmTimeline[8].sectionLabel, "A2");
-  assertEquals(rhythmTimeline[16].sectionLabel, "B");
-  assertEquals(rhythmTimeline[20].sectionLabel, "A3");
-
-  const oneLoopTimeline = getChordProgressionChordTimeline("G", "oneOneFiveV7");
-  assertEquals(oneLoopTimeline.map((span) => span.chordName), [
+  const oneLoopTimeline = getChordProgressionChordTimeline(
+    "G",
+    "oneOneFiveFiveDominant7",
+  );
+  assertEquals(oneLoopTimeline.map((change) => change.chordName), [
     "GM",
     "DM",
     "D7",
   ]);
-  assertEquals(getChordProgressionPaletteChordNames("G", "oneOneFiveV7"), [
-    "GM",
-    "DM",
-    "D7",
-  ]);
-  assertEquals(getChordProgressionNoteCollectionKeys("oneOneFiveV7"), [
-    "major",
-    "major",
-    "dominant7",
-  ]);
-});
-
-Deno.test("progressions stay linked to optional forms", () => {
   assertEquals(
-    getChordProgressionFormForProgression("rhythmChanges"),
-    chordProgressionForms.aaba32,
+    getChordProgressionPaletteChordNames("G", "oneOneFiveFiveDominant7"),
+    ["GM", "DM", "D7"],
   );
   assertEquals(
-    getChordProgressionFormForProgression("dooWop"),
-    chordProgressionForms.fourBarLoop,
+    getChordProgressionNoteCollectionKeys("oneOneFiveFiveDominant7"),
+    ["major", "major", "dominant7"],
   );
-  assertEquals(getChordProgressionFormTotalBars("aaba32"), 32);
 });
 
 Deno.test("sets resolve to concrete progressions", () => {
   assertEquals(
-    getChordProgressionsForSet("commonLoops").map((progression) =>
+    getChordProgressionsForSet("fourBarProgressions").map((progression) =>
       progression.id
     ),
     [
       "oneOneFiveFive",
-      "oneOneFiveV7",
+      "oneOneFiveFiveDominant7",
       "oneOneFourFour",
       "oneOneFourFive",
       "oneFourOneFive",
       "dooWop",
       "axisProgression",
+      "majorTwoFiveOne",
+      "minorTwoFiveOne",
     ],
   );
 });
@@ -206,5 +164,4 @@ Deno.test("getRomanNumeralForIntervalAndChordQuality", () => {
   assertEquals(getRomanNumeralForIntervalAndChordQuality("♭7", "M7"), "♭VIIM7");
   assertEquals(getRomanNumeralForIntervalAndChordQuality("2", "ø7"), "iiø7");
   assertEquals(getRomanNumeralForIntervalAndChordQuality("5", "7"), "V7");
-  assertEquals(getRomanNumeralForIntervalAndChordQuality("♯4", "°7"), "♯iv°7");
 });
