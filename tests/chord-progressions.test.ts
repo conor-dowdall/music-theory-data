@@ -28,7 +28,7 @@ Deno.test("progression exports are available directly", () => {
   assertEquals(chordProgressions.sixTwoFiveOne.primaryName, "vi | ii | V | I");
   assertEquals(
     chordProgressions.majorTwoFiveOne.primaryName,
-    "iim7 | V7 | Imaj7 | Imaj7",
+    "iim7 | V7 | IM7 | IM7",
   );
   assertEquals(
     chordProgressions.twelveBarBlues.primaryName,
