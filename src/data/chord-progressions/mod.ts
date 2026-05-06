@@ -1,5 +1,6 @@
 import type {
   ChordProgression,
+  ChordProgressionBarGroup,
   ChordProgressionChord,
 } from "../../types/chord-progressions.d.ts";
 
@@ -171,3 +172,28 @@ export type ChordProgressionKey = keyof typeof _chordProgressions;
 
 export const chordProgressions: Record<ChordProgressionKey, ChordProgression> =
   _chordProgressions;
+
+const chordProgressionsByTotalBars = Object.entries(chordProgressions)
+  .reduce<Map<number, ChordProgressionKey[]>>((groups, [key, progression]) => {
+    const totalBars = progression.chords.reduce(
+      (total, chord) => total + chord.durationInBars,
+      0,
+    );
+    const progressionKeys = groups.get(totalBars);
+    if (progressionKeys) {
+      progressionKeys.push(key as ChordProgressionKey);
+    } else {
+      groups.set(totalBars, [key as ChordProgressionKey]);
+    }
+    return groups;
+  }, new Map());
+
+export const chordProgressionBarGroups: readonly ChordProgressionBarGroup<
+  ChordProgressionKey
+>[] = Array.from(
+  chordProgressionsByTotalBars,
+  ([totalBars, progressionKeys]) => ({
+    totalBars,
+    progressionKeys,
+  }),
+).sort((a, b) => a.totalBars - b.totalBars);

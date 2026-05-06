@@ -1,8 +1,12 @@
 import { assertEquals } from "@std/assert";
-import { chordProgressions } from "../src/data/chord-progressions/mod.ts";
+import {
+  chordProgressionBarGroups,
+  chordProgressions,
+} from "../src/data/chord-progressions/mod.ts";
 import {
   getChordProgressionChordNames,
   getChordProgressionChordReferences,
+  getChordProgressionKeysForTotalBars,
   getChordProgressionRomanSymbols,
   getChordProgressionTotalDurationInBars,
   getChordProgressionUniqueChordNames,
@@ -65,6 +69,35 @@ Deno.test("progression exports are available directly", () => {
   ]);
 });
 
+Deno.test("progressions are grouped by exact total bars", () => {
+  assertEquals(chordProgressionBarGroups, [
+    {
+      totalBars: 4,
+      progressionKeys: [
+        "oneOneFiveFive",
+        "oneOneFiveFiveDominant7",
+        "oneOneFourFour",
+        "oneOneFourFive",
+        "oneFourOneFive",
+        "oneSixFourFive",
+        "oneFiveSixFour",
+        "oneSixTwoFive",
+        "sixTwoFiveOne",
+        "majorTwoFiveOne",
+        "minorTwoFiveOne",
+      ],
+    },
+    {
+      totalBars: 8,
+      progressionKeys: ["oneFourOneFiveSplitReturn"],
+    },
+    {
+      totalBars: 12,
+      progressionKeys: ["twelveBarBlues", "twelveBarBluesQuickChange"],
+    },
+  ]);
+});
+
 Deno.test("progression helpers expose chord names and total duration", () => {
   assertEquals(
     getChordProgressionRomanSymbols("oneOneFiveFiveDominant7"),
@@ -78,6 +111,24 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     getChordProgressionRomanSymbols("twelveBarBlues"),
     ["I7", "IV7", "I7", "V7", "IV7", "I7", "V7"],
   );
+  assertEquals(getChordProgressionKeysForTotalBars(4), [
+    "oneOneFiveFive",
+    "oneOneFiveFiveDominant7",
+    "oneOneFourFour",
+    "oneOneFourFive",
+    "oneFourOneFive",
+    "oneSixFourFive",
+    "oneFiveSixFour",
+    "oneSixTwoFive",
+    "sixTwoFiveOne",
+    "majorTwoFiveOne",
+    "minorTwoFiveOne",
+  ]);
+  assertEquals(getChordProgressionKeysForTotalBars(12), [
+    "twelveBarBlues",
+    "twelveBarBluesQuickChange",
+  ]);
+  assertEquals(getChordProgressionKeysForTotalBars(16), []);
   assertEquals(
     getChordProgressionChordNames("G", "oneOneFiveFiveDominant7"),
     ["GM", "DM", "D7"],

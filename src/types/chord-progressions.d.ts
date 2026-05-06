@@ -28,3 +28,8 @@ export interface ChordProgression {
   readonly commonName?: string;
   readonly chords: readonly ChordProgressionChord[];
 }
+
+export interface ChordProgressionBarGroup<TKey extends string = string> {
+  readonly totalBars: number;
+  readonly progressionKeys: readonly TKey[];
+}

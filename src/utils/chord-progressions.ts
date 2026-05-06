@@ -1,4 +1,5 @@
 import {
+  chordProgressionBarGroups,
   type ChordProgressionKey,
   chordProgressions,
 } from "../data/chord-progressions/mod.ts";
@@ -54,6 +55,15 @@ export function getChordProgressionRomanSymbols(
   if (!progression) return [];
 
   return progression.chords.map((chord) => chord.romanSymbol);
+}
+
+export function getChordProgressionKeysForTotalBars(
+  totalBars: number,
+): ChordProgressionKey[] {
+  return chordProgressionBarGroups.find((group) =>
+    group.totalBars === totalBars
+  )
+    ?.progressionKeys.slice() ?? [];
 }
 
 export function getChordProgressionUniqueChordNames(

@@ -227,6 +227,16 @@ console.log(
   music_theory_data.getChordProgressionTotalDurationInBars("twelveBarBlues"),
 );
 // 12
+
+console.log(music_theory_data.chordProgressionBarGroups);
+// [
+//   { totalBars: 4, progressionKeys: ["oneOneFiveFive", ...] },
+//   { totalBars: 8, progressionKeys: ["oneFourOneFiveSplitReturn"] },
+//   { totalBars: 12, progressionKeys: ["twelveBarBlues", "twelveBarBluesQuickChange"] },
+// ]
+
+console.log(music_theory_data.getChordProgressionKeysForTotalBars(12));
+// ["twelveBarBlues", "twelveBarBluesQuickChange"]
 ```
 
 ## Note Colors And Chromatic Indexes
