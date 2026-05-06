@@ -3,6 +3,7 @@ import { chordProgressions } from "../src/data/chord-progressions/mod.ts";
 import {
   getChordProgressionChordNames,
   getChordProgressionChordReferences,
+  getChordProgressionRomanSymbols,
   getChordProgressionTotalDurationInBars,
   getChordProgressionUniqueChordNames,
   getChordProgressionUniqueChordReferences,
@@ -22,36 +23,61 @@ Deno.test("progression key validation reflects the current dataset", () => {
 });
 
 Deno.test("progression exports are available directly", () => {
-  assertEquals(chordProgressions.oneOneFourFive.primaryName, "I | I | IV | V");
-  assertEquals(chordProgressions.oneSixFourFive.primaryName, "I | vi | IV | V");
-  assertEquals(chordProgressions.oneSixTwoFive.primaryName, "I | vi | ii | V");
-  assertEquals(chordProgressions.sixTwoFiveOne.primaryName, "vi | ii | V | I");
   assertEquals(
-    chordProgressions.majorTwoFiveOne.primaryName,
-    "iim7 | V7 | IM7 | IM7",
+    chordProgressions.oneOneFourFive.commonName,
+    undefined,
   );
   assertEquals(
-    chordProgressions.twelveBarBlues.primaryName,
+    chordProgressions.twelveBarBlues.commonName,
     "12 Bar Blues",
   );
   assertEquals(
-    chordProgressions.twelveBarBluesQuickChange.primaryName,
+    chordProgressions.twelveBarBluesQuickChange.commonName,
     "12 Bar Blues Quick Change",
   );
+  assertEquals(
+    chordProgressions.oneSixTwoFive.chords.map((chord) => chord.romanSymbol),
+    [
+      "I",
+      "vi",
+      "ii",
+      "V",
+    ],
+  );
+  assertEquals(
+    chordProgressions.majorTwoFiveOne.chords.map((chord) => chord.romanSymbol),
+    [
+      "iim7",
+      "V7",
+      "IM7",
+    ],
+  );
   assertEquals(chordProgressions.twelveBarBluesQuickChange.chords, [
-    { degree: "1", quality: "7", durationInBars: 1 },
-    { degree: "4", quality: "7", durationInBars: 1 },
-    { degree: "1", quality: "7", durationInBars: 2 },
-    { degree: "4", quality: "7", durationInBars: 2 },
-    { degree: "1", quality: "7", durationInBars: 2 },
-    { degree: "5", quality: "7", durationInBars: 1 },
-    { degree: "4", quality: "7", durationInBars: 1 },
-    { degree: "1", quality: "7", durationInBars: 1 },
-    { degree: "5", quality: "7", durationInBars: 1 },
+    { romanSymbol: "I7", degree: "1", quality: "7", durationInBars: 1 },
+    { romanSymbol: "IV7", degree: "4", quality: "7", durationInBars: 1 },
+    { romanSymbol: "I7", degree: "1", quality: "7", durationInBars: 2 },
+    { romanSymbol: "IV7", degree: "4", quality: "7", durationInBars: 2 },
+    { romanSymbol: "I7", degree: "1", quality: "7", durationInBars: 2 },
+    { romanSymbol: "V7", degree: "5", quality: "7", durationInBars: 1 },
+    { romanSymbol: "IV7", degree: "4", quality: "7", durationInBars: 1 },
+    { romanSymbol: "I7", degree: "1", quality: "7", durationInBars: 1 },
+    { romanSymbol: "V7", degree: "5", quality: "7", durationInBars: 1 },
   ]);
 });
 
 Deno.test("progression helpers expose chord names and total duration", () => {
+  assertEquals(
+    getChordProgressionRomanSymbols("oneOneFiveFiveDominant7"),
+    ["I", "V", "V7"],
+  );
+  assertEquals(
+    getChordProgressionRomanSymbols("oneFourOneFiveSplitReturn"),
+    ["I", "IV", "I", "V", "I", "IV", "I", "V", "I"],
+  );
+  assertEquals(
+    getChordProgressionRomanSymbols("twelveBarBlues"),
+    ["I7", "IV7", "I7", "V7", "IV7", "I7", "V7"],
+  );
   assertEquals(
     getChordProgressionChordNames("G", "oneOneFiveFiveDominant7"),
     ["GM", "DM", "D7"],

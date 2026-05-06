@@ -47,6 +47,15 @@ export function getChordProgressionChordNames(
   );
 }
 
+export function getChordProgressionRomanSymbols(
+  progressionOrKey: ChordProgression | ChordProgressionKey,
+): string[] {
+  const progression = resolveProgression(progressionOrKey);
+  if (!progression) return [];
+
+  return progression.chords.map((chord) => chord.romanSymbol);
+}
+
 export function getChordProgressionUniqueChordNames(
   rootNote: RootNote,
   progressionOrKey: ChordProgression | ChordProgressionKey,

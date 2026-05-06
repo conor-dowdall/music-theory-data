@@ -179,16 +179,21 @@ console.log(Object.keys(music_theory_data.groupedNoteCollections));
 // Get a chord progression
 const oneSixFourFive = music_theory_data.chordProgressions.oneSixFourFive;
 
-console.log(oneSixFourFive.primaryName);
-// "I | vi | IV | V"
+console.log(oneSixFourFive.chords.map((chord) => chord.romanSymbol));
+// ["I", "vi", "IV", "V"]
 
 console.log(oneSixFourFive.chords);
 // [
-//   { degree: "1", quality: "M", durationInBars: 1 },
-//   { degree: "6", quality: "m", durationInBars: 1 },
-//   { degree: "4", quality: "M", durationInBars: 1 },
-//   { degree: "5", quality: "M", durationInBars: 1 },
+//   { romanSymbol: "I", degree: "1", quality: "M", durationInBars: 1 },
+//   { romanSymbol: "vi", degree: "6", quality: "m", durationInBars: 1 },
+//   { romanSymbol: "IV", degree: "4", quality: "M", durationInBars: 1 },
+//   { romanSymbol: "V", degree: "5", quality: "M", durationInBars: 1 },
 // ]
+
+console.log(
+  music_theory_data.getChordProgressionRomanSymbols("oneSixFourFive"),
+);
+// ["I", "vi", "IV", "V"]
 
 console.log(
   music_theory_data.getChordProgressionChordNames(
