@@ -211,6 +211,21 @@ console.log(
 );
 // ["CM", "FM", "GM"]
 
+// Chord-change references return one item each time the chord changes in
+// progression.chords. Durations are not expanded here.
+console.log(
+  music_theory_data.getChordProgressionChordChangeReferences(
+    "C",
+    "oneOneFiveFive",
+  ),
+);
+// [
+//   { rootNote: "C", chordName: "CM", noteCollectionKey: "major" },
+//   { rootNote: "G", chordName: "GM", noteCollectionKey: "major" },
+// ]
+
+// Unique chord references return each distinct chord once, preserving the
+// first-seen order from the chord-change list.
 console.log(
   music_theory_data.getChordProgressionUniqueChordReferences(
     "C",
@@ -219,14 +234,75 @@ console.log(
 );
 // [
 //   { rootNote: "C", chordName: "CM", noteCollectionKey: "major" },
-//   { rootNote: "C", chordName: "FM", noteCollectionKey: "major" },
-//   { rootNote: "C", chordName: "GM", noteCollectionKey: "major" },
+//   { rootNote: "F", chordName: "FM", noteCollectionKey: "major" },
+//   { rootNote: "G", chordName: "GM", noteCollectionKey: "major" },
 // ]
+
+// Chord references by bar return the song/practice order grouped by bar. A
+// 2-bar chord appears in two bars, and split bars contain multiple references.
+console.log(
+  music_theory_data.getChordProgressionChordReferencesByBar(
+    "C",
+    "oneOneFiveFive",
+  ),
+);
+// [
+//   [{ rootNote: "C", chordName: "CM", noteCollectionKey: "major" }],
+//   [{ rootNote: "C", chordName: "CM", noteCollectionKey: "major" }],
+//   [{ rootNote: "G", chordName: "GM", noteCollectionKey: "major" }],
+//   [{ rootNote: "G", chordName: "GM", noteCollectionKey: "major" }],
+// ]
+
+console.log(
+  music_theory_data.getChordProgressionChordReferencesByBar(
+    "C",
+    "oneFourOneFiveSplitReturn",
+  )[6],
+);
+// [
+//   { rootNote: "C", chordName: "CM", noteCollectionKey: "major" },
+//   { rootNote: "G", chordName: "GM", noteCollectionKey: "major" },
+// ]
+
+// Song chord references flatten the bar-structured references into one ordered
+// list for apps that want one diagram/card per chord occurrence.
+console.log(
+  music_theory_data.getChordProgressionSongChordReferences(
+    "C",
+    "oneOneFiveFive",
+  ).map((reference) => reference.chordName),
+);
+// ["CM", "CM", "GM", "GM"]
+
+// In Muso Dojo, "Each Chord Once" should import
+// getChordProgressionUniqueChordReferences. "Full Song Order" should import
+// getChordProgressionSongChordReferences, or flatten
+// getChordProgressionChordReferencesByBar locally when bar grouping is needed.
 
 console.log(
   music_theory_data.getChordProgressionTotalDurationInBars("twelveBarBlues"),
 );
 // 12
+
+console.log(
+  music_theory_data.getChordProgressionChordReferencesByBar(
+    "C",
+    "twelveBarBlues",
+  ).length,
+);
+// 12
+
+console.log(
+  music_theory_data.getChordProgressionUniqueChordReferences(
+    "C",
+    "twelveBarBlues",
+  ),
+);
+// [
+//   { rootNote: "C", chordName: "C7", noteCollectionKey: "dominant7" },
+//   { rootNote: "F", chordName: "F7", noteCollectionKey: "dominant7" },
+//   { rootNote: "G", chordName: "G7", noteCollectionKey: "dominant7" },
+// ]
 
 console.log(music_theory_data.chordProgressionBarGroups);
 // [

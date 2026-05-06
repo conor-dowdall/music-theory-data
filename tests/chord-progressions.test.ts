@@ -4,15 +4,53 @@ import {
   chordProgressions,
 } from "../src/data/chord-progressions/mod.ts";
 import {
+  getChordProgressionChordChangeReferences,
   getChordProgressionChordNames,
-  getChordProgressionChordReferences,
+  getChordProgressionChordReferencesByBar,
   getChordProgressionKeysForTotalBars,
   getChordProgressionRomanSymbols,
+  getChordProgressionSongChordReferences,
   getChordProgressionTotalDurationInBars,
   getChordProgressionUniqueChordNames,
   getChordProgressionUniqueChordReferences,
   isValidChordProgressionKey,
 } from "../src/utils/chord-progressions.ts";
+
+const cMajorReference = {
+  rootNote: "C",
+  chordName: "CM",
+  noteCollectionKey: "major",
+} as const;
+
+const fMajorReference = {
+  rootNote: "F",
+  chordName: "FM",
+  noteCollectionKey: "major",
+} as const;
+
+const gMajorReference = {
+  rootNote: "G",
+  chordName: "GM",
+  noteCollectionKey: "major",
+} as const;
+
+const cDominant7Reference = {
+  rootNote: "C",
+  chordName: "C7",
+  noteCollectionKey: "dominant7",
+} as const;
+
+const fDominant7Reference = {
+  rootNote: "F",
+  chordName: "F7",
+  noteCollectionKey: "dominant7",
+} as const;
+
+const gDominant7Reference = {
+  rootNote: "G",
+  chordName: "G7",
+  noteCollectionKey: "dominant7",
+} as const;
 
 Deno.test("progression key validation reflects the current dataset", () => {
   assertEquals(isValidChordProgressionKey("oneSixFourFive"), true);
@@ -150,7 +188,10 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     ["CM", "FM", "GM"],
   );
   assertEquals(
-    getChordProgressionChordReferences("G", "oneOneFiveFiveDominant7"),
+    getChordProgressionChordChangeReferences(
+      "G",
+      "oneOneFiveFiveDominant7",
+    ),
     [
       {
         rootNote: "G",
@@ -170,23 +211,88 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     ],
   );
   assertEquals(
+    getChordProgressionChordChangeReferences("C", "oneOneFiveFive"),
+    [
+      cMajorReference,
+      gMajorReference,
+    ],
+  );
+  assertEquals(
+    getChordProgressionChordReferencesByBar("C", "oneOneFiveFive"),
+    [
+      [cMajorReference],
+      [cMajorReference],
+      [gMajorReference],
+      [gMajorReference],
+    ],
+  );
+  assertEquals(
+    getChordProgressionSongChordReferences("C", "oneOneFiveFive"),
+    [
+      cMajorReference,
+      cMajorReference,
+      gMajorReference,
+      gMajorReference,
+    ],
+  );
+  assertEquals(
+    getChordProgressionUniqueChordReferences("C", "oneOneFiveFive"),
+    [
+      cMajorReference,
+      gMajorReference,
+    ],
+  );
+  assertEquals(
+    getChordProgressionChordChangeReferences("C", "oneFourOneFive"),
+    [
+      cMajorReference,
+      fMajorReference,
+      cMajorReference,
+      gMajorReference,
+    ],
+  );
+  assertEquals(
+    getChordProgressionUniqueChordReferences("C", "oneFourOneFive"),
+    [
+      cMajorReference,
+      fMajorReference,
+      gMajorReference,
+    ],
+  );
+  assertEquals(
+    getChordProgressionChordReferencesByBar(
+      "C",
+      "oneFourOneFiveSplitReturn",
+    ),
+    [
+      [cMajorReference],
+      [fMajorReference],
+      [cMajorReference],
+      [gMajorReference],
+      [cMajorReference],
+      [fMajorReference],
+      [cMajorReference, gMajorReference],
+      [cMajorReference],
+    ],
+  );
+  assertEquals(
+    getChordProgressionChordReferencesByBar("C", "twelveBarBlues").length,
+    12,
+  );
+  assertEquals(
     getChordProgressionUniqueChordReferences("C", "oneFourOneFiveSplitReturn"),
     [
-      {
-        rootNote: "C",
-        chordName: "CM",
-        noteCollectionKey: "major",
-      },
-      {
-        rootNote: "F",
-        chordName: "FM",
-        noteCollectionKey: "major",
-      },
-      {
-        rootNote: "G",
-        chordName: "GM",
-        noteCollectionKey: "major",
-      },
+      cMajorReference,
+      fMajorReference,
+      gMajorReference,
+    ],
+  );
+  assertEquals(
+    getChordProgressionUniqueChordReferences("C", "twelveBarBlues"),
+    [
+      cDominant7Reference,
+      fDominant7Reference,
+      gDominant7Reference,
     ],
   );
   assertEquals(getChordProgressionTotalDurationInBars("twelveBarBlues"), 12);
