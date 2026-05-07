@@ -132,5 +132,6 @@ export const _dominantVariants = {
 
 export type DominantVariantKey = keyof typeof _dominantVariants;
 
+/** Built-in dominant-family chord and scale collections keyed by collection id. */
 export const dominantVariants: Record<DominantVariantKey, NoteCollection> =
   _dominantVariants;

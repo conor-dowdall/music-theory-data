@@ -126,5 +126,6 @@ export const _minorVariants = {
 
 export type MinorVariantKey = keyof typeof _minorVariants;
 
+/** Built-in minor-family chord collections keyed by collection id. */
 export const minorVariants: Record<MinorVariantKey, ChordCollection> =
   _minorVariants;

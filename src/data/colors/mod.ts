@@ -5,10 +5,16 @@ import {
 } from "../labels/note-label-collections.ts";
 import type { ChromaticMode, ChromaticTuple } from "../chromatic.ts";
 
+/** Whether a note color collection uses absolute pitch classes or root-relative degrees. */
 export type NoteColorMode = ChromaticMode;
+
+/** A single note color value, or `null` when no semantic color is assigned. */
 export type NoteColorValue = string | null;
+
+/** A fixed 12-slot color tuple for absolute pitch classes or relative degrees. */
 export type NoteColorTuple = ChromaticTuple<NoteColorValue>;
 
+/** Metadata and color values for a named 12-slot note color collection. */
 export interface NoteColorCollection {
   readonly name: string;
   readonly shortName?: string;
@@ -18,10 +24,16 @@ export interface NoteColorCollection {
   readonly colors: NoteColorTuple;
 }
 
+/** Backwards-compatible alias for a single note color value. */
 export type Color = NoteColorValue;
+
+/** Backwards-compatible alias for a 12-slot note color tuple. */
 export type ColorGroup = NoteColorTuple;
+
+/** Backwards-compatible alias for a note color collection. */
 export type ColorCollection = NoteColorCollection;
 
+/** Default label collection keys for absolute and relative note color modes. */
 export type DefaultNoteColorLabelCollectionKeys =
   & Readonly<Record<NoteColorMode, NoteLabelCollectionKey>>
   & Readonly<{
@@ -29,18 +41,21 @@ export type DefaultNoteColorLabelCollectionKeys =
     relative: "intervalsFlat";
   }>;
 
+/** The default note label collection key used for each note color mode. */
 export const defaultNoteColorLabelCollectionKeys:
   DefaultNoteColorLabelCollectionKeys = {
     absolute: "noteNamesFlat",
     relative: "intervalsFlat",
   };
 
+/** Returns the default label collection key for an absolute or relative color mode. */
 export function getDefaultNoteColorLabelCollectionKey(
   mode: NoteColorMode,
 ): NoteLabelCollectionKey {
   return defaultNoteColorLabelCollectionKeys[mode];
 }
 
+/** Returns the explicit or default label collection key for a note color collection. */
 export function getNoteColorLabelCollectionKey(
   collection: NoteColorCollection,
 ): NoteLabelCollectionKey {
@@ -51,6 +66,7 @@ export function getNoteColorLabelCollectionKey(
   return getDefaultNoteColorLabelCollectionKey(collection.mode);
 }
 
+/** Returns the 12 labels that should be displayed with a note color collection. */
 export function getNoteColorLabels(
   collection: NoteColorCollection,
 ): NoteLabelGroup {
@@ -147,8 +163,10 @@ const _colorCollections = {
   },
 } as const;
 
+/** A key for one of the built-in note color collections. */
 export type ColorCollectionKey = keyof typeof _colorCollections;
 
+/** Built-in absolute and relative note color palettes. */
 export const colorCollections: Record<
   ColorCollectionKey,
   NoteColorCollection

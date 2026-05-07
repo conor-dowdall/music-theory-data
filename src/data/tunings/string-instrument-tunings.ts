@@ -24,21 +24,26 @@ const _stringInstrumentTunings = {
   ...orchestralStringTunings,
 } as const;
 
+/** A key for one of the built-in string instrument tunings. */
 export type StringInstrumentTuningKey = keyof typeof _stringInstrumentTunings;
 
+/** Dictionary of all built-in string instrument tunings keyed by tuning id. */
 export type StringInstrumentTunings = Record<
   StringInstrumentTuningKey,
   StringInstrumentTuning
 >;
 
+/** All built-in string instrument tunings from every supported instrument family. */
 export const stringInstrumentTunings: StringInstrumentTunings =
   _stringInstrumentTunings;
 
+/** Ordered keys for all built-in string instrument tunings. */
 export const stringInstrumentTuningKeys: readonly StringInstrumentTuningKey[] =
   Object.keys(
     _stringInstrumentTunings,
   ) as readonly StringInstrumentTuningKey[];
 
+/** Metadata for a supported string instrument. */
 export interface StringInstrument {
   /** The canonical instrument label to show in app UI. */
   primaryName: string;
@@ -50,10 +55,12 @@ export interface StringInstrument {
   defaultTuning: StringInstrumentTuningKey;
 }
 
+/** Dictionary of supported string instruments keyed by instrument id. */
 export type StringInstruments = Readonly<
   Record<StringInstrumentKey, StringInstrument>
 >;
 
+/** Metadata for all supported string instruments. */
 export const stringInstruments: StringInstruments = {
   guitar: {
     primaryName: "Guitar",
@@ -100,14 +107,17 @@ export const stringInstruments: StringInstruments = {
   },
 };
 
+/** Ordered keys for all supported string instruments. */
 export const stringInstrumentKeys: readonly StringInstrumentKey[] = Object.keys(
   stringInstruments,
 ) as readonly StringInstrumentKey[];
 
+/** Tuning keys grouped by supported string instrument. */
 export type StringInstrumentTuningKeysByInstrument = Readonly<
   Record<StringInstrumentKey, readonly StringInstrumentTuningKey[]>
 >;
 
+/** Built-in tuning keys grouped by supported string instrument. */
 export const stringInstrumentTuningKeysByInstrument:
   StringInstrumentTuningKeysByInstrument = {
     guitar: guitarTuningKeys,

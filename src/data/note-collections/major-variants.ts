@@ -132,5 +132,6 @@ export const _majorVariants = {
 
 export type MajorVariantKey = keyof typeof _majorVariants;
 
+/** Built-in major-family chord collections keyed by collection id. */
 export const majorVariants: Record<MajorVariantKey, ChordCollection> =
   _majorVariants;

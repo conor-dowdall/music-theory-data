@@ -3,6 +3,7 @@ import type {
   StringInstrumentTuning,
 } from "../../types/string-instruments.d.ts";
 
+/** Instrument keys covered by the bass guitar tuning registry. */
 export type BassGuitarInstrumentKey = Extract<
   StringInstrumentKey,
   "bassGuitar"
@@ -29,23 +30,29 @@ const _bassGuitarTunings = {
   bassFiveStringBeadg,
 } as const;
 
+/** A key for one of the built-in bass guitar tunings. */
 export type BassGuitarTuningKey = keyof typeof _bassGuitarTunings;
 
+/** Dictionary of built-in bass guitar tunings keyed by tuning id. */
 export type BassGuitarTunings = Record<
   BassGuitarTuningKey,
   StringInstrumentTuning
 >;
 
+/** Built-in bass guitar tunings. */
 export const bassGuitarTunings: BassGuitarTunings = _bassGuitarTunings;
 
+/** Ordered keys for the built-in bass guitar tunings. */
 export const bassGuitarTuningKeys: readonly BassGuitarTuningKey[] = Object.keys(
   _bassGuitarTunings,
 ) as readonly BassGuitarTuningKey[];
 
+/** Bass guitar tuning keys grouped by instrument. */
 export type BassGuitarTuningKeysByInstrument = Readonly<
   Record<BassGuitarInstrumentKey, readonly BassGuitarTuningKey[]>
 >;
 
+/** Built-in bass guitar tuning keys grouped by instrument. */
 export const bassGuitarTuningKeysByInstrument:
   BassGuitarTuningKeysByInstrument = {
     bassGuitar: bassGuitarTuningKeys,

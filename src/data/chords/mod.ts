@@ -34,18 +34,34 @@ const _lowerCaseRomanNumerals = [
   "vii",
 ] as const;
 
+/** A supported triad chord quality suffix. */
 export type Triad = (typeof _triadChordQualities)[number];
+
+/** A supported seventh-chord quality suffix. */
 export type SeventhChord = (typeof _seventhChordQualities)[number];
+
+/** Any supported chord quality suffix. */
 export type ChordQuality = Triad | SeventhChord;
 
+/** An uppercase roman numeral for scale degrees one through seven. */
 export type UpperCaseRomanNumeral = (typeof _upperCaseRomanNumerals)[number];
+
+/** A lowercase roman numeral for scale degrees one through seven. */
 export type LowerCaseRomanNumeral = (typeof _lowerCaseRomanNumerals)[number];
+
+/** Any supported roman numeral scale-degree symbol. */
 export type RomanNumeral = UpperCaseRomanNumeral | LowerCaseRomanNumeral;
 
+/** A roman-numeral triad symbol with an optional triad quality suffix. */
 export type RomanTriad = `${RomanNumeral}` | `${RomanNumeral}${Triad}`;
+
+/** A roman-numeral seventh-chord symbol with a seventh quality suffix. */
 export type RomanSeventhChord = `${RomanNumeral}${SeventhChord}`;
+
+/** The letter case used when rendering a roman numeral chord symbol. */
 export type RomanNumeralCase = "upper" | "lower";
 
+/** Rendering metadata for converting a chord quality into roman notation. */
 export interface ChordQualityRomanRendering {
   readonly numeralCase: RomanNumeralCase;
   readonly suffix: string;
@@ -80,6 +96,7 @@ export const chordQualities: readonly ChordQuality[] = [
   ...seventhChordQualities,
 ];
 
+/** Maps each supported chord quality to its matching note-collection key. */
 export type ChordQualityNoteCollectionKeyMap = Record<
   ChordQuality,
   NoteCollectionKey
@@ -183,6 +200,7 @@ export const upperCaseRomanNumerals: readonly UpperCaseRomanNumeral[] =
 export const lowerCaseRomanNumerals: readonly LowerCaseRomanNumeral[] =
   _lowerCaseRomanNumerals;
 
+/** Returns the note-collection key that describes the notes in a chord quality. */
 export function getChordQualityNoteCollectionKey(
   quality: ChordQuality,
 ): NoteCollectionKey {

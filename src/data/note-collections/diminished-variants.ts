@@ -88,5 +88,6 @@ export const _diminishedVariants = {
 
 export type DiminishedVariantKey = keyof typeof _diminishedVariants;
 
+/** Built-in diminished chord and scale collections keyed by collection id. */
 export const diminishedVariants: Record<DiminishedVariantKey, NoteCollection> =
   _diminishedVariants;

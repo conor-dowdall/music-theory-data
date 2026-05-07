@@ -148,6 +148,7 @@ export const _otherNoteCollections = {
 
 export type OtherNoteCollectionKey = keyof typeof _otherNoteCollections;
 
+/** Miscellaneous built-in note collections keyed by collection id. */
 export const otherNoteCollections: Record<
   OtherNoteCollectionKey,
   NoteCollection

@@ -15,6 +15,7 @@ import {
   normalizeRootNoteString,
 } from "./note-names.ts";
 
+/** A resolved chord in a progression, including its root and note-collection key. */
 export interface ChordProgressionChordReference {
   readonly rootNote: RootNote;
   readonly chordName: string;
@@ -28,6 +29,7 @@ interface ResolvedChordProgressionChordReference {
 
 const BAR_DURATION_EPSILON = 0.000000001;
 
+/** Returns whether a string is one of the built-in chord progression keys. */
 export function isValidChordProgressionKey(
   key: string,
 ): key is ChordProgressionKey {
@@ -75,6 +77,7 @@ function getResolvedChordProgressionChordReferences(
   });
 }
 
+/** Returns the spelled chord names for a progression in the requested root. */
 export function getChordProgressionChordNames(
   rootNote: RootNote,
   progressionOrKey: ChordProgression | ChordProgressionKey,
@@ -92,6 +95,7 @@ export function getChordProgressionChordNames(
   );
 }
 
+/** Returns the roman symbols authored for a chord progression. */
 export function getChordProgressionRomanSymbols(
   progressionOrKey: ChordProgression | ChordProgressionKey,
 ): string[] {
@@ -101,6 +105,7 @@ export function getChordProgressionRomanSymbols(
   return progression.chords.map((chord) => chord.romanSymbol);
 }
 
+/** Returns all built-in chord progression keys with the requested total bar count. */
 export function getChordProgressionKeysForTotalBars(
   totalBars: number,
 ): ChordProgressionKey[] {
@@ -110,6 +115,7 @@ export function getChordProgressionKeysForTotalBars(
     ?.progressionKeys.slice() ?? [];
 }
 
+/** Returns each distinct chord name in a progression, preserving first-seen order. */
 export function getChordProgressionUniqueChordNames(
   rootNote: RootNote,
   progressionOrKey: ChordProgression | ChordProgressionKey,
@@ -239,6 +245,7 @@ export function getChordProgressionSongChordReferences(
   ).flat();
 }
 
+/** Returns the sum of authored chord durations in bars for a progression. */
 export function getChordProgressionTotalDurationInBars(
   progressionOrKey: ChordProgression | ChordProgressionKey,
 ): number {

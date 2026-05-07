@@ -59,5 +59,6 @@ export const _augmentedVariants = {
 
 export type AugmentedVariantKey = keyof typeof _augmentedVariants;
 
+/** Built-in augmented-family chord collections keyed by collection id. */
 export const augmentedVariants: Record<AugmentedVariantKey, ChordCollection> =
   _augmentedVariants;

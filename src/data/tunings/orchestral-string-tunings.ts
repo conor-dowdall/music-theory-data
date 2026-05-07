@@ -5,6 +5,7 @@ import type {
 
 export { orchestralStringsInstrumentGroup } from "./string-instrument-groups.ts";
 
+/** Instrument keys covered by the orchestral string tuning registry. */
 export type OrchestralStringInstrumentKey = Extract<
   StringInstrumentKey,
   "violin" | "viola" | "cello" | "doubleBass"
@@ -49,20 +50,25 @@ const _orchestralStringTunings = {
   doubleBassStandardEadg,
 } as const;
 
+/** A key for one of the built-in orchestral string tunings. */
 export type OrchestralStringTuningKey = keyof typeof _orchestralStringTunings;
 
+/** Dictionary of built-in orchestral string tunings keyed by tuning id. */
 export type OrchestralStringTunings = Record<
   OrchestralStringTuningKey,
   StringInstrumentTuning
 >;
 
+/** Built-in violin, viola, cello, and double bass tunings. */
 export const orchestralStringTunings: OrchestralStringTunings =
   _orchestralStringTunings;
 
+/** Orchestral string tuning keys grouped by instrument. */
 export type OrchestralStringTuningKeysByInstrument = Readonly<
   Record<OrchestralStringInstrumentKey, readonly OrchestralStringTuningKey[]>
 >;
 
+/** Built-in orchestral string tuning keys grouped by instrument. */
 export const orchestralStringTuningKeysByInstrument:
   OrchestralStringTuningKeysByInstrument = {
     violin: ["violinStandardGdae"],

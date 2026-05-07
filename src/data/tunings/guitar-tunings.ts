@@ -117,16 +117,21 @@ const _guitarTunings = {
   guitarJacobCollierTuning,
 } as const;
 
+/** A key for one of the built-in guitar tunings. */
 export type GuitarTuningKey = keyof typeof _guitarTunings;
 
+/** Dictionary of built-in guitar tunings keyed by tuning id. */
 export type GuitarTunings = Record<GuitarTuningKey, StringInstrumentTuning>;
 
+/** Built-in guitar tunings. */
 export const guitarTunings: GuitarTunings = _guitarTunings;
 
+/** Ordered keys for the built-in guitar tunings. */
 export const guitarTuningKeys: readonly GuitarTuningKey[] = Object.keys(
   _guitarTunings,
 ) as readonly GuitarTuningKey[];
 
+/** A named group of related guitar tunings. */
 export interface GuitarTuningGroup {
   displayName: string;
   tuningKeys: readonly GuitarTuningKey[];
@@ -169,11 +174,14 @@ const _guitarTuningGroups = {
   open: openGuitarTuningGroup,
 } as const;
 
+/** A key for one of the built-in guitar tuning groups. */
 export type GuitarTuningGroupKey = keyof typeof _guitarTuningGroups;
 
+/** Dictionary of built-in guitar tuning groups keyed by group id. */
 export type GuitarTuningGroups = Record<
   GuitarTuningGroupKey,
   GuitarTuningGroup
 >;
 
+/** Built-in guitar tuning groups for standard, drop, modal, and open tunings. */
 export const guitarTuningGroups: GuitarTuningGroups = _guitarTuningGroups;

@@ -3,6 +3,7 @@ import type {
   StringInstrumentTuning,
 } from "../../types/string-instruments.d.ts";
 
+/** Instrument keys covered by the folk and fretted string tuning registry. */
 export type FolkFrettedStringInstrumentKey = Extract<
   StringInstrumentKey,
   "mandolin" | "ukulele"
@@ -35,25 +36,31 @@ const _folkFrettedStringTunings = {
   ukuleleStandardGcea,
 } as const;
 
+/** A key for one of the built-in folk or fretted string tunings. */
 export type FolkFrettedStringTuningKey = keyof typeof _folkFrettedStringTunings;
 
+/** Dictionary of built-in folk and fretted string tunings keyed by tuning id. */
 export type FolkFrettedStringTunings = Record<
   FolkFrettedStringTuningKey,
   StringInstrumentTuning
 >;
 
+/** Built-in mandolin and ukulele tunings. */
 export const folkFrettedStringTunings: FolkFrettedStringTunings =
   _folkFrettedStringTunings;
 
+/** Ordered keys for the built-in folk and fretted string tunings. */
 export const folkFrettedStringTuningKeys:
   readonly FolkFrettedStringTuningKey[] = Object.keys(
     _folkFrettedStringTunings,
   ) as readonly FolkFrettedStringTuningKey[];
 
+/** Folk and fretted string tuning keys grouped by instrument. */
 export type FolkFrettedStringTuningKeysByInstrument = Readonly<
   Record<FolkFrettedStringInstrumentKey, readonly FolkFrettedStringTuningKey[]>
 >;
 
+/** Built-in folk and fretted string tuning keys grouped by instrument. */
 export const folkFrettedStringTuningKeysByInstrument:
   FolkFrettedStringTuningKeysByInstrument = {
     mandolin: ["mandolinStandardGdae"],

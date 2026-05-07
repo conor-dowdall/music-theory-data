@@ -25,6 +25,7 @@ export type StringCourseMidiNotes = readonly [
   ...MidiNoteNumber[],
 ];
 
+/** A supported string instrument identifier. */
 export type StringInstrumentKey =
   | "guitar"
   | "bassGuitar"
@@ -35,8 +36,10 @@ export type StringInstrumentKey =
   | "cello"
   | "doubleBass";
 
+/** Broad playing family for supported string instruments. */
 export type StringInstrumentFamily = "plucked" | "bowed";
 
+/** A named tuning for a string instrument, including open note labels and MIDI notes. */
 export interface StringInstrumentTuning {
   /** The instrument this tuning belongs to. */
   readonly instrument: StringInstrumentKey;
@@ -80,6 +83,7 @@ export interface StringInstrumentTuning {
   readonly courseMidiNotes?: readonly StringCourseMidiNotes[];
 }
 
+/** A curated group of related string instruments for filtering or navigation. */
 export interface StringInstrumentGroup {
   /** The label to show for this curated instrument group in app UI. */
   readonly displayName: string;

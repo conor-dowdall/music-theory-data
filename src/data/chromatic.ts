@@ -1,3 +1,4 @@
+/** The number of pitch classes in 12-tone equal-tempered chromatic space. */
 export const CHROMATIC_NOTE_COUNT = 12 as const;
 
 /** A zero-indexed chromatic pitch-class or relative degree slot. */
@@ -34,6 +35,7 @@ export type ChromaticTuple<T> = readonly [
   T,
 ];
 
+/** The ordered set of all valid chromatic indexes from C/root through B/7. */
 export const CHROMATIC_INDEXES: ChromaticTuple<ChromaticIndex> = [
   0,
   1,

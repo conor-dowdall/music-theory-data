@@ -98,6 +98,7 @@ export const _pentatonicVariants = {
 
 export type PentatonicVariantKey = keyof typeof _pentatonicVariants;
 
+/** Built-in pentatonic scale variants keyed by collection id. */
 export const pentatonicVariants: Record<
   PentatonicVariantKey,
   ModalScaleCollection

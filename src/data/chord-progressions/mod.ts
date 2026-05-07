@@ -168,8 +168,10 @@ const _chordProgressions = {
   twelveBarBluesQuickChange,
 } as const;
 
+/** A key for one of the built-in chord progression templates. */
 export type ChordProgressionKey = keyof typeof _chordProgressions;
 
+/** Built-in chord progression templates keyed by progression id. */
 export const chordProgressions: Record<ChordProgressionKey, ChordProgression> =
   _chordProgressions;
 
@@ -188,6 +190,7 @@ const chordProgressionsByTotalBars = Object.entries(chordProgressions)
     return groups;
   }, new Map());
 
+/** Built-in chord progression keys grouped by total duration in bars. */
 export const chordProgressionBarGroups: readonly ChordProgressionBarGroup<
   ChordProgressionKey
 >[] = Array.from(
