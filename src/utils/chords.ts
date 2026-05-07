@@ -38,9 +38,10 @@ import {
   type DiatonicModeKey,
   diatonicModes,
 } from "../data/note-collections/diatonic-modes.ts";
-import type {
-  NoteCollectionKeyTransformOptions,
-  RootAndNoteCollectionKeyTransformOptions,
+import {
+  isOctaveInterval,
+  type NoteCollectionKeyTransformOptions,
+  type RootAndNoteCollectionKeyTransformOptions,
 } from "./intervals.ts";
 import { createChromaticTuple, normalizeChromaticIndex } from "./chromatic.ts";
 import { getNoteNamesForRootAndNoteCollectionKey } from "./note-names.ts";
@@ -122,7 +123,7 @@ function getChromaticArray<T>(
   ];
 
   intervals.forEach((interval, i) => {
-    if (interval === "8" || interval === "♮8") {
+    if (isOctaveInterval(interval)) {
       return;
     }
 
@@ -171,6 +172,19 @@ function getModeData(modeKey: NoteCollectionKey): ModeData | undefined {
     };
   }
   return undefined;
+}
+
+function getUndefinedChordPlaceholders<T>(
+  intervals: readonly Interval[],
+  fillChromatic: boolean | undefined,
+): readonly (T | undefined)[] {
+  if (fillChromatic) {
+    return createChromaticTuple(Array.from({ length: 12 }, () => undefined));
+  }
+
+  return intervals
+    .filter((interval) => !isOctaveInterval(interval))
+    .map(() => undefined);
 }
 
 /**
@@ -249,42 +263,12 @@ function getChordsForNoteCollectionKey<T, U = T>(
     return applyRotations(processedChords, false);
   }
 
-  // 3. If the collection is NOT a primary mode (e.g., a custom scale like Minor Pentatonic),
-  // we cannot look up predefined chords. Instead, we fall back to its "most Similar Scale".
-  const similarScaleKey = collection.mostSimilarScale;
-  const similarData = getModeData(similarScaleKey);
-  if (!similarData) return [];
-
-  // 3a. Retrieve and rotate the chords for the similar scale exactly like step 2.
-  const similarChords = rotateArrayLeft(
-    extractChords(similarData),
-    similarData.rotation,
+  // 3. Collections without authored chord systems should not infer harmony from
+  // mostSimilarScale. Return undefined placeholders so array positions stay meaningful.
+  return applyRotations(
+    getUndefinedChordPlaceholders<U>(collection.intervals, fillChromatic),
+    fillChromatic === true,
   );
-  const similarProcessedChords = transformRoman
-    ? transformRoman(similarChords)
-    : (similarChords as unknown as U[]);
-
-  // 3b. Pluck out only the chords that align with the intervals actually present in the custom scale.
-  // E.g. For Minor Pentatonic (intervals 1, b3, 4, 5, b7), we grab the 1st, 3rd, 4th, 5th, and 7th chords of Aeolian.
-  const collectionChordsByInterval = collection.intervals
-    .map((interval) => {
-      const index = similarData.intervals.indexOf(interval);
-      return index !== -1 ? similarProcessedChords[index] : undefined;
-    });
-  // Keep a placeholder-preserving array for fillChromatic;
-  // otherwise a missing interval, such as the blues scale ♭5, shifts later chords.
-  const collectionChords = collectionChordsByInterval
-    .filter((chord): chord is U => chord !== undefined);
-
-  // 3c. Format and return just like step 2.
-  if (fillChromatic) {
-    return applyRotations(
-      getChromaticArray(collectionChordsByInterval, collection.intervals),
-      true,
-    );
-  }
-
-  return applyRotations(collectionChords, false);
 }
 
 /**

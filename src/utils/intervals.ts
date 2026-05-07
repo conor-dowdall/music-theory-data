@@ -27,6 +27,10 @@ const INTERVAL_NUMBER_REGEX = /\d+$/;
 
 export type ChromaticIntervalTuple = ChromaticTuple<Interval>;
 
+export function isOctaveInterval(interval: Interval): boolean {
+  return interval === "8" || interval === "♮8";
+}
+
 /**
  * Removes octave intervals (such as "8" or "♮8") from a given list of intervals.
  * Highly useful for standardizing chord and scale definitions (scales conventionally include the octave,
@@ -38,7 +42,7 @@ export type ChromaticIntervalTuple = ChromaticTuple<Interval>;
 export function filterOutOctaveIntervals(
   intervals: readonly Interval[],
 ): Interval[] {
-  return intervals.filter((i) => i !== "8" && i !== "♮8");
+  return intervals.filter((interval) => !isOctaveInterval(interval));
 }
 
 /**

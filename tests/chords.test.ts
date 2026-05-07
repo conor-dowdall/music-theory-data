@@ -144,56 +144,72 @@ Deno.test("getRomanTriadsForNoteCollectionKey - fillChromatic", () => {
   assertEquals(chords[11], "vii°");
 });
 
-Deno.test("Fallback to mostSimilarScale - Major Triad Collection", () => {
+Deno.test("Non-authored chord collections return aligned placeholders", () => {
   const triads = getTriadsForNoteCollectionKey("major");
   const romanTriads = getRomanTriadsForNoteCollectionKey("major");
+  const majorAdd9Triads = getTriadsForNoteCollectionKey("majorAdd9");
+  const majorAdd9RomanSevenths = getRomanSeventhChordsForNoteCollectionKey(
+    "majorAdd9",
+  );
 
-  // A major triad has intervals "1", "3", "5".
-  // Its mostSimilarScale is "ionian", which has triads: ["M", "m", "m", "M", "M", "m", "°"]
-  // Index 0 ("1") -> "M", Index 2 ("3") -> "m", Index 4 ("5") -> "M"
-  assertEquals(triads, ["M", "m", "M"]);
-  assertEquals(romanTriads, ["I", "iii", "V"]);
+  assertEquals(triads, [undefined, undefined, undefined]);
+  assertEquals(romanTriads, [undefined, undefined, undefined]);
+  assertEquals(majorAdd9Triads, [
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+  ]);
+  assertEquals(majorAdd9RomanSevenths, [
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+  ]);
 });
 
 Deno.test(
-  "Fallback to mostSimilarScale - Minor Triad Collection with fillChromatic",
+  "Non-authored chord collections return undefined chromatic placeholders",
   () => {
     const romanSevenths = getRomanSeventhChordsForNoteCollectionKey("minor", {
       fillChromatic: true,
     });
-    // A minor triad has intervals "1", "b3", "5".
-    // mostSimilarScale is "aeolian", which has seventh chords: ["m7", "ø7", "M7", "m7", "m7", "M7", "7"]
-    // Roman sevenths for aeolian: ["im7", "iiø7", "IIIM7", "ivm7", "vm7", "VIM7", "VII7"]
-    // "1" (0 semitones) -> "im7", "b3" (3 semitones) -> "IIIM7", "5" (7 semitones) -> "vm7"
 
     assertEquals(romanSevenths.length, 12);
-    assertEquals(romanSevenths[0], "im7");
-    assertEquals(romanSevenths[3], "IIIM7");
-    assertEquals(romanSevenths[7], "vm7");
-    assertEquals(romanSevenths[1], undefined);
+    assertEquals(romanSevenths, Array.from({ length: 12 }, () => undefined));
   },
 );
 
 Deno.test(
-  "Fallback to mostSimilarScale keeps chromatic chord slots aligned when intervals are missing",
+  "Non-authored scale collections return aligned placeholders",
   () => {
-    const romanSevenths = getRomanSeventhChordsForNoteCollectionKey(
+    const minorPentatonicTriads = getRomanTriadsForNoteCollectionKey(
+      "minorPentatonic",
+    );
+    const bluesPentatonicSevenths = getRomanSeventhChordsForNoteCollectionKey(
       "bluesPentatonic",
-      { fillChromatic: true },
     );
 
-    assertEquals(romanSevenths.length, 12);
-    assertEquals(romanSevenths[0], "im7");
-    assertEquals(romanSevenths[3], "IIIM7");
-    assertEquals(romanSevenths[5], "ivm7");
-    assertEquals(romanSevenths[6], undefined);
-    assertEquals(romanSevenths[7], "vm7");
-    assertEquals(romanSevenths[10], "VII7");
+    assertEquals(minorPentatonicTriads, [
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+    ]);
+    assertEquals(bluesPentatonicSevenths, [
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+    ]);
   },
 );
 
 Deno.test(
-  "Fallback tests - invalid keys gracefully return empty arrays",
+  "Invalid keys gracefully return empty arrays",
   () => {
     assertEquals(getTriadsForNoteCollectionKey("invalid_key" as never), []);
     assertEquals(
@@ -415,12 +431,8 @@ Deno.test(
 );
 
 Deno.test(
-  "Fallback to mostSimilarScale - getRomanSeventhChordsForRootAndNoteCollectionKey - A Minor Pentatonic with fillChromatic",
+  "Non-authored rooted collections return undefined placeholders",
   () => {
-    // A Minor Pentatonic: A (root, index 9), C (12, index 0), D (2), E (4), G (7)
-    // mostSimilarScale: aeolian
-    // A Aeolian seventh chords: i, ii°, III, iv, v, VI, VII
-    // Kept notes: 1 (i), b3 (III), 4 (iv), 5 (v), b7 (VII)
     const sevenths = getRomanSeventhChordsForRootAndNoteCollectionKey(
       "A",
       "minorPentatonic",
@@ -429,23 +441,20 @@ Deno.test(
         rotateToRootInteger0: true,
       },
     );
-
-    // Absolute positions:
-    // C=0 -> III
-    // D=2 -> iv
-    // E=4 -> v
-    // G=7 -> VII
-    // A=9 -> i
+    const bluesTriads = getTriadsForRootAndNoteCollectionKey(
+      "C",
+      "bluesPentatonic",
+    );
 
     assertEquals(sevenths.length, 12);
-    assertEquals(sevenths[0], "IIIM7"); // C
-    assertEquals(sevenths[2], "ivm7"); // D
-    assertEquals(sevenths[4], "vm7"); // E
-    assertEquals(sevenths[7], "VII7"); // G
-    assertEquals(sevenths[9], "im7"); // A
-
-    // Unused pentatonic notes in aeolian
-    assertEquals(sevenths[11], undefined); // B
-    assertEquals(sevenths[5], undefined); // F
+    assertEquals(sevenths, Array.from({ length: 12 }, () => undefined));
+    assertEquals(bluesTriads, [
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+    ]);
   },
 );
