@@ -28,9 +28,10 @@ const augmented7: ChordCollection = {
 
 const augmentedMajor7: ChordCollection = {
   category: "chord",
-  mostSimilarScale: "ionianSharp5",
-  primaryName: "+M7",
+  mostSimilarScale: "ionian",
+  primaryName: "augM7",
   names: [
+    "augM7",
     "+M7",
     "M7♯5",
     "maj7♯5",
