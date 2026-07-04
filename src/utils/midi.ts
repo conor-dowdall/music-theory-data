@@ -4,8 +4,40 @@ import {
   type NoteName,
   noteNameToIntegerMap,
 } from "../data/labels/note-labels.ts";
+import { noteLabelCollections } from "../data/labels/note-label-collections.ts";
 
 import type { MidiNoteNumber } from "../types/midi.d.ts";
+import { normalizeChromaticIndex } from "./chromatic.ts";
+
+export function getMidiOctave(midi: number): number {
+  return Math.floor(midi / 12) - 1;
+}
+
+export type MidiNoteSpelling = "flat" | "sharp";
+
+export interface FormatMidiNoteOptions {
+  spelling?: MidiNoteSpelling;
+}
+
+export function formatMidiNote(
+  midi: number,
+  options: FormatMidiNoteOptions = {},
+): string {
+  const { spelling = "flat" } = options;
+  const labels = spelling === "sharp"
+    ? noteLabelCollections.noteNamesSharp.labels
+    : noteLabelCollections.noteNamesFlat.labels;
+  const noteName = labels[normalizeChromaticIndex(midi)];
+
+  return `${noteName}${getMidiOctave(midi)}`;
+}
+
+export function formatSpelledMidiNote(
+  noteName: string,
+  midi: number,
+): string {
+  return noteName === "" ? "" : `${noteName}${getMidiOctave(midi)}`;
+}
 
 /**
  * Calculates a MIDI note number based on a starting musical note (represented by its integer value and octave)

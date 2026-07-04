@@ -46,6 +46,7 @@ Deno.test("Conversion Registry - entries include UI metadata", () => {
     assertExists(entry.example);
     assertEquals(entry.inputKind, "rootAndNoteCollection");
     assertEquals(entry.outputShape, "chromatic-12");
+    assertEquals(entry.outputIndexing, "absolutePitchClassC0");
     assertEquals(
       entry.emptySlot,
       entry.allowsEmptySlots ? "undefined" : "none",
@@ -118,4 +119,29 @@ Deno.test("Conversion Registry - Options affect output length", () => {
   assertEquals(rotatedResult.length, 12);
   assertEquals(rotatedResult[0], "B");
   assertEquals(rotatedResult[1], "C");
+});
+
+Deno.test("Conversion Registry - chromatic tuples are indexed by absolute C pitch class", () => {
+  const noteNames = rootAndNoteCollectionConversions.noteNames.get(
+    "F",
+    "ionian",
+    registryOptions,
+  );
+  const intervals = rootAndNoteCollectionConversions.intervals.get(
+    "F",
+    "ionian",
+    registryOptions,
+  );
+  const romanTriads = rootAndNoteCollectionConversions.romanTriads.get(
+    "F",
+    "ionian",
+    registryOptions,
+  );
+
+  assertEquals(noteNames[0], "C");
+  assertEquals(noteNames[5], "F");
+  assertEquals(intervals[0], "5");
+  assertEquals(intervals[5], "1");
+  assertEquals(romanTriads[0], "V");
+  assertEquals(romanTriads[5], "I");
 });

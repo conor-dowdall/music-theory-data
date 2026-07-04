@@ -1,11 +1,14 @@
 import { assertEquals } from "@std/assert";
 import {
+  DIATONIC_STEPS_PER_OCTAVE,
   getCompoundIntervalsForNoteCollectionKey,
   getCompoundIntervalsForRootAndNoteCollectionKey,
   getExtensionsForNoteCollectionKey,
   getExtensionsForRootAndNoteCollectionKey,
+  getIntervalLabelDegree,
   getIntervalsForNoteCollectionKey,
   getIntervalsForRootAndNoteCollectionKey,
+  shiftIntervalLabelByOctaves,
   transformIntervals,
 } from "../src/utils/intervals.ts";
 import { diatonicModes } from "../src/data/note-collections/diatonic-modes.ts";
@@ -53,6 +56,24 @@ Deno.test("extensionToSimple - dominant9", () => {
     intervalTransformation: "extensionToSimple",
   });
   assertEquals(compressed, ["1", "2", "3", "5", "♭7"]);
+});
+
+Deno.test("interval label degree helpers parse and shift display labels", () => {
+  assertEquals(DIATONIC_STEPS_PER_OCTAVE, 7);
+  assertEquals(getIntervalLabelDegree("1"), 1);
+  assertEquals(getIntervalLabelDegree("♭13"), 13);
+  assertEquals(getIntervalLabelDegree("𝄫7"), 7);
+  assertEquals(getIntervalLabelDegree("M3"), 3);
+  assertEquals(getIntervalLabelDegree(""), undefined);
+  assertEquals(getIntervalLabelDegree("nope"), undefined);
+  assertEquals(getIntervalLabelDegree("3rd"), undefined);
+
+  assertEquals(shiftIntervalLabelByOctaves("♭7", 1), "♭14");
+  assertEquals(shiftIntervalLabelByOctaves("♯4", 2), "♯18");
+  assertEquals(shiftIntervalLabelByOctaves("♭13", -1), "♭6");
+  assertEquals(shiftIntervalLabelByOctaves("8", -1), "1");
+  assertEquals(shiftIntervalLabelByOctaves("4", -1), "4");
+  assertEquals(shiftIntervalLabelByOctaves("nope", 1), "nope");
 });
 
 Deno.test("getIntervalsForNoteCollectionKey", () => {

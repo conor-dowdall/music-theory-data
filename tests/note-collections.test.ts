@@ -1,7 +1,10 @@
 import { assertEquals } from "@std/assert";
 import {
   findNoteCollection,
+  getNoteCollectionDisplayName,
+  getNoteCollectionPitchClasses,
   isValidNoteCollectionKey,
+  noteCollectionDisplayNames,
   searchNoteCollections,
 } from "../src/utils/note-collections.ts";
 import { noteCollections } from "../src/data/note-collections/mod.ts";
@@ -127,6 +130,63 @@ Deno.test("findNoteCollection - finds single best match", () => {
   // Returns undefined if no match
   const noMatch = findNoteCollection({ query: "nonexistent" });
   assertEquals(noMatch, undefined);
+});
+
+Deno.test("getNoteCollectionPitchClasses resolves rooted pitch-class sets", () => {
+  assertEquals(
+    Array.from(
+      getNoteCollectionPitchClasses({
+        rootNote: "C",
+        noteCollectionKey: "ionian",
+      }) ?? [],
+    ).toSorted((a, b) => a - b),
+    [0, 2, 4, 5, 7, 9, 11],
+  );
+
+  assertEquals(
+    Array.from(
+      getNoteCollectionPitchClasses({
+        rootNote: "Bb",
+        noteCollectionKey: "major",
+      }) ?? [],
+    ).toSorted((a, b) => a - b),
+    [2, 5, 10],
+  );
+
+  assertEquals(
+    Array.from(
+      getNoteCollectionPitchClasses({
+        rootNote: "G",
+        noteCollectionKey: "dominant9",
+      }) ?? [],
+    ).toSorted((a, b) => a - b),
+    [2, 5, 7, 9, 11],
+  );
+
+  assertEquals(
+    getNoteCollectionPitchClasses({
+      rootNote: "not-a-note",
+      noteCollectionKey: "ionian",
+    }),
+    undefined,
+  );
+  assertEquals(
+    getNoteCollectionPitchClasses({
+      rootNote: "C",
+      noteCollectionKey: "not-a-collection",
+    }),
+    undefined,
+  );
+});
+
+Deno.test("note collection display names are available by key", () => {
+  assertEquals(noteCollectionDisplayNames.get("ionian"), "Major");
+  assertEquals(noteCollectionDisplayNames.get("major"), "M");
+  assertEquals(getNoteCollectionDisplayName("aeolian"), "Minor");
+  assertEquals(
+    getNoteCollectionDisplayName("not-a-collection"),
+    "not-a-collection",
+  );
 });
 
 Deno.test("non-chord collection integers are chromatic pitch classes", () => {

@@ -24,8 +24,8 @@ import {
 /**
  * Options specifically tailored for robust Conversion Registry UI usage.
  * Requires `fillChromatic: true` and `rotateToRootInteger0: true` to ensure
- * all returned arrays are 12 elements long and uniformly anchored to C=0,
- * making them easy to align in a UI like a fretboard.
+ * all returned arrays are 12 elements long and indexed by absolute pitch class
+ * where C is index 0. The selected root appears at its pitch-class index.
  */
 export interface ConversionRegistryOptions {
   fillChromatic: true;
@@ -52,6 +52,8 @@ export type ConversionOutputKind =
 
 export type ConversionOutputShape = "chromatic-12";
 
+export type ConversionOutputIndexing = "absolutePitchClassC0";
+
 export type ConversionEmptySlot = "none" | "undefined";
 
 export type ConversionAvailabilityFunction = (
@@ -68,6 +70,7 @@ export interface ConversionRegistryEntry<T, TId extends string = string> {
   inputKind: ConversionInputKind;
   outputKind: ConversionOutputKind;
   outputShape: ConversionOutputShape;
+  outputIndexing: ConversionOutputIndexing;
   allowsEmptySlots: boolean;
   emptySlot: ConversionEmptySlot;
   isAvailable?: ConversionAvailabilityFunction;
@@ -101,6 +104,8 @@ const isAuthoredHarmonyAvailable: ConversionAvailabilityFunction = (
   noteCollectionKey,
 ) => hasAuthoredNoteCollectionHarmony(noteCollectionKey);
 
+const absolutePitchClassC0: ConversionOutputIndexing = "absolutePitchClassC0";
+
 function createConversionResult<T>(
   values: readonly (T | undefined)[],
 ): ChromaticTuple<T | undefined> {
@@ -114,11 +119,12 @@ export const conversions: ConversionRegistry = {
       name: "Note Names",
       shortName: "Notes",
       description:
-        "Returns 12 chromatic note-name slots for the root and collection, anchored so C is index 0.",
+        "Returns 12 absolute pitch-class slots for the root and collection, indexed so C is slot 0.",
       example: "C, D♭, D, E♭, E, F, G♭, G, A♭, A, B♭, B",
       inputKind: "rootAndNoteCollection",
       outputKind: "noteNames",
       outputShape: "chromatic-12",
+      outputIndexing: absolutePitchClassC0,
       allowsEmptySlots: false,
       emptySlot: "none",
       get: (root, key, opts) =>
@@ -131,11 +137,12 @@ export const conversions: ConversionRegistry = {
       name: "Intervals",
       shortName: "Intervals",
       description:
-        "Returns 12 chromatic interval slots for the root and collection, anchored so C is index 0.",
+        "Returns 12 absolute pitch-class slots labeled with intervals relative to the root, indexed so C is slot 0.",
       example: "1, ♭2, 2, ♭3, 3, 4, ♭5, 5, ♭6, 6, ♭7, 7",
       inputKind: "rootAndNoteCollection",
       outputKind: "intervals",
       outputShape: "chromatic-12",
+      outputIndexing: absolutePitchClassC0,
       allowsEmptySlots: false,
       emptySlot: "none",
       get: (root, key, opts) =>
@@ -153,6 +160,7 @@ export const conversions: ConversionRegistry = {
       inputKind: "rootAndNoteCollection",
       outputKind: "intervals",
       outputShape: "chromatic-12",
+      outputIndexing: absolutePitchClassC0,
       allowsEmptySlots: false,
       emptySlot: "none",
       get: (root, key, opts) =>
@@ -170,6 +178,7 @@ export const conversions: ConversionRegistry = {
       inputKind: "rootAndNoteCollection",
       outputKind: "intervals",
       outputShape: "chromatic-12",
+      outputIndexing: absolutePitchClassC0,
       allowsEmptySlots: false,
       emptySlot: "none",
       get: (root, key, opts) =>
@@ -187,6 +196,7 @@ export const conversions: ConversionRegistry = {
       inputKind: "rootAndNoteCollection",
       outputKind: "chordNames",
       outputShape: "chromatic-12",
+      outputIndexing: absolutePitchClassC0,
       allowsEmptySlots: true,
       emptySlot: "undefined",
       isAvailable: isAuthoredHarmonyAvailable,
@@ -206,6 +216,7 @@ export const conversions: ConversionRegistry = {
       inputKind: "rootAndNoteCollection",
       outputKind: "chordNames",
       outputShape: "chromatic-12",
+      outputIndexing: absolutePitchClassC0,
       allowsEmptySlots: true,
       emptySlot: "undefined",
       isAvailable: isAuthoredHarmonyAvailable,
@@ -225,6 +236,7 @@ export const conversions: ConversionRegistry = {
       inputKind: "rootAndNoteCollection",
       outputKind: "romanNumerals",
       outputShape: "chromatic-12",
+      outputIndexing: absolutePitchClassC0,
       allowsEmptySlots: true,
       emptySlot: "undefined",
       isAvailable: isAuthoredHarmonyAvailable,
@@ -244,6 +256,7 @@ export const conversions: ConversionRegistry = {
       inputKind: "rootAndNoteCollection",
       outputKind: "romanNumerals",
       outputShape: "chromatic-12",
+      outputIndexing: absolutePitchClassC0,
       allowsEmptySlots: true,
       emptySlot: "undefined",
       isAvailable: isAuthoredHarmonyAvailable,

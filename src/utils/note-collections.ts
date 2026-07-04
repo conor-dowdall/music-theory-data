@@ -2,11 +2,17 @@ import {
   type NoteCollectionKey,
   noteCollections,
 } from "../data/note-collections/mod.ts";
-import type { Interval } from "../data/labels/note-labels.ts";
+import type { ChromaticIndex } from "../data/chromatic.ts";
+import {
+  type Interval,
+  rootNoteToIntegerMap,
+} from "../data/labels/note-labels.ts";
 import type {
   CollectionCategory,
   NoteCollection,
 } from "../types/note-collections.d.ts";
+import { normalizeChromaticIndex } from "./chromatic.ts";
+import { normalizeRootNoteString } from "./note-names.ts";
 
 /**
  * Checks if a given string is a valid `NoteCollectionKey`.
@@ -17,6 +23,46 @@ export function isValidNoteCollectionKey(
   key: string,
 ): key is NoteCollectionKey {
   return Object.prototype.hasOwnProperty.call(noteCollections, key);
+}
+
+export interface GetNoteCollectionPitchClassesParams {
+  rootNote: string;
+  noteCollectionKey: NoteCollectionKey | string;
+}
+
+export function getNoteCollectionPitchClasses({
+  rootNote: rawRootNote,
+  noteCollectionKey,
+}: GetNoteCollectionPitchClassesParams):
+  | ReadonlySet<ChromaticIndex>
+  | undefined {
+  const rootNote = normalizeRootNoteString(rawRootNote);
+  if (!rootNote || !isValidNoteCollectionKey(noteCollectionKey)) {
+    return undefined;
+  }
+
+  const rootInteger = rootNoteToIntegerMap.get(rootNote);
+  if (rootInteger === undefined) return undefined;
+
+  const collection = noteCollections[noteCollectionKey];
+  const pitchClasses = collection.integers.map((interval) =>
+    normalizeChromaticIndex(rootInteger + interval)
+  );
+
+  return new Set(pitchClasses);
+}
+
+export const noteCollectionDisplayNames: ReadonlyMap<string, string> = new Map(
+  Object.entries(noteCollections).map(([collectionKey, collection]) => [
+    collectionKey,
+    collection.primaryName,
+  ]),
+);
+
+export function getNoteCollectionDisplayName(
+  noteCollectionKey: NoteCollectionKey | string,
+): string {
+  return noteCollectionDisplayNames.get(noteCollectionKey) ?? noteCollectionKey;
 }
 
 const normalizationMap = new Map<string, string>();

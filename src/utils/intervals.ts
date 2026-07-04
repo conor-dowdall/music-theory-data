@@ -24,6 +24,9 @@ import { isValidNoteCollectionKey } from "./note-collections.ts";
 import { createChromaticTuple, normalizeChromaticIndex } from "./chromatic.ts";
 
 const INTERVAL_NUMBER_REGEX = /\d+$/;
+const INTERVAL_LABEL_REGEX = /^([^\d]*)(\d+)$/;
+
+export const DIATONIC_STEPS_PER_OCTAVE = 7;
 
 export type ChromaticIntervalTuple = ChromaticTuple<Interval>;
 
@@ -192,6 +195,35 @@ export function normalizeCompoundIntervalStringArray(
   return names
     .map((name) => normalizeCompoundIntervalString(name))
     .filter((name): name is CompoundInterval => name !== undefined);
+}
+
+export function getIntervalLabelDegree(
+  intervalLabel: string,
+): number | undefined {
+  const match = intervalLabel.match(INTERVAL_LABEL_REGEX);
+  if (!match) return undefined;
+
+  const degree = Number(match[2]);
+  return Number.isInteger(degree) && degree > 0 ? degree : undefined;
+}
+
+export function shiftIntervalLabelByOctaves(
+  intervalLabel: string,
+  octaveOffset: number,
+): string {
+  if (octaveOffset === 0) return intervalLabel;
+
+  const match = intervalLabel.match(INTERVAL_LABEL_REGEX);
+  if (!match) return intervalLabel;
+
+  const [, accidental = "", degreeLabel] = match;
+  const degree = Number(degreeLabel);
+  if (!Number.isInteger(degree) || degree < 1) return intervalLabel;
+
+  const shiftedDegree = degree +
+    octaveOffset * DIATONIC_STEPS_PER_OCTAVE;
+
+  return shiftedDegree >= 1 ? `${accidental}${shiftedDegree}` : intervalLabel;
 }
 
 /**
