@@ -79,92 +79,12 @@ const _noteLabelCollections = {
       "7",
     ],
   },
-
-  fixedDoFlat: {
-    name: "Solfege Fixed Do Flat Notes",
-    shortName: "Fixed Do Flat",
-    mode: "absolute",
-    labels: [
-      "do",
-      "re♭",
-      "re",
-      "mi♭",
-      "mi",
-      "fa",
-      "sol♭",
-      "sol",
-      "la♭",
-      "la",
-      "si♭",
-      "si",
-    ],
-  },
-
-  fixedDoSharp: {
-    name: "Solfege Fixed Do Sharp Notes",
-    shortName: "Fixed Do Sharp",
-    mode: "absolute",
-    labels: [
-      "do",
-      "do♯",
-      "re",
-      "re♯",
-      "mi",
-      "fa",
-      "fa♯",
-      "sol",
-      "sol♯",
-      "la",
-      "la♯",
-      "si",
-    ],
-  },
-
-  movableDo: {
-    name: "Solfege Movable Do Notes",
-    shortName: "Movable Do",
-    mode: "relative",
-    labels: [
-      "do",
-      "ra",
-      "re",
-      "me",
-      "mi",
-      "fa",
-      "fi",
-      "sol",
-      "le",
-      "la",
-      "te",
-      "ti",
-    ],
-  },
-
-  movableLa: {
-    name: "Solfege Movable La Notes",
-    shortName: "Movable La",
-    mode: "relative",
-    labels: [
-      "la",
-      "te",
-      "ti",
-      "do",
-      "di",
-      "re",
-      "re",
-      "mi",
-      "fa",
-      "fi",
-      "sol",
-      "si",
-    ],
-  },
 } as const;
 
 /** A union string of valid keys to lookup different note label collections. */
 export type NoteLabelCollectionKey = keyof typeof _noteLabelCollections;
 
-/** A dictionary holding arrays mapping integer semitones into note/solfege names for varied contexts. */
+/** A dictionary holding arrays mapping integer semitones into note and interval labels for varied contexts. */
 export const noteLabelCollections: Record<
   NoteLabelCollectionKey,
   NoteLabelCollection
