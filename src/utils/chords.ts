@@ -174,6 +174,16 @@ function getModeData(modeKey: NoteCollectionKey): ModeData | undefined {
   return undefined;
 }
 
+/**
+ * Checks whether a note collection has authored modal harmony data.
+ * Collections without authored harmony intentionally return undefined chord placeholders.
+ */
+export function hasAuthoredNoteCollectionHarmony(
+  noteCollectionKey: NoteCollectionKey,
+): boolean {
+  return getModeData(noteCollectionKey) !== undefined;
+}
+
 function getUndefinedChordPlaceholders<T>(
   intervals: readonly Interval[],
   fillChromatic: boolean | undefined,

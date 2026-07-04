@@ -177,7 +177,7 @@ const _simpleIntervalToIntegerMap = {
   "𝄪8": 14,
 } as const;
 
-/** A fully qualified simple (single octave) interval string, including an optional accidental symbol (e.g., "M3", "b7"). */
+/** A fully qualified simple (single octave) interval string, including an optional accidental symbol (e.g., "3", "♯4", "♭7"). */
 export type SimpleInterval = keyof typeof _simpleIntervalToIntegerMap;
 
 /** A numeric string representing the numerical span of a compound interval (e.g. "9", "13"). */

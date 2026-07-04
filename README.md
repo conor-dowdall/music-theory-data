@@ -19,8 +19,8 @@ helpers, and naming utilities.
 - **Labels and theory primitives:** note names, root notes, intervals, chromatic
   indexes, roman numerals, chord qualities, and conversion helpers.
 - **Application helpers:** note-name generation, interval transforms, chord
-  progression resolution, chord spelling, MIDI helpers, note colors, contrast
-  helpers, and string instrument tunings.
+  progression resolution, chord spelling, a UI-friendly conversion registry,
+  MIDI helpers, note colors, contrast helpers, and string instrument tunings.
 - **TypeScript-first API:** exported data, utility functions, and types are
   designed to work well with autocomplete and compile-time checking.
 
@@ -78,6 +78,44 @@ const fMajor = musicTheoryData.getNoteNamesForRootAndNoteCollectionKey(
 console.log(fMajor);
 // ["F", "G", "A", "B♭", "C", "D", "E", "F"]
 ```
+
+### Use The Conversion Registry
+
+```ts
+import {
+  conversions,
+  getAvailableRootAndNoteCollectionConversions,
+} from "jsr:@musodojo/music-theory-data";
+
+const options = {
+  fillChromatic: true,
+  rotateToRootInteger0: true,
+} as const;
+
+const noteNames = conversions.rootAndNoteCollection.noteNames.get(
+  "C",
+  "ionian",
+  options,
+);
+
+console.log(noteNames);
+// ["C", "D♭", "D", "E♭", "E", "F", "G♭", "G", "A♭", "A", "B♭", "B"]
+
+const availableForMajorChord = getAvailableRootAndNoteCollectionConversions(
+  "C",
+  "major",
+);
+
+console.log(availableForMajorChord.map((entry) => entry.id));
+// ["note-names", "intervals", "extensions", "compound-intervals"]
+```
+
+The conversion registry is useful when an app needs selectable display layers
+for the same root and note collection. Each entry includes UI metadata such as
+`name`, `shortName`, `description`, `outputShape`, and whether empty chromatic
+slots can appear. Authored harmony conversions are exposed for modal collections
+such as `ionian`, but are filtered out for collections that do not define modal
+harmony, such as the `major` triad.
 
 ### Inspect A Note Collection
 
