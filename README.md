@@ -167,10 +167,10 @@ console.log(getChordProgressionRomanSymbols("oneSixFourFive"));
 // ["I", "vi", "IV", "V"]
 
 console.log(chordProgressionCategoryGroups.map((group) => group.name));
-// ["Fundamentals", "Popular Loops", "Jazz & Turnarounds", "Blues"]
+// ["Diatonic Foundations", "Jazz Standards & Cadences", "Blues Forms"]
 
 console.log(getChordProgressionKeysForCategory("jazz"));
-// ["oneSixTwoFive", "sixTwoFiveOne", "majorTwoFiveOne", ...]
+// ["majorTwoFiveOne", "minorTwoFiveOne", "autumnLeavesA", ...]
 
 console.log(getChordProgressionChordNames("C", "oneSixFourFive"));
 // ["CM", "Am", "FM", "GM"]

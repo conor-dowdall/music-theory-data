@@ -33,22 +33,17 @@ function chord(
 
 const _chordProgressionCategories = {
   fundamentals: {
-    name: "Fundamentals",
+    name: "Diatonic Foundations",
     description:
-      "Small tonic, subdominant, and dominant patterns for core harmonic motion.",
-  },
-  popular: {
-    name: "Popular Loops",
-    description:
-      "Common diatonic loops used widely in popular, rock, folk, and songwriting contexts.",
+      "Beginner-friendly diatonic progressions and turnarounds for tonic, predominant, and dominant motion.",
   },
   jazz: {
-    name: "Jazz & Turnarounds",
+    name: "Jazz Standards & Cadences",
     description:
-      "ii-V motion, turnarounds, and jazz-standard forms with richer chord collections.",
+      "Seventh-chord cadences and reusable sections from foundational jazz-standard forms.",
   },
   blues: {
-    name: "Blues",
+    name: "Blues Forms",
     description:
       "Blues forms built from dominant-function tonic, subdominant, and dominant areas.",
   },
@@ -67,7 +62,6 @@ export const chordProgressionCategories: Record<
 export const chordProgressionCategoryKeys:
   readonly ChordProgressionCategoryKey[] = [
     "fundamentals",
-    "popular",
     "jazz",
     "blues",
   ];
@@ -117,7 +111,7 @@ const oneFourOneFive: BuiltInChordProgression = {
 };
 
 const oneSixFourFive: BuiltInChordProgression = {
-  category: "popular",
+  category: "fundamentals",
   chords: [
     chord("1", "major", 1),
     chord("6", "minor", 1),
@@ -127,7 +121,7 @@ const oneSixFourFive: BuiltInChordProgression = {
 };
 
 const oneFiveSixFour: BuiltInChordProgression = {
-  category: "popular",
+  category: "fundamentals",
   chords: [
     chord("1", "major", 1),
     chord("5", "major", 1),
@@ -137,7 +131,7 @@ const oneFiveSixFour: BuiltInChordProgression = {
 };
 
 const oneSixTwoFive: BuiltInChordProgression = {
-  category: "jazz",
+  category: "fundamentals",
   chords: [
     chord("1", "major", 1),
     chord("6", "minor", 1),
@@ -147,7 +141,7 @@ const oneSixTwoFive: BuiltInChordProgression = {
 };
 
 const sixTwoFiveOne: BuiltInChordProgression = {
-  category: "jazz",
+  category: "fundamentals",
   chords: [
     chord("6", "minor", 1),
     chord("2", "minor", 1),
@@ -247,40 +241,37 @@ const twelveBarBluesQuickChange: BuiltInChordProgression = {
   ],
 };
 
-const rhythmChangesAChords: readonly ChordProgressionChord[] = [
-  chord("1", "major", 0.5),
-  chord("6", "dominant7", 0.5),
-  chord("2", "minor7", 0.5),
-  chord("5", "dominant7", 0.5),
-  chord("3", "minor7", 0.5),
-  chord("6", "dominant7", 0.5),
-  chord("2", "minor7", 0.5),
-  chord("5", "dominant7", 0.5),
-  chord("1", "major", 0.5),
-  chord("1", "dominant7", 0.5),
-  chord("4", "major", 0.5),
-  chord("♯4", "diminished7", 0.5),
-  chord("1", "major", 0.5),
-  chord("6", "dominant7", 0.5),
-  chord("2", "minor7", 0.5),
-  chord("5", "dominant7", 0.5),
-];
-
-const rhythmChangesBridgeChords: readonly ChordProgressionChord[] = [
-  chord("3", "dominant7", 2),
-  chord("6", "dominant7", 2),
-  chord("2", "dominant7", 2),
-  chord("5", "dominant7", 2),
-];
-
-const rhythmChanges: BuiltInChordProgression = {
-  commonName: "Rhythm Changes",
+const rhythmChangesA: BuiltInChordProgression = {
+  commonName: "Rhythm Changes A Section",
   category: "jazz",
   chords: [
-    ...rhythmChangesAChords,
-    ...rhythmChangesAChords,
-    ...rhythmChangesBridgeChords,
-    ...rhythmChangesAChords,
+    chord("1", "major", 0.5),
+    chord("6", "dominant7", 0.5),
+    chord("2", "minor7", 0.5),
+    chord("5", "dominant7", 0.5),
+    chord("3", "minor7", 0.5),
+    chord("6", "dominant7", 0.5),
+    chord("2", "minor7", 0.5),
+    chord("5", "dominant7", 0.5),
+    chord("1", "major", 0.5),
+    chord("1", "dominant7", 0.5),
+    chord("4", "major", 0.5),
+    chord("♯4", "diminished7", 0.5),
+    chord("1", "major", 0.5),
+    chord("6", "dominant7", 0.5),
+    chord("2", "minor7", 0.5),
+    chord("5", "dominant7", 0.5),
+  ],
+};
+
+const rhythmChangesBridge: BuiltInChordProgression = {
+  commonName: "Rhythm Changes Bridge",
+  category: "jazz",
+  chords: [
+    chord("3", "dominant7", 2),
+    chord("6", "dominant7", 2),
+    chord("2", "dominant7", 2),
+    chord("5", "dominant7", 2),
   ],
 };
 
@@ -299,9 +290,10 @@ const _chordProgressions = {
   oneFourOneFiveSplitReturn,
   autumnLeavesA,
   autumnLeavesB,
+  rhythmChangesA,
+  rhythmChangesBridge,
   twelveBarBlues,
   twelveBarBluesQuickChange,
-  rhythmChanges,
 } as const;
 
 /** A key for one of the built-in chord progression templates. */

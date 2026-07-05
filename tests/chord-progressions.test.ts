@@ -67,7 +67,8 @@ Deno.test("progression key validation reflects the current dataset", () => {
   assertEquals(isValidChordProgressionKey("twelveBarBluesQuickChange"), true);
   assertEquals(isValidChordProgressionKey("autumnLeavesA"), true);
   assertEquals(isValidChordProgressionKey("autumnLeavesB"), true);
-  assertEquals(isValidChordProgressionKey("rhythmChanges"), true);
+  assertEquals(isValidChordProgressionKey("rhythmChangesA"), true);
+  assertEquals(isValidChordProgressionKey("rhythmChangesBridge"), true);
   assertEquals(isValidChordProgressionKey("ionian"), false);
 });
 
@@ -93,12 +94,18 @@ Deno.test("progression exports are available directly", () => {
     "Autumn Leaves B Section",
   );
   assertEquals(
-    chordProgressions.rhythmChanges.commonName,
-    "Rhythm Changes",
+    chordProgressions.rhythmChangesA.commonName,
+    "Rhythm Changes A Section",
+  );
+  assertEquals(
+    chordProgressions.rhythmChangesBridge.commonName,
+    "Rhythm Changes Bridge",
   );
   assertEquals(chordProgressions.oneOneFiveFive.category, "fundamentals");
-  assertEquals(chordProgressions.oneSixFourFive.category, "popular");
+  assertEquals(chordProgressions.oneSixFourFive.category, "fundamentals");
+  assertEquals(chordProgressions.oneSixTwoFive.category, "fundamentals");
   assertEquals(chordProgressions.autumnLeavesA.category, "jazz");
+  assertEquals(chordProgressions.rhythmChangesA.category, "jazz");
   assertEquals(chordProgressions.twelveBarBlues.category, "blues");
   assertEquals(
     chordProgressions.autumnLeavesA.chords.map((chord) =>
@@ -168,15 +175,13 @@ Deno.test("progressions are grouped by exact total bars", () => {
         "oneFourOneFiveSplitReturn",
         "autumnLeavesA",
         "autumnLeavesB",
+        "rhythmChangesA",
+        "rhythmChangesBridge",
       ],
     },
     {
       totalBars: 12,
       progressionKeys: ["twelveBarBlues", "twelveBarBluesQuickChange"],
-    },
-    {
-      totalBars: 32,
-      progressionKeys: ["rhythmChanges"],
     },
   ]);
 });
@@ -185,46 +190,39 @@ Deno.test("progressions are grouped by musical category", () => {
   assertEquals(chordProgressionCategoryGroups, [
     {
       category: "fundamentals",
-      name: "Fundamentals",
+      name: "Diatonic Foundations",
       description:
-        "Small tonic, subdominant, and dominant patterns for core harmonic motion.",
+        "Beginner-friendly diatonic progressions and turnarounds for tonic, predominant, and dominant motion.",
       progressionKeys: [
         "oneOneFiveFive",
         "oneOneFiveFiveDominant7",
         "oneOneFourFour",
         "oneOneFourFive",
         "oneFourOneFive",
+        "oneSixFourFive",
+        "oneFiveSixFour",
+        "oneSixTwoFive",
+        "sixTwoFiveOne",
         "oneFourOneFiveSplitReturn",
       ],
     },
     {
-      category: "popular",
-      name: "Popular Loops",
-      description:
-        "Common diatonic loops used widely in popular, rock, folk, and songwriting contexts.",
-      progressionKeys: [
-        "oneSixFourFive",
-        "oneFiveSixFour",
-      ],
-    },
-    {
       category: "jazz",
-      name: "Jazz & Turnarounds",
+      name: "Jazz Standards & Cadences",
       description:
-        "ii-V motion, turnarounds, and jazz-standard forms with richer chord collections.",
+        "Seventh-chord cadences and reusable sections from foundational jazz-standard forms.",
       progressionKeys: [
-        "oneSixTwoFive",
-        "sixTwoFiveOne",
         "majorTwoFiveOne",
         "minorTwoFiveOne",
         "autumnLeavesA",
         "autumnLeavesB",
-        "rhythmChanges",
+        "rhythmChangesA",
+        "rhythmChangesBridge",
       ],
     },
     {
       category: "blues",
-      name: "Blues",
+      name: "Blues Forms",
       description:
         "Blues forms built from dominant-function tonic, subdominant, and dominant areas.",
       progressionKeys: ["twelveBarBlues", "twelveBarBluesQuickChange"],
@@ -254,8 +252,12 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     ["viiø7", "III7", "vi", "iim7", "V7", "IM7", "IVM7"],
   );
   assertEquals(
-    getChordProgressionDirectRomanSymbols("rhythmChanges").slice(8, 12),
+    getChordProgressionDirectRomanSymbols("rhythmChangesA").slice(8, 12),
     ["I", "I7", "IV", "♯iv°7"],
+  );
+  assertEquals(
+    getChordProgressionDirectRomanSymbols("rhythmChangesBridge"),
+    ["III7", "VI7", "II7", "V7"],
   );
   assertEquals(
     getChordProgressionRomanSymbols("oneOneFiveFiveDominant7"),
@@ -340,12 +342,14 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     "oneFourOneFiveSplitReturn",
     "autumnLeavesA",
     "autumnLeavesB",
+    "rhythmChangesA",
+    "rhythmChangesBridge",
   ]);
   assertEquals(getChordProgressionKeysForTotalBars(12), [
     "twelveBarBlues",
     "twelveBarBluesQuickChange",
   ]);
-  assertEquals(getChordProgressionKeysForTotalBars(32), ["rhythmChanges"]);
+  assertEquals(getChordProgressionKeysForTotalBars(32), []);
   assertEquals(getChordProgressionKeysForTotalBars(16), []);
   assertEquals(getChordProgressionKeysForCategory("fundamentals"), [
     "oneOneFiveFive",
@@ -353,20 +357,19 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     "oneOneFourFour",
     "oneOneFourFive",
     "oneFourOneFive",
-    "oneFourOneFiveSplitReturn",
-  ]);
-  assertEquals(getChordProgressionKeysForCategory("popular"), [
     "oneSixFourFive",
     "oneFiveSixFour",
-  ]);
-  assertEquals(getChordProgressionKeysForCategory("jazz"), [
     "oneSixTwoFive",
     "sixTwoFiveOne",
+    "oneFourOneFiveSplitReturn",
+  ]);
+  assertEquals(getChordProgressionKeysForCategory("jazz"), [
     "majorTwoFiveOne",
     "minorTwoFiveOne",
     "autumnLeavesA",
     "autumnLeavesB",
-    "rhythmChanges",
+    "rhythmChangesA",
+    "rhythmChangesBridge",
   ]);
   assertEquals(getChordProgressionKeysForCategory("blues"), [
     "twelveBarBlues",
@@ -489,8 +492,12 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     12,
   );
   assertEquals(
-    getChordProgressionChordReferencesByBar("C", "rhythmChanges").length,
-    32,
+    getChordProgressionChordReferencesByBar("C", "rhythmChangesA").length,
+    8,
+  );
+  assertEquals(
+    getChordProgressionChordReferencesByBar("C", "rhythmChangesBridge").length,
+    8,
   );
   assertEquals(
     getChordProgressionUniqueChordReferences("C", "oneFourOneFiveSplitReturn"),
@@ -516,7 +523,11 @@ Deno.test("progression helpers expose chord names and total duration", () => {
   assertEquals(getChordProgressionTotalDurationInBars("majorTwoFiveOne"), 4);
   assertEquals(getChordProgressionTotalDurationInBars("autumnLeavesA"), 8);
   assertEquals(getChordProgressionTotalDurationInBars("autumnLeavesB"), 8);
-  assertEquals(getChordProgressionTotalDurationInBars("rhythmChanges"), 32);
+  assertEquals(getChordProgressionTotalDurationInBars("rhythmChangesA"), 8);
+  assertEquals(
+    getChordProgressionTotalDurationInBars("rhythmChangesBridge"),
+    8,
+  );
   assertEquals(
     getChordProgressionTotalDurationInBars("oneFourOneFiveSplitReturn"),
     8,
