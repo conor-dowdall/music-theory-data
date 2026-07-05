@@ -1,25 +1,31 @@
 import {
   chordProgressionBarGroups,
+  chordProgressionCategoryGroups,
   type ChordProgressionKey,
   chordProgressions,
 } from "../data/chord-progressions/mod.ts";
-import { getChordQualityNoteCollectionKey } from "../data/chords/mod.ts";
+import { getChordCollectionChordSuffix } from "../data/chords/mod.ts";
 import type {
   ChordProgression,
+  ChordProgressionAnalysisRomanSymbol,
+  ChordProgressionCategoryKey,
   ChordProgressionChord,
+  ChordProgressionRomanAccidental,
+  ChordProgressionRomanSymbol,
 } from "../types/chord-progressions.d.ts";
 import type { RootNote } from "../data/labels/note-labels.ts";
-import type { NoteCollectionKey } from "../data/note-collections/mod.ts";
+import type { ChordCollectionKey } from "../data/note-collections/mod.ts";
 import {
   getNoteNamesForRootAndIntervals,
   normalizeRootNoteString,
 } from "./note-names.ts";
+import { getRomanNumeralForScaleIndexAndChordCollectionKey } from "./chords.ts";
 
 /** A resolved chord in a progression, including its root and note-collection key. */
 export interface ChordProgressionChordReference {
   readonly rootNote: RootNote;
   readonly chordName: string;
-  readonly noteCollectionKey: NoteCollectionKey;
+  readonly noteCollectionKey: ChordCollectionKey;
 }
 
 interface ResolvedChordProgressionChordReference {
@@ -28,6 +34,8 @@ interface ResolvedChordProgressionChordReference {
 }
 
 const BAR_DURATION_EPSILON = 0.000000001;
+const DIATONIC_SCALE_DEGREES = 7;
+const INTERVAL_LABEL_REGEX = /^(𝄫|♭|♮|♯|𝄪)?(\d+)$/;
 
 /** Returns whether a string is one of the built-in chord progression keys. */
 export function isValidChordProgressionKey(
@@ -49,8 +57,9 @@ function createChordProgressionChordReference(
 ): ChordProgressionChordReference {
   return {
     rootNote: chordRootNote,
-    chordName: chordRootNote + chord.quality,
-    noteCollectionKey: getChordQualityNoteCollectionKey(chord.quality),
+    chordName: chordRootNote +
+      getChordCollectionChordSuffix(chord.chordCollectionKey),
+    noteCollectionKey: chord.chordCollectionKey,
   };
 }
 
@@ -77,6 +86,55 @@ function getResolvedChordProgressionChordReferences(
   });
 }
 
+function getRomanAccidentalForIntervalLabel(
+  accidental: string | undefined,
+): ChordProgressionRomanAccidental {
+  switch (accidental) {
+    case undefined:
+    case "":
+    case "♮":
+      return "";
+    case "𝄫":
+    case "♭":
+    case "♯":
+    case "𝄪":
+      return accidental;
+    default:
+      throw new Error(`Invalid chord degree accidental: ${accidental}`);
+  }
+}
+
+/** Returns the direct tonic-relative Roman symbol for a progression chord. */
+export function getChordProgressionChordDirectRomanSymbol(
+  chord: ChordProgressionChord,
+): ChordProgressionRomanSymbol {
+  const match = chord.degree.match(INTERVAL_LABEL_REGEX);
+  if (!match) {
+    throw new Error(`Invalid chord degree: ${chord.degree}`);
+  }
+
+  const [, rawAccidental, degreeLabel] = match;
+  const degree = Number(degreeLabel);
+  if (!Number.isInteger(degree) || degree < 1) {
+    throw new Error(`Invalid chord degree: ${chord.degree}`);
+  }
+
+  const scaleIndex = (degree - 1) % DIATONIC_SCALE_DEGREES;
+  const romanSymbol = getRomanNumeralForScaleIndexAndChordCollectionKey(
+    scaleIndex,
+    chord.chordCollectionKey,
+  );
+
+  if (romanSymbol === undefined) {
+    throw new Error(
+      `Unhandled chord collection: ${chord.chordCollectionKey}`,
+    );
+  }
+
+  const accidental = getRomanAccidentalForIntervalLabel(rawAccidental);
+  return `${accidental}${romanSymbol}` as ChordProgressionRomanSymbol;
+}
+
 /** Returns the spelled chord names for a progression in the requested root. */
 export function getChordProgressionChordNames(
   rootNote: RootNote,
@@ -91,18 +149,50 @@ export function getChordProgressionChordNames(
   );
 
   return progression.chords.map((chord, index) =>
-    noteNames[index] + chord.quality
+    noteNames[index] + getChordCollectionChordSuffix(chord.chordCollectionKey)
   );
 }
 
-/** Returns the roman symbols authored for a chord progression. */
-export function getChordProgressionRomanSymbols(
+/**
+ * Returns direct tonic-relative Roman symbols derived from each chord's
+ * `degree` and `chordCollectionKey`.
+ */
+export function getChordProgressionDirectRomanSymbols(
   progressionOrKey: ChordProgression | ChordProgressionKey,
-): string[] {
+): ChordProgressionRomanSymbol[] {
   const progression = resolveProgression(progressionOrKey);
   if (!progression) return [];
 
-  return progression.chords.map((chord) => chord.romanSymbol);
+  return progression.chords.map((chord) =>
+    getChordProgressionChordDirectRomanSymbol(chord)
+  );
+}
+
+/**
+ * Returns Roman symbols suitable for theory display, preferring optional
+ * harmonic-function analysis labels when present.
+ */
+export function getChordProgressionRomanSymbols(
+  progressionOrKey: ChordProgression | ChordProgressionKey,
+): ChordProgressionAnalysisRomanSymbol[] {
+  const progression = resolveProgression(progressionOrKey);
+  if (!progression) return [];
+
+  return progression.chords.map((chord) =>
+    chord.analysis?.romanSymbol ?? getChordProgressionChordDirectRomanSymbol(
+      chord,
+    )
+  );
+}
+
+/**
+ * Returns Roman symbols suitable for display, preferring optional
+ * harmonic-function analysis labels when present.
+ */
+export function getChordProgressionDisplayRomanSymbols(
+  progressionOrKey: ChordProgression | ChordProgressionKey,
+): ChordProgressionAnalysisRomanSymbol[] {
+  return getChordProgressionRomanSymbols(progressionOrKey);
 }
 
 /** Returns all built-in chord progression keys with the requested total bar count. */
@@ -111,6 +201,16 @@ export function getChordProgressionKeysForTotalBars(
 ): ChordProgressionKey[] {
   return chordProgressionBarGroups.find((group) =>
     group.totalBars === totalBars
+  )
+    ?.progressionKeys.slice() ?? [];
+}
+
+/** Returns all built-in chord progression keys in the requested musical category. */
+export function getChordProgressionKeysForCategory(
+  category: ChordProgressionCategoryKey,
+): ChordProgressionKey[] {
+  return chordProgressionCategoryGroups.find((group) =>
+    group.category === category
   )
     ?.progressionKeys.slice() ?? [];
 }

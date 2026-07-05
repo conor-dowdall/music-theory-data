@@ -13,9 +13,9 @@ helpers, and naming utilities.
   collections, grouped into families such as diatonic modes, pentatonic
   variants, major/minor/dominant variants, harmonic minor modes, melodic minor
   modes, diminished variants, and augmented variants.
-- **Chord progressions:** 4-bar foundational loops, 8-bar loops, and 12-bar
-  blues progressions with roman symbols, scale degrees, qualities, and bar
-  durations.
+- **Chord progressions:** foundational loops, blues changes, and jazz-standard
+  forms with musical categories, scale degrees, chord collection keys, bar
+  durations, derived roman symbols, and optional analysis labels.
 - **Labels and theory primitives:** note names, root notes, intervals, chromatic
   indexes, roman numerals, chord qualities, and conversion helpers.
 - **Application helpers:** note-name generation, interval transforms, chord
@@ -145,19 +145,32 @@ source files for complete schemas.
 
 ```ts
 import {
+  chordProgressionCategoryGroups,
   chordProgressions,
   getChordProgressionChordNames,
+  getChordProgressionKeysForCategory,
   getChordProgressionRomanSymbols,
   getChordProgressionTotalDurationInBars,
 } from "jsr:@musodojo/music-theory-data";
 
 const oneSixFourFive = chordProgressions.oneSixFourFive;
 
-console.log(oneSixFourFive.chords.map((chord) => chord.romanSymbol));
-// ["I", "vi", "IV", "V"]
+console.log(
+  oneSixFourFive.chords.map((chord) => [
+    chord.degree,
+    chord.chordCollectionKey,
+  ]),
+);
+// [["1", "major"], ["6", "minor"], ["4", "major"], ["5", "major"]]
 
 console.log(getChordProgressionRomanSymbols("oneSixFourFive"));
 // ["I", "vi", "IV", "V"]
+
+console.log(chordProgressionCategoryGroups.map((group) => group.name));
+// ["Fundamentals", "Popular Loops", "Jazz & Turnarounds", "Blues"]
+
+console.log(getChordProgressionKeysForCategory("jazz"));
+// ["oneSixTwoFive", "sixTwoFiveOne", "majorTwoFiveOne", ...]
 
 console.log(getChordProgressionChordNames("C", "oneSixFourFive"));
 // ["CM", "Am", "FM", "GM"]

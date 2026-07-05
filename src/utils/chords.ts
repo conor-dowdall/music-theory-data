@@ -2,6 +2,7 @@ import {
   chordQualityRomanRenderings,
   diatonicSeventhChords,
   diatonicTriads,
+  getChordCollectionSymbolRendering,
   harmonicMinorSeventhChords,
   harmonicMinorTriads,
   lowerCaseRomanNumerals,
@@ -10,6 +11,7 @@ import {
   upperCaseRomanNumerals,
 } from "../data/chords/mod.ts";
 import {
+  type ChordCollectionKey,
   type NoteCollectionKey,
   noteCollections,
 } from "../data/note-collections/mod.ts";
@@ -65,6 +67,21 @@ export function getRomanNumeralForScaleIndexAndChordQuality(
   if (romanNumeral === undefined) return undefined;
 
   return romanNumeral + rendering.suffix;
+}
+
+export function getRomanNumeralForScaleIndexAndChordCollectionKey(
+  scaleIndex: number,
+  chordCollectionKey: ChordCollectionKey,
+): string | undefined {
+  const rendering = getChordCollectionSymbolRendering(chordCollectionKey);
+  const numerals = rendering.numeralCase === "lower"
+    ? lowerCaseRomanNumerals
+    : upperCaseRomanNumerals;
+  const romanNumeral = numerals[scaleIndex];
+
+  if (romanNumeral === undefined) return undefined;
+
+  return romanNumeral + rendering.romanSuffix;
 }
 
 /**

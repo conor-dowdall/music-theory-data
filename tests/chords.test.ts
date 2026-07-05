@@ -1,5 +1,6 @@
 import { assertEquals } from "@std/assert";
 import {
+  getRomanNumeralForScaleIndexAndChordCollectionKey,
   getRomanSeventhChordsForNoteCollectionKey,
   getRomanSeventhChordsForRootAndNoteCollectionKey,
   getRomanTriadsForNoteCollectionKey,
@@ -9,12 +10,31 @@ import {
   getTriadsForNoteCollectionKey,
   getTriadsForRootAndNoteCollectionKey,
 } from "../src/utils/chords.ts";
+import {
+  getChordCollectionChordSuffix,
+  getChordCollectionRomanSuffix,
+  getChordQualityChordCollectionKey,
+} from "../src/data/chords/mod.ts";
 import type {
   RomanSeventhChord,
   RomanTriad,
   SeventhChord,
   Triad,
 } from "../src/types/chords.d.ts";
+
+Deno.test("chord quality and chord collection rendering stay distinct", () => {
+  assertEquals(getChordQualityChordCollectionKey("+M7"), "augmentedMajor7");
+  assertEquals(getChordQualityChordCollectionKey("M7♯5"), "augmentedMajor7");
+  assertEquals(getChordCollectionChordSuffix("augmentedMajor7"), "+M7");
+  assertEquals(getChordCollectionRomanSuffix("augmentedMajor7"), "+M7");
+  assertEquals(
+    getRomanNumeralForScaleIndexAndChordCollectionKey(2, "augmentedMajor7"),
+    "III+M7",
+  );
+  assertEquals(getChordCollectionChordSuffix("halfDiminished7"), "ø7");
+  assertEquals(getChordCollectionRomanSuffix("major6"), "6");
+  assertEquals(getChordCollectionRomanSuffix("minor6"), "m6");
+});
 
 Deno.test(
   "getTriadsForNoteCollectionKey and getSeventhChordsForNoteCollectionKey - Ionian",

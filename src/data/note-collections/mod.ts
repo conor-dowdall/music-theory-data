@@ -2,10 +2,16 @@ import { diatonicModes } from "./diatonic-modes.ts";
 import { pentatonicVariants } from "./pentatonic-variants.ts";
 import { majorVariants } from "./major-variants.ts";
 import { minorVariants } from "./minor-variants.ts";
-import { dominantVariants } from "./dominant-variants.ts";
+import {
+  type _dominantVariants,
+  dominantVariants,
+} from "./dominant-variants.ts";
 import { harmonicMinorModes } from "./harmonic-minor-modes.ts";
 import { melodicMinorModes } from "./melodic-minor-modes.ts";
-import { diminishedVariants } from "./diminished-variants.ts";
+import {
+  type _diminishedVariants,
+  diminishedVariants,
+} from "./diminished-variants.ts";
 import { augmentedVariants } from "./augmented-variants.ts";
 import { otherNoteCollections } from "./other-collections.ts";
 
@@ -36,6 +42,25 @@ export const noteCollections = {
 
 /** A strictly typed generic string representing any key corresponding to a NoteCollection loaded in `noteCollections`. */
 export type NoteCollectionKey = keyof typeof noteCollections;
+
+type NoteCollectionKeysWithCategory<
+  TCollections extends Record<string, { readonly category: string }>,
+  TCategory extends string,
+> = {
+  [K in keyof TCollections]: TCollections[K] extends {
+    readonly category: TCategory;
+  } ? K
+    : never;
+}[keyof TCollections];
+
+/** A strictly typed key for any built-in note collection categorized as a chord. */
+export type ChordCollectionKey =
+  | NoteCollectionKeysWithCategory<typeof majorVariants, "chord">
+  | NoteCollectionKeysWithCategory<typeof minorVariants, "chord">
+  | NoteCollectionKeysWithCategory<typeof _dominantVariants, "chord">
+  | NoteCollectionKeysWithCategory<typeof _diminishedVariants, "chord">
+  | NoteCollectionKeysWithCategory<typeof augmentedVariants, "chord">
+  | NoteCollectionKeysWithCategory<typeof otherNoteCollections, "chord">;
 
 /** An organized, grouped dictionary splitting note collections into theoretical categories (e.g. Diatonic Modes, Major Variants). */
 export const groupedNoteCollections = {

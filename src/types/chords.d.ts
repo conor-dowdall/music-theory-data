@@ -1,4 +1,7 @@
 export type {
+  ChordCollectionChordSuffix,
+  ChordCollectionRomanSuffix,
+  ChordCollectionSymbolRendering,
   ChordQuality,
   ChordQualityRomanRendering,
   LowerCaseRomanNumeral,
