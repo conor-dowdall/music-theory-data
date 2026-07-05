@@ -17,6 +17,20 @@ const rootAndNoteCollectionConversionKeys = [
   "romanSeventhChords",
 ] as const;
 
+const outputPreviews: Record<
+  typeof rootAndNoteCollectionConversionKeys[number],
+  string
+> = {
+  noteNames: "C, D♭, D...",
+  intervals: "1, ♭2, 2...",
+  extensions: "1, ♭9, 9...",
+  compoundIntervals: "1, ♭9, 9, ♭10...",
+  triads: "CM, Dm, Em...",
+  seventhChords: "CM7, Dm7, Em7...",
+  romanTriads: "I, ii, iii...",
+  romanSeventhChords: "IM7, iim7, iiim7...",
+};
+
 const registryOptions = {
   fillChromatic: true,
   rotateToRootInteger0: true,
@@ -35,15 +49,18 @@ Deno.test("Conversion Registry - exposes root and note collection conversions", 
 });
 
 Deno.test("Conversion Registry - entries include UI metadata", () => {
-  const entries = Object.values(rootAndNoteCollectionConversions);
   const ids = new Set<string>();
 
-  for (const entry of entries) {
+  for (const key of rootAndNoteCollectionConversionKeys) {
+    const entry = rootAndNoteCollectionConversions[key];
+
     assertExists(entry.id);
     assertExists(entry.name);
     assertExists(entry.shortName);
     assertExists(entry.description);
-    assertExists(entry.example);
+    assertEquals(entry.outputPreview, outputPreviews[key]);
+    assertExists(entry.sampleOutput);
+    assertEquals("example" in entry, false);
     assertEquals(entry.inputKind, "rootAndNoteCollection");
     assertEquals(entry.outputShape, "chromatic-12");
     assertEquals(entry.outputIndexing, "absolutePitchClassC0");
@@ -54,7 +71,7 @@ Deno.test("Conversion Registry - entries include UI metadata", () => {
     ids.add(entry.id);
   }
 
-  assertEquals(ids.size, entries.length);
+  assertEquals(ids.size, rootAndNoteCollectionConversionKeys.length);
 });
 
 Deno.test("Conversion Registry - functions return chromatic tuples", () => {

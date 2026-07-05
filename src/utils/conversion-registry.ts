@@ -66,7 +66,8 @@ export interface ConversionRegistryEntry<T, TId extends string = string> {
   name: string;
   shortName: string;
   description: string;
-  example: string;
+  outputPreview: string;
+  sampleOutput: string;
   inputKind: ConversionInputKind;
   outputKind: ConversionOutputKind;
   outputShape: ConversionOutputShape;
@@ -120,7 +121,8 @@ export const conversions: ConversionRegistry = {
       shortName: "Notes",
       description:
         "Returns 12 absolute pitch-class slots for the root and collection, indexed so C is slot 0.",
-      example: "C, D♭, D, E♭, E, F, G♭, G, A♭, A, B♭, B",
+      outputPreview: "C, D♭, D...",
+      sampleOutput: "C, D♭, D, E♭, E, F, G♭, G, A♭, A, B♭, B",
       inputKind: "rootAndNoteCollection",
       outputKind: "noteNames",
       outputShape: "chromatic-12",
@@ -138,7 +140,8 @@ export const conversions: ConversionRegistry = {
       shortName: "Intervals",
       description:
         "Returns 12 absolute pitch-class slots labeled with intervals relative to the root, indexed so C is slot 0.",
-      example: "1, ♭2, 2, ♭3, 3, 4, ♭5, 5, ♭6, 6, ♭7, 7",
+      outputPreview: "1, ♭2, 2...",
+      sampleOutput: "1, ♭2, 2, ♭3, 3, 4, ♭5, 5, ♭6, 6, ♭7, 7",
       inputKind: "rootAndNoteCollection",
       outputKind: "intervals",
       outputShape: "chromatic-12",
@@ -156,7 +159,8 @@ export const conversions: ConversionRegistry = {
       shortName: "Extensions",
       description:
         "Returns 12 chromatic interval slots with simple intervals converted to extensions where applicable.",
-      example: "1, ♭9, 9, ♭3, 3, 11, ♭5, 5, ♭13, 13, ♭7, 7",
+      outputPreview: "1, ♭9, 9...",
+      sampleOutput: "1, ♭9, 9, ♭3, 3, 11, ♭5, 5, ♭13, 13, ♭7, 7",
       inputKind: "rootAndNoteCollection",
       outputKind: "intervals",
       outputShape: "chromatic-12",
@@ -174,7 +178,8 @@ export const conversions: ConversionRegistry = {
       shortName: "Compound",
       description:
         "Returns 12 chromatic interval slots with simple intervals converted to compound equivalents.",
-      example: "1, ♭9, 9, ♭10, 10, 11, ♭12, 12, ♭13, 13, ♭14, 14",
+      outputPreview: "1, ♭9, 9, ♭10...",
+      sampleOutput: "1, ♭9, 9, ♭10, 10, 11, ♭12, 12, ♭13, 13, ♭14, 14",
       inputKind: "rootAndNoteCollection",
       outputKind: "intervals",
       outputShape: "chromatic-12",
@@ -192,7 +197,8 @@ export const conversions: ConversionRegistry = {
       shortName: "Triads",
       description:
         "Returns 12 chromatic triad-name slots for note collections with authored modal harmony.",
-      example: "CM, -, Dm, -, Em, FM, -, GM, -, Am, -, B°",
+      outputPreview: "CM, Dm, Em...",
+      sampleOutput: "CM, -, Dm, -, Em, FM, -, GM, -, Am, -, B°",
       inputKind: "rootAndNoteCollection",
       outputKind: "chordNames",
       outputShape: "chromatic-12",
@@ -212,7 +218,8 @@ export const conversions: ConversionRegistry = {
       shortName: "Sevenths",
       description:
         "Returns 12 chromatic seventh-chord-name slots for note collections with authored modal harmony.",
-      example: "CM7, -, Dm7, -, Em7, FM7, -, G7, -, Am7, -, Bø7",
+      outputPreview: "CM7, Dm7, Em7...",
+      sampleOutput: "CM7, -, Dm7, -, Em7, FM7, -, G7, -, Am7, -, Bø7",
       inputKind: "rootAndNoteCollection",
       outputKind: "chordNames",
       outputShape: "chromatic-12",
@@ -232,7 +239,8 @@ export const conversions: ConversionRegistry = {
       shortName: "Roman Triads",
       description:
         "Returns 12 chromatic Roman numeral triad slots for note collections with authored modal harmony.",
-      example: "I, -, ii, -, iii, IV, -, V, -, vi, -, vii°",
+      outputPreview: "I, ii, iii...",
+      sampleOutput: "I, -, ii, -, iii, IV, -, V, -, vi, -, vii°",
       inputKind: "rootAndNoteCollection",
       outputKind: "romanNumerals",
       outputShape: "chromatic-12",
@@ -252,7 +260,8 @@ export const conversions: ConversionRegistry = {
       shortName: "Roman Sevenths",
       description:
         "Returns 12 chromatic Roman numeral seventh-chord slots for note collections with authored modal harmony.",
-      example: "IM7, -, iim7, -, iiim7, IVM7, -, V7, -, vim7, -, viiø7",
+      outputPreview: "IM7, iim7, iiim7...",
+      sampleOutput: "IM7, -, iim7, -, iiim7, IVM7, -, V7, -, vim7, -, viiø7",
       inputKind: "rootAndNoteCollection",
       outputKind: "romanNumerals",
       outputShape: "chromatic-12",

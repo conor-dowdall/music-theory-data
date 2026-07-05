@@ -108,14 +108,19 @@ const availableForMajorChord = getAvailableRootAndNoteCollectionConversions(
 
 console.log(availableForMajorChord.map((entry) => entry.id));
 // ["note-names", "intervals", "extensions", "compound-intervals"]
+
+console.log(availableForMajorChord.map((entry) => entry.outputPreview));
+// ["C, D♭, D...", "1, ♭2, 2...", "1, ♭9, 9...", "1, ♭9, 9, ♭10..."]
 ```
 
 The conversion registry is useful when an app needs selectable display layers
 for the same root and note collection. Each entry includes UI metadata such as
-`name`, `shortName`, `description`, `outputShape`, and whether empty chromatic
-slots can appear. Authored harmony conversions are exposed for modal collections
-such as `ionian`, but are filtered out for collections that do not define modal
-harmony, such as the `major` triad.
+`name`, `shortName`, `description`, `outputPreview`, `sampleOutput`,
+`outputShape`, and whether empty chromatic slots can appear. `outputPreview` is
+intended for compact UI subtitles, while `sampleOutput` is a fuller
+representative output string. Authored harmony conversions are exposed for modal
+collections such as `ionian`, but are filtered out for collections that do not
+define modal harmony, such as the `major` triad.
 
 ### Inspect A Note Collection
 
@@ -167,10 +172,10 @@ console.log(getChordProgressionRomanSymbols("oneSixFourFive"));
 // ["I", "vi", "IV", "V"]
 
 console.log(chordProgressionCategoryGroups.map((group) => group.name));
-// ["Diatonic Foundations", "Jazz Standards & Cadences", "Blues Forms"]
+// ["Common Loops & Sequences", "Cadences", "Blues Forms", "Jazz Cadences & Standards"]
 
 console.log(getChordProgressionKeysForCategory("jazz"));
-// ["majorTwoFiveOne", "minorTwoFiveOne", "autumnLeavesA", ...]
+// ["majorTwoFiveOne", "minorTwoFiveOne", "backdoorTwoFiveOne", ...]
 
 console.log(getChordProgressionChordNames("C", "oneSixFourFive"));
 // ["CM", "Am", "FM", "GM"]
