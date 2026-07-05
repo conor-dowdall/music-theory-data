@@ -1,9 +1,9 @@
 import { assertEquals } from "@std/assert";
 import {
   formatMidiNote,
-  formatSpelledMidiNote,
+  formatNoteNameWithMidiOctave,
   getMidiForNoteName,
-  getMidiOctave,
+  getScientificPitchOctaveForMidiNote,
 } from "../src/utils/midi.ts";
 
 Deno.test("notes to midi", () => {
@@ -14,10 +14,10 @@ Deno.test("notes to midi", () => {
 });
 
 Deno.test("MIDI note formatting uses scientific pitch notation", () => {
-  assertEquals(getMidiOctave(0), -1);
-  assertEquals(getMidiOctave(12), 0);
-  assertEquals(getMidiOctave(60), 4);
-  assertEquals(getMidiOctave(127), 9);
+  assertEquals(getScientificPitchOctaveForMidiNote(0), -1);
+  assertEquals(getScientificPitchOctaveForMidiNote(12), 0);
+  assertEquals(getScientificPitchOctaveForMidiNote(60), 4);
+  assertEquals(getScientificPitchOctaveForMidiNote(127), 9);
 
   assertEquals(formatMidiNote(60), "C4");
   assertEquals(formatMidiNote(61), "D♭4");
@@ -29,8 +29,8 @@ Deno.test("MIDI note formatting uses scientific pitch notation", () => {
   assertEquals(formatMidiNote(70, { spelling: "sharp" }), "A♯4");
 });
 
-Deno.test("spelled MIDI note formatting preserves supplied spelling", () => {
-  assertEquals(formatSpelledMidiNote("C♯", 61), "C♯4");
-  assertEquals(formatSpelledMidiNote("D♭", 61), "D♭4");
-  assertEquals(formatSpelledMidiNote("", 61), "");
+Deno.test("note name with MIDI octave formatting preserves supplied note name", () => {
+  assertEquals(formatNoteNameWithMidiOctave("C♯", 61), "C♯4");
+  assertEquals(formatNoteNameWithMidiOctave("D♭", 61), "D♭4");
+  assertEquals(formatNoteNameWithMidiOctave("", 61), "");
 });

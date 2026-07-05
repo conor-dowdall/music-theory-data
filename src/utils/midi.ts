@@ -9,14 +9,14 @@ import { noteLabelCollections } from "../data/labels/note-label-collections.ts";
 import type { MidiNoteNumber } from "../types/midi.d.ts";
 import { normalizeChromaticIndex } from "./chromatic.ts";
 
-export function getMidiOctave(midi: number): number {
+export function getScientificPitchOctaveForMidiNote(midi: number): number {
   return Math.floor(midi / 12) - 1;
 }
 
-export type MidiNoteSpelling = "flat" | "sharp";
+export type MidiNoteSpellingPreference = "flat" | "sharp";
 
 export interface FormatMidiNoteOptions {
-  spelling?: MidiNoteSpelling;
+  spelling?: MidiNoteSpellingPreference;
 }
 
 export function formatMidiNote(
@@ -29,14 +29,16 @@ export function formatMidiNote(
     : noteLabelCollections.noteNamesFlat.labels;
   const noteName = labels[normalizeChromaticIndex(midi)];
 
-  return `${noteName}${getMidiOctave(midi)}`;
+  return `${noteName}${getScientificPitchOctaveForMidiNote(midi)}`;
 }
 
-export function formatSpelledMidiNote(
+export function formatNoteNameWithMidiOctave(
   noteName: string,
   midi: number,
 ): string {
-  return noteName === "" ? "" : `${noteName}${getMidiOctave(midi)}`;
+  return noteName === ""
+    ? ""
+    : `${noteName}${getScientificPitchOctaveForMidiNote(midi)}`;
 }
 
 /**
