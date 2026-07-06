@@ -97,12 +97,22 @@ const oneOneFourFour: BuiltInChordProgression = {
   ],
 };
 
-const oneOneFourFive: BuiltInChordProgression = {
+const oneOneFourFiveDominant7: BuiltInChordProgression = {
   category: "commonLoops",
   chords: [
     chord("1", "major", 2),
     chord("4", "major", 1),
-    chord("5", "major", 1),
+    chord("5", "dominant7", 1),
+  ],
+};
+
+const oneFourFiveDominant7Six: BuiltInChordProgression = {
+  category: "commonLoops",
+  chords: [
+    chord("1", "major", 1),
+    chord("4", "major", 1),
+    chord("5", "dominant7", 1),
+    chord("6", "minor", 1),
   ],
 };
 
@@ -186,8 +196,23 @@ const circleOfFifths: BuiltInChordProgression = {
   ],
 };
 
+const minorCircleOfFifths: BuiltInChordProgression = {
+  commonName: "Minor Circle of Fifths Progression",
+  category: "commonLoops",
+  chords: [
+    chord("1", "minor", 1),
+    chord("4", "minor", 1),
+    chord("♭7", "major", 1),
+    chord("♭3", "major", 1),
+    chord("♭6", "major", 1),
+    chord("2", "halfDiminished7", 1),
+    chord("5", "dominant7", 1),
+    chord("1", "minor", 1),
+  ],
+};
+
 const pachelbelCanon: BuiltInChordProgression = {
-  commonName: "Pachelbel Canon",
+  commonName: "Canon Progression",
   category: "commonLoops",
   chords: [
     chord("1", "major", 1),
@@ -295,22 +320,15 @@ const jazzBlues: BuiltInChordProgression = {
     chord("1", "dominant7", 1),
     chord("4", "dominant7", 1),
     chord("1", "dominant7", 1),
-    chord("5", "minor7", 0.5),
-    chord("1", "dominant7", 0.5),
+    chord("1", "dominant7", 1),
     chord("4", "dominant7", 1),
     chord("♯4", "diminished7", 1),
-    chord("1", "dominant7", 0.5),
-    chord("6", "dominant7", 0.5),
-    chord("2", "minor7", 0.5),
-    chord("5", "dominant7", 0.5),
-    chord("3", "minor7", 0.5),
-    chord("6", "dominant7", 0.5),
-    chord("2", "minor7", 0.5),
-    chord("5", "dominant7", 0.5),
-    chord("1", "dominant7", 0.5),
-    chord("6", "dominant7", 0.5),
-    chord("2", "minor7", 0.5),
-    chord("5", "dominant7", 0.5),
+    chord("1", "dominant7", 1),
+    chord("6", "dominant7", 1),
+    chord("2", "minor7", 1),
+    chord("5", "dominant7", 1),
+    chord("1", "dominant7", 1),
+    chord("5", "dominant7", 1),
   ],
 };
 
@@ -343,7 +361,7 @@ const backdoorTwoFiveOne: BuiltInChordProgression = {
 };
 
 const autumnLeavesA: BuiltInChordProgression = {
-  commonName: "Autumn Leaves A Section",
+  commonName: "Minor Standard A",
   category: "jazz",
   chords: [
     chord("2", "minor7", 1),
@@ -357,7 +375,7 @@ const autumnLeavesA: BuiltInChordProgression = {
 };
 
 const autumnLeavesB: BuiltInChordProgression = {
-  commonName: "Autumn Leaves B Section",
+  commonName: "Minor Standard B",
   category: "jazz",
   chords: [
     chord("7", "halfDiminished7", 1, { romanSymbol: "iiø7/vi" }),
@@ -371,7 +389,7 @@ const autumnLeavesB: BuiltInChordProgression = {
 };
 
 const rhythmChangesA: BuiltInChordProgression = {
-  commonName: "Rhythm Changes A Section",
+  commonName: "Rhythm Changes A",
   category: "jazz",
   chords: [
     chord("1", "major", 0.5),
@@ -389,7 +407,7 @@ const rhythmChangesA: BuiltInChordProgression = {
     chord("1", "major", 0.5),
     chord("5", "dominant7", 0.5),
     chord("1", "major", 0.5),
-    chord("5", "dominant7", 0.5),
+    chord("1", "major", 0.5),
   ],
 };
 
@@ -408,7 +426,8 @@ const _chordProgressions = {
   oneOneFiveFive,
   oneOneFiveFiveDominant7,
   oneOneFourFour,
-  oneOneFourFive,
+  oneOneFourFiveDominant7,
+  oneFourFiveDominant7Six,
   oneFourOneFive,
   oneSixFourFive,
   oneFiveSixFour,
@@ -416,6 +435,7 @@ const _chordProgressions = {
   sixTwoFiveOne,
   oneFourOneFiveSplitReturn,
   circleOfFifths,
+  minorCircleOfFifths,
   pachelbelCanon,
   authenticCadence,
   plagalCadence,
