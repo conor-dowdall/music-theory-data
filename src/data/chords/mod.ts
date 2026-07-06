@@ -1,7 +1,17 @@
-import type {
-  ChordCollectionKey,
-  NoteCollectionKey,
+import {
+  type ChordCollectionKey,
+  type NoteCollectionKey,
+  noteCollections,
 } from "../note-collections/mod.ts";
+import type {
+  ChordCollectionSymbolRendering,
+  RomanNumeralCase,
+} from "../../types/note-collections.d.ts";
+
+export type {
+  ChordCollectionSymbolRendering,
+  RomanNumeralCase,
+} from "../../types/note-collections.d.ts";
 
 const _triadChordQualities = ["M", "m", "°", "+"] as const;
 
@@ -61,23 +71,10 @@ export type RomanTriad = `${RomanNumeral}` | `${RomanNumeral}${Triad}`;
 /** A roman-numeral seventh-chord symbol with a seventh quality suffix. */
 export type RomanSeventhChord = `${RomanNumeral}${SeventhChord}`;
 
-/** The letter case used when rendering a roman numeral chord symbol. */
-export type RomanNumeralCase = "upper" | "lower";
-
 /** Rendering metadata for converting a chord quality into roman notation. */
 export interface ChordQualityRomanRendering {
   readonly numeralCase: RomanNumeralCase;
   readonly suffix: string;
-}
-
-/** Rendering metadata for converting a chord collection into chord/roman symbols. */
-export interface ChordCollectionSymbolRendering {
-  /** The suffix used after a root note in a chord symbol, e.g. "m7" in "Dm7". */
-  readonly chordSuffix: string;
-  /** The suffix used after a roman numeral, e.g. "ø7" in "iiø7". */
-  readonly romanSuffix: string;
-  /** The preferred roman numeral case for this chord collection. */
-  readonly numeralCase: RomanNumeralCase;
 }
 
 const _chordQualityNoteCollectionKeys = {
@@ -96,55 +93,21 @@ const _chordQualityNoteCollectionKeys = {
   "M7♯5": "augmentedMajor7",
 } as const satisfies Record<ChordQuality, ChordCollectionKey>;
 
-const _chordCollectionSymbolRenderings = {
-  major: { chordSuffix: "M", romanSuffix: "", numeralCase: "upper" },
-  major6: { chordSuffix: "6", romanSuffix: "6", numeralCase: "upper" },
-  major7: { chordSuffix: "M7", romanSuffix: "M7", numeralCase: "upper" },
-  major9: { chordSuffix: "M9", romanSuffix: "M9", numeralCase: "upper" },
-  majorAdd9: {
-    chordSuffix: "add9",
-    romanSuffix: "add9",
-    numeralCase: "upper",
-  },
-  major6Add9: { chordSuffix: "6/9", romanSuffix: "6/9", numeralCase: "upper" },
-  minor: { chordSuffix: "m", romanSuffix: "", numeralCase: "lower" },
-  minor6: { chordSuffix: "m6", romanSuffix: "m6", numeralCase: "lower" },
-  minor7: { chordSuffix: "m7", romanSuffix: "m7", numeralCase: "lower" },
-  minorMajor7: {
-    chordSuffix: "m(M7)",
-    romanSuffix: "M7",
-    numeralCase: "lower",
-  },
-  minor9: { chordSuffix: "m9", romanSuffix: "m9", numeralCase: "lower" },
-  minorAdd9: {
-    chordSuffix: "m(add9)",
-    romanSuffix: "m(add9)",
-    numeralCase: "lower",
-  },
-  minor6Add9: {
-    chordSuffix: "m6/9",
-    romanSuffix: "m6/9",
-    numeralCase: "lower",
-  },
-  dominant7: { chordSuffix: "7", romanSuffix: "7", numeralCase: "upper" },
-  dominant9: { chordSuffix: "9", romanSuffix: "9", numeralCase: "upper" },
-  dominant11: { chordSuffix: "11", romanSuffix: "11", numeralCase: "upper" },
-  dominant13: { chordSuffix: "13", romanSuffix: "13", numeralCase: "upper" },
-  diminishedTriad: { chordSuffix: "°", romanSuffix: "°", numeralCase: "lower" },
-  diminished7: { chordSuffix: "°7", romanSuffix: "°7", numeralCase: "lower" },
-  halfDiminished7: {
-    chordSuffix: "ø7",
-    romanSuffix: "ø7",
-    numeralCase: "lower",
-  },
-  augmentedTriad: { chordSuffix: "+", romanSuffix: "+", numeralCase: "upper" },
-  augmented7: { chordSuffix: "+7", romanSuffix: "+7", numeralCase: "upper" },
-  augmentedMajor7: {
-    chordSuffix: "+M7",
-    romanSuffix: "+M7",
-    numeralCase: "upper",
-  },
-} as const satisfies Record<ChordCollectionKey, ChordCollectionSymbolRendering>;
+function getChordCollectionSymbolRenderings(): Record<
+  ChordCollectionKey,
+  ChordCollectionSymbolRendering
+> {
+  const renderings = Object.fromEntries(
+    Object.entries(noteCollections).flatMap(([key, collection]) =>
+      collection.category === "chord" ? [[key, collection.symbol]] : []
+    ),
+  );
+
+  return renderings as Record<
+    ChordCollectionKey,
+    ChordCollectionSymbolRendering
+  >;
+}
 
 export type ChordCollectionChordSuffix = string;
 
@@ -187,7 +150,7 @@ export const chordQualityNoteCollectionKeys: ChordQualityNoteCollectionKeyMap =
 export const chordCollectionSymbolRenderings: Record<
   ChordCollectionKey,
   ChordCollectionSymbolRendering
-> = _chordCollectionSymbolRenderings;
+> = getChordCollectionSymbolRenderings();
 
 /** Roman numeral rendering metadata for each supported chord quality. */
 export const chordQualityRomanRenderings: ReadonlyMap<

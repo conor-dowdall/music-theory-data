@@ -12,11 +12,13 @@ import {
   getTriadsForRootAndNoteCollectionKey,
 } from "../src/utils/chords.ts";
 import {
+  chordCollectionSymbolRenderings,
   chordQualityRomanRenderings,
   getChordCollectionChordSuffix,
   getChordCollectionRomanSuffix,
   getChordQualityChordCollectionKey,
 } from "../src/data/chords/mod.ts";
+import { noteCollections } from "../src/data/note-collections/mod.ts";
 import type {
   RomanSeventhChord,
   RomanTriad,
@@ -36,6 +38,14 @@ Deno.test("chord quality and chord collection rendering stay distinct", () => {
   assertEquals(getChordCollectionChordSuffix("halfDiminished7"), "ø7");
   assertEquals(getChordCollectionRomanSuffix("major6"), "6");
   assertEquals(getChordCollectionRomanSuffix("minor6"), "m6");
+  const halfDiminished7 = noteCollections.halfDiminished7;
+  if (halfDiminished7.category !== "chord") {
+    throw new Error("Expected halfDiminished7 to be a chord collection");
+  }
+  assertEquals(
+    chordCollectionSymbolRenderings.halfDiminished7,
+    halfDiminished7.symbol,
+  );
   assertEquals(
     getRomanNumeralForScaleIndexAndChordQuality(1, "m7♭5"),
     "iiø7",

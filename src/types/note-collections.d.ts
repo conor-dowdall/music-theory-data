@@ -4,6 +4,19 @@ import type { NoteCollectionKey } from "../data/note-collections/mod.ts";
 
 export type CollectionCategory = "note" | "dyad" | "chord" | "scale";
 
+/** The letter case used when rendering a roman numeral chord symbol. */
+export type RomanNumeralCase = "upper" | "lower";
+
+/** Rendering metadata for converting a chord collection into chord/roman symbols. */
+export interface ChordCollectionSymbolRendering {
+  /** The suffix used after a root note in a chord symbol, e.g. "m7" in "Dm7". */
+  readonly chordSuffix: string;
+  /** The suffix used after a roman numeral, e.g. "ø7" in "iiø7". */
+  readonly romanSuffix: string;
+  /** The preferred roman numeral case for this chord collection. */
+  readonly numeralCase: RomanNumeralCase;
+}
+
 interface NoteCollectionBase<TInteger extends number = number> {
   /**
    * The top-level musical category for this collection.
@@ -92,6 +105,7 @@ export interface ChordCollection extends NoteCollectionBase {
    * `primaryName` and `names` describe the collection for browsing and search.
    * Use the chord symbol rendering helpers for canonical chord-symbol display.
    */
+  readonly symbol: ChordCollectionSymbolRendering;
   readonly rotation?: never;
 }
 
