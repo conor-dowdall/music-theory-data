@@ -24,43 +24,43 @@ import {
 const cMajorReference = {
   rootNote: "C",
   chordName: "CM",
-  noteCollectionKey: "major",
+  chordCollectionKey: "major",
 } as const;
 
 const fMajorReference = {
   rootNote: "F",
   chordName: "FM",
-  noteCollectionKey: "major",
+  chordCollectionKey: "major",
 } as const;
 
 const gMajorReference = {
   rootNote: "G",
   chordName: "GM",
-  noteCollectionKey: "major",
+  chordCollectionKey: "major",
 } as const;
 
 const cDominant7Reference = {
   rootNote: "C",
   chordName: "C7",
-  noteCollectionKey: "dominant7",
+  chordCollectionKey: "dominant7",
 } as const;
 
 const fDominant7Reference = {
   rootNote: "F",
   chordName: "F7",
-  noteCollectionKey: "dominant7",
+  chordCollectionKey: "dominant7",
 } as const;
 
 const gDominant7Reference = {
   rootNote: "G",
   chordName: "G7",
-  noteCollectionKey: "dominant7",
+  chordCollectionKey: "dominant7",
 } as const;
 
 const aMinorReference = {
   rootNote: "A",
   chordName: "Am",
-  noteCollectionKey: "minor",
+  chordCollectionKey: "minor",
 } as const;
 
 Deno.test("progression key validation reflects the current dataset", () => {
@@ -177,11 +177,11 @@ Deno.test("progression exports are available directly", () => {
   );
   assertEquals(
     chordProgressions.rhythmChangesA.commonName,
-    "Rhythm A",
+    "Rhythm Changes A",
   );
   assertEquals(
     chordProgressions.rhythmChangesBridge.commonName,
-    "Rhythm Bridge",
+    "Rhythm Changes Bridge",
   );
   assertEquals(chordProgressions.authenticCadence.category, "cadences");
   assertEquals(chordProgressions.andalusianCadence.category, "cadences");
@@ -545,6 +545,28 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     ["C6", "Am6", "E+M7", "B♭M"],
   );
 
+  const doubleAccidentalProgression = {
+    chords: [
+      { degree: "♯5", chordCollectionKey: "major", durationInBars: 1 },
+    ],
+  } satisfies ChordProgression;
+
+  assertEquals(
+    getChordProgressionChordNames("B", doubleAccidentalProgression),
+    ["F𝄪M"],
+  );
+  assertEquals(
+    getChordProgressionChordChangeReferences(
+      "B",
+      doubleAccidentalProgression,
+    ),
+    [{
+      rootNote: "F𝄪",
+      chordName: "F𝄪M",
+      chordCollectionKey: "major",
+    }],
+  );
+
   const naturalDegreeProgression = {
     chords: [
       { degree: "♮3", chordCollectionKey: "major", durationInBars: 1 },
@@ -697,17 +719,17 @@ Deno.test("progression helpers expose chord names and total duration", () => {
       {
         rootNote: "G",
         chordName: "GM",
-        noteCollectionKey: "major",
+        chordCollectionKey: "major",
       },
       {
         rootNote: "D",
         chordName: "DM",
-        noteCollectionKey: "major",
+        chordCollectionKey: "major",
       },
       {
         rootNote: "D",
         chordName: "D7",
-        noteCollectionKey: "dominant7",
+        chordCollectionKey: "dominant7",
       },
     ],
   );

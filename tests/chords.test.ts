@@ -1,6 +1,7 @@
 import { assertEquals } from "@std/assert";
 import {
   getRomanNumeralForScaleIndexAndChordCollectionKey,
+  getRomanNumeralForScaleIndexAndChordQuality,
   getRomanSeventhChordsForNoteCollectionKey,
   getRomanSeventhChordsForRootAndNoteCollectionKey,
   getRomanTriadsForNoteCollectionKey,
@@ -11,6 +12,7 @@ import {
   getTriadsForRootAndNoteCollectionKey,
 } from "../src/utils/chords.ts";
 import {
+  chordQualityRomanRenderings,
   getChordCollectionChordSuffix,
   getChordCollectionRomanSuffix,
   getChordQualityChordCollectionKey,
@@ -34,6 +36,22 @@ Deno.test("chord quality and chord collection rendering stay distinct", () => {
   assertEquals(getChordCollectionChordSuffix("halfDiminished7"), "ø7");
   assertEquals(getChordCollectionRomanSuffix("major6"), "6");
   assertEquals(getChordCollectionRomanSuffix("minor6"), "m6");
+  assertEquals(
+    getRomanNumeralForScaleIndexAndChordQuality(1, "m7♭5"),
+    "iiø7",
+  );
+  assertEquals(
+    getRomanNumeralForScaleIndexAndChordQuality(2, "M7♯5"),
+    "III+M7",
+  );
+  assertEquals(chordQualityRomanRenderings.get("m7♭5"), {
+    numeralCase: "lower",
+    suffix: "ø7",
+  });
+  assertEquals(chordQualityRomanRenderings.get("M7♯5"), {
+    numeralCase: "upper",
+    suffix: "+M7",
+  });
 });
 
 Deno.test(

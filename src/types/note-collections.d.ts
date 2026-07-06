@@ -88,6 +88,10 @@ export interface NonModalScaleCollection
 /** A single rooted chord quality represented as intervals from its root. */
 export interface ChordCollection extends NoteCollectionBase {
   readonly category: "chord";
+  /**
+   * `primaryName` and `names` describe the collection for browsing and search.
+   * Use the chord symbol rendering helpers for canonical chord-symbol display.
+   */
   readonly rotation?: never;
 }
 

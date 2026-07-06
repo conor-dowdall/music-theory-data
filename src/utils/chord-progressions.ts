@@ -13,19 +13,16 @@ import type {
   ChordProgressionRomanAccidental,
   ChordProgressionRomanSymbol,
 } from "../types/chord-progressions.d.ts";
-import type { RootNote } from "../data/labels/note-labels.ts";
+import type { NoteName, RootNote } from "../data/labels/note-labels.ts";
 import type { ChordCollectionKey } from "../data/note-collections/mod.ts";
-import {
-  getNoteNamesForRootAndIntervals,
-  normalizeRootNoteString,
-} from "./note-names.ts";
+import { getNoteNamesForRootAndIntervals } from "./note-names.ts";
 import { getRomanNumeralForScaleIndexAndChordCollectionKey } from "./chords.ts";
 
-/** A resolved chord in a progression, including its root and note-collection key. */
+/** A resolved chord in a progression, including its root and chord collection. */
 export interface ChordProgressionChordReference {
-  readonly rootNote: RootNote;
+  readonly rootNote: NoteName;
   readonly chordName: string;
-  readonly noteCollectionKey: ChordCollectionKey;
+  readonly chordCollectionKey: ChordCollectionKey;
 }
 
 interface ResolvedChordProgressionChordReference {
@@ -53,13 +50,13 @@ function resolveProgression(
 
 function createChordProgressionChordReference(
   chord: ChordProgressionChord,
-  chordRootNote: RootNote,
+  chordRootNote: NoteName,
 ): ChordProgressionChordReference {
   return {
     rootNote: chordRootNote,
     chordName: chordRootNote +
       getChordCollectionChordSuffix(chord.chordCollectionKey),
-    noteCollectionKey: chord.chordCollectionKey,
+    chordCollectionKey: chord.chordCollectionKey,
   };
 }
 
@@ -73,7 +70,7 @@ function getResolvedChordProgressionChordReferences(
   const chordRootNotes = getNoteNamesForRootAndIntervals(
     rootNote,
     progression.chords.map((chord) => chord.degree),
-  ).map((noteName) => normalizeRootNoteString(noteName));
+  );
 
   return progression.chords.flatMap((chord, index) => {
     const chordRootNote = chordRootNotes[index];
@@ -260,7 +257,7 @@ export function getChordProgressionUniqueChordReferences(
     )
   ) {
     const key =
-      `${reference.rootNote}:${reference.noteCollectionKey}:${reference.chordName}`;
+      `${reference.rootNote}:${reference.chordCollectionKey}:${reference.chordName}`;
     if (seen.has(key)) continue;
     seen.add(key);
     uniqueReferences.push(reference);

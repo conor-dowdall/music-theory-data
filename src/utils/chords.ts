@@ -1,8 +1,8 @@
 import {
-  chordQualityRomanRenderings,
   diatonicSeventhChords,
   diatonicTriads,
   getChordCollectionSymbolRendering,
+  getChordQualityChordCollectionKey,
   harmonicMinorSeventhChords,
   harmonicMinorTriads,
   lowerCaseRomanNumerals,
@@ -56,17 +56,10 @@ export function getRomanNumeralForScaleIndexAndChordQuality(
   scaleIndex: number,
   quality: ChordQuality,
 ): string | undefined {
-  const rendering = chordQualityRomanRenderings.get(quality);
-  if (rendering === undefined) return undefined;
-
-  const numerals = rendering.numeralCase === "lower"
-    ? lowerCaseRomanNumerals
-    : upperCaseRomanNumerals;
-  const romanNumeral = numerals[scaleIndex];
-
-  if (romanNumeral === undefined) return undefined;
-
-  return romanNumeral + rendering.suffix;
+  return getRomanNumeralForScaleIndexAndChordCollectionKey(
+    scaleIndex,
+    getChordQualityChordCollectionKey(quality),
+  );
 }
 
 export function getRomanNumeralForScaleIndexAndChordCollectionKey(

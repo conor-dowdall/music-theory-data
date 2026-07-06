@@ -193,21 +193,19 @@ export const chordCollectionSymbolRenderings: Record<
 export const chordQualityRomanRenderings: ReadonlyMap<
   ChordQuality,
   ChordQualityRomanRendering
-> = new Map([
-  ["M", { numeralCase: "upper", suffix: "" }],
-  ["m", { numeralCase: "lower", suffix: "" }],
-  ["°", { numeralCase: "lower", suffix: "°" }],
-  ["+", { numeralCase: "upper", suffix: "+" }],
-  ["M7", { numeralCase: "upper", suffix: "M7" }],
-  ["m7", { numeralCase: "lower", suffix: "m7" }],
-  ["7", { numeralCase: "upper", suffix: "7" }],
-  ["ø7", { numeralCase: "lower", suffix: "ø7" }],
-  ["m7♭5", { numeralCase: "lower", suffix: "m7♭5" }],
-  ["°7", { numeralCase: "lower", suffix: "°7" }],
-  ["m(M7)", { numeralCase: "lower", suffix: "M7" }],
-  ["+M7", { numeralCase: "upper", suffix: "+M7" }],
-  ["M7♯5", { numeralCase: "upper", suffix: "M7♯5" }],
-]);
+> = new Map(
+  chordQualities.map((quality) => {
+    const chordCollectionKey = chordQualityChordCollectionKeys[quality];
+    const rendering = chordCollectionSymbolRenderings[chordCollectionKey];
+    return [
+      quality,
+      {
+        numeralCase: rendering.numeralCase,
+        suffix: rendering.romanSuffix,
+      },
+    ] as const;
+  }),
+);
 
 /** An ordered array containing the fundamental triad qualities of the diatonic major scale. */
 export const diatonicTriads: Triad[] = [
