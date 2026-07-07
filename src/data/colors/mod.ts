@@ -16,11 +16,17 @@ export type NoteColorTuple = ChromaticTuple<NoteColorValue>;
 
 /** Metadata and color values for a named 12-slot note color collection. */
 export interface NoteColorCollection {
+  /** Human-readable palette name. */
   readonly name: string;
+  /** Compact palette name for constrained UI. */
   readonly shortName?: string;
+  /** Short description of the palette's purpose or source. */
   readonly description: string;
+  /** Whether colors are keyed to absolute pitch classes or root-relative degrees. */
   readonly mode: NoteColorMode;
+  /** Optional label collection used when displaying this palette. */
   readonly labelCollectionKey?: NoteLabelCollectionKey;
+  /** The 12 colors in chromatic order, with `null` for uncolored slots. */
   readonly colors: NoteColorTuple;
 }
 
@@ -74,7 +80,8 @@ export function getNoteColorLabels(
     .labels;
 }
 
-const _colorCollections = {
+/** Built-in absolute and relative note color palettes. */
+export const colorCollections = {
   musoDojo: {
     name: "Muso Dojo Colors",
     shortName: "Muso Dojo",
@@ -161,13 +168,7 @@ const _colorCollections = {
       "#CF3E96",
     ],
   },
-} as const;
+} as const satisfies Record<string, NoteColorCollection>;
 
 /** A key for one of the built-in note color collections. */
-export type ColorCollectionKey = keyof typeof _colorCollections;
-
-/** Built-in absolute and relative note color palettes. */
-export const colorCollections: Record<
-  ColorCollectionKey,
-  NoteColorCollection
-> = _colorCollections;
+export type ColorCollectionKey = keyof typeof colorCollections;

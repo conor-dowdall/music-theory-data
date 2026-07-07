@@ -1,99 +1,148 @@
 # Muso Dojo | Music Theory Data
 
-A type-safe TypeScript/JavaScript library of music theory data and helpers for
-music apps, education tools, practice tools, and creative coding projects.
+Typed music-theory data and app helpers for TypeScript and JavaScript.
 
-It includes typed datasets for notes, intervals, scales, modes, chord pitch
-collections, chord progressions, string instrument tunings, note colors, MIDI
-helpers, and naming utilities.
+Use this package when you are building a music app and need reliable theory
+building blocks: note names, intervals, scales, modes, chords, chord
+progressions, string-instrument tunings, MIDI helpers, and UI-friendly labels.
 
-## What's Included
+This is not an audio engine, notation renderer, sequencer, or symbolic score
+format. It is the theory-data layer you can build those experiences on top of.
 
-- **Note collections:** notes, dyads, scales, modes, arpeggios, and chord pitch
-  collections, grouped into families such as diatonic modes, pentatonic
-  variants, major/minor/dominant variants, harmonic minor modes, melodic minor
-  modes, diminished variants, and augmented variants.
-- **Chord progressions:** foundational loops, blues changes, and jazz-standard
-  forms with musical categories, scale degrees, chord collection keys, bar
-  durations, derived roman symbols, and optional analysis labels.
-- **Labels and theory primitives:** note names, root notes, intervals, chromatic
-  indexes, roman numerals, chord qualities, and conversion helpers.
-- **Application helpers:** note-name generation, rooted note-collection labels,
-  interval transforms, chord progression resolution, chord spelling, a
-  UI-friendly conversion registry, MIDI helpers, note colors, contrast helpers,
-  and string instrument tunings.
-- **TypeScript-first API:** exported data, utility functions, and types are
-  designed to work well with autocomplete and compile-time checking.
+## Is This Useful For My App?
 
-For exhaustive data, types, and function signatures, use the
-[JSR API documentation](https://jsr.io/@musodojo/music-theory-data/doc). The
-`tests/` directory also contains practical examples of supported behavior.
+This package is a good fit if you need to:
 
-## Package Registries
+- turn a root and scale/chord key into notes, intervals, chord names, or roman
+  numerals
+- browse or search a catalog of scales, modes, chords, dyads, and single-note
+  collections
+- render compact labels such as `CM`, `F♯ø7`, or `B♭ Major`
+- offer selectable 12-slot display layers for fretboards, keyboards, grids, or
+  note-color interfaces
+- resolve common chord progressions into roman symbols or concrete chord names
+- work with typed note names, intervals, chromatic indexes, MIDI note labels,
+  note colors, and string-instrument tunings
 
-- [JSR package](https://jsr.io/@musodojo/music-theory-data)
-- [npm package](https://www.npmjs.com/package/@musodojo/music-theory-data)
+If you mostly need playback, engraving, MusicXML/MIDI-file parsing, or advanced
+composition algorithms, this package is probably only one piece of your stack.
 
 ## Installation
-
-### Deno / JSR
 
 ```bash
 deno add jsr:@musodojo/music-theory-data
 ```
-
-```ts
-import * as musicTheoryData from "jsr:@musodojo/music-theory-data";
-```
-
-### Node.js / npm
 
 ```bash
 npm install @musodojo/music-theory-data
 ```
 
 ```ts
-import * as musicTheoryData from "@musodojo/music-theory-data";
+import {
+  rootAndNoteCollection,
+  searchNoteCollections,
+} from "@musodojo/music-theory-data";
 ```
 
-## Usage
+## Core Idea
 
-### Get Note Names
+Most app workflows start with two values:
 
 ```ts
-import * as musicTheoryData from "jsr:@musodojo/music-theory-data";
-
-const aHarmonicMinor = musicTheoryData.getNoteNamesForRootAndNoteCollectionKey(
-  "A",
-  "harmonicMinor",
-);
-
-console.log(aHarmonicMinor);
-// ["A", "B", "C", "D", "E", "F", "G♯", "A"]
-
-const fMajor = musicTheoryData.getNoteNamesForRootAndNoteCollectionKey(
-  "F",
-  "ionian",
-);
-
-console.log(fMajor);
-// ["F", "G", "A", "B♭", "C", "D", "E", "F"]
+const rootNote = "C";
+const noteCollectionKey = "ionian";
 ```
 
-### Use The Conversion Registry
+From those, the `rootAndNoteCollection` focus object gives you the common
+derived values an app usually needs.
+
+```ts
+import { rootAndNoteCollection } from "@musodojo/music-theory-data";
+
+const identity = rootAndNoteCollection.getIdentity({
+  rootNote: "C",
+  noteCollectionKey: "major",
+});
+
+console.log(identity.label);
+// "CM"
+
+console.log(rootAndNoteCollection.getNoteNames("F", "ionian"));
+// ["F", "G", "A", "B♭", "C", "D", "E", "F"]
+
+console.log(rootAndNoteCollection.getIntervals("C", "dominant9"));
+// ["1", "3", "5", "♭7", "9"]
+
+console.log(rootAndNoteCollection.getRomanTriads("C", "ionian"));
+// ["I", "ii", "iii", "IV", "V", "vi", "vii°"]
+```
+
+Direct functions such as `getNoteNamesForRootAndNoteCollectionKey` are also
+exported. The focus object is there so new developers have one obvious place to
+start.
+
+## What Is Included?
+
+| Area                        | Useful exports                                                                             |
+| --------------------------- | ------------------------------------------------------------------------------------------ |
+| Root + collection workflows | `rootAndNoteCollection`, `getIdentityForRootAndNoteCollection`                             |
+| Scale/chord catalog         | `noteCollections`, `groupedNoteCollections`, `searchNoteCollections`, `findNoteCollection` |
+| UI conversion layers        | `conversions.rootAndNoteCollection`, `rootAndNoteCollection.conversions`                   |
+| Chord progressions          | `chordProgressions`, `getChordProgressionRomanSymbols`, `getChordProgressionChordNames`    |
+| Theory labels               | `noteNames`, `rootNotes`, `intervalToIntegerMap`, `chordQualities`                         |
+| Parsing and normalization   | `normalizeNoteNameString`, `normalizeRootNoteString`, `normalizeIntervalString`            |
+| MIDI and colors             | `formatMidiNote`, `getNoteColorIndex`, `colorCollections`                                  |
+| String instruments          | `stringInstruments`, `stringInstrumentTunings`, tuning key groups                          |
+
+For the full exported API, use the
+[JSR API documentation](https://jsr.io/@musodojo/music-theory-data/doc). The
+`tests/` directory is also a good source of practical examples.
+
+## Browsing The Catalog
+
+`noteCollections` is the central catalog of built-in note, dyad, scale, mode,
+arpeggio, and chord pitch collections.
 
 ```ts
 import {
-  conversions,
-  getAvailableRootAndNoteCollectionConversions,
-} from "jsr:@musodojo/music-theory-data";
+  noteCollections,
+  searchNoteCollections,
+} from "@musodojo/music-theory-data";
+
+console.log(noteCollections.ionian.primaryName);
+// "Major"
+
+console.log(noteCollections.ionian.intervals);
+// ["1", "2", "3", "4", "5", "6", "7", "8"]
+
+const dominantArpeggios = searchNoteCollections({
+  query: "dominant",
+  type: "arpeggio",
+});
+
+console.log(dominantArpeggios.map((collection) => collection.primaryName));
+// ["7", "9", "11", "13", "aug7"]
+```
+
+Collections include structured metadata such as category, display names,
+intervals, integer semitone values, type tags, characteristics, and interval
+patterns.
+
+## UI Display Layers
+
+The conversion registry is designed for interfaces that let users choose how to
+label the same 12 pitch-class slots: note names, intervals, extensions, chord
+names, or roman numerals.
+
+```ts
+import { rootAndNoteCollection } from "@musodojo/music-theory-data";
 
 const options = {
   fillChromatic: true,
   rotateToRootInteger0: true,
 } as const;
 
-const noteNames = conversions.rootAndNoteCollection.noteNames.get(
+const noteNames = rootAndNoteCollection.conversions.noteNames.get(
   "C",
   "ionian",
   options,
@@ -102,156 +151,42 @@ const noteNames = conversions.rootAndNoteCollection.noteNames.get(
 console.log(noteNames);
 // ["C", "D♭", "D", "E♭", "E", "F", "G♭", "G", "A♭", "A", "B♭", "B"]
 
-const availableForMajorChord = getAvailableRootAndNoteCollectionConversions(
-  "C",
-  "major",
-);
-
-console.log(availableForMajorChord.map((entry) => entry.id));
-// ["note-names", "intervals", "extensions", "compound-intervals"]
-
-console.log(availableForMajorChord.map((entry) => entry.outputPreview));
-// ["C, D♭, D...", "1, ♭2, 2...", "1, ♭9, 9...", "1, ♭9, 9, ♭10..."]
+console.log(Object.keys(rootAndNoteCollection.conversions));
+// ["noteNames", "intervals", "extensions", "compoundIntervals", "triads", "seventhChords", "romanTriads", "romanSeventhChords"]
 ```
 
-The conversion registry is useful when an app needs selectable display layers
-for the same root and note collection. Each entry includes UI metadata such as
-`name`, `shortName`, `description`, `outputPreview`, `sampleOutput`,
-`outputShape`, and whether empty chromatic slots can appear. `outputPreview` is
-intended for compact UI subtitles, while `sampleOutput` is a fuller
-representative output string. Authored harmony conversions are exposed for modal
-collections such as `ionian`, but are filtered out for collections that do not
-define modal harmony, such as the `major` triad.
+Each conversion entry includes metadata for app UI, including `name`,
+`shortName`, `description`, `outputPreview`, `sampleOutput`, and availability.
 
-### Format A Rooted Note Collection Label
+## Chord Progressions
 
-```ts
-import { getRootedNoteCollectionIdentity } from "jsr:@musodojo/music-theory-data";
-
-const cMajorChord = getRootedNoteCollectionIdentity({
-  rootNote: "C",
-  noteCollectionKey: "major",
-});
-
-console.log(cMajorChord.label);
-// "CM"
-
-const bFlatMajorScale = getRootedNoteCollectionIdentity({
-  rootNote: "Bb",
-  noteCollectionKey: "ionian",
-});
-
-console.log(bFlatMajorScale.label);
-// "B♭ Major"
-```
-
-Use this helper when an app needs a compact display identity for a root plus a
-note collection. Chords use chord-symbol suffixes without a space, while notes,
-dyads, scales, and unknown collection keys use spaced display names.
-
-### Inspect A Note Collection
+Progressions are stored as reusable theory data: scale degrees, chord collection
+keys, durations, categories, and optional analysis labels.
 
 ```ts
 import {
-  groupedNoteCollections,
-  noteCollections,
-} from "jsr:@musodojo/music-theory-data";
-
-const ionian = noteCollections.ionian;
-
-console.log(ionian.primaryName);
-// "Major"
-
-console.log(ionian.intervals);
-// ["1", "2", "3", "4", "5", "6", "7", "8"]
-
-console.log(Object.keys(groupedNoteCollections));
-// ["diatonicModes", "pentatonicVariants", ...]
-```
-
-Each collection includes structured fields such as names, intervals, integer
-notation, type tags, and musical characteristics. See the generated docs or
-source files for complete schemas.
-
-### Resolve Chord Progressions
-
-```ts
-import {
-  chordProgressionCategoryGroups,
-  chordProgressions,
   getChordProgressionChordNames,
-  getChordProgressionKeysForCategory,
   getChordProgressionRomanSymbols,
-  getChordProgressionTotalDurationInBars,
-} from "jsr:@musodojo/music-theory-data";
-
-const oneSixFourFive = chordProgressions.oneSixFourFive;
-
-console.log(
-  oneSixFourFive.chords.map((chord) => [
-    chord.degree,
-    chord.chordCollectionKey,
-  ]),
-);
-// [["1", "major"], ["6", "minor"], ["4", "major"], ["5", "major"]]
+} from "@musodojo/music-theory-data";
 
 console.log(getChordProgressionRomanSymbols("oneSixFourFive"));
 // ["I", "vi", "IV", "V"]
 
-console.log(chordProgressionCategoryGroups.map((group) => group.name));
-// ["Common Loops & Sequences", "Cadences", "Blues Forms", "Jazz Cadences & Standards"]
-
-console.log(getChordProgressionKeysForCategory("jazz"));
-// ["majorTwoFiveOne", "minorTwoFiveOne", "backdoorTwoFiveOne", ...]
-
 console.log(getChordProgressionChordNames("C", "oneSixFourFive"));
 // ["CM", "Am", "FM", "GM"]
 
-console.log(getChordProgressionTotalDurationInBars("twelveBarBlues"));
-// 12
+console.log(getChordProgressionRomanSymbols("autumnLeavesA"));
+// ["iim7", "V7", "IM7", "IVM7", "iiø7/vi", "V7/vi", "vi"]
 ```
 
-### Use Note Colors And Chromatic Indexes
+Use `getChordProgressionDirectRomanSymbols` when you want symbols derived only
+from degree and chord quality. Use `getChordProgressionRomanSymbols` when you
+want authored analysis labels, such as secondary-function symbols, where they
+exist.
 
-```ts
-import {
-  colorCollections,
-  getNoteColorIndex,
-  getNoteColorLabels,
-} from "jsr:@musodojo/music-theory-data";
+## Package Links
 
-const absoluteIndex = getNoteColorIndex({
-  midi: 67,
-  mode: "absolute",
-});
-
-console.log(absoluteIndex);
-// 7, the pitch class G
-
-const relativeIndex = getNoteColorIndex({
-  midi: 69,
-  mode: "relative",
-  rootPitchClass: 2,
-});
-
-console.log(relativeIndex);
-// 7, A as the fifth above D
-
-console.log(getNoteColorLabels(colorCollections.musoDojoRootAndFifth));
-// ["1", "♭2", "2", "♭3", "3", "4", "♭5", "5", "♭6", "6", "♭7", "7"]
-```
-
-Note color collections use 12 chromatic slots. Absolute mode treats index `0` as
-C; relative mode treats index `0` as the chosen musical root.
-
-## API Documentation
-
-For the full list of available data, types, and utility functions, see the
-**[auto-generated API documentation on JSR](https://jsr.io/@musodojo/music-theory-data/doc)**.
-
-## Community & Support
-
-- Ask questions or share ideas in
-  [GitHub Discussions](https://github.com/conor-dowdall/music-theory-data/discussions).
-- Report bugs or data issues in
-  [GitHub Issues](https://github.com/conor-dowdall/music-theory-data/issues).
+- [JSR package](https://jsr.io/@musodojo/music-theory-data)
+- [npm package](https://www.npmjs.com/package/@musodojo/music-theory-data)
+- [GitHub Discussions](https://github.com/conor-dowdall/music-theory-data/discussions)
+- [GitHub Issues](https://github.com/conor-dowdall/music-theory-data/issues)

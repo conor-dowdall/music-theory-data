@@ -32,7 +32,8 @@ export const orchestralStringsInstrumentGroup: StringInstrumentGroup = {
   instrumentKeys: ["violin", "viola", "cello", "doubleBass"],
 } as const;
 
-const _stringInstrumentGroups = {
+/** Exact built-in string instrument group data keyed by group id. */
+export const builtInStringInstrumentGroups = {
   guitar: guitarInstrumentGroup,
   bass: bassInstrumentGroup,
   folkAndFrettedStrings: folkAndFrettedStringsInstrumentGroup,
@@ -40,7 +41,8 @@ const _stringInstrumentGroups = {
 } as const;
 
 /** A key for one of the built-in string instrument groups. */
-export type StringInstrumentGroupKey = keyof typeof _stringInstrumentGroups;
+export type StringInstrumentGroupKey =
+  keyof typeof builtInStringInstrumentGroups;
 
 /** Dictionary of built-in string instrument groups keyed by group id. */
 export type StringInstrumentGroups = Record<
@@ -50,8 +52,10 @@ export type StringInstrumentGroups = Record<
 
 /** Built-in string instrument groups for navigation and filtering. */
 export const stringInstrumentGroups: StringInstrumentGroups =
-  _stringInstrumentGroups;
+  builtInStringInstrumentGroups;
 
 /** Ordered keys for the built-in string instrument groups. */
 export const stringInstrumentGroupKeys: readonly StringInstrumentGroupKey[] =
-  Object.keys(_stringInstrumentGroups) as readonly StringInstrumentGroupKey[];
+  Object.keys(
+    builtInStringInstrumentGroups,
+  ) as readonly StringInstrumentGroupKey[];

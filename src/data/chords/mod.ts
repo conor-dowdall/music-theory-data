@@ -48,19 +48,42 @@ const _lowerCaseRomanNumerals = [
 ] as const;
 
 /** A supported triad chord quality suffix. */
-export type Triad = (typeof _triadChordQualities)[number];
+export type Triad = "M" | "m" | "°" | "+";
 
 /** A supported seventh-chord quality suffix. */
-export type SeventhChord = (typeof _seventhChordQualities)[number];
+export type SeventhChord =
+  | "M7"
+  | "m7"
+  | "7"
+  | "ø7"
+  | "m7♭5"
+  | "°7"
+  | "m(M7)"
+  | "+M7"
+  | "M7♯5";
 
 /** Any supported chord quality suffix. */
 export type ChordQuality = Triad | SeventhChord;
 
 /** An uppercase roman numeral for scale degrees one through seven. */
-export type UpperCaseRomanNumeral = (typeof _upperCaseRomanNumerals)[number];
+export type UpperCaseRomanNumeral =
+  | "I"
+  | "II"
+  | "III"
+  | "IV"
+  | "V"
+  | "VI"
+  | "VII";
 
 /** A lowercase roman numeral for scale degrees one through seven. */
-export type LowerCaseRomanNumeral = (typeof _lowerCaseRomanNumerals)[number];
+export type LowerCaseRomanNumeral =
+  | "i"
+  | "ii"
+  | "iii"
+  | "iv"
+  | "v"
+  | "vi"
+  | "vii";
 
 /** Any supported roman numeral scale-degree symbol. */
 export type RomanNumeral = UpperCaseRomanNumeral | LowerCaseRomanNumeral;
@@ -73,7 +96,9 @@ export type RomanSeventhChord = `${RomanNumeral}${SeventhChord}`;
 
 /** Rendering metadata for converting a chord quality into roman notation. */
 export interface ChordQualityRomanRendering {
+  /** The preferred letter case for the roman numeral scale degree. */
   readonly numeralCase: RomanNumeralCase;
+  /** The suffix appended after the roman numeral, such as `7` or `ø7`. */
   readonly suffix: string;
 }
 
@@ -109,8 +134,10 @@ function getChordCollectionSymbolRenderings(): Record<
   >;
 }
 
+/** A chord-symbol suffix appended after a root note, such as `m7` in `Dm7`. */
 export type ChordCollectionChordSuffix = string;
 
+/** A roman-symbol suffix appended after a roman numeral, such as `ø7` in `iiø7`. */
 export type ChordCollectionRomanSuffix = string;
 
 /** The complete set of supported triad chord qualities. */

@@ -28,8 +28,11 @@ import {
  * where C is index 0. The selected root appears at its pitch-class index.
  */
 export interface ConversionRegistryOptions {
+  /** Requires conversion output to include all 12 chromatic pitch-class slots. */
   fillChromatic: true;
+  /** Requires conversion output to be indexed so C is slot 0. */
   rotateToRootInteger0: true;
+  /** Optional additional right rotation applied after the registry's required rotation. */
   rotateRight?: number;
 }
 
@@ -42,58 +45,91 @@ export type ConversionFunction<T> = (
   options: ConversionRegistryOptions,
 ) => ChromaticTuple<T | undefined>;
 
+/** Input shape supported by the conversion registry. */
 export type ConversionInputKind = "rootAndNoteCollection";
 
+/** Broad output family produced by a conversion registry entry. */
 export type ConversionOutputKind =
   | "noteNames"
   | "intervals"
   | "chordNames"
   | "romanNumerals";
 
+/** Structural shape of conversion registry output. */
 export type ConversionOutputShape = "chromatic-12";
 
+/** Indexing convention for conversion registry output. */
 export type ConversionOutputIndexing = "absolutePitchClassC0";
 
+/** Marker for how unavailable chromatic slots are represented. */
 export type ConversionEmptySlot = "none" | "undefined";
 
+/** Predicate used to decide whether a conversion is available for an input pair. */
 export type ConversionAvailabilityFunction = (
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
 ) => boolean;
 
+/** Metadata and resolver function for one discoverable conversion. */
 export interface ConversionRegistryEntry<T, TId extends string = string> {
+  /** Stable machine-readable conversion id. */
   id: TId;
+  /** Human-readable display name. */
   name: string;
+  /** Short label suitable for compact UI. */
   shortName: string;
+  /** Description of what the conversion derives. */
   description: string;
+  /** Tiny sample preview suitable for menus or cards. */
   outputPreview: string;
+  /** Full sample output demonstrating the returned shape. */
   sampleOutput: string;
+  /** Input shape accepted by the conversion. */
   inputKind: ConversionInputKind;
+  /** Broad output family produced by the conversion. */
   outputKind: ConversionOutputKind;
+  /** Structural output shape produced by the conversion. */
   outputShape: ConversionOutputShape;
+  /** Pitch-class indexing convention for the output. */
   outputIndexing: ConversionOutputIndexing;
+  /** Whether the conversion may return empty chromatic slots. */
   allowsEmptySlots: boolean;
+  /** Empty-slot representation used by the conversion. */
   emptySlot: ConversionEmptySlot;
+  /** Optional predicate for conversions that only apply to some collections. */
   isAvailable?: ConversionAvailabilityFunction;
+  /** Human-readable explanation shown when the conversion is unavailable. */
   unavailableReason?: string;
+  /** Function that performs the conversion. */
   get: ConversionFunction<T>;
 }
 
+/** Curated conversions for APIs that start with a root note and note collection key. */
 export interface RootAndNoteCollectionConversions {
+  /** Converts the input pair to absolute pitch-class note names. */
   noteNames: ConversionRegistryEntry<NoteName, "note-names">;
+  /** Converts the input pair to interval labels. */
   intervals: ConversionRegistryEntry<Interval, "intervals">;
+  /** Converts the input pair to extension-style interval labels. */
   extensions: ConversionRegistryEntry<Interval, "extensions">;
+  /** Converts the input pair to compound interval labels. */
   compoundIntervals: ConversionRegistryEntry<Interval, "compound-intervals">;
+  /** Converts authored modal harmony to triad chord names. */
   triads: ConversionRegistryEntry<string, "triads">;
+  /** Converts authored modal harmony to seventh-chord names. */
   seventhChords: ConversionRegistryEntry<string, "seventh-chords">;
+  /** Converts authored modal harmony to Roman numeral triads. */
   romanTriads: ConversionRegistryEntry<RomanTriad, "roman-triads">;
+  /** Converts authored modal harmony to Roman numeral seventh chords. */
   romanSeventhChords: ConversionRegistryEntry<
     RomanSeventhChord,
     "roman-seventh-chords"
   >;
 }
 
+/** Top-level conversion registry grouped by input shape. */
 export interface ConversionRegistry {
+  /** Conversions that derive data from a root note and note collection key. */
   rootAndNoteCollection: RootAndNoteCollectionConversions;
 }
 
@@ -113,6 +149,7 @@ function createConversionResult<T>(
   return createChromaticTuple(values);
 }
 
+/** Curated conversion registry for discoverable music-theory derivations. */
 export const conversions: ConversionRegistry = {
   rootAndNoteCollection: {
     noteNames: {
@@ -278,15 +315,19 @@ export const conversions: ConversionRegistry = {
   },
 };
 
+/** Convenience handle for root-and-note-collection conversions. */
 export const rootAndNoteCollectionConversions:
   RootAndNoteCollectionConversions = conversions.rootAndNoteCollection;
 
+/** Key for a root-and-note-collection conversion entry. */
 export type RootAndNoteCollectionConversionKey =
   keyof typeof rootAndNoteCollectionConversions;
 
+/** Any root-and-note-collection conversion registry entry. */
 export type RootAndNoteCollectionConversion =
   typeof rootAndNoteCollectionConversions[RootAndNoteCollectionConversionKey];
 
+/** Returns whether a root-and-note-collection conversion applies to an input pair. */
 export function isRootAndNoteCollectionConversionAvailable(
   conversion: RootAndNoteCollectionConversion,
   rootNote: RootNote,
@@ -295,6 +336,7 @@ export function isRootAndNoteCollectionConversionAvailable(
   return conversion.isAvailable?.(rootNote, noteCollectionKey) ?? true;
 }
 
+/** Returns all root-and-note-collection conversions available for an input pair. */
 export function getAvailableRootAndNoteCollectionConversions(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,

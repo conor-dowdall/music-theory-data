@@ -43,7 +43,8 @@ const doubleBassStandardEadg: StringInstrumentTuning = {
   openMidiNotes: [28, 33, 38, 43],
 } as const;
 
-const _orchestralStringTunings = {
+/** Exact built-in orchestral string tuning data keyed by tuning id. */
+export const builtInOrchestralStringTunings = {
   violinStandardGdae,
   violaStandardCgda,
   celloStandardCgda,
@@ -51,7 +52,8 @@ const _orchestralStringTunings = {
 } as const;
 
 /** A key for one of the built-in orchestral string tunings. */
-export type OrchestralStringTuningKey = keyof typeof _orchestralStringTunings;
+export type OrchestralStringTuningKey =
+  keyof typeof builtInOrchestralStringTunings;
 
 /** Dictionary of built-in orchestral string tunings keyed by tuning id. */
 export type OrchestralStringTunings = Record<
@@ -61,7 +63,7 @@ export type OrchestralStringTunings = Record<
 
 /** Built-in violin, viola, cello, and double bass tunings. */
 export const orchestralStringTunings: OrchestralStringTunings =
-  _orchestralStringTunings;
+  builtInOrchestralStringTunings;
 
 /** Orchestral string tuning keys grouped by instrument. */
 export type OrchestralStringTuningKeysByInstrument = Readonly<

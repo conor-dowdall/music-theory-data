@@ -136,7 +136,7 @@ const wholeTone: NonModalScaleCollection = {
   patternShort: ["W", "W", "W", "W", "W", "W"],
 } as const;
 
-export const _otherNoteCollections = {
+const _otherNoteCollections = {
   root,
   rootAndFifth,
   rootAndFourth,
@@ -146,7 +146,15 @@ export const _otherNoteCollections = {
   wholeTone,
 } as const;
 
-export type OtherNoteCollectionKey = keyof typeof _otherNoteCollections;
+/** A key for a miscellaneous built-in note, dyad, chord, or scale collection. */
+export type OtherNoteCollectionKey =
+  | "root"
+  | "rootAndFifth"
+  | "rootAndFourth"
+  | "rootAndTritone"
+  | "bluesPentatonic"
+  | "chromatic"
+  | "wholeTone";
 
 /** Miscellaneous built-in note collections keyed by collection id. */
 export const otherNoteCollections: Record<

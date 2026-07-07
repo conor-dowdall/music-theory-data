@@ -125,7 +125,7 @@ const minor6Add9: ChordCollection = {
   patternShort: ["m3", "M3", "M2", "P4"],
 } as const;
 
-export const _minorVariants = {
+const _minorVariants = {
   minor,
   minor6,
   minor7,
@@ -135,7 +135,15 @@ export const _minorVariants = {
   minor6Add9,
 } as const;
 
-export type MinorVariantKey = keyof typeof _minorVariants;
+/** A key for one of the built-in minor-family chord collections. */
+export type MinorVariantKey =
+  | "minor"
+  | "minor6"
+  | "minor7"
+  | "minorMajor7"
+  | "minor9"
+  | "minorAdd9"
+  | "minor6Add9";
 
 /** Built-in minor-family chord collections keyed by collection id. */
 export const minorVariants: Record<MinorVariantKey, ChordCollection> =

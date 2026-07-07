@@ -11,7 +11,9 @@ export type ChordProgressionCategoryKey =
 
 /** Display metadata for a chord-progression category. */
 export interface ChordProgressionCategoryMetadata {
+  /** Display name for the category. */
   readonly name: string;
+  /** Short description of the progressions grouped in the category. */
   readonly description: string;
 }
 
@@ -83,20 +85,27 @@ export interface ChordProgressionChord {
 
 /** A named chord progression template made from ordered chord events. */
 export interface ChordProgression {
+  /** Optional commonly used name for the progression. */
   readonly commonName?: string;
+  /** Optional category used for browsing built-in progressions. */
   readonly category?: ChordProgressionCategoryKey;
+  /** Ordered chord events that make up the progression. */
   readonly chords: readonly ChordProgressionChord[];
 }
 
 /** A group of chord progression keys that share the same total bar count. */
 export interface ChordProgressionBarGroup<TKey extends string = string> {
+  /** Total duration in bars shared by the grouped progressions. */
   readonly totalBars: number;
+  /** Progression keys belonging to this bar-count group. */
   readonly progressionKeys: readonly TKey[];
 }
 
 /** A group of chord progression keys that share a musical category. */
 export interface ChordProgressionCategoryGroup<TKey extends string = string>
   extends ChordProgressionCategoryMetadata {
+  /** Category shared by the grouped progressions. */
   readonly category: ChordProgressionCategoryKey;
+  /** Progression keys belonging to this category group. */
   readonly progressionKeys: readonly TKey[];
 }

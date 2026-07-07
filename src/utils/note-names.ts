@@ -30,6 +30,7 @@ import { createChromaticTuple, normalizeChromaticIndex } from "./chromatic.ts";
 const NOTE_LETTER_REGEX = /^[A-Ga-g]/;
 const INTERVAL_NUMBER_REGEX = /\d+/;
 
+/** A 12-slot chromatic tuple of note names. */
 export type ChromaticNoteNameTuple = ChromaticTuple<NoteName>;
 
 /**
@@ -185,6 +186,7 @@ export function getNoteNamesForRootAndIntervals(
   intervals: readonly Interval[],
   options: FillChromaticTransformIntervalsOptions,
 ): ChromaticNoteNameTuple;
+/** Returns only the note names produced by the supplied intervals. */
 export function getNoteNamesForRootAndIntervals(
   rootNote: RootNote,
   intervals: readonly Interval[],
@@ -242,6 +244,7 @@ export function getNoteNamesForRootAndNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
   options: RootAndNoteCollectionKeyTransformOptions & { fillChromatic: true },
 ): ChromaticNoteNameTuple;
+/** Returns only the note names in the rooted note collection. */
 export function getNoteNamesForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,

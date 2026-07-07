@@ -2,6 +2,7 @@ import type { ChromaticIndex } from "../data/chromatic.ts";
 import type { Interval } from "../data/labels/note-labels.ts";
 import type { NoteCollectionKey } from "../data/note-collections/mod.ts";
 
+/** High-level category for a built-in note collection. */
 export type CollectionCategory = "note" | "dyad" | "chord" | "scale";
 
 /** The letter case used when rendering a roman numeral chord symbol. */
@@ -17,7 +18,8 @@ export interface ChordCollectionSymbolRendering {
   readonly numeralCase: RomanNumeralCase;
 }
 
-interface NoteCollectionBase<TInteger extends number = number> {
+/** Shared metadata and interval content for a note, dyad, chord, or scale collection. */
+export interface NoteCollectionBase<TInteger extends number = number> {
   /**
    * The top-level musical category for this collection.
    */
@@ -94,33 +96,45 @@ export interface ModalScaleCollection
 /** A scale that is not a mode of another scale in this collection. */
 export interface NonModalScaleCollection
   extends NoteCollectionBase<ChromaticIndex> {
+  /** The fundamental classification of the collection. For scales, this is always "scale". */
   readonly category: "scale";
+  /** Non-modal scales are not represented as rotations of a parent scale. */
   readonly rotation?: never;
 }
 
 /** A single rooted chord quality represented as intervals from its root. */
 export interface ChordCollection extends NoteCollectionBase {
+  /** The fundamental classification of the collection. For chords, this is always "chord". */
   readonly category: "chord";
   /**
    * `primaryName` and `names` describe the collection for browsing and search.
    * Use the chord symbol rendering helpers for canonical chord-symbol display.
    */
   readonly symbol: ChordCollectionSymbolRendering;
+  /** Chord collections are not represented as modal rotations. */
   readonly rotation?: never;
 }
 
+/** A two-note collection represented as intervals from its root. */
 export interface DyadCollection extends NoteCollectionBase<ChromaticIndex> {
+  /** The fundamental classification of the collection. For dyads, this is always "dyad". */
   readonly category: "dyad";
+  /** Dyad collections are not represented as modal rotations. */
   readonly rotation?: never;
 }
 
+/** A one-note collection containing only the root pitch class. */
 export interface NoteOnlyCollection extends NoteCollectionBase<ChromaticIndex> {
+  /** The fundamental classification of the collection. For note-only collections, this is always "note". */
   readonly category: "note";
+  /** Note-only collections are not represented as modal rotations. */
   readonly rotation?: never;
 }
 
+/** Any built-in scale collection shape. */
 export type ScaleCollection = ModalScaleCollection | NonModalScaleCollection;
 
+/** Any built-in note, dyad, chord, or scale collection shape. */
 export type NoteCollection =
   | ScaleCollection
   | ChordCollection

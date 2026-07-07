@@ -102,7 +102,8 @@ const guitarJacobCollierTuning: StringInstrumentTuning = {
   openMidiNotes: [38, 45, 52, 57, 62],
 } as const;
 
-const _guitarTunings = {
+/** Exact built-in guitar tuning data keyed by tuning id. */
+export const builtInGuitarTunings = {
   guitarStandardE,
   guitarHalfStepDown,
   guitarWholeStepDown,
@@ -118,22 +119,24 @@ const _guitarTunings = {
 } as const;
 
 /** A key for one of the built-in guitar tunings. */
-export type GuitarTuningKey = keyof typeof _guitarTunings;
+export type GuitarTuningKey = keyof typeof builtInGuitarTunings;
 
 /** Dictionary of built-in guitar tunings keyed by tuning id. */
 export type GuitarTunings = Record<GuitarTuningKey, StringInstrumentTuning>;
 
 /** Built-in guitar tunings. */
-export const guitarTunings: GuitarTunings = _guitarTunings;
+export const guitarTunings: GuitarTunings = builtInGuitarTunings;
 
 /** Ordered keys for the built-in guitar tunings. */
 export const guitarTuningKeys: readonly GuitarTuningKey[] = Object.keys(
-  _guitarTunings,
+  builtInGuitarTunings,
 ) as readonly GuitarTuningKey[];
 
 /** A named group of related guitar tunings. */
 export interface GuitarTuningGroup {
+  /** The group label to show in app UI. */
   displayName: string;
+  /** Ordered tuning keys included in this group. */
   tuningKeys: readonly GuitarTuningKey[];
 }
 
@@ -167,7 +170,8 @@ const openGuitarTuningGroup: GuitarTuningGroup = {
   ],
 } as const;
 
-const _guitarTuningGroups = {
+/** Exact built-in guitar tuning group data keyed by group id. */
+export const builtInGuitarTuningGroups = {
   standard: standardGuitarTuningGroup,
   drop: dropGuitarTuningGroup,
   modal: modalGuitarTuningGroup,
@@ -175,7 +179,7 @@ const _guitarTuningGroups = {
 } as const;
 
 /** A key for one of the built-in guitar tuning groups. */
-export type GuitarTuningGroupKey = keyof typeof _guitarTuningGroups;
+export type GuitarTuningGroupKey = keyof typeof builtInGuitarTuningGroups;
 
 /** Dictionary of built-in guitar tuning groups keyed by group id. */
 export type GuitarTuningGroups = Record<
@@ -184,4 +188,4 @@ export type GuitarTuningGroups = Record<
 >;
 
 /** Built-in guitar tuning groups for standard, drop, modal, and open tunings. */
-export const guitarTuningGroups: GuitarTuningGroups = _guitarTuningGroups;
+export const guitarTuningGroups: GuitarTuningGroups = builtInGuitarTuningGroups;

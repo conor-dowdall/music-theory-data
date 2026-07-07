@@ -88,7 +88,7 @@ const minorPentatonic: ModalScaleCollection = {
   patternShort: ["m3", "W", "W", "m3", "W"],
 } as const;
 
-export const _pentatonicVariants = {
+const _pentatonicVariants = {
   majorPentatonic,
   suspendedPentatonic,
   bluesMinorPentatonic,
@@ -96,7 +96,13 @@ export const _pentatonicVariants = {
   minorPentatonic,
 } as const;
 
-export type PentatonicVariantKey = keyof typeof _pentatonicVariants;
+/** A key for one of the built-in pentatonic scale variants. */
+export type PentatonicVariantKey =
+  | "majorPentatonic"
+  | "suspendedPentatonic"
+  | "bluesMinorPentatonic"
+  | "bluesMajorPentatonic"
+  | "minorPentatonic";
 
 /** Built-in pentatonic scale variants keyed by collection id. */
 export const pentatonicVariants: Record<

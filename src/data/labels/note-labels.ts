@@ -3,15 +3,14 @@ import type { ChromaticIndex } from "../chromatic.ts";
 /** Represents the mathematical zero-indexed pitch class of a root note, where C is 0 and B is 11. */
 export type RootNoteInteger = ChromaticIndex;
 
-const _noteLetters = ["C", "D", "E", "F", "G", "A", "B"] as const;
+/** An ordered array of the seven fundamental note letters (C through B). */
+export const noteLetters = ["C", "D", "E", "F", "G", "A", "B"] as const;
 
 /** An alphabetical musical note letter without any accidentals. */
-export type NoteLetter = (typeof _noteLetters)[number];
+export type NoteLetter = (typeof noteLetters)[number];
 
-/** An ordered array of the seven fundamental note letters (C through B). */
-export const noteLetters: readonly NoteLetter[] = _noteLetters;
-
-const _noteAccidentalToIntegerMap = {
+/** Semitone offsets for valid musical accidental symbols. */
+export const noteAccidentalToIntegerRecord = {
   "𝄫": -2,
   "♭": -1,
   "♮": 0,
@@ -20,15 +19,19 @@ const _noteAccidentalToIntegerMap = {
 } as const;
 
 /** Valid musical accidental symbols, including double flats and double sharps. */
-export type NoteAccidental = keyof typeof _noteAccidentalToIntegerMap;
+export type NoteAccidental = keyof typeof noteAccidentalToIntegerRecord;
 
 /** A mapping of an accidental symbol to its numeric semitone alteration (-2 to +2). */
 export const noteAccidentalToIntegerMap: ReadonlyMap<NoteAccidental, number> =
   new Map(
-    Object.entries(_noteAccidentalToIntegerMap) as [NoteAccidental, number][],
+    Object.entries(noteAccidentalToIntegerRecord) as [
+      NoteAccidental,
+      number,
+    ][],
   );
 
-const _enharmonicNoteNameGroups = [
+/** A two-dimensional array grouping note names that are enharmonically equivalent (e.g., C♯ and D♭). */
+export const enharmonicNoteNameGroups = [
   ["C", "C♮", "B♯", "D𝄫"],
   ["D♭", "C♯", "B𝄪"],
   ["D", "D♮", "E𝄫", "C𝄪"],
@@ -44,11 +47,7 @@ const _enharmonicNoteNameGroups = [
 ] as const;
 
 /** A fully qualified note name string, consisting of a note letter and optional accidentals. */
-export type NoteName = (typeof _enharmonicNoteNameGroups)[number][number];
-
-/** A two-dimensional array grouping note names that are enharmonically equivalent (e.g., C♯ and D♭). */
-export const enharmonicNoteNameGroups: readonly (readonly NoteName[])[] =
-  _enharmonicNoteNameGroups;
+export type NoteName = (typeof enharmonicNoteNameGroups)[number][number];
 
 /** A flat list of every possible valid note name. */
 export const noteNames: readonly NoteName[] = enharmonicNoteNameGroups.flat();
@@ -60,7 +59,7 @@ export const noteNamesSet: ReadonlySet<NoteName> = new Set(noteNames);
 export const noteNameToIntegerMap: ReadonlyMap<NoteName, RootNoteInteger> =
   (() => {
     const map = new Map<NoteName, RootNoteInteger>();
-    _enharmonicNoteNameGroups.forEach((group, index) => {
+    enharmonicNoteNameGroups.forEach((group, index) => {
       group.forEach((note) => {
         map.set(note, index as RootNoteInteger);
       });
@@ -68,7 +67,8 @@ export const noteNameToIntegerMap: ReadonlyMap<NoteName, RootNoteInteger> =
     return map;
   })();
 
-const _enharmonicRootNoteGroups = [
+/** A two-dimensional array grouping viable root notes by their enharmonic equivalence. */
+export const enharmonicRootNoteGroups = [
   ["C", "B♯"],
   ["D♭", "C♯"],
   ["D"],
@@ -84,11 +84,7 @@ const _enharmonicRootNoteGroups = [
 ] as const;
 
 /** A restricted subset of note names that are practically viable to be used as musical root notes. */
-export type RootNote = (typeof _enharmonicRootNoteGroups)[number][number];
-
-/** A two-dimensional array grouping viable root notes by their enharmonic equivalence. */
-export const enharmonicRootNoteGroups: readonly (readonly RootNote[])[] =
-  _enharmonicRootNoteGroups;
+export type RootNote = (typeof enharmonicRootNoteGroups)[number][number];
 
 /** A flat list of every viable root note. */
 export const rootNotes: readonly RootNote[] = enharmonicRootNoteGroups.flat();
@@ -119,7 +115,8 @@ export type SimpleIntervalNumber =
   | "7"
   | "8";
 
-const _simpleIntervalToIntegerMap = {
+/** Semitone offsets for supported simple interval spellings. */
+export const simpleIntervalToIntegerRecord = {
   "𝄫1": -2,
   "♭1": -1,
   "♮1": 0,
@@ -178,7 +175,7 @@ const _simpleIntervalToIntegerMap = {
 } as const;
 
 /** A fully qualified simple (single octave) interval string, including an optional accidental symbol (e.g., "3", "♯4", "♭7"). */
-export type SimpleInterval = keyof typeof _simpleIntervalToIntegerMap;
+export type SimpleInterval = keyof typeof simpleIntervalToIntegerRecord;
 
 /** A numeric string representing the numerical span of a compound interval (e.g. "9", "13"). */
 export type CompoundIntervalNumber =
@@ -190,7 +187,8 @@ export type CompoundIntervalNumber =
   | "14"
   | "15";
 
-const _compoundIntervalToIntegerMap = {
+/** Semitone offsets for supported compound interval spellings. */
+export const compoundIntervalToIntegerRecord = {
   "𝄫9": 12,
   "♭9": 13,
   "♮9": 14,
@@ -242,22 +240,25 @@ const _compoundIntervalToIntegerMap = {
 } as const;
 
 /** A fully qualified compound (multi-octave) interval string (e.g., "b9", "#11"). */
-export type CompoundInterval = keyof typeof _compoundIntervalToIntegerMap;
+export type CompoundInterval = keyof typeof compoundIntervalToIntegerRecord;
 
 /** An interval number ignoring any quality or accidentals, and can be simple or compound. */
 export type IntervalNumber = SimpleIntervalNumber | CompoundIntervalNumber;
 
-const _intervalToIntegerMap = {
-  ..._simpleIntervalToIntegerMap,
-  ..._compoundIntervalToIntegerMap,
-} as const;
+/** Semitone offsets for all supported simple and compound interval spellings. */
+export const intervalToIntegerRecord:
+  & typeof simpleIntervalToIntegerRecord
+  & typeof compoundIntervalToIntegerRecord = {
+    ...simpleIntervalToIntegerRecord,
+    ...compoundIntervalToIntegerRecord,
+  } as const;
 
 /** A fully qualified simple or compound interval string. */
-export type Interval = keyof typeof _intervalToIntegerMap;
+export type Interval = keyof typeof intervalToIntegerRecord;
 
 /** A mapping to convert any Interval string into its integer semitone offset. */
 export const intervalToIntegerMap: ReadonlyMap<Interval, number> = new Map(
-  Object.entries(_intervalToIntegerMap) as [Interval, number][],
+  Object.entries(intervalToIntegerRecord) as [Interval, number][],
 );
 
 const _simpleToExtensionIntervalMap = {
@@ -391,7 +392,8 @@ export const compoundToSimpleIntervalMap: ReadonlyMap<
 /** The alphabetical descriptor of an interval's harmonic quality (e.g., major 'M', minor 'm', perfect 'P'). */
 export type IntervalQualityType = "dd" | "d" | "m" | "P" | "M" | "A" | "AA";
 
-const _intervalQualityToIntegerMap = {
+/** Semitone offsets for supported quality-based interval spellings. */
+export const intervalQualityToIntegerRecord = {
   dd1: -2,
   d1: -1,
   P1: 0,
@@ -492,12 +494,15 @@ const _intervalQualityToIntegerMap = {
 } as const;
 
 /** An interval represented explicitly by its harmonic quality prefix rather than accidentals (e.g. 'M3' instead of '♮3'). */
-export type IntervalQuality = keyof typeof _intervalQualityToIntegerMap;
+export type IntervalQuality = keyof typeof intervalQualityToIntegerRecord;
 
 /** Maps an interval quality explicitly to its numerical integer semitone offset. */
 export const intervalQualityToIntegerMap: ReadonlyMap<IntervalQuality, number> =
   new Map(
-    Object.entries(_intervalQualityToIntegerMap) as [IntervalQuality, number][],
+    Object.entries(intervalQualityToIntegerRecord) as [
+      IntervalQuality,
+      number,
+    ][],
   );
 
 const _intervalToIntervalQualityMap = {

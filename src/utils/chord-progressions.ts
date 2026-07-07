@@ -20,8 +20,11 @@ import { getRomanNumeralForScaleIndexAndChordCollectionKey } from "./chords.ts";
 
 /** A resolved chord in a progression, including its root and chord collection. */
 export interface ChordProgressionChordReference {
+  /** The spelled root note for the resolved chord. */
   readonly rootNote: NoteName;
+  /** The rendered chord name, combining root note and chord suffix. */
   readonly chordName: string;
+  /** The chord collection key that supplies the chord quality. */
   readonly chordCollectionKey: ChordCollectionKey;
 }
 
@@ -137,17 +140,10 @@ export function getChordProgressionChordNames(
   rootNote: RootNote,
   progressionOrKey: ChordProgression | ChordProgressionKey,
 ): string[] {
-  const progression = resolveProgression(progressionOrKey);
-  if (!progression) return [];
-
-  const noteNames = getNoteNamesForRootAndIntervals(
+  return getResolvedChordProgressionChordReferences(
     rootNote,
-    progression.chords.map((chord) => chord.degree),
-  );
-
-  return progression.chords.map((chord, index) =>
-    noteNames[index] + getChordCollectionChordSuffix(chord.chordCollectionKey)
-  );
+    progressionOrKey,
+  ).map(({ reference }) => reference.chordName);
 }
 
 /**
@@ -180,16 +176,6 @@ export function getChordProgressionRomanSymbols(
       chord,
     )
   );
-}
-
-/**
- * Returns Roman symbols suitable for display, preferring optional
- * harmonic-function analysis labels when present.
- */
-export function getChordProgressionDisplayRomanSymbols(
-  progressionOrKey: ChordProgression | ChordProgressionKey,
-): ChordProgressionAnalysisRomanSymbol[] {
-  return getChordProgressionRomanSymbols(progressionOrKey);
 }
 
 /** Returns all built-in chord progression keys with the requested total bar count. */

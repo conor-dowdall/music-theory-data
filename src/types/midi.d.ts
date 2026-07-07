@@ -1,3 +1,4 @@
+/** A valid MIDI note number in the standard 0-127 range. */
 export type MidiNoteNumber =
   | 0
   | 1
@@ -128,4 +129,5 @@ export type MidiNoteNumber =
   | 126
   | 127;
 
+/** A MIDI note sequence where `null` represents an empty or resting slot. */
 export type MidiNoteSequence = (MidiNoteNumber | null)[];

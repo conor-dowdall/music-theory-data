@@ -25,13 +25,14 @@ const bassFiveStringBeadg: StringInstrumentTuning = {
   openMidiNotes: [23, 28, 33, 38, 43],
 } as const;
 
-const _bassGuitarTunings = {
+/** Exact built-in bass guitar tuning data keyed by tuning id. */
+export const builtInBassGuitarTunings = {
   bassStandardEadg,
   bassFiveStringBeadg,
 } as const;
 
 /** A key for one of the built-in bass guitar tunings. */
-export type BassGuitarTuningKey = keyof typeof _bassGuitarTunings;
+export type BassGuitarTuningKey = keyof typeof builtInBassGuitarTunings;
 
 /** Dictionary of built-in bass guitar tunings keyed by tuning id. */
 export type BassGuitarTunings = Record<
@@ -40,11 +41,11 @@ export type BassGuitarTunings = Record<
 >;
 
 /** Built-in bass guitar tunings. */
-export const bassGuitarTunings: BassGuitarTunings = _bassGuitarTunings;
+export const bassGuitarTunings: BassGuitarTunings = builtInBassGuitarTunings;
 
 /** Ordered keys for the built-in bass guitar tunings. */
 export const bassGuitarTuningKeys: readonly BassGuitarTuningKey[] = Object.keys(
-  _bassGuitarTunings,
+  builtInBassGuitarTunings,
 ) as readonly BassGuitarTuningKey[];
 
 /** Bass guitar tuning keys grouped by instrument. */

@@ -4,10 +4,12 @@ import {
   type ChromaticTuple,
 } from "../data/chromatic.ts";
 
+/** Returns whether a number is an integer chromatic pitch-class index from 0 to 11. */
 export function isChromaticIndex(value: number): value is ChromaticIndex {
   return Number.isInteger(value) && value >= 0 && value < CHROMATIC_NOTE_COUNT;
 }
 
+/** Normalizes any integer to a chromatic pitch-class index from 0 to 11. */
 export function normalizeChromaticIndex(value: number): ChromaticIndex {
   if (!Number.isFinite(value)) {
     throw new Error(`Chromatic index must be finite. Received ${value}.`);
@@ -24,12 +26,14 @@ export function normalizeChromaticIndex(value: number): ChromaticIndex {
   ) as ChromaticIndex;
 }
 
+/** Returns whether an array has exactly 12 chromatic slots. */
 export function isChromaticTuple<T>(
   values: readonly T[],
 ): values is ChromaticTuple<T> {
   return values.length === CHROMATIC_NOTE_COUNT;
 }
 
+/** Creates a 12-slot chromatic tuple or throws if the input length is not 12. */
 export function createChromaticTuple<T>(
   values: readonly T[],
 ): ChromaticTuple<T> {

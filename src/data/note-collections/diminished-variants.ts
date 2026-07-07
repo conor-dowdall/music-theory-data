@@ -81,7 +81,7 @@ const halfWholeDiminished: ModalScaleCollection = {
   patternShort: ["H", "W", "H", "W", "H", "W", "H", "W"],
 } as const;
 
-export const _diminishedVariants = {
+const _diminishedVariants = {
   diminishedTriad,
   diminished7,
   halfDiminished7,
@@ -89,7 +89,13 @@ export const _diminishedVariants = {
   halfWholeDiminished,
 } as const;
 
-export type DiminishedVariantKey = keyof typeof _diminishedVariants;
+/** A key for one of the built-in diminished chord or scale collections. */
+export type DiminishedVariantKey =
+  | "diminishedTriad"
+  | "diminished7"
+  | "halfDiminished7"
+  | "wholeHalfDiminished"
+  | "halfWholeDiminished";
 
 /** Built-in diminished chord and scale collections keyed by collection id. */
 export const diminishedVariants: Record<DiminishedVariantKey, NoteCollection> =

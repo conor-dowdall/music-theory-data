@@ -52,6 +52,7 @@ import {
   type RootNote,
 } from "../data/labels/note-labels.ts";
 
+/** Returns a Roman numeral for a scale degree index and chord quality. */
 export function getRomanNumeralForScaleIndexAndChordQuality(
   scaleIndex: number,
   quality: ChordQuality,
@@ -62,6 +63,7 @@ export function getRomanNumeralForScaleIndexAndChordQuality(
   );
 }
 
+/** Returns a Roman numeral for a scale degree index and chord collection key. */
 export function getRomanNumeralForScaleIndexAndChordCollectionKey(
   scaleIndex: number,
   chordCollectionKey: ChordCollectionKey,

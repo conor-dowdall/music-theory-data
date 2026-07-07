@@ -2,6 +2,7 @@ const BLACK = "#000000";
 const WHITE = "#FFFFFF";
 const DEFAULT_CONTRAST_CANDIDATES = [BLACK, WHITE] as const;
 
+/** Normalizes a 3- or 6-digit hex color string to uppercase `#RRGGBB` form. */
 export function normalizeHexColor(color: string): string | null {
   const value = color.trim();
   const shorthandResult = /^#?([a-f\d])([a-f\d])([a-f\d])$/i.exec(value);
@@ -16,6 +17,7 @@ export function normalizeHexColor(color: string): string | null {
   return result ? `#${result[1].toUpperCase()}` : null;
 }
 
+/** Returns whether a string is a valid 3- or 6-digit hex color. */
 export function isHexColor(color: string): boolean {
   return normalizeHexColor(color) !== null;
 }
@@ -45,6 +47,7 @@ function getLinearizedSrgbChannel(value: number): number {
   return sRgb <= 0.03928 ? sRgb / 12.92 : Math.pow((sRgb + 0.055) / 1.055, 2.4);
 }
 
+/** Returns the WCAG relative luminance for a hex color. */
 export function getRelativeLuminance(color: string): number | null {
   const rgb = parseHexColor(color);
   if (!rgb) {
@@ -58,6 +61,7 @@ export function getRelativeLuminance(color: string): number | null {
     0.0722 * getLinearizedSrgbChannel(b);
 }
 
+/** Returns the WCAG contrast ratio for two hex colors. */
 export function getContrastRatio(
   foreground: string,
   background: string,
@@ -75,6 +79,7 @@ export function getContrastRatio(
   return (lighter + 0.05) / (darker + 0.05);
 }
 
+/** Returns the candidate hex color with the highest contrast against a background. */
 export function getBestContrastColor(
   background: string,
   candidates: readonly string[] = DEFAULT_CONTRAST_CANDIDATES,

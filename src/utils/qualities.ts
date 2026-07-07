@@ -18,6 +18,7 @@ import {
 import { createChromaticTuple } from "./chromatic.ts";
 import { isValidNoteCollectionKey } from "./note-collections.ts";
 
+/** A 12-slot chromatic tuple of interval qualities. */
 export type ChromaticIntervalQualityTuple = ChromaticTuple<IntervalQuality>;
 
 function getQualityForInterval(interval: Interval): IntervalQuality {
@@ -40,6 +41,7 @@ export function getQualitiesForIntervals(
   intervals: readonly Interval[],
   options: FillChromaticTransformIntervalsOptions,
 ): ChromaticIntervalQualityTuple;
+/** Returns only the interval qualities produced by the supplied intervals. */
 export function getQualitiesForIntervals(
   intervals: readonly Interval[],
   options?: TransformIntervalsOptions,
@@ -69,6 +71,7 @@ export function getQualitiesForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
   options: NoteCollectionKeyTransformOptions & { fillChromatic: true },
 ): ChromaticIntervalQualityTuple;
+/** Returns only the interval qualities in the requested note collection. */
 export function getQualitiesForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
   options?: NoteCollectionKeyTransformOptions,
@@ -94,6 +97,7 @@ export function getQualitiesForNoteCollection(
   collection: NoteCollection,
   options: NoteCollectionKeyTransformOptions & { fillChromatic: true },
 ): ChromaticIntervalQualityTuple;
+/** Returns only the interval qualities in the supplied note collection. */
 export function getQualitiesForNoteCollection(
   collection: NoteCollection,
   options?: NoteCollectionKeyTransformOptions,

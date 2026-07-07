@@ -7,7 +7,8 @@ import type {
   ChordProgressionChord,
 } from "../../types/chord-progressions.d.ts";
 
-type BuiltInChordProgression = ChordProgression & {
+/** A built-in progression with an assigned package category. */
+export type BuiltInChordProgression = ChordProgression & {
   readonly category: ChordProgressionCategoryKey;
 };
 
@@ -422,7 +423,8 @@ const rhythmChangesBridge: BuiltInChordProgression = {
   ],
 };
 
-const _chordProgressions = {
+/** Exact built-in chord progression data keyed by progression id. */
+export const builtInChordProgressions = {
   oneOneFiveFive,
   oneOneFiveFiveDominant7,
   oneOneFourFour,
@@ -455,13 +457,13 @@ const _chordProgressions = {
 } as const;
 
 /** A key for one of the built-in chord progression templates. */
-export type ChordProgressionKey = keyof typeof _chordProgressions;
+export type ChordProgressionKey = keyof typeof builtInChordProgressions;
 
 /** Built-in chord progression templates keyed by progression id. */
 export const chordProgressions: Record<
   ChordProgressionKey,
   BuiltInChordProgression
-> = _chordProgressions;
+> = builtInChordProgressions;
 
 const chordProgressionsByTotalBars = Object.entries(chordProgressions)
   .reduce<Map<number, ChordProgressionKey[]>>((groups, [key, progression]) => {

@@ -10,4 +10,5 @@ export * from "./note-colors.ts";
 export * from "./note-collections.ts";
 export * from "./note-names.ts";
 export * from "./rotate-array.ts";
+export * from "./root-and-note-collection.ts";
 export * from "./qualities.ts";

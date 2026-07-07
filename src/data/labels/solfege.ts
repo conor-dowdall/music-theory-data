@@ -7,17 +7,23 @@ import type {
 } from "./note-labels.ts";
 import { compoundToSimpleIntervalMap } from "./note-labels.ts";
 
+/** The preferred fixed-do syllable for the seventh note letter, B. */
 export type FixedDoSeventhSyllable = "si" | "ti";
 
+/** How fixed-do output should represent accidentals on note names. */
 export type FixedDoAccidentalPolicy =
   | "omitAccidentals"
   | "symbolAccidentals";
 
+/** Formatting options for fixed-do note-name syllables. */
 export interface FixedDoSyllableOptions {
+  /** Whether B is rendered as "si" or "ti". */
   readonly seventhSyllable?: FixedDoSeventhSyllable;
+  /** Whether accidentals are omitted or appended as symbols. */
   readonly accidentalPolicy?: FixedDoAccidentalPolicy;
 }
 
+/** A fixed-do syllable before any accidental suffix is applied. */
 export type FixedDoBaseSyllable =
   | "do"
   | "re"
@@ -27,6 +33,7 @@ export type FixedDoBaseSyllable =
   | "la"
   | FixedDoSeventhSyllable;
 
+/** Supported movable-do syllables, including common chromatic variants. */
 export type MovableDoSyllable =
   | "do"
   | "di"
@@ -49,22 +56,33 @@ export type MovableDoSyllable =
   | "ta"
   | "ti";
 
+/** Metadata for one movable-do interval spelling. */
 export interface MovableDoSyllableEntry {
+  /** The primary syllable for the interval. */
   readonly syllable: MovableDoSyllable;
+  /** Alternate syllables accepted or commonly used for the same interval. */
   readonly aliases?: readonly MovableDoSyllable[];
+  /** Optional contextual note about the spelling choice. */
   readonly note?: string;
 }
 
+/** Supported movable-do systems for interval-to-syllable conversion. */
 export type MovableDoSystem = "doBased" | "laBasedMinor";
 
+/** Display metadata for one solfege system. */
 export interface SolfegeSystemMetadata {
+  /** Full display name for the system. */
   readonly name: string;
+  /** Short label suitable for compact UI controls. */
   readonly shortName: string;
+  /** Human-readable summary of how the system assigns syllables. */
   readonly description: string;
 }
 
+/** Key for a supported fixed-do or movable-do solfege system. */
 export type SolfegeSystemKey = "fixedDo" | MovableDoSystem;
 
+/** Display metadata for the supported solfege systems. */
 export const solfegeSystemMetadata: Readonly<
   Record<SolfegeSystemKey, SolfegeSystemMetadata>
 > = {
@@ -88,11 +106,13 @@ export const solfegeSystemMetadata: Readonly<
   },
 };
 
+/** Default fixed-do formatting options used by fixed-do helpers. */
 export const defaultFixedDoSyllableOptions: Required<FixedDoSyllableOptions> = {
   seventhSyllable: "si",
   accidentalPolicy: "omitAccidentals",
 };
 
+/** Fixed-do note-letter maps for the supported B syllable conventions. */
 export const fixedDoNoteLetterToSyllableMaps: Readonly<
   Record<FixedDoSeventhSyllable, ReadonlyMap<NoteLetter, FixedDoBaseSyllable>>
 > = {
@@ -154,6 +174,7 @@ function getSimpleIntervalForMovableDo(
   return isSimpleIntervalValue(interval) ? interval : undefined;
 }
 
+/** Returns the fixed-do syllable for a note name. */
 export function getFixedDoSyllableForNoteName(
   noteName: NoteName,
   options: FixedDoSyllableOptions = {},
@@ -175,6 +196,7 @@ export function getFixedDoSyllableForNoteName(
   return baseSyllable + getAccidentalSymbolsFromNoteName(noteName);
 }
 
+/** Returns fixed-do syllables for a sequence of note names. */
 export function getFixedDoSyllablesForNoteNames(
   noteNames: readonly NoteName[],
   options: FixedDoSyllableOptions = {},
@@ -184,6 +206,7 @@ export function getFixedDoSyllablesForNoteNames(
   );
 }
 
+/** Do-based movable-do interval spellings keyed by simple interval. */
 export const movableDoIntervalToSyllableMap: ReadonlyMap<
   SimpleInterval,
   MovableDoSyllableEntry
@@ -228,6 +251,7 @@ export const movableDoIntervalToSyllableMap: ReadonlyMap<
   ["♯8", { syllable: "di", note: "Contextual raised octave." }],
 ]);
 
+/** La-based minor movable-do interval spellings keyed by simple interval. */
 export const movableLaBasedMinorIntervalToSyllableMap: ReadonlyMap<
   SimpleInterval,
   MovableDoSyllableEntry
@@ -260,6 +284,7 @@ export const movableLaBasedMinorIntervalToSyllableMap: ReadonlyMap<
   ["8", { syllable: "la" }],
 ]);
 
+/** Movable-do interval maps grouped by supported movable-do system. */
 export const movableDoIntervalSyllableMaps: Readonly<
   Record<MovableDoSystem, ReadonlyMap<SimpleInterval, MovableDoSyllableEntry>>
 > = {
@@ -267,6 +292,7 @@ export const movableDoIntervalSyllableMaps: Readonly<
   laBasedMinor: movableLaBasedMinorIntervalToSyllableMap,
 };
 
+/** Returns the movable-do entry for an interval in the requested system. */
 export function getMovableDoSyllableEntryForInterval(
   interval: Interval,
   system: MovableDoSystem = "doBased",
@@ -280,6 +306,7 @@ export function getMovableDoSyllableEntryForInterval(
   return movableDoIntervalSyllableMaps[system].get(simpleInterval);
 }
 
+/** Returns the primary movable-do syllable for an interval. */
 export function getMovableDoSyllableForInterval(
   interval: Interval,
   system: MovableDoSystem = "doBased",
@@ -287,6 +314,7 @@ export function getMovableDoSyllableForInterval(
   return getMovableDoSyllableEntryForInterval(interval, system)?.syllable;
 }
 
+/** Returns primary movable-do syllables for a sequence of intervals. */
 export function getMovableDoSyllablesForIntervals(
   intervals: readonly Interval[],
   system: MovableDoSystem = "doBased",

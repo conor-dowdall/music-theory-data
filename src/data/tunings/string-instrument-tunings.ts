@@ -1,13 +1,20 @@
 import {
+  type BassGuitarTuningKey,
   bassGuitarTuningKeysByInstrument,
   bassGuitarTunings,
 } from "./bass-guitar-tunings.ts";
 import {
+  type FolkFrettedStringTuningKey,
   folkFrettedStringTuningKeysByInstrument,
   folkFrettedStringTunings,
 } from "./folk-fretted-string-tunings.ts";
-import { guitarTuningKeys, guitarTunings } from "./guitar-tunings.ts";
 import {
+  type GuitarTuningKey,
+  guitarTuningKeys,
+  guitarTunings,
+} from "./guitar-tunings.ts";
+import {
+  type OrchestralStringTuningKey,
   orchestralStringTuningKeysByInstrument,
   orchestralStringTunings,
 } from "./orchestral-string-tunings.ts";
@@ -17,7 +24,8 @@ import type {
   StringInstrumentTuning,
 } from "../../types/string-instruments.d.ts";
 
-const _stringInstrumentTunings = {
+/** Exact built-in string instrument tuning data keyed by tuning id. */
+export const builtInStringInstrumentTunings: StringInstrumentTunings = {
   ...guitarTunings,
   ...bassGuitarTunings,
   ...folkFrettedStringTunings,
@@ -25,7 +33,11 @@ const _stringInstrumentTunings = {
 } as const;
 
 /** A key for one of the built-in string instrument tunings. */
-export type StringInstrumentTuningKey = keyof typeof _stringInstrumentTunings;
+export type StringInstrumentTuningKey =
+  | GuitarTuningKey
+  | BassGuitarTuningKey
+  | FolkFrettedStringTuningKey
+  | OrchestralStringTuningKey;
 
 /** Dictionary of all built-in string instrument tunings keyed by tuning id. */
 export type StringInstrumentTunings = Record<
@@ -35,12 +47,12 @@ export type StringInstrumentTunings = Record<
 
 /** All built-in string instrument tunings from every supported instrument family. */
 export const stringInstrumentTunings: StringInstrumentTunings =
-  _stringInstrumentTunings;
+  builtInStringInstrumentTunings;
 
 /** Ordered keys for all built-in string instrument tunings. */
 export const stringInstrumentTuningKeys: readonly StringInstrumentTuningKey[] =
   Object.keys(
-    _stringInstrumentTunings,
+    builtInStringInstrumentTunings,
   ) as readonly StringInstrumentTuningKey[];
 
 /** Metadata for a supported string instrument. */

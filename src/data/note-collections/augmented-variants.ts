@@ -55,13 +55,17 @@ const augmentedMajor7: ChordCollection = {
   patternShort: ["M3", "M3", "m3"],
 } as const;
 
-export const _augmentedVariants = {
+const _augmentedVariants = {
   augmentedTriad,
   augmented7,
   augmentedMajor7,
 } as const;
 
-export type AugmentedVariantKey = keyof typeof _augmentedVariants;
+/** A key for one of the built-in augmented-family chord collections. */
+export type AugmentedVariantKey =
+  | "augmentedTriad"
+  | "augmented7"
+  | "augmentedMajor7";
 
 /** Built-in augmented-family chord collections keyed by collection id. */
 export const augmentedVariants: Record<AugmentedVariantKey, ChordCollection> =

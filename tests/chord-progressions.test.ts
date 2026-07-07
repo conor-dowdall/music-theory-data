@@ -10,7 +10,6 @@ import {
   getChordProgressionChordNames,
   getChordProgressionChordReferencesByBar,
   getChordProgressionDirectRomanSymbols,
-  getChordProgressionDisplayRomanSymbols,
   getChordProgressionKeysForCategory,
   getChordProgressionKeysForTotalBars,
   getChordProgressionRomanSymbols,
@@ -503,23 +502,15 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     ["iim7", "V7", "IM7", "IVM7", "iiø7/vi", "V7/vi", "vi"],
   );
   assertEquals(
-    getChordProgressionDisplayRomanSymbols("oneOneFiveFiveDominant7"),
-    ["I", "V", "V7"],
-  );
-  assertEquals(
-    getChordProgressionDisplayRomanSymbols("autumnLeavesA"),
-    ["iim7", "V7", "IM7", "IVM7", "iiø7/vi", "V7/vi", "vi"],
-  );
-  assertEquals(
-    getChordProgressionDisplayRomanSymbols("autumnLeavesB"),
+    getChordProgressionRomanSymbols("autumnLeavesB"),
     ["iiø7/vi", "V7/vi", "vi", "iim7", "V7", "IM7", "IVM7"],
   );
   assertEquals(
-    getChordProgressionDisplayRomanSymbols("rhythmChangesA"),
+    getChordProgressionRomanSymbols("rhythmChangesA"),
     getChordProgressionDirectRomanSymbols("rhythmChangesA"),
   );
   assertEquals(
-    getChordProgressionDisplayRomanSymbols("rhythmChangesBridge"),
+    getChordProgressionRomanSymbols("rhythmChangesBridge"),
     getChordProgressionDirectRomanSymbols("rhythmChangesBridge"),
   );
 

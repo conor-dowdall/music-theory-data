@@ -1,19 +1,35 @@
-import { diatonicModes } from "./diatonic-modes.ts";
-import { pentatonicVariants } from "./pentatonic-variants.ts";
-import { majorVariants } from "./major-variants.ts";
-import { minorVariants } from "./minor-variants.ts";
+import type { NoteCollection } from "../../types/note-collections.d.ts";
+import { type DiatonicModeKey, diatonicModes } from "./diatonic-modes.ts";
 import {
-  type _dominantVariants,
+  type PentatonicVariantKey,
+  pentatonicVariants,
+} from "./pentatonic-variants.ts";
+import { type MajorVariantKey, majorVariants } from "./major-variants.ts";
+import { type MinorVariantKey, minorVariants } from "./minor-variants.ts";
+import {
+  type DominantVariantKey,
   dominantVariants,
 } from "./dominant-variants.ts";
-import { harmonicMinorModes } from "./harmonic-minor-modes.ts";
-import { melodicMinorModes } from "./melodic-minor-modes.ts";
 import {
-  type _diminishedVariants,
+  type HarmonicMinorModeKey,
+  harmonicMinorModes,
+} from "./harmonic-minor-modes.ts";
+import {
+  type MelodicMinorModeKey,
+  melodicMinorModes,
+} from "./melodic-minor-modes.ts";
+import {
+  type DiminishedVariantKey,
   diminishedVariants,
 } from "./diminished-variants.ts";
-import { augmentedVariants } from "./augmented-variants.ts";
-import { otherNoteCollections } from "./other-collections.ts";
+import {
+  type AugmentedVariantKey,
+  augmentedVariants,
+} from "./augmented-variants.ts";
+import {
+  type OtherNoteCollectionKey,
+  otherNoteCollections,
+} from "./other-collections.ts";
 
 export { diatonicModes } from "./diatonic-modes.ts";
 export { pentatonicVariants } from "./pentatonic-variants.ts";
@@ -25,9 +41,35 @@ export { melodicMinorModes } from "./melodic-minor-modes.ts";
 export { diminishedVariants } from "./diminished-variants.ts";
 export { augmentedVariants } from "./augmented-variants.ts";
 export { otherNoteCollections } from "./other-collections.ts";
+export type { DiatonicModeKey } from "./diatonic-modes.ts";
+export type { PentatonicVariantKey } from "./pentatonic-variants.ts";
+export type { MajorVariantKey } from "./major-variants.ts";
+export type { MinorVariantKey } from "./minor-variants.ts";
+export type { DominantVariantKey } from "./dominant-variants.ts";
+export type { HarmonicMinorModeKey } from "./harmonic-minor-modes.ts";
+export type { MelodicMinorModeKey } from "./melodic-minor-modes.ts";
+export type { DiminishedVariantKey } from "./diminished-variants.ts";
+export type { AugmentedVariantKey } from "./augmented-variants.ts";
+export type { OtherNoteCollectionKey } from "./other-collections.ts";
+
+/** A strictly typed generic string representing any key corresponding to a NoteCollection loaded in `noteCollections`. */
+export type NoteCollectionKey =
+  | DiatonicModeKey
+  | PentatonicVariantKey
+  | MajorVariantKey
+  | MinorVariantKey
+  | DominantVariantKey
+  | HarmonicMinorModeKey
+  | MelodicMinorModeKey
+  | DiminishedVariantKey
+  | AugmentedVariantKey
+  | OtherNoteCollectionKey;
 
 /** A massive, flattened dictionary of every pre-defined musical note, dyad, scale, mode, chord, and arpeggio inside the library. */
-export const noteCollections = {
+export const builtInNoteCollections: Record<
+  NoteCollectionKey,
+  NoteCollection
+> = {
   ...diatonicModes,
   ...pentatonicVariants,
   ...majorVariants,
@@ -40,27 +82,22 @@ export const noteCollections = {
   ...otherNoteCollections,
 } as const;
 
-/** A strictly typed generic string representing any key corresponding to a NoteCollection loaded in `noteCollections`. */
-export type NoteCollectionKey = keyof typeof noteCollections;
-
-type NoteCollectionKeysWithCategory<
-  TCollections extends Record<string, { readonly category: string }>,
-  TCategory extends string,
-> = {
-  [K in keyof TCollections]: TCollections[K] extends {
-    readonly category: TCategory;
-  } ? K
-    : never;
-}[keyof TCollections];
+/** A massive, flattened dictionary of every pre-defined musical note, dyad, scale, mode, chord, and arpeggio inside the library. */
+export const noteCollections: Record<NoteCollectionKey, NoteCollection> =
+  builtInNoteCollections;
 
 /** A strictly typed key for any built-in note collection categorized as a chord. */
 export type ChordCollectionKey =
-  | NoteCollectionKeysWithCategory<typeof majorVariants, "chord">
-  | NoteCollectionKeysWithCategory<typeof minorVariants, "chord">
-  | NoteCollectionKeysWithCategory<typeof _dominantVariants, "chord">
-  | NoteCollectionKeysWithCategory<typeof _diminishedVariants, "chord">
-  | NoteCollectionKeysWithCategory<typeof augmentedVariants, "chord">
-  | NoteCollectionKeysWithCategory<typeof otherNoteCollections, "chord">;
+  | MajorVariantKey
+  | MinorVariantKey
+  | "dominant7"
+  | "dominant9"
+  | "dominant11"
+  | "dominant13"
+  | "diminishedTriad"
+  | "diminished7"
+  | "halfDiminished7"
+  | AugmentedVariantKey;
 
 /** An organized, grouped dictionary splitting note collections into theoretical categories (e.g. Diatonic Modes, Major Variants). */
 export const groupedNoteCollections = {

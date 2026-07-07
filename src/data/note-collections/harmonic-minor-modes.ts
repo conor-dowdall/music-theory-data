@@ -250,7 +250,7 @@ const superLocrianDoubleFlat7: ModalScaleCollection = {
   patternShort: ["H", "W", "H", "W", "W", "H", "A2"],
 } as const;
 
-export const _harmonicMinorModes = {
+const _harmonicMinorModes = {
   harmonicMinor,
   locrianNatural6,
   ionianSharp5,
@@ -261,7 +261,14 @@ export const _harmonicMinorModes = {
 } as const;
 
 /** A strictly typed generic string representing the key of any harmonic minor mode. */
-export type HarmonicMinorModeKey = keyof typeof _harmonicMinorModes;
+export type HarmonicMinorModeKey =
+  | "harmonicMinor"
+  | "locrianNatural6"
+  | "ionianSharp5"
+  | "dorianSharp4"
+  | "phrygianDominant"
+  | "lydianSharp2"
+  | "superLocrianDoubleFlat7";
 
 /** A dictionary storing all 7 fundamental modes of the harmonic minor scale. */
 export const harmonicMinorModes: Record<

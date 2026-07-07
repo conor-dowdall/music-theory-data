@@ -204,7 +204,7 @@ const altered: ModalScaleCollection = {
   patternShort: ["H", "W", "H", "W", "W", "W", "W"],
 } as const;
 
-export const _melodicMinorModes = {
+const _melodicMinorModes = {
   melodicMinor,
   dorianFlat2,
   lydianAugmented,
@@ -215,7 +215,14 @@ export const _melodicMinorModes = {
 } as const;
 
 /** A strictly typed generic string representing the key of any melodic minor mode. */
-export type MelodicMinorModeKey = keyof typeof _melodicMinorModes;
+export type MelodicMinorModeKey =
+  | "melodicMinor"
+  | "dorianFlat2"
+  | "lydianAugmented"
+  | "lydianDominant"
+  | "mixolydianFlat6"
+  | "aeolianFlat5"
+  | "altered";
 
 /** A dictionary storing all 7 fundamental modes of the melodic minor scale. */
 export const melodicMinorModes: Record<

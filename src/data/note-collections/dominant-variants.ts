@@ -126,7 +126,7 @@ const dominantPentatonic: NonModalScaleCollection = {
   patternShort: ["W", "W", "m3", "m3"],
 } as const;
 
-export const _dominantVariants = {
+const _dominantVariants = {
   dominant7,
   dominant9,
   dominant11,
@@ -134,7 +134,13 @@ export const _dominantVariants = {
   dominantPentatonic,
 } as const;
 
-export type DominantVariantKey = keyof typeof _dominantVariants;
+/** A key for one of the built-in dominant-family chord or scale collections. */
+export type DominantVariantKey =
+  | "dominant7"
+  | "dominant9"
+  | "dominant11"
+  | "dominant13"
+  | "dominantPentatonic";
 
 /** Built-in dominant-family chord and scale collections keyed by collection id. */
 export const dominantVariants: Record<DominantVariantKey, NoteCollection> =

@@ -26,10 +26,13 @@ import { createChromaticTuple, normalizeChromaticIndex } from "./chromatic.ts";
 const INTERVAL_NUMBER_REGEX = /\d+$/;
 const INTERVAL_LABEL_REGEX = /^([^\d]*)(\d+)$/;
 
+/** Number of letter-name steps in one diatonic octave. */
 export const DIATONIC_STEPS_PER_OCTAVE = 7;
 
+/** A 12-slot chromatic tuple of interval labels. */
 export type ChromaticIntervalTuple = ChromaticTuple<Interval>;
 
+/** Returns whether an interval label represents an octave above the root. */
 export function isOctaveInterval(interval: Interval): boolean {
   return interval === "8" || interval === "♮8";
 }
@@ -197,6 +200,7 @@ export function normalizeCompoundIntervalStringArray(
     .filter((name): name is CompoundInterval => name !== undefined);
 }
 
+/** Returns the positive numeric degree from an interval label. */
 export function getIntervalLabelDegree(
   intervalLabel: string,
 ): number | undefined {
@@ -207,6 +211,7 @@ export function getIntervalLabelDegree(
   return Number.isInteger(degree) && degree > 0 ? degree : undefined;
 }
 
+/** Shifts an interval label by a number of diatonic octaves, preserving accidentals. */
 export function shiftIntervalLabelByOctaves(
   intervalLabel: string,
   octaveOffset: number,
@@ -303,9 +308,13 @@ export interface FillChromaticTransformIntervalsOptions
 /** Options for transforms that return only the supplied collection's intervals. */
 export interface SparseTransformIntervalsOptions
   extends TransformIntervalsBaseOptions {
+  /** Sparse transforms do not fill missing chromatic slots. */
   fillChromatic?: false;
+  /** Sparse transforms do not use contextual spelling from another scale. */
   mostSimilarScale?: never;
+  /** Sparse transforms do not use an absolute root pitch class. */
   rootNoteInteger?: never;
+  /** Sparse transforms cannot rotate to absolute C-indexed output. */
   rotateToRootInteger0?: never;
 }
 
@@ -314,6 +323,7 @@ export type TransformIntervalsOptions =
   | FillChromaticTransformIntervalsOptions
   | SparseTransformIntervalsOptions;
 
+/** Transform options accepted by helpers that start from a note collection key. */
 export type NoteCollectionKeyTransformOptions = Pick<
   TransformIntervalsOptions,
   | "intervalTransformation"
@@ -323,6 +333,7 @@ export type NoteCollectionKeyTransformOptions = Pick<
   | "fillChromatic"
 >;
 
+/** Transform options accepted by helpers that start from a root and note collection key. */
 export type RootAndNoteCollectionKeyTransformOptions = Pick<
   TransformIntervalsOptions,
   | "intervalTransformation"
@@ -334,10 +345,12 @@ export type RootAndNoteCollectionKeyTransformOptions = Pick<
   | "rotateToRootInteger0"
 >;
 
+/** Transforms intervals into a 12-slot chromatic interval tuple. */
 export function transformIntervals(
   intervals: readonly Interval[],
   options: FillChromaticTransformIntervalsOptions,
 ): ChromaticIntervalTuple;
+/** Transforms intervals while preserving a sparse interval list. */
 export function transformIntervals(
   intervals: readonly Interval[],
   options?: TransformIntervalsOptions,
@@ -463,6 +476,7 @@ export function getIntervalsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
   options: NoteCollectionKeyTransformOptions & { fillChromatic: true },
 ): ChromaticIntervalTuple;
+/** Retrieves sparse intervals for a given note collection key. */
 export function getIntervalsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
   options?: NoteCollectionKeyTransformOptions,
@@ -506,6 +520,7 @@ export function getExtensionsForNoteCollectionKey(
     >
     & { fillChromatic: true },
 ): ChromaticIntervalTuple;
+/** Retrieves sparse extension intervals for a given note collection key. */
 export function getExtensionsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
   options?: Omit<
@@ -544,6 +559,7 @@ export function getCompoundIntervalsForNoteCollectionKey(
     >
     & { fillChromatic: true },
 ): ChromaticIntervalTuple;
+/** Retrieves sparse compound intervals for a given note collection key. */
 export function getCompoundIntervalsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
   options?: Omit<
@@ -579,6 +595,7 @@ export function getIntervalsForRootAndNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
   options: RootAndNoteCollectionKeyTransformOptions & { fillChromatic: true },
 ): ChromaticIntervalTuple;
+/** Retrieves sparse intervals for a root note and note collection key. */
 export function getIntervalsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
@@ -630,6 +647,7 @@ export function getExtensionsForRootAndNoteCollectionKey(
     >
     & { fillChromatic: true },
 ): ChromaticIntervalTuple;
+/** Retrieves sparse extension intervals for a root note and note collection key. */
 export function getExtensionsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
@@ -672,6 +690,7 @@ export function getCompoundIntervalsForRootAndNoteCollectionKey(
     >
     & { fillChromatic: true },
 ): ChromaticIntervalTuple;
+/** Retrieves sparse compound intervals for a root note and note collection key. */
 export function getCompoundIntervalsForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,

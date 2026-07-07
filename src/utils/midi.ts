@@ -9,16 +9,21 @@ import { noteLabelCollections } from "../data/labels/note-label-collections.ts";
 import type { MidiNoteNumber } from "../types/midi.d.ts";
 import { normalizeChromaticIndex } from "./chromatic.ts";
 
+/** Returns the scientific pitch octave for a MIDI note number. */
 export function getScientificPitchOctaveForMidiNote(midi: number): number {
   return Math.floor(midi / 12) - 1;
 }
 
+/** Preferred accidental spelling for formatting MIDI notes. */
 export type MidiNoteSpellingPreference = "flat" | "sharp";
 
+/** Options for formatting a MIDI note as a note name plus octave. */
 export interface FormatMidiNoteOptions {
+  /** Whether the note name should prefer flat or sharp spellings. */
   spelling?: MidiNoteSpellingPreference;
 }
 
+/** Formats a MIDI note number as a note name with scientific pitch octave. */
 export function formatMidiNote(
   midi: number,
   options: FormatMidiNoteOptions = {},
@@ -32,6 +37,7 @@ export function formatMidiNote(
   return `${noteName}${getScientificPitchOctaveForMidiNote(midi)}`;
 }
 
+/** Appends the MIDI note's scientific pitch octave to an existing note name. */
 export function formatNoteNameWithMidiOctave(
   noteName: string,
   midi: number,

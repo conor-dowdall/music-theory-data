@@ -127,7 +127,7 @@ const major6Add9: ChordCollection = {
   patternShort: ["M3", "m3", "M2", "P4"],
 } as const;
 
-export const _majorVariants = {
+const _majorVariants = {
   major,
   major6,
   major7,
@@ -136,7 +136,14 @@ export const _majorVariants = {
   major6Add9,
 } as const;
 
-export type MajorVariantKey = keyof typeof _majorVariants;
+/** A key for one of the built-in major-family chord collections. */
+export type MajorVariantKey =
+  | "major"
+  | "major6"
+  | "major7"
+  | "major9"
+  | "majorAdd9"
+  | "major6Add9";
 
 /** Built-in major-family chord collections keyed by collection id. */
 export const majorVariants: Record<MajorVariantKey, ChordCollection> =

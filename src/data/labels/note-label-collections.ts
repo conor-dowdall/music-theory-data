@@ -5,13 +5,18 @@ export type NoteLabelGroup = ChromaticTuple<string>;
 
 /** The data interface governing an entire collection array of 12 note labels. */
 export interface NoteLabelCollection {
+  /** Human-readable collection name. */
   readonly name: string;
+  /** Compact label for constrained UI. */
   readonly shortName: string;
+  /** Whether labels describe absolute pitch classes or root-relative degrees. */
   readonly mode: ChromaticMode;
+  /** The 12 labels in chromatic order. */
   readonly labels: NoteLabelGroup;
 }
 
-const _noteLabelCollections = {
+/** Built-in 12-slot note and interval label collections. */
+export const noteLabelCollections = {
   noteNamesFlat: {
     name: "Flat Note Names",
     shortName: "Flat Notes",
@@ -79,13 +84,7 @@ const _noteLabelCollections = {
       "7",
     ],
   },
-} as const;
+} as const satisfies Record<string, NoteLabelCollection>;
 
 /** A union string of valid keys to lookup different note label collections. */
-export type NoteLabelCollectionKey = keyof typeof _noteLabelCollections;
-
-/** A dictionary holding arrays mapping integer semitones into note and interval labels for varied contexts. */
-export const noteLabelCollections: Record<
-  NoteLabelCollectionKey,
-  NoteLabelCollection
-> = _noteLabelCollections;
+export type NoteLabelCollectionKey = keyof typeof noteLabelCollections;

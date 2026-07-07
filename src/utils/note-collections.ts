@@ -25,11 +25,18 @@ export function isValidNoteCollectionKey(
   return Object.prototype.hasOwnProperty.call(noteCollections, key);
 }
 
+/** Input for resolving the absolute pitch classes in a rooted note collection. */
 export interface GetNoteCollectionPitchClassesParams {
+  /** The root note to transpose the collection from, accepting ASCII accidentals such as `Bb` or `F#`. */
   rootNote: string;
+  /** The built-in note collection key to resolve. */
   noteCollectionKey: NoteCollectionKey | string;
 }
 
+/**
+ * Returns the absolute chromatic pitch classes for a root note and note
+ * collection key, or `undefined` when either value cannot be resolved.
+ */
 export function getNoteCollectionPitchClasses({
   rootNote: rawRootNote,
   noteCollectionKey,
@@ -52,6 +59,7 @@ export function getNoteCollectionPitchClasses({
   return new Set(pitchClasses);
 }
 
+/** Display names keyed by note collection id, using each collection's `primaryName`. */
 export const noteCollectionDisplayNames: ReadonlyMap<string, string> = new Map(
   Object.entries(noteCollections).map(([collectionKey, collection]) => [
     collectionKey,
@@ -59,23 +67,37 @@ export const noteCollectionDisplayNames: ReadonlyMap<string, string> = new Map(
   ]),
 );
 
+/**
+ * Returns the display name for a note collection key, falling back to the
+ * provided key when it is not one of the built-in collections.
+ */
 export function getNoteCollectionDisplayName(
   noteCollectionKey: NoteCollectionKey | string,
 ): string {
   return noteCollectionDisplayNames.get(noteCollectionKey) ?? noteCollectionKey;
 }
 
-export interface RootedNoteCollectionIdentityInput {
+/** Input for formatting the display identity of a root note and note collection. */
+export interface RootAndNoteCollectionIdentityInput {
+  /** The root note to display, accepting ASCII accidentals such as `Bb` or `F#`. */
   rootNote: string;
+  /** The note collection key or custom collection label to display after the root. */
   noteCollectionKey: NoteCollectionKey | string;
 }
 
-export interface RootedNoteCollectionIdentity {
+/** Display metadata for a rooted note collection, suitable for app UI labels. */
+export interface RootAndNoteCollectionIdentity {
+  /** Screen-reader-friendly label that always separates the root and collection name with a space. */
   accessibleLabel: string;
+  /** The resolved collection display name or chord-symbol suffix. */
   collectionName: string;
+  /** Whether the collection was recognized as a chord collection. */
   isChord: boolean;
+  /** Compact visual label, such as `CM`, `F♯ø7`, or `B♭ Major`. */
   label: string;
+  /** The normalized root note when recognized, otherwise the original input string. */
   rootNote: string;
+  /** The visual separator used between `rootNote` and `collectionName`. */
   separator: "" | " ";
 }
 
@@ -85,10 +107,10 @@ export interface RootedNoteCollectionIdentity {
  * (e.g. "CM", "F♯ø7"), while notes, dyads, scales, and unknown collection
  * keys use a spaced display name (e.g. "C Major").
  */
-export function getRootedNoteCollectionIdentity({
+export function getIdentityForRootAndNoteCollection({
   rootNote,
   noteCollectionKey,
-}: RootedNoteCollectionIdentityInput): RootedNoteCollectionIdentity {
+}: RootAndNoteCollectionIdentityInput): RootAndNoteCollectionIdentity {
   const normalizedRootNote = normalizeRootNoteString(rootNote) ?? rootNote;
   const collection = isValidNoteCollectionKey(noteCollectionKey)
     ? noteCollections[noteCollectionKey]

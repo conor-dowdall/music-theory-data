@@ -1,9 +1,10 @@
 import { assertEquals } from "@std/assert";
+import { rootAndNoteCollection } from "../src/mod.ts";
 import {
   findNoteCollection,
+  getIdentityForRootAndNoteCollection,
   getNoteCollectionDisplayName,
   getNoteCollectionPitchClasses,
-  getRootedNoteCollectionIdentity,
   isValidNoteCollectionKey,
   noteCollectionDisplayNames,
   searchNoteCollections,
@@ -190,9 +191,9 @@ Deno.test("note collection display names are available by key", () => {
   );
 });
 
-Deno.test("rooted note collection identities format app-facing labels", () => {
+Deno.test("root and note collection identities format app-facing labels", () => {
   assertEquals(
-    getRootedNoteCollectionIdentity({
+    getIdentityForRootAndNoteCollection({
       rootNote: "Bb",
       noteCollectionKey: "ionian",
     }),
@@ -207,7 +208,7 @@ Deno.test("rooted note collection identities format app-facing labels", () => {
   );
 
   assertEquals(
-    getRootedNoteCollectionIdentity({
+    getIdentityForRootAndNoteCollection({
       rootNote: "C",
       noteCollectionKey: "major",
     }),
@@ -222,7 +223,7 @@ Deno.test("rooted note collection identities format app-facing labels", () => {
   );
 
   assertEquals(
-    getRootedNoteCollectionIdentity({
+    getIdentityForRootAndNoteCollection({
       rootNote: "F#",
       noteCollectionKey: "halfDiminished7",
     }),
@@ -237,7 +238,7 @@ Deno.test("rooted note collection identities format app-facing labels", () => {
   );
 
   assertEquals(
-    getRootedNoteCollectionIdentity({
+    getIdentityForRootAndNoteCollection({
       rootNote: "not-a-root",
       noteCollectionKey: "customCollection",
     }),
@@ -249,6 +250,42 @@ Deno.test("rooted note collection identities format app-facing labels", () => {
       rootNote: "not-a-root",
       separator: " ",
     },
+  );
+});
+
+Deno.test("root and note collection focus object exposes common derivations", () => {
+  assertEquals(
+    rootAndNoteCollection.getIdentity({
+      rootNote: "Bb",
+      noteCollectionKey: "ionian",
+    }),
+    getIdentityForRootAndNoteCollection({
+      rootNote: "Bb",
+      noteCollectionKey: "ionian",
+    }),
+  );
+  assertEquals(rootAndNoteCollection.getNoteNames("C", "major"), [
+    "C",
+    "E",
+    "G",
+  ]);
+  assertEquals(rootAndNoteCollection.getIntervals("C", "major"), [
+    "1",
+    "3",
+    "5",
+  ]);
+  assertEquals(rootAndNoteCollection.getTriads("C", "ionian"), [
+    "CM",
+    "Dm",
+    "Em",
+    "FM",
+    "GM",
+    "Am",
+    "B°",
+  ]);
+  assertEquals(
+    rootAndNoteCollection.conversions.noteNames.id,
+    "note-names",
   );
 });
 

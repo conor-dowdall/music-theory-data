@@ -31,13 +31,15 @@ const ukuleleStandardGcea: StringInstrumentTuning = {
   openMidiNotes: [67, 60, 64, 69],
 } as const;
 
-const _folkFrettedStringTunings = {
+/** Exact built-in folk and fretted string tuning data keyed by tuning id. */
+export const builtInFolkFrettedStringTunings = {
   mandolinStandardGdae,
   ukuleleStandardGcea,
 } as const;
 
 /** A key for one of the built-in folk or fretted string tunings. */
-export type FolkFrettedStringTuningKey = keyof typeof _folkFrettedStringTunings;
+export type FolkFrettedStringTuningKey =
+  keyof typeof builtInFolkFrettedStringTunings;
 
 /** Dictionary of built-in folk and fretted string tunings keyed by tuning id. */
 export type FolkFrettedStringTunings = Record<
@@ -47,12 +49,12 @@ export type FolkFrettedStringTunings = Record<
 
 /** Built-in mandolin and ukulele tunings. */
 export const folkFrettedStringTunings: FolkFrettedStringTunings =
-  _folkFrettedStringTunings;
+  builtInFolkFrettedStringTunings;
 
 /** Ordered keys for the built-in folk and fretted string tunings. */
 export const folkFrettedStringTuningKeys:
   readonly FolkFrettedStringTuningKey[] = Object.keys(
-    _folkFrettedStringTunings,
+    builtInFolkFrettedStringTunings,
   ) as readonly FolkFrettedStringTuningKey[];
 
 /** Folk and fretted string tuning keys grouped by instrument. */
