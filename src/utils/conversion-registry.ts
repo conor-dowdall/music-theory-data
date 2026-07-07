@@ -121,7 +121,7 @@ export const conversions: ConversionRegistry = {
       shortName: "Notes",
       description:
         "Returns 12 absolute pitch-class slots for the root and collection, indexed so C is slot 0.",
-      outputPreview: "C, D♭, D...",
+      outputPreview: "C, E♭, G...",
       sampleOutput: "C, D♭, D, E♭, E, F, G♭, G, A♭, A, B♭, B",
       inputKind: "rootAndNoteCollection",
       outputKind: "noteNames",
@@ -140,7 +140,7 @@ export const conversions: ConversionRegistry = {
       shortName: "Intervals",
       description:
         "Returns 12 absolute pitch-class slots labeled with intervals relative to the root, indexed so C is slot 0.",
-      outputPreview: "1, ♭2, 2...",
+      outputPreview: "1, ♭3, 5...",
       sampleOutput: "1, ♭2, 2, ♭3, 3, 4, ♭5, 5, ♭6, 6, ♭7, 7",
       inputKind: "rootAndNoteCollection",
       outputKind: "intervals",
@@ -159,7 +159,7 @@ export const conversions: ConversionRegistry = {
       shortName: "Extensions",
       description:
         "Returns 12 chromatic interval slots with simple intervals converted to extensions where applicable.",
-      outputPreview: "1, ♭9, 9...",
+      outputPreview: "1, 9, ♭13...",
       sampleOutput: "1, ♭9, 9, ♭3, 3, 11, ♭5, 5, ♭13, 13, ♭7, 7",
       inputKind: "rootAndNoteCollection",
       outputKind: "intervals",
@@ -178,7 +178,7 @@ export const conversions: ConversionRegistry = {
       shortName: "Compound",
       description:
         "Returns 12 chromatic interval slots with simple intervals converted to compound equivalents.",
-      outputPreview: "1, ♭9, 9, ♭10...",
+      outputPreview: "1, 10, 12...",
       sampleOutput: "1, ♭9, 9, ♭10, 10, 11, ♭12, 12, ♭13, 13, ♭14, 14",
       inputKind: "rootAndNoteCollection",
       outputKind: "intervals",
