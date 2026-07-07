@@ -4,6 +4,7 @@ import {
   chordProgressionCategoryGroups,
   chordProgressions,
 } from "../src/data/chord-progressions/mod.ts";
+import { chordProgression } from "../src/mod.ts";
 import type { ChordProgression } from "../src/types/chord-progressions.d.ts";
 import {
   getChordProgressionChordChangeReferences,
@@ -934,4 +935,82 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     getChordProgressionTotalDurationInBars("oneFourOneFiveSplitReturn"),
     8,
   );
+});
+
+Deno.test("chord progression focus object exposes progression derivations", () => {
+  assertEquals(chordProgression.isValidKey("autumnLeavesA"), true);
+  assertEquals(chordProgression.isValidKey("ionian"), false);
+  assertEquals(chordProgression.getDirectRomanSymbols("autumnLeavesA"), [
+    "iim7",
+    "V7",
+    "IM7",
+    "IVM7",
+    "viiø7",
+    "III7",
+    "vi",
+  ]);
+  assertEquals(chordProgression.getRomanSymbols("autumnLeavesA"), [
+    "iim7",
+    "V7",
+    "IM7",
+    "IVM7",
+    "iiø7/vi",
+    "V7/vi",
+    "vi",
+  ]);
+  assertEquals(chordProgression.getChordNames("C", "oneSixFourFive"), [
+    "CM",
+    "Am",
+    "FM",
+    "GM",
+  ]);
+  assertEquals(chordProgression.getUniqueChordNames("C", "oneFourOneFive"), [
+    "CM",
+    "FM",
+    "GM",
+  ]);
+  assertEquals(
+    chordProgression.getChordChangeReferences("C", "oneOneFiveFive"),
+    [
+      cMajorReference,
+      gMajorReference,
+    ],
+  );
+  assertEquals(
+    chordProgression.getUniqueChordReferences("C", "oneOneFiveFive"),
+    [
+      cMajorReference,
+      gMajorReference,
+    ],
+  );
+  assertEquals(
+    chordProgression.getChordReferencesByBar("C", "oneOneFiveFive"),
+    [
+      [cMajorReference],
+      [cMajorReference],
+      [gMajorReference],
+      [gMajorReference],
+    ],
+  );
+  assertEquals(
+    chordProgression.getSongChordReferences("C", "oneOneFiveFive"),
+    [
+      cMajorReference,
+      cMajorReference,
+      gMajorReference,
+      gMajorReference,
+    ],
+  );
+  assertEquals(chordProgression.getTotalDurationInBars("oneOneFiveFive"), 4);
+  assertEquals(chordProgression.getKeysForTotalBars(2), [
+    "authenticCadence",
+    "plagalCadence",
+    "deceptiveCadence",
+  ]);
+  assertEquals(chordProgression.getKeysForCategory("cadences"), [
+    "authenticCadence",
+    "plagalCadence",
+    "deceptiveCadence",
+    "andalusianCadence",
+  ]);
 });

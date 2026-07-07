@@ -1,12 +1,12 @@
 import { assert, assertEquals, assertExists } from "@std/assert";
 import {
-  conversions,
-  getAvailableRootAndNoteCollectionConversions,
-  isRootAndNoteCollectionConversionAvailable,
-  rootAndNoteCollectionConversions,
+  getAvailableRootAndNoteCollectionDisplayLayers,
+  isRootAndNoteCollectionDisplayLayerAvailable,
+  rootAndNoteCollection,
+  rootAndNoteCollectionDisplayLayers,
 } from "../src/mod.ts";
 
-const rootAndNoteCollectionConversionKeys = [
+const rootAndNoteCollectionDisplayLayerKeys = [
   "noteNames",
   "intervals",
   "extensions",
@@ -17,7 +17,7 @@ const rootAndNoteCollectionConversionKeys = [
   "romanSeventhChords",
 ] as const;
 
-const registryOptions = {
+const displayLayerOptions = {
   fillChromatic: true,
   rotateToRootInteger0: true,
 } as const;
@@ -28,23 +28,22 @@ function getOutputPreviewValues(outputPreview: string): string[] {
   ).filter(Boolean);
 }
 
-Deno.test("Conversion Registry - exposes root and note collection conversions", () => {
-  assertExists(conversions.rootAndNoteCollection);
+Deno.test("rootAndNoteCollection exposes display layers", () => {
   assertEquals(
-    rootAndNoteCollectionConversions,
-    conversions.rootAndNoteCollection,
+    rootAndNoteCollection.displayLayers,
+    rootAndNoteCollectionDisplayLayers,
   );
 
-  for (const key of rootAndNoteCollectionConversionKeys) {
-    assertExists(rootAndNoteCollectionConversions[key]);
+  for (const key of rootAndNoteCollectionDisplayLayerKeys) {
+    assertExists(rootAndNoteCollectionDisplayLayers[key]);
   }
 });
 
-Deno.test("Conversion Registry - entries include UI metadata", () => {
+Deno.test("display layer entries include UI metadata", () => {
   const ids = new Set<string>();
 
-  for (const key of rootAndNoteCollectionConversionKeys) {
-    const entry = rootAndNoteCollectionConversions[key];
+  for (const key of rootAndNoteCollectionDisplayLayerKeys) {
+    const entry = rootAndNoteCollectionDisplayLayers[key];
 
     assertExists(entry.id);
     assertExists(entry.name);
@@ -53,7 +52,6 @@ Deno.test("Conversion Registry - entries include UI metadata", () => {
     assertExists(entry.outputPreview);
     assertExists(entry.sampleOutput);
     assertEquals("example" in entry, false);
-    assertEquals(entry.inputKind, "rootAndNoteCollection");
     assertEquals(entry.outputShape, "chromatic-12");
     assertEquals(entry.outputIndexing, "absolutePitchClassC0");
     assertEquals(
@@ -63,12 +61,12 @@ Deno.test("Conversion Registry - entries include UI metadata", () => {
     ids.add(entry.id);
   }
 
-  assertEquals(ids.size, rootAndNoteCollectionConversionKeys.length);
+  assertEquals(ids.size, rootAndNoteCollectionDisplayLayerKeys.length);
 });
 
-Deno.test("Conversion Registry - output previews use real conversion values", () => {
-  for (const entry of Object.values(rootAndNoteCollectionConversions)) {
-    const result = entry.get("C", "ionian", registryOptions);
+Deno.test("display layer output previews use real display layer values", () => {
+  for (const entry of Object.values(rootAndNoteCollectionDisplayLayers)) {
+    const result = entry.get("C", "ionian", displayLayerOptions);
     const resultValues = new Set(
       result.filter((value: unknown) => value !== undefined),
     );
@@ -82,9 +80,9 @@ Deno.test("Conversion Registry - output previews use real conversion values", ()
   }
 });
 
-Deno.test("Conversion Registry - functions return chromatic tuples", () => {
-  for (const entry of Object.values(rootAndNoteCollectionConversions)) {
-    const result = entry.get("C", "ionian", registryOptions);
+Deno.test("display layer functions return chromatic tuples", () => {
+  for (const entry of Object.values(rootAndNoteCollectionDisplayLayers)) {
+    const result = entry.get("C", "ionian", displayLayerOptions);
     assertExists(result);
     assertEquals(
       result.length,
@@ -94,49 +92,67 @@ Deno.test("Conversion Registry - functions return chromatic tuples", () => {
   }
 });
 
-Deno.test("Conversion Registry - filters unavailable authored harmony conversions", () => {
-  const ionianConversionIds = getAvailableRootAndNoteCollectionConversions(
+Deno.test("available display layer helpers filter unavailable authored harmony layers", () => {
+  const ionianDisplayLayerIds = getAvailableRootAndNoteCollectionDisplayLayers(
     "C",
     "ionian",
   ).map((entry) => entry.id);
 
-  assertEquals(ionianConversionIds.includes("triads"), true);
-  assertEquals(ionianConversionIds.includes("roman-seventh-chords"), true);
+  assertEquals(ionianDisplayLayerIds.includes("triads"), true);
+  assertEquals(ionianDisplayLayerIds.includes("roman-seventh-chords"), true);
 
-  const majorChordConversionIds = getAvailableRootAndNoteCollectionConversions(
-    "C",
-    "major",
-  ).map((entry) => entry.id);
+  const majorChordDisplayLayerIds =
+    getAvailableRootAndNoteCollectionDisplayLayers(
+      "C",
+      "major",
+    ).map((entry) => entry.id);
 
-  assertEquals(majorChordConversionIds.includes("note-names"), true);
-  assertEquals(majorChordConversionIds.includes("triads"), false);
-  assertEquals(majorChordConversionIds.includes("roman-seventh-chords"), false);
+  assertEquals(majorChordDisplayLayerIds.includes("note-names"), true);
+  assertEquals(majorChordDisplayLayerIds.includes("triads"), false);
+  assertEquals(
+    majorChordDisplayLayerIds.includes("roman-seventh-chords"),
+    false,
+  );
 
   assertEquals(
-    isRootAndNoteCollectionConversionAvailable(
-      rootAndNoteCollectionConversions.triads,
+    isRootAndNoteCollectionDisplayLayerAvailable(
+      rootAndNoteCollectionDisplayLayers.triads,
       "C",
       "ionian",
     ),
     true,
   );
   assertEquals(
-    isRootAndNoteCollectionConversionAvailable(
-      rootAndNoteCollectionConversions.triads,
+    isRootAndNoteCollectionDisplayLayerAvailable(
+      rootAndNoteCollectionDisplayLayers.triads,
       "C",
       "minorPentatonic",
     ),
     false,
   );
-  assertExists(rootAndNoteCollectionConversions.triads.unavailableReason);
+  assertEquals(
+    rootAndNoteCollection.isDisplayLayerAvailable(
+      rootAndNoteCollection.displayLayers.triads,
+      "C",
+      "ionian",
+    ),
+    true,
+  );
+  assertEquals(
+    rootAndNoteCollection.getAvailableDisplayLayers("C", "major").map((entry) =>
+      entry.id
+    ).includes("triads"),
+    false,
+  );
+  assertExists(rootAndNoteCollectionDisplayLayers.triads.unavailableReason);
 });
 
-Deno.test("Conversion Registry - Options affect output length", () => {
-  const rotatedResult = rootAndNoteCollectionConversions.noteNames.get(
+Deno.test("display layer options affect output length", () => {
+  const rotatedResult = rootAndNoteCollectionDisplayLayers.noteNames.get(
     "C",
     "ionian",
     {
-      ...registryOptions,
+      ...displayLayerOptions,
       rotateRight: 1,
     },
   );
@@ -146,21 +162,21 @@ Deno.test("Conversion Registry - Options affect output length", () => {
   assertEquals(rotatedResult[1], "C");
 });
 
-Deno.test("Conversion Registry - chromatic tuples are indexed by absolute C pitch class", () => {
-  const noteNames = rootAndNoteCollectionConversions.noteNames.get(
+Deno.test("display layer chromatic tuples are indexed by absolute C pitch class", () => {
+  const noteNames = rootAndNoteCollectionDisplayLayers.noteNames.get(
     "F",
     "ionian",
-    registryOptions,
+    displayLayerOptions,
   );
-  const intervals = rootAndNoteCollectionConversions.intervals.get(
+  const intervals = rootAndNoteCollectionDisplayLayers.intervals.get(
     "F",
     "ionian",
-    registryOptions,
+    displayLayerOptions,
   );
-  const romanTriads = rootAndNoteCollectionConversions.romanTriads.get(
+  const romanTriads = rootAndNoteCollectionDisplayLayers.romanTriads.get(
     "F",
     "ionian",
-    registryOptions,
+    displayLayerOptions,
   );
 
   assertEquals(noteNames[0], "C");

@@ -39,8 +39,9 @@ npm install @musodojo/music-theory-data
 
 ```ts
 import {
+  chordProgression,
+  noteCollection,
   rootAndNoteCollection,
-  searchNoteCollections,
 } from "@musodojo/music-theory-data";
 ```
 
@@ -81,18 +82,36 @@ Direct functions such as `getNoteNamesForRootAndNoteCollectionKey` are also
 exported. The focus object is there so new developers have one obvious place to
 start.
 
+Other focused entry points cover the two next most common workflows:
+
+```ts
+import { chordProgression, noteCollection } from "@musodojo/music-theory-data";
+
+console.log(noteCollection.getIntervals("major"));
+// ["1", "3", "5"]
+
+console.log(chordProgression.getChordNames("C", "oneSixFourFive"));
+// ["CM", "Am", "FM", "GM"]
+```
+
+| Starting point                  | Use                     | Example                            |
+| ------------------------------- | ----------------------- | ---------------------------------- |
+| Root + note collection key      | `rootAndNoteCollection` | `getNoteNames("F", "ionian")`      |
+| Note collection key/search      | `noteCollection`        | `find({ query: "minor triad" })`   |
+| Chord progression key or object | `chordProgression`      | `getRomanSymbols("autumnLeavesA")` |
+
 ## What Is Included?
 
-| Area                        | Useful exports                                                                             |
-| --------------------------- | ------------------------------------------------------------------------------------------ |
-| Root + collection workflows | `rootAndNoteCollection`, `getIdentityForRootAndNoteCollection`                             |
-| Scale/chord catalog         | `noteCollections`, `groupedNoteCollections`, `searchNoteCollections`, `findNoteCollection` |
-| UI conversion layers        | `conversions.rootAndNoteCollection`, `rootAndNoteCollection.conversions`                   |
-| Chord progressions          | `chordProgressions`, `getChordProgressionRomanSymbols`, `getChordProgressionChordNames`    |
-| Theory labels               | `noteNames`, `rootNotes`, `intervalToIntegerMap`, `chordQualities`                         |
-| Parsing and normalization   | `normalizeNoteNameString`, `normalizeRootNoteString`, `normalizeIntervalString`            |
-| MIDI and colors             | `formatMidiNote`, `getNoteColorIndex`, `colorCollections`                                  |
-| String instruments          | `stringInstruments`, `stringInstrumentTunings`, tuning key groups                          |
+| Area                        | Useful exports                                                                  |
+| --------------------------- | ------------------------------------------------------------------------------- |
+| Root + collection workflows | `rootAndNoteCollection`, `getIdentityForRootAndNoteCollection`                  |
+| Scale/chord catalog         | `noteCollection`, `noteCollections`, `groupedNoteCollections`                   |
+| UI display layers           | `rootAndNoteCollection.displayLayers`                                           |
+| Chord progressions          | `chordProgression`, `chordProgressions`, `getChordProgressionRomanSymbols`      |
+| Theory labels               | `noteNames`, `rootNotes`, `intervalToIntegerMap`, `chordQualities`              |
+| Parsing and normalization   | `normalizeNoteNameString`, `normalizeRootNoteString`, `normalizeIntervalString` |
+| MIDI and colors             | `formatMidiNote`, `getNoteColorIndex`, `colorCollections`                       |
+| String instruments          | `stringInstruments`, `stringInstrumentTunings`, tuning key groups               |
 
 For the full exported API, use the
 [JSR API documentation](https://jsr.io/@musodojo/music-theory-data/doc). The
@@ -105,12 +124,16 @@ arpeggio, and chord pitch collections.
 
 ```ts
 import {
+  noteCollection,
   noteCollections,
   searchNoteCollections,
 } from "@musodojo/music-theory-data";
 
 console.log(noteCollections.ionian.primaryName);
 // "Major"
+
+console.log(noteCollection.find({ query: "minor triad" })?.primaryName);
+// "m"
 
 console.log(noteCollections.ionian.intervals);
 // ["1", "2", "3", "4", "5", "6", "7", "8"]
@@ -130,9 +153,9 @@ patterns.
 
 ## UI Display Layers
 
-The conversion registry is designed for interfaces that let users choose how to
-label the same 12 pitch-class slots: note names, intervals, extensions, chord
-names, or roman numerals.
+`rootAndNoteCollection.displayLayers` is designed for interfaces that let users
+choose how to label the same 12 pitch-class slots: note names, intervals,
+extensions, chord names, or roman numerals.
 
 ```ts
 import { rootAndNoteCollection } from "@musodojo/music-theory-data";
@@ -142,7 +165,7 @@ const options = {
   rotateToRootInteger0: true,
 } as const;
 
-const noteNames = rootAndNoteCollection.conversions.noteNames.get(
+const noteNames = rootAndNoteCollection.displayLayers.noteNames.get(
   "C",
   "ionian",
   options,
@@ -151,12 +174,12 @@ const noteNames = rootAndNoteCollection.conversions.noteNames.get(
 console.log(noteNames);
 // ["C", "D♭", "D", "E♭", "E", "F", "G♭", "G", "A♭", "A", "B♭", "B"]
 
-console.log(Object.keys(rootAndNoteCollection.conversions));
+console.log(Object.keys(rootAndNoteCollection.displayLayers));
 // ["noteNames", "intervals", "extensions", "compoundIntervals", "triads", "seventhChords", "romanTriads", "romanSeventhChords"]
 ```
 
-Each conversion entry includes metadata for app UI, including `name`,
-`shortName`, `description`, `outputPreview`, `sampleOutput`, and availability.
+Each entry includes metadata for app UI, including `name`, `shortName`,
+`description`, `outputPreview`, `sampleOutput`, and availability.
 
 ## Chord Progressions
 
@@ -165,11 +188,12 @@ keys, durations, categories, and optional analysis labels.
 
 ```ts
 import {
+  chordProgression,
   getChordProgressionChordNames,
   getChordProgressionRomanSymbols,
 } from "@musodojo/music-theory-data";
 
-console.log(getChordProgressionRomanSymbols("oneSixFourFive"));
+console.log(chordProgression.getRomanSymbols("oneSixFourFive"));
 // ["I", "vi", "IV", "V"]
 
 console.log(getChordProgressionChordNames("C", "oneSixFourFive"));

@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert";
-import { rootAndNoteCollection } from "../src/mod.ts";
+import { noteCollection, rootAndNoteCollection } from "../src/mod.ts";
 import {
   findNoteCollection,
   getIdentityForRootAndNoteCollection,
@@ -284,9 +284,69 @@ Deno.test("root and note collection focus object exposes common derivations", ()
     "B°",
   ]);
   assertEquals(
-    rootAndNoteCollection.conversions.noteNames.id,
+    rootAndNoteCollection.displayLayers.noteNames.id,
     "note-names",
   );
+});
+
+Deno.test("note collection focus object exposes catalog derivations", () => {
+  assertEquals(noteCollection.isValidKey("ionian"), true);
+  assertEquals(
+    noteCollection.find({ query: "major scale" }),
+    noteCollections.ionian,
+  );
+  assertEquals(noteCollection.search({ category: "note" }), [
+    noteCollections.root,
+  ]);
+  assertEquals(noteCollection.getDisplayName("major"), "M");
+  assertEquals(noteCollection.getIntervals("major"), ["1", "3", "5"]);
+  assertEquals(noteCollection.getExtensions("dominant9"), [
+    "1",
+    "3",
+    "5",
+    "♭7",
+    "9",
+  ]);
+  assertEquals(noteCollection.getCompoundIntervals("major"), ["1", "10", "12"]);
+  assertEquals(noteCollection.getQualities("major"), ["P1", "M3", "P5"]);
+  assertEquals(noteCollection.hasAuthoredHarmony("ionian"), true);
+  assertEquals(noteCollection.hasAuthoredHarmony("major"), false);
+  assertEquals(noteCollection.getTriads("ionian"), [
+    "M",
+    "m",
+    "m",
+    "M",
+    "M",
+    "m",
+    "°",
+  ]);
+  assertEquals(noteCollection.getSeventhChords("ionian"), [
+    "M7",
+    "m7",
+    "m7",
+    "M7",
+    "7",
+    "m7",
+    "ø7",
+  ]);
+  assertEquals(noteCollection.getRomanTriads("ionian"), [
+    "I",
+    "ii",
+    "iii",
+    "IV",
+    "V",
+    "vi",
+    "vii°",
+  ]);
+  assertEquals(noteCollection.getRomanSeventhChords("ionian"), [
+    "IM7",
+    "iim7",
+    "iiim7",
+    "IVM7",
+    "V7",
+    "vim7",
+    "viiø7",
+  ]);
 });
 
 Deno.test("non-chord collection integers are chromatic pitch classes", () => {

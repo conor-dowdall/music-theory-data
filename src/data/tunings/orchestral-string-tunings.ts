@@ -5,7 +5,7 @@ import type {
 
 export { orchestralStringsInstrumentGroup } from "./string-instrument-groups.ts";
 
-/** Instrument keys covered by the orchestral string tuning registry. */
+/** Instrument keys covered by the orchestral string tuning catalog. */
 export type OrchestralStringInstrumentKey = Extract<
   StringInstrumentKey,
   "violin" | "viola" | "cello" | "doubleBass"

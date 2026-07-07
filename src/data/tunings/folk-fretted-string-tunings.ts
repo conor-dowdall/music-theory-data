@@ -3,7 +3,7 @@ import type {
   StringInstrumentTuning,
 } from "../../types/string-instruments.d.ts";
 
-/** Instrument keys covered by the folk and fretted string tuning registry. */
+/** Instrument keys covered by the folk and fretted string tuning catalog. */
 export type FolkFrettedStringInstrumentKey = Extract<
   StringInstrumentKey,
   "mandolin" | "ukulele"
