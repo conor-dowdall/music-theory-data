@@ -39,6 +39,18 @@ export type ColorGroup = NoteColorTuple;
 /** Backwards-compatible alias for a note color collection. */
 export type ColorCollection = NoteColorCollection;
 
+/** A key for one of the built-in note color collections. */
+export type ColorCollectionKey =
+  | "musoDojo"
+  | "musoDojoRoot"
+  | "musoDojoRootAndFifth"
+  | "boomwhackers";
+
+/** Built-in note color palettes keyed by collection id. */
+export type ColorCollections = Readonly<
+  Record<ColorCollectionKey, NoteColorCollection>
+>;
+
 /** Default label collection keys for absolute and relative note color modes. */
 export type DefaultNoteColorLabelCollectionKeys =
   & Readonly<Record<NoteColorMode, NoteLabelCollectionKey>>
@@ -81,7 +93,7 @@ export function getNoteColorLabels(
 }
 
 /** Built-in absolute and relative note color palettes. */
-export const colorCollections = {
+export const colorCollections: ColorCollections = {
   musoDojo: {
     name: "Muso Dojo Colors",
     shortName: "Muso Dojo",
@@ -168,7 +180,4 @@ export const colorCollections = {
       "#CF3E96",
     ],
   },
-} as const satisfies Record<string, NoteColorCollection>;
-
-/** A key for one of the built-in note color collections. */
-export type ColorCollectionKey = keyof typeof colorCollections;
+} as const;

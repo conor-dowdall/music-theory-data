@@ -15,8 +15,22 @@ export interface NoteLabelCollection {
   readonly labels: NoteLabelGroup;
 }
 
+/** A key for one of the built-in note label collections. */
+export type NoteLabelCollectionKey =
+  | "noteNamesFlat"
+  | "noteNamesSharp"
+  | "intervalsFlat"
+  | "intervalsSharp"
+  | "extensionsFlat"
+  | "extensionsSharp";
+
+/** Built-in 12-slot note and interval label collections keyed by collection id. */
+export type NoteLabelCollections = Readonly<
+  Record<NoteLabelCollectionKey, NoteLabelCollection>
+>;
+
 /** Built-in 12-slot note and interval label collections. */
-export const noteLabelCollections = {
+export const noteLabelCollections: NoteLabelCollections = {
   noteNamesFlat: {
     name: "Flat Note Names",
     shortName: "Flat Notes",
@@ -84,7 +98,4 @@ export const noteLabelCollections = {
       "7",
     ],
   },
-} as const satisfies Record<string, NoteLabelCollection>;
-
-/** A union string of valid keys to lookup different note label collections. */
-export type NoteLabelCollectionKey = keyof typeof noteLabelCollections;
+} as const;
