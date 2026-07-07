@@ -18,9 +18,10 @@ helpers, and naming utilities.
   durations, derived roman symbols, and optional analysis labels.
 - **Labels and theory primitives:** note names, root notes, intervals, chromatic
   indexes, roman numerals, chord qualities, and conversion helpers.
-- **Application helpers:** note-name generation, interval transforms, chord
-  progression resolution, chord spelling, a UI-friendly conversion registry,
-  MIDI helpers, note colors, contrast helpers, and string instrument tunings.
+- **Application helpers:** note-name generation, rooted note-collection labels,
+  interval transforms, chord progression resolution, chord spelling, a
+  UI-friendly conversion registry, MIDI helpers, note colors, contrast helpers,
+  and string instrument tunings.
 - **TypeScript-first API:** exported data, utility functions, and types are
   designed to work well with autocomplete and compile-time checking.
 
@@ -121,6 +122,32 @@ intended for compact UI subtitles, while `sampleOutput` is a fuller
 representative output string. Authored harmony conversions are exposed for modal
 collections such as `ionian`, but are filtered out for collections that do not
 define modal harmony, such as the `major` triad.
+
+### Format A Rooted Note Collection Label
+
+```ts
+import { getRootedNoteCollectionIdentity } from "jsr:@musodojo/music-theory-data";
+
+const cMajorChord = getRootedNoteCollectionIdentity({
+  rootNote: "C",
+  noteCollectionKey: "major",
+});
+
+console.log(cMajorChord.label);
+// "CM"
+
+const bFlatMajorScale = getRootedNoteCollectionIdentity({
+  rootNote: "Bb",
+  noteCollectionKey: "ionian",
+});
+
+console.log(bFlatMajorScale.label);
+// "B♭ Major"
+```
+
+Use this helper when an app needs a compact display identity for a root plus a
+note collection. Chords use chord-symbol suffixes without a space, while notes,
+dyads, scales, and unknown collection keys use spaced display names.
 
 ### Inspect A Note Collection
 

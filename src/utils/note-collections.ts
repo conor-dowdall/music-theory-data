@@ -65,6 +65,52 @@ export function getNoteCollectionDisplayName(
   return noteCollectionDisplayNames.get(noteCollectionKey) ?? noteCollectionKey;
 }
 
+export interface RootedNoteCollectionIdentityInput {
+  rootNote: string;
+  noteCollectionKey: NoteCollectionKey | string;
+}
+
+export interface RootedNoteCollectionIdentity {
+  accessibleLabel: string;
+  collectionName: string;
+  isChord: boolean;
+  label: string;
+  rootNote: string;
+  separator: "" | " ";
+}
+
+/**
+ * Formats the display identity for a root note and note collection.
+ * Chord collections use their authored chord-symbol suffix with no separator
+ * (e.g. "CM", "F♯ø7"), while notes, dyads, scales, and unknown collection
+ * keys use a spaced display name (e.g. "C Major").
+ */
+export function getRootedNoteCollectionIdentity({
+  rootNote,
+  noteCollectionKey,
+}: RootedNoteCollectionIdentityInput): RootedNoteCollectionIdentity {
+  const normalizedRootNote = normalizeRootNoteString(rootNote) ?? rootNote;
+  const collection = isValidNoteCollectionKey(noteCollectionKey)
+    ? noteCollections[noteCollectionKey]
+    : undefined;
+  const isChord = collection?.category === "chord";
+  const collectionName = isChord
+    ? collection.symbol.chordSuffix
+    : collection?.primaryName ??
+      getNoteCollectionDisplayName(noteCollectionKey);
+  const separator = isChord ? "" : " ";
+  const label = `${normalizedRootNote}${separator}${collectionName}`;
+
+  return {
+    accessibleLabel: `${normalizedRootNote} ${collectionName}`,
+    collectionName,
+    isChord,
+    label,
+    rootNote: normalizedRootNote,
+    separator,
+  };
+}
+
 const normalizationMap = new Map<string, string>();
 
 const aliasSets: Record<string, string[]> = {

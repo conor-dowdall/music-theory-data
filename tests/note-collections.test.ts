@@ -3,6 +3,7 @@ import {
   findNoteCollection,
   getNoteCollectionDisplayName,
   getNoteCollectionPitchClasses,
+  getRootedNoteCollectionIdentity,
   isValidNoteCollectionKey,
   noteCollectionDisplayNames,
   searchNoteCollections,
@@ -186,6 +187,68 @@ Deno.test("note collection display names are available by key", () => {
   assertEquals(
     getNoteCollectionDisplayName("not-a-collection"),
     "not-a-collection",
+  );
+});
+
+Deno.test("rooted note collection identities format app-facing labels", () => {
+  assertEquals(
+    getRootedNoteCollectionIdentity({
+      rootNote: "Bb",
+      noteCollectionKey: "ionian",
+    }),
+    {
+      accessibleLabel: "B♭ Major",
+      collectionName: "Major",
+      isChord: false,
+      label: "B♭ Major",
+      rootNote: "B♭",
+      separator: " ",
+    },
+  );
+
+  assertEquals(
+    getRootedNoteCollectionIdentity({
+      rootNote: "C",
+      noteCollectionKey: "major",
+    }),
+    {
+      accessibleLabel: "C M",
+      collectionName: "M",
+      isChord: true,
+      label: "CM",
+      rootNote: "C",
+      separator: "",
+    },
+  );
+
+  assertEquals(
+    getRootedNoteCollectionIdentity({
+      rootNote: "F#",
+      noteCollectionKey: "halfDiminished7",
+    }),
+    {
+      accessibleLabel: "F♯ ø7",
+      collectionName: "ø7",
+      isChord: true,
+      label: "F♯ø7",
+      rootNote: "F♯",
+      separator: "",
+    },
+  );
+
+  assertEquals(
+    getRootedNoteCollectionIdentity({
+      rootNote: "not-a-root",
+      noteCollectionKey: "customCollection",
+    }),
+    {
+      accessibleLabel: "not-a-root customCollection",
+      collectionName: "customCollection",
+      isChord: false,
+      label: "not-a-root customCollection",
+      rootNote: "not-a-root",
+      separator: " ",
+    },
   );
 });
 
