@@ -1,4 +1,4 @@
-import { assertEquals, assertExists } from "@std/assert";
+import { assert, assertEquals, assertExists } from "@std/assert";
 import {
   conversions,
   getAvailableRootAndNoteCollectionConversions,
@@ -17,24 +17,16 @@ const rootAndNoteCollectionConversionKeys = [
   "romanSeventhChords",
 ] as const;
 
-const outputPreviews: Record<
-  typeof rootAndNoteCollectionConversionKeys[number],
-  string
-> = {
-  noteNames: "C, D♭, D...",
-  intervals: "1, ♭2, 2...",
-  extensions: "1, ♭9, 9...",
-  compoundIntervals: "1, ♭9, 9, ♭10...",
-  triads: "CM, Dm, Em...",
-  seventhChords: "CM7, Dm7, Em7...",
-  romanTriads: "I, ii, iii...",
-  romanSeventhChords: "IM7, iim7, iiim7...",
-};
-
 const registryOptions = {
   fillChromatic: true,
   rotateToRootInteger0: true,
 } as const;
+
+function getOutputPreviewValues(outputPreview: string): string[] {
+  return outputPreview.replace(/\.\.\.$/, "").split(",").map((value) =>
+    value.trim()
+  ).filter(Boolean);
+}
 
 Deno.test("Conversion Registry - exposes root and note collection conversions", () => {
   assertExists(conversions.rootAndNoteCollection);
@@ -58,7 +50,7 @@ Deno.test("Conversion Registry - entries include UI metadata", () => {
     assertExists(entry.name);
     assertExists(entry.shortName);
     assertExists(entry.description);
-    assertEquals(entry.outputPreview, outputPreviews[key]);
+    assertExists(entry.outputPreview);
     assertExists(entry.sampleOutput);
     assertEquals("example" in entry, false);
     assertEquals(entry.inputKind, "rootAndNoteCollection");
@@ -72,6 +64,22 @@ Deno.test("Conversion Registry - entries include UI metadata", () => {
   }
 
   assertEquals(ids.size, rootAndNoteCollectionConversionKeys.length);
+});
+
+Deno.test("Conversion Registry - output previews use real conversion values", () => {
+  for (const entry of Object.values(rootAndNoteCollectionConversions)) {
+    const result = entry.get("C", "ionian", registryOptions);
+    const resultValues = new Set(
+      result.filter((value: unknown) => value !== undefined),
+    );
+
+    for (const previewValue of getOutputPreviewValues(entry.outputPreview)) {
+      assert(
+        resultValues.has(previewValue),
+        `${entry.id} outputPreview value ${previewValue} should exist in C ionian output`,
+      );
+    }
+  }
 });
 
 Deno.test("Conversion Registry - functions return chromatic tuples", () => {
