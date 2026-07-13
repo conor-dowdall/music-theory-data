@@ -4,6 +4,7 @@ import {
   chordProgressionCategoryGroups,
   chordProgressions,
 } from "../src/data/chord-progressions/mod.ts";
+import type { RootNote } from "../src/data/labels/note-labels.ts";
 import { chordProgression } from "../src/mod.ts";
 import type { ChordProgression } from "../src/types/chord-progressions.d.ts";
 import {
@@ -360,6 +361,10 @@ Deno.test("built-in progression events and practice relationships stay coherent"
     [0.5, 0.5, 0.5, 0.5],
   );
   assertEquals(
+    chordProgressions.autumnLeavesC.chords[3].degree,
+    "7",
+  );
+  assertEquals(
     chordProgressions.minorCircleOfFifths.chords.slice(1).map((chord) => ({
       degree: chord.degree,
       chordCollectionKey: chord.chordCollectionKey,
@@ -610,7 +615,7 @@ Deno.test("progression helpers expose chord names and total duration", () => {
   );
   assertEquals(
     getChordProgressionDirectRomanSymbols("autumnLeavesC"),
-    ["iiø7", "V7", "im7", "♭I7", "♭viim7", "VI7", "♭VIM7", "V7", "i"],
+    ["iiø7", "V7", "im7", "VII7", "♭viim7", "VI7", "♭VIM7", "V7", "i"],
   );
   assertEquals(
     getChordProgressionDirectRomanSymbols("rhythmChangesA"),
@@ -650,7 +655,7 @@ Deno.test("progression helpers expose chord names and total duration", () => {
   );
   assertEquals(
     getChordProgressionRomanSymbols("autumnLeavesC"),
-    ["iiø7", "V7", "im7", "♭I7", "♭viim7", "VI7", "♭VIM7", "V7", "i"],
+    ["iiø7", "V7", "im7", "VII7", "♭viim7", "VI7", "♭VIM7", "V7", "i"],
   );
   assertEquals(
     getChordProgressionRomanSymbols("rhythmChangesA"),
@@ -878,7 +883,21 @@ Deno.test("progression helpers expose chord names and total duration", () => {
   );
   assertEquals(
     getChordProgressionChordNames("G", "autumnLeavesC"),
-    ["Aø7", "D7", "Gm7", "G♭7", "Fm7", "E7", "E♭M7", "D7", "Gm"],
+    ["Aø7", "D7", "Gm7", "F♯7", "Fm7", "E7", "E♭M7", "D7", "Gm"],
+  );
+  assertEquals(
+    ([
+      "D♭",
+      "E♭",
+      "F♭",
+      "G♭",
+      "A♭",
+      "B♭",
+      "C♭",
+    ] as const satisfies readonly RootNote[]).map((rootNote) =>
+      getChordProgressionChordNames(rootNote, "autumnLeavesC")[3]
+    ),
+    ["C7", "D7", "E♭7", "F7", "G7", "A7", "B♭7"],
   );
   assertEquals(
     getChordProgressionUniqueChordNames("G", "oneOneFiveFiveDominant7"),

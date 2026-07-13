@@ -20,7 +20,11 @@ import { getRomanNumeralForScaleIndexAndChordCollectionKey } from "./chords.ts";
 
 /** A resolved chord in a progression, including its root and chord collection. */
 export interface ChordProgressionChordReference {
-  /** The spelled root note for the resolved chord. */
+  /**
+   * The spelled root note for the resolved chord.
+   * This is a `NoteName`, not necessarily the narrower `RootNote`; theoretically
+   * correct transpositions may produce double accidentals.
+   */
   readonly rootNote: NoteName;
   /** The rendered chord name, combining root note and chord suffix. */
   readonly chordName: string;
