@@ -200,7 +200,7 @@ console.log(getChordProgressionChordNames("C", "oneSixFourFive"));
 // ["CM", "Am", "FM", "GM"]
 
 console.log(getChordProgressionRomanSymbols("autumnLeavesA"));
-// ["iim7", "V7", "IM7", "IVM7", "iiø7/vi", "V7/vi", "vi"]
+// ["ivm7", "♭VII7", "♭IIIM7", "♭VIM7", "iiø7", "V7", "i"]
 ```
 
 Use `getChordProgressionDirectRomanSymbols` when you want symbols derived only
