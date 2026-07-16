@@ -5,6 +5,7 @@ import type { ChordCollectionRomanSuffix, RomanNumeral } from "./chords.d.ts";
 /** A broad musical category for organizing built-in chord progressions in UIs. */
 export type ChordProgressionCategoryKey =
   | "commonLoops"
+  | "turnaroundsAndCycles"
   | "cadences"
   | "blues"
   | "jazz";

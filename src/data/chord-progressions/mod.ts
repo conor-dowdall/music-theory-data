@@ -34,14 +34,19 @@ function chord(
 
 const _chordProgressionCategories = {
   commonLoops: {
-    name: "Common Loops & Sequences",
+    name: "Common Progressions",
     description:
-      "Reusable diatonic and modal loops, pop progressions, and root-motion sequences.",
+      "Reusable diatonic and modal progressions found across popular styles.",
+  },
+  turnaroundsAndCycles: {
+    name: "Turnarounds & Cycles",
+    description:
+      "Turnarounds and longer root-motion cycles that lead back toward tonic.",
   },
   cadences: {
     name: "Cadences",
     description:
-      "Short resolution patterns for tonic arrival, plagal and deceptive motion, and the Andalusian minor pattern.",
+      "Short resolution patterns for authentic, plagal, and deceptive motion.",
   },
   blues: {
     name: "Blues Forms",
@@ -49,9 +54,9 @@ const _chordProgressionCategories = {
       "Major, minor, and jazz blues forms built from tonic, subdominant, dominant, and turnaround areas.",
   },
   jazz: {
-    name: "Jazz Cadences & Standards",
+    name: "Jazz Progressions",
     description:
-      "Seventh-chord cadences and reusable sections from foundational jazz-standard forms.",
+      "Foundational jazz cadences, substitutions, and standard-form sections.",
   },
 } as const satisfies Record<
   ChordProgressionCategoryKey,
@@ -68,6 +73,7 @@ export const chordProgressionCategories: Record<
 export const chordProgressionCategoryKeys:
   readonly ChordProgressionCategoryKey[] = [
     "commonLoops",
+    "turnaroundsAndCycles",
     "cadences",
     "blues",
     "jazz",
@@ -148,7 +154,7 @@ const oneFiveSixFour: BuiltInChordProgression = {
 };
 
 const oneSixTwoFive: BuiltInChordProgression = {
-  category: "commonLoops",
+  category: "turnaroundsAndCycles",
   chords: [
     chord("1", "major", 1),
     chord("6", "minor", 1),
@@ -158,7 +164,7 @@ const oneSixTwoFive: BuiltInChordProgression = {
 };
 
 const sixTwoFiveOne: BuiltInChordProgression = {
-  category: "commonLoops",
+  category: "turnaroundsAndCycles",
   chords: [
     chord("6", "minor", 1),
     chord("2", "minor", 1),
@@ -184,7 +190,7 @@ const oneFourOneFiveSplitReturn: BuiltInChordProgression = {
 
 const circleOfFifths: BuiltInChordProgression = {
   commonName: "Circle of Fifths Progression",
-  category: "commonLoops",
+  category: "turnaroundsAndCycles",
   chords: [
     chord("1", "major", 1),
     chord("4", "major", 1),
@@ -199,7 +205,7 @@ const circleOfFifths: BuiltInChordProgression = {
 
 const minorCircleOfFifths: BuiltInChordProgression = {
   commonName: "Minor Circle of Fifths Progression",
-  category: "commonLoops",
+  category: "turnaroundsAndCycles",
   chords: [
     chord("1", "minor", 1),
     chord("4", "minor7", 1),
@@ -213,7 +219,7 @@ const minorCircleOfFifths: BuiltInChordProgression = {
 };
 
 const pachelbelCanon: BuiltInChordProgression = {
-  commonName: "Canon Progression",
+  commonName: "Pachelbel Progression",
   category: "commonLoops",
   chords: [
     chord("1", "major", 1),
@@ -256,7 +262,7 @@ const deceptiveCadence: BuiltInChordProgression = {
 
 const andalusianCadence: BuiltInChordProgression = {
   commonName: "Andalusian Cadence",
-  category: "cadences",
+  category: "commonLoops",
   chords: [
     chord("1", "minor", 1),
     chord("♭7", "major", 1),
@@ -330,6 +336,7 @@ const jazzBlues: BuiltInChordProgression = {
 };
 
 const majorTwoFiveOne: BuiltInChordProgression = {
+  commonName: "Major ii–V–I",
   category: "jazz",
   chords: [
     chord("2", "minor7", 1),
@@ -339,6 +346,7 @@ const majorTwoFiveOne: BuiltInChordProgression = {
 };
 
 const minorTwoFiveOne: BuiltInChordProgression = {
+  commonName: "Minor ii–V–i",
   category: "jazz",
   chords: [
     chord("2", "halfDiminished7", 1),
@@ -358,7 +366,7 @@ const backdoorTwoFiveOne: BuiltInChordProgression = {
 };
 
 const autumnLeavesA: BuiltInChordProgression = {
-  commonName: "Minor Standard A",
+  commonName: "Autumn Leaves A",
   category: "jazz",
   chords: [
     chord("4", "minor7", 1),
@@ -372,7 +380,7 @@ const autumnLeavesA: BuiltInChordProgression = {
 };
 
 const autumnLeavesB: BuiltInChordProgression = {
-  commonName: "Minor Standard B",
+  commonName: "Autumn Leaves B",
   category: "jazz",
   chords: [
     chord("2", "halfDiminished7", 1),
@@ -386,7 +394,7 @@ const autumnLeavesB: BuiltInChordProgression = {
 };
 
 const autumnLeavesC: BuiltInChordProgression = {
-  commonName: "Minor Standard C",
+  commonName: "Autumn Leaves C",
   category: "jazz",
   chords: [
     chord("2", "halfDiminished7", 1),

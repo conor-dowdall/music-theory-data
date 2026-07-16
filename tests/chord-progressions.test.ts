@@ -147,7 +147,15 @@ Deno.test("progression exports are available directly", () => {
   );
   assertEquals(
     chordProgressions.pachelbelCanon.commonName,
-    "Canon Progression",
+    "Pachelbel Progression",
+  );
+  assertEquals(
+    chordProgressions.majorTwoFiveOne.commonName,
+    "Major ii–V–I",
+  );
+  assertEquals(
+    chordProgressions.minorTwoFiveOne.commonName,
+    "Minor ii–V–i",
   );
   assertEquals(
     chordProgressions.backdoorTwoFiveOne.commonName,
@@ -171,15 +179,15 @@ Deno.test("progression exports are available directly", () => {
   );
   assertEquals(
     chordProgressions.autumnLeavesA.commonName,
-    "Minor Standard A",
+    "Autumn Leaves A",
   );
   assertEquals(
     chordProgressions.autumnLeavesB.commonName,
-    "Minor Standard B",
+    "Autumn Leaves B",
   );
   assertEquals(
     chordProgressions.autumnLeavesC.commonName,
-    "Minor Standard C",
+    "Autumn Leaves C",
   );
   assertEquals(
     chordProgressions.rhythmChangesA.commonName,
@@ -190,10 +198,25 @@ Deno.test("progression exports are available directly", () => {
     "Rhythm Changes Bridge",
   );
   assertEquals(chordProgressions.authenticCadence.category, "cadences");
-  assertEquals(chordProgressions.andalusianCadence.category, "cadences");
+  assertEquals(chordProgressions.andalusianCadence.category, "commonLoops");
   assertEquals(chordProgressions.oneOneFiveFive.category, "commonLoops");
   assertEquals(chordProgressions.oneSixFourFive.category, "commonLoops");
-  assertEquals(chordProgressions.oneSixTwoFive.category, "commonLoops");
+  assertEquals(
+    chordProgressions.oneSixTwoFive.category,
+    "turnaroundsAndCycles",
+  );
+  assertEquals(
+    chordProgressions.sixTwoFiveOne.category,
+    "turnaroundsAndCycles",
+  );
+  assertEquals(
+    chordProgressions.circleOfFifths.category,
+    "turnaroundsAndCycles",
+  );
+  assertEquals(
+    chordProgressions.minorCircleOfFifths.category,
+    "turnaroundsAndCycles",
+  );
   assertEquals(chordProgressions.autumnLeavesA.category, "jazz");
   assertEquals(chordProgressions.autumnLeavesC.category, "jazz");
   assertEquals(chordProgressions.backdoorTwoFiveOne.category, "jazz");
@@ -463,9 +486,9 @@ Deno.test("progressions are grouped by musical category", () => {
   assertEquals(chordProgressionCategoryGroups, [
     {
       category: "commonLoops",
-      name: "Common Loops & Sequences",
+      name: "Common Progressions",
       description:
-        "Reusable diatonic and modal loops, pop progressions, and root-motion sequences.",
+        "Reusable diatonic and modal progressions found across popular styles.",
       progressionKeys: [
         "oneOneFiveFive",
         "oneOneFiveFiveDominant7",
@@ -475,24 +498,32 @@ Deno.test("progressions are grouped by musical category", () => {
         "oneFourOneFive",
         "oneSixFourFive",
         "oneFiveSixFour",
+        "oneFourOneFiveSplitReturn",
+        "pachelbelCanon",
+        "andalusianCadence",
+      ],
+    },
+    {
+      category: "turnaroundsAndCycles",
+      name: "Turnarounds & Cycles",
+      description:
+        "Turnarounds and longer root-motion cycles that lead back toward tonic.",
+      progressionKeys: [
         "oneSixTwoFive",
         "sixTwoFiveOne",
-        "oneFourOneFiveSplitReturn",
         "circleOfFifths",
         "minorCircleOfFifths",
-        "pachelbelCanon",
       ],
     },
     {
       category: "cadences",
       name: "Cadences",
       description:
-        "Short resolution patterns for tonic arrival, plagal and deceptive motion, and the Andalusian minor pattern.",
+        "Short resolution patterns for authentic, plagal, and deceptive motion.",
       progressionKeys: [
         "authenticCadence",
         "plagalCadence",
         "deceptiveCadence",
-        "andalusianCadence",
       ],
     },
     {
@@ -509,9 +540,9 @@ Deno.test("progressions are grouped by musical category", () => {
     },
     {
       category: "jazz",
-      name: "Jazz Cadences & Standards",
+      name: "Jazz Progressions",
       description:
-        "Seventh-chord cadences and reusable sections from foundational jazz-standard forms.",
+        "Foundational jazz cadences, substitutions, and standard-form sections.",
       progressionKeys: [
         "majorTwoFiveOne",
         "minorTwoFiveOne",
@@ -811,7 +842,6 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     "authenticCadence",
     "plagalCadence",
     "deceptiveCadence",
-    "andalusianCadence",
   ]);
   assertEquals(getChordProgressionKeysForCategory("commonLoops"), [
     "oneOneFiveFive",
@@ -822,12 +852,15 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     "oneFourOneFive",
     "oneSixFourFive",
     "oneFiveSixFour",
+    "oneFourOneFiveSplitReturn",
+    "pachelbelCanon",
+    "andalusianCadence",
+  ]);
+  assertEquals(getChordProgressionKeysForCategory("turnaroundsAndCycles"), [
     "oneSixTwoFive",
     "sixTwoFiveOne",
-    "oneFourOneFiveSplitReturn",
     "circleOfFifths",
     "minorCircleOfFifths",
-    "pachelbelCanon",
   ]);
   assertEquals(getChordProgressionKeysForCategory("jazz"), [
     "majorTwoFiveOne",
@@ -1217,6 +1250,5 @@ Deno.test("chord progression focus object exposes progression derivations", () =
     "authenticCadence",
     "plagalCadence",
     "deceptiveCadence",
-    "andalusianCadence",
   ]);
 });
