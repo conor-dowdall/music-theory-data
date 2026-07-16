@@ -34,6 +34,12 @@ const fMajorReference = {
   chordCollectionKey: "major",
 } as const;
 
+const fMinorReference = {
+  rootNote: "F",
+  chordName: "Fm",
+  chordCollectionKey: "minor",
+} as const;
+
 const gMajorReference = {
   rootNote: "G",
   chordName: "GM",
@@ -67,6 +73,7 @@ const aMinorReference = {
 Deno.test("progression key validation reflects the current dataset", () => {
   assertEquals(isValidChordProgressionKey("authenticCadence"), true);
   assertEquals(isValidChordProgressionKey("plagalCadence"), true);
+  assertEquals(isValidChordProgressionKey("minorPlagalCadence"), true);
   assertEquals(isValidChordProgressionKey("deceptiveCadence"), true);
   assertEquals(isValidChordProgressionKey("andalusianCadence"), true);
   assertEquals(isValidChordProgressionKey("oneSixFourFive"), true);
@@ -97,15 +104,19 @@ Deno.test("progression key validation reflects the current dataset", () => {
 Deno.test("progression exports are available directly", () => {
   assertEquals(
     chordProgressions.authenticCadence.commonName,
-    "Authentic Cadence",
+    "Authentic Cadence (V7–I)",
   );
   assertEquals(
     chordProgressions.plagalCadence.commonName,
-    "Plagal Cadence",
+    "Plagal Cadence (IV–I)",
+  );
+  assertEquals(
+    chordProgressions.minorPlagalCadence.commonName,
+    "Minor Plagal Cadence (iv–I)",
   );
   assertEquals(
     chordProgressions.deceptiveCadence.commonName,
-    "Deceptive Cadence",
+    "Deceptive Cadence (V7–vi)",
   );
   assertEquals(
     chordProgressions.andalusianCadence.commonName,
@@ -198,6 +209,7 @@ Deno.test("progression exports are available directly", () => {
     "Rhythm Changes Bridge",
   );
   assertEquals(chordProgressions.authenticCadence.category, "cadences");
+  assertEquals(chordProgressions.minorPlagalCadence.category, "cadences");
   assertEquals(chordProgressions.andalusianCadence.category, "commonLoops");
   assertEquals(chordProgressions.oneOneFiveFive.category, "commonLoops");
   assertEquals(chordProgressions.oneSixFourFive.category, "commonLoops");
@@ -402,8 +414,14 @@ Deno.test("built-in progression events and practice relationships stay coherent"
     chordProgressions.sixTwoFiveOne.chords,
   );
   assertEquals(
-    chordProgressions.oneFourFiveDominant7Six.chords.slice(-2),
-    chordProgressions.deceptiveCadence.chords,
+    chordProgressions.oneFourFiveDominant7Six.chords.slice(-2).map((chord) => ({
+      degree: chord.degree,
+      chordCollectionKey: chord.chordCollectionKey,
+    })),
+    chordProgressions.deceptiveCadence.chords.map((chord) => ({
+      degree: chord.degree,
+      chordCollectionKey: chord.chordCollectionKey,
+    })),
   );
   assertEquals(
     chordProgressions.rhythmChangesA.chords.slice(0, 4),
@@ -430,14 +448,6 @@ Deno.test("built-in progression events and practice relationships stay coherent"
 Deno.test("progressions are grouped by exact total bars", () => {
   assertEquals(chordProgressionBarGroups, [
     {
-      totalBars: 2,
-      progressionKeys: [
-        "authenticCadence",
-        "plagalCadence",
-        "deceptiveCadence",
-      ],
-    },
-    {
       totalBars: 4,
       progressionKeys: [
         "oneOneFiveFive",
@@ -448,9 +458,13 @@ Deno.test("progressions are grouped by exact total bars", () => {
         "oneFourOneFive",
         "oneSixFourFive",
         "oneFiveSixFour",
+        "andalusianCadence",
         "oneSixTwoFive",
         "sixTwoFiveOne",
-        "andalusianCadence",
+        "authenticCadence",
+        "plagalCadence",
+        "minorPlagalCadence",
+        "deceptiveCadence",
         "majorTwoFiveOne",
         "minorTwoFiveOne",
         "backdoorTwoFiveOne",
@@ -460,9 +474,9 @@ Deno.test("progressions are grouped by exact total bars", () => {
       totalBars: 8,
       progressionKeys: [
         "oneFourOneFiveSplitReturn",
+        "pachelbelCanon",
         "circleOfFifths",
         "minorCircleOfFifths",
-        "pachelbelCanon",
         "autumnLeavesA",
         "autumnLeavesB",
         "autumnLeavesC",
@@ -519,10 +533,11 @@ Deno.test("progressions are grouped by musical category", () => {
       category: "cadences",
       name: "Cadences",
       description:
-        "Short resolution patterns for authentic, plagal, and deceptive motion.",
+        "Focused four-bar practice loops for authentic, plagal, minor plagal, and deceptive resolution.",
       progressionKeys: [
         "authenticCadence",
         "plagalCadence",
+        "minorPlagalCadence",
         "deceptiveCadence",
       ],
     },
@@ -567,9 +582,28 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     ["IV", "I"],
   );
   assertEquals(
+    getChordProgressionDirectRomanSymbols("minorPlagalCadence"),
+    ["iv", "I"],
+  );
+  assertEquals(
     getChordProgressionDirectRomanSymbols("deceptiveCadence"),
     ["V7", "vi"],
   );
+  for (
+    const key of [
+      "authenticCadence",
+      "plagalCadence",
+      "minorPlagalCadence",
+      "deceptiveCadence",
+    ] as const
+  ) {
+    const formula = getChordProgressionDirectRomanSymbols(key).join("–");
+    assertEquals(
+      chordProgressions[key].commonName?.endsWith(`(${formula})`),
+      true,
+      `${key} title must include its exact Roman formula`,
+    );
+  }
   assertEquals(
     getChordProgressionDirectRomanSymbols("andalusianCadence"),
     ["i", "♭VII", "♭VI", "V"],
@@ -798,11 +832,7 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     "Invalid chord degree: M3",
   );
 
-  assertEquals(getChordProgressionKeysForTotalBars(2), [
-    "authenticCadence",
-    "plagalCadence",
-    "deceptiveCadence",
-  ]);
+  assertEquals(getChordProgressionKeysForTotalBars(2), []);
   assertEquals(getChordProgressionKeysForTotalBars(4), [
     "oneOneFiveFive",
     "oneOneFiveFiveDominant7",
@@ -812,18 +842,22 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     "oneFourOneFive",
     "oneSixFourFive",
     "oneFiveSixFour",
+    "andalusianCadence",
     "oneSixTwoFive",
     "sixTwoFiveOne",
-    "andalusianCadence",
+    "authenticCadence",
+    "plagalCadence",
+    "minorPlagalCadence",
+    "deceptiveCadence",
     "majorTwoFiveOne",
     "minorTwoFiveOne",
     "backdoorTwoFiveOne",
   ]);
   assertEquals(getChordProgressionKeysForTotalBars(8), [
     "oneFourOneFiveSplitReturn",
+    "pachelbelCanon",
     "circleOfFifths",
     "minorCircleOfFifths",
-    "pachelbelCanon",
     "autumnLeavesA",
     "autumnLeavesB",
     "autumnLeavesC",
@@ -841,6 +875,7 @@ Deno.test("progression helpers expose chord names and total duration", () => {
   assertEquals(getChordProgressionKeysForCategory("cadences"), [
     "authenticCadence",
     "plagalCadence",
+    "minorPlagalCadence",
     "deceptiveCadence",
   ]);
   assertEquals(getChordProgressionKeysForCategory("commonLoops"), [
@@ -1032,6 +1067,8 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     getChordProgressionChordReferencesByBar("C", "authenticCadence"),
     [
       [gDominant7Reference],
+      [gDominant7Reference],
+      [cMajorReference],
       [cMajorReference],
     ],
   );
@@ -1039,6 +1076,17 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     getChordProgressionChordReferencesByBar("C", "plagalCadence"),
     [
       [fMajorReference],
+      [fMajorReference],
+      [cMajorReference],
+      [cMajorReference],
+    ],
+  );
+  assertEquals(
+    getChordProgressionChordReferencesByBar("C", "minorPlagalCadence"),
+    [
+      [fMinorReference],
+      [fMinorReference],
+      [cMajorReference],
       [cMajorReference],
     ],
   );
@@ -1046,6 +1094,8 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     getChordProgressionChordReferencesByBar("C", "deceptiveCadence"),
     [
       [gDominant7Reference],
+      [gDominant7Reference],
+      [aMinorReference],
       [aMinorReference],
     ],
   );
@@ -1140,10 +1190,14 @@ Deno.test("progression helpers expose chord names and total duration", () => {
   assertEquals(getChordProgressionTotalDurationInBars("jazzBlues"), 12);
   assertEquals(
     getChordProgressionTotalDurationInBars("authenticCadence"),
-    2,
+    4,
   );
-  assertEquals(getChordProgressionTotalDurationInBars("plagalCadence"), 2);
-  assertEquals(getChordProgressionTotalDurationInBars("deceptiveCadence"), 2);
+  assertEquals(getChordProgressionTotalDurationInBars("plagalCadence"), 4);
+  assertEquals(
+    getChordProgressionTotalDurationInBars("minorPlagalCadence"),
+    4,
+  );
+  assertEquals(getChordProgressionTotalDurationInBars("deceptiveCadence"), 4);
   assertEquals(getChordProgressionTotalDurationInBars("oneOneFourFour"), 4);
   assertEquals(
     getChordProgressionTotalDurationInBars("oneOneFourFiveDominant7"),
@@ -1241,14 +1295,11 @@ Deno.test("chord progression focus object exposes progression derivations", () =
     ],
   );
   assertEquals(chordProgression.getTotalDurationInBars("oneOneFiveFive"), 4);
-  assertEquals(chordProgression.getKeysForTotalBars(2), [
-    "authenticCadence",
-    "plagalCadence",
-    "deceptiveCadence",
-  ]);
+  assertEquals(chordProgression.getKeysForTotalBars(2), []);
   assertEquals(chordProgression.getKeysForCategory("cadences"), [
     "authenticCadence",
     "plagalCadence",
+    "minorPlagalCadence",
     "deceptiveCadence",
   ]);
 });

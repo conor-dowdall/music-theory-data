@@ -32,6 +32,11 @@ function chord(
   };
 }
 
+/**
+ * This catalog is a focused set of recognizable, loop-ready harmonic
+ * progressions for instrumental practice. Entries are practical realizations
+ * of musical concepts, not an exhaustive taxonomy of music theory.
+ */
 const _chordProgressionCategories = {
   commonLoops: {
     name: "Common Progressions",
@@ -46,7 +51,7 @@ const _chordProgressionCategories = {
   cadences: {
     name: "Cadences",
     description:
-      "Short resolution patterns for authentic, plagal, and deceptive motion.",
+      "Focused four-bar practice loops for authentic, plagal, minor plagal, and deceptive resolution.",
   },
   blues: {
     name: "Blues Forms",
@@ -78,6 +83,8 @@ export const chordProgressionCategoryKeys:
     "blues",
     "jazz",
   ];
+
+// Common Progressions
 
 const oneOneFiveFive: BuiltInChordProgression = {
   category: "commonLoops",
@@ -153,6 +160,49 @@ const oneFiveSixFour: BuiltInChordProgression = {
   ],
 };
 
+const oneFourOneFiveSplitReturn: BuiltInChordProgression = {
+  category: "commonLoops",
+  chords: [
+    chord("1", "major", 1),
+    chord("4", "major", 1),
+    chord("1", "major", 1),
+    chord("5", "major", 1),
+    chord("1", "major", 1),
+    chord("4", "major", 1),
+    chord("1", "major", 0.5),
+    chord("5", "major", 0.5),
+    chord("1", "major", 1),
+  ],
+};
+
+const pachelbelCanon: BuiltInChordProgression = {
+  commonName: "Pachelbel Progression",
+  category: "commonLoops",
+  chords: [
+    chord("1", "major", 1),
+    chord("5", "major", 1),
+    chord("6", "minor", 1),
+    chord("3", "minor", 1),
+    chord("4", "major", 1),
+    chord("1", "major", 1),
+    chord("4", "major", 1),
+    chord("5", "major", 1),
+  ],
+};
+
+const andalusianCadence: BuiltInChordProgression = {
+  commonName: "Andalusian Cadence",
+  category: "commonLoops",
+  chords: [
+    chord("1", "minor", 1),
+    chord("♭7", "major", 1),
+    chord("♭6", "major", 1),
+    chord("5", "major", 1),
+  ],
+};
+
+// Turnarounds & Cycles
+
 const oneSixTwoFive: BuiltInChordProgression = {
   category: "turnaroundsAndCycles",
   chords: [
@@ -169,21 +219,6 @@ const sixTwoFiveOne: BuiltInChordProgression = {
     chord("6", "minor", 1),
     chord("2", "minor", 1),
     chord("5", "major", 1),
-    chord("1", "major", 1),
-  ],
-};
-
-const oneFourOneFiveSplitReturn: BuiltInChordProgression = {
-  category: "commonLoops",
-  chords: [
-    chord("1", "major", 1),
-    chord("4", "major", 1),
-    chord("1", "major", 1),
-    chord("5", "major", 1),
-    chord("1", "major", 1),
-    chord("4", "major", 1),
-    chord("1", "major", 0.5),
-    chord("5", "major", 0.5),
     chord("1", "major", 1),
   ],
 };
@@ -218,58 +253,45 @@ const minorCircleOfFifths: BuiltInChordProgression = {
   ],
 };
 
-const pachelbelCanon: BuiltInChordProgression = {
-  commonName: "Pachelbel Progression",
-  category: "commonLoops",
-  chords: [
-    chord("1", "major", 1),
-    chord("5", "major", 1),
-    chord("6", "minor", 1),
-    chord("3", "minor", 1),
-    chord("4", "major", 1),
-    chord("1", "major", 1),
-    chord("4", "major", 1),
-    chord("5", "major", 1),
-  ],
-};
+// Cadences
 
 const authenticCadence: BuiltInChordProgression = {
-  commonName: "Authentic Cadence",
+  commonName: "Authentic Cadence (V7–I)",
   category: "cadences",
   chords: [
-    chord("5", "dominant7", 1),
-    chord("1", "major", 1),
+    chord("5", "dominant7", 2),
+    chord("1", "major", 2),
   ],
 };
 
 const plagalCadence: BuiltInChordProgression = {
-  commonName: "Plagal Cadence",
+  commonName: "Plagal Cadence (IV–I)",
   category: "cadences",
   chords: [
-    chord("4", "major", 1),
-    chord("1", "major", 1),
+    chord("4", "major", 2),
+    chord("1", "major", 2),
+  ],
+};
+
+const minorPlagalCadence: BuiltInChordProgression = {
+  commonName: "Minor Plagal Cadence (iv–I)",
+  category: "cadences",
+  chords: [
+    chord("4", "minor", 2),
+    chord("1", "major", 2),
   ],
 };
 
 const deceptiveCadence: BuiltInChordProgression = {
-  commonName: "Deceptive Cadence",
+  commonName: "Deceptive Cadence (V7–vi)",
   category: "cadences",
   chords: [
-    chord("5", "dominant7", 1),
-    chord("6", "minor", 1),
+    chord("5", "dominant7", 2),
+    chord("6", "minor", 2),
   ],
 };
 
-const andalusianCadence: BuiltInChordProgression = {
-  commonName: "Andalusian Cadence",
-  category: "commonLoops",
-  chords: [
-    chord("1", "minor", 1),
-    chord("♭7", "major", 1),
-    chord("♭6", "major", 1),
-    chord("5", "major", 1),
-  ],
-};
+// Blues Forms
 
 const twelveBarBlues: BuiltInChordProgression = {
   commonName: "12-Bar Blues",
@@ -334,6 +356,8 @@ const jazzBlues: BuiltInChordProgression = {
     chord("5", "dominant7", 0.5),
   ],
 };
+
+// Jazz Progressions
 
 const majorTwoFiveOne: BuiltInChordProgression = {
   commonName: "Major ii–V–I",
@@ -452,16 +476,17 @@ export const builtInChordProgressions = {
   oneFourOneFive,
   oneSixFourFive,
   oneFiveSixFour,
+  oneFourOneFiveSplitReturn,
+  pachelbelCanon,
+  andalusianCadence,
   oneSixTwoFive,
   sixTwoFiveOne,
-  oneFourOneFiveSplitReturn,
   circleOfFifths,
   minorCircleOfFifths,
-  pachelbelCanon,
   authenticCadence,
   plagalCadence,
+  minorPlagalCadence,
   deceptiveCadence,
-  andalusianCadence,
   twelveBarBlues,
   twelveBarBluesQuickChange,
   minorBlues,
