@@ -6,12 +6,12 @@ import {
 import type {
   ChordCollectionSymbolRendering,
   RomanNumeralCase,
-} from "../../types/note-collections.d.ts";
+} from "../../types/note-collections.ts";
 
 export type {
   ChordCollectionSymbolRendering,
   RomanNumeralCase,
-} from "../../types/note-collections.d.ts";
+} from "../../types/note-collections.ts";
 
 const _triadChordQualities = ["M", "m", "°", "+"] as const;
 

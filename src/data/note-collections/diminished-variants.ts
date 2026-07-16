@@ -2,7 +2,7 @@ import type {
   ChordCollection,
   ModalScaleCollection,
   NoteCollection,
-} from "../../types/note-collections.d.ts";
+} from "../../types/note-collections.ts";
 
 const diminishedTriad: ChordCollection = {
   category: "chord",

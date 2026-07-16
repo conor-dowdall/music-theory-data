@@ -12,7 +12,7 @@ import type {
   ChordProgressionChord,
   ChordProgressionRomanAccidental,
   ChordProgressionRomanSymbol,
-} from "../types/chord-progressions.d.ts";
+} from "../types/chord-progressions.ts";
 import type { NoteName, RootNote } from "../data/labels/note-labels.ts";
 import type { ChordCollectionKey } from "../data/note-collections/mod.ts";
 import { getNoteNamesForRootAndIntervals } from "./note-names.ts";

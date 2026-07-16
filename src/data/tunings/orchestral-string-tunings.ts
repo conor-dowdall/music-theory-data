@@ -1,7 +1,7 @@
 import type {
   StringInstrumentKey,
   StringInstrumentTuning,
-} from "../../types/string-instruments.d.ts";
+} from "../../types/string-instruments.ts";
 
 export { orchestralStringsInstrumentGroup } from "./string-instrument-groups.ts";
 

@@ -8,7 +8,7 @@ import {
   type NoteCollectionKey,
   noteCollections,
 } from "../data/note-collections/mod.ts";
-import type { NoteCollection } from "../types/note-collections.d.ts";
+import type { NoteCollection } from "../types/note-collections.ts";
 import {
   type FillChromaticTransformIntervalsOptions,
   type NoteCollectionKeyTransformOptions,

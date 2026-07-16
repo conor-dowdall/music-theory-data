@@ -1,4 +1,4 @@
-import type { StringInstrumentTuning } from "../../types/string-instruments.d.ts";
+import type { StringInstrumentTuning } from "../../types/string-instruments.ts";
 
 const guitarStandardE: StringInstrumentTuning = {
   instrument: "guitar",

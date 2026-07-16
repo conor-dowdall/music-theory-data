@@ -10,7 +10,7 @@ import {
 import type {
   CollectionCategory,
   NoteCollection,
-} from "../types/note-collections.d.ts";
+} from "../types/note-collections.ts";
 import { normalizeChromaticIndex } from "./chromatic.ts";
 import { normalizeRootNoteString } from "./note-names.ts";
 

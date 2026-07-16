@@ -5,7 +5,7 @@ import type {
   RootNote,
 } from "../data/labels/note-labels.ts";
 import type { NoteCollectionKey } from "../data/note-collections/mod.ts";
-import type { RomanSeventhChord, RomanTriad } from "../types/chords.d.ts";
+import type { RomanSeventhChord, RomanTriad } from "../types/chords.ts";
 import {
   getRomanSeventhChordsForRootAndNoteCollectionKey,
   getRomanTriadsForRootAndNoteCollectionKey,

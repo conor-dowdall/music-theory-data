@@ -1,4 +1,4 @@
-import type { MidiNoteNumber } from "./midi.d.ts";
+import type { MidiNoteNumber } from "./midi.ts";
 
 /**
  * One or more MIDI note numbers for open strings or courses.

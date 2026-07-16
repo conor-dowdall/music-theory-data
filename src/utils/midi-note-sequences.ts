@@ -1,5 +1,5 @@
 import type { Interval } from "../data/labels/note-labels.ts";
-import type { MidiNoteNumber, MidiNoteSequence } from "../types/midi.d.ts";
+import type { MidiNoteNumber, MidiNoteSequence } from "../types/midi.ts";
 import { filterOutOctaveIntervals } from "./intervals.ts";
 import { getMidiForNoteMidiAndInterval } from "./midi.ts";
 

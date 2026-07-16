@@ -21,7 +21,7 @@ import type {
   RomanTriad,
   SeventhChord,
   Triad,
-} from "../types/chords.d.ts";
+} from "../types/chords.ts";
 import { rotateArrayLeft, rotateArrayRight } from "./rotate-array.ts";
 import {
   type HarmonicMinorModeKey,

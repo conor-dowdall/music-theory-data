@@ -1,4 +1,4 @@
-import type { ModalScaleCollection } from "../../types/note-collections.d.ts";
+import type { ModalScaleCollection } from "../../types/note-collections.ts";
 
 const ionian: ModalScaleCollection = {
   category: "scale",

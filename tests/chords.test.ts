@@ -24,7 +24,7 @@ import type {
   RomanTriad,
   SeventhChord,
   Triad,
-} from "../src/types/chords.d.ts";
+} from "../src/types/chords.ts";
 
 Deno.test("chord quality and chord collection rendering stay distinct", () => {
   assertEquals(getChordQualityChordCollectionKey("+M7"), "augmentedMajor7");

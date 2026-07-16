@@ -1,7 +1,7 @@
 import type {
   StringInstrumentKey,
   StringInstrumentTuning,
-} from "../../types/string-instruments.d.ts";
+} from "../../types/string-instruments.ts";
 
 /** Instrument keys covered by the folk and fretted string tuning catalog. */
 export type FolkFrettedStringInstrumentKey = Extract<

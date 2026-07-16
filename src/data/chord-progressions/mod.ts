@@ -5,7 +5,7 @@ import type {
   ChordProgressionCategoryKey,
   ChordProgressionCategoryMetadata,
   ChordProgressionChord,
-} from "../../types/chord-progressions.d.ts";
+} from "../../types/chord-progressions.ts";
 
 /** A built-in progression with an assigned package category. */
 export type BuiltInChordProgression = ChordProgression & {

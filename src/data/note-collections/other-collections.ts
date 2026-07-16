@@ -3,7 +3,7 @@ import type {
   NonModalScaleCollection,
   NoteCollection,
   NoteOnlyCollection,
-} from "../../types/note-collections.d.ts";
+} from "../../types/note-collections.ts";
 
 const root: NoteOnlyCollection = {
   category: "note",

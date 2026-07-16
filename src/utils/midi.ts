@@ -6,7 +6,7 @@ import {
 } from "../data/labels/note-labels.ts";
 import { noteLabelCollections } from "../data/labels/note-label-collections.ts";
 
-import type { MidiNoteNumber } from "../types/midi.d.ts";
+import type { MidiNoteNumber } from "../types/midi.ts";
 import { normalizeChromaticIndex } from "./chromatic.ts";
 
 /** Returns the scientific pitch octave for a MIDI note number. */

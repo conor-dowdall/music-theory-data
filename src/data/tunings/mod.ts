@@ -11,4 +11,4 @@ export type {
   StringInstrumentGroup,
   StringInstrumentKey,
   StringInstrumentTuning,
-} from "../../types/string-instruments.d.ts";
+} from "../../types/string-instruments.ts";

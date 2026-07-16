@@ -5,8 +5,12 @@ import {
   chordProgressions,
 } from "../src/data/chord-progressions/mod.ts";
 import type { RootNote } from "../src/data/labels/note-labels.ts";
-import { chordProgression } from "../src/mod.ts";
-import type { ChordProgression } from "../src/types/chord-progressions.d.ts";
+import {
+  type ChordProgression,
+  chordProgression,
+  type ChordProgressionChord,
+  type ChordProgressionDegree,
+} from "../src/mod.ts";
 import {
   getChordProgressionChordChangeReferences,
   getChordProgressionChordNames,
@@ -69,6 +73,18 @@ const aMinorReference = {
   chordName: "Am",
   chordCollectionKey: "minor",
 } as const;
+
+Deno.test("chord progression authoring types are exported publicly", () => {
+  const degree: ChordProgressionDegree = "♭7";
+  const chord: ChordProgressionChord = {
+    degree,
+    chordCollectionKey: "dominant7",
+    durationInBars: 1,
+  };
+  const progression: ChordProgression = { chords: [chord] };
+
+  assertEquals(progression.chords[0], chord);
+});
 
 Deno.test("progression key validation reflects the current dataset", () => {
   assertEquals(isValidChordProgressionKey("authenticCadence"), true);

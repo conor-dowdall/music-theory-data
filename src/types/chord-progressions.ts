@@ -1,6 +1,6 @@
 import type { Interval, NoteAccidental } from "../data/labels/note-labels.ts";
 import type { ChordCollectionKey } from "../data/note-collections/mod.ts";
-import type { ChordCollectionRomanSuffix, RomanNumeral } from "./chords.d.ts";
+import type { ChordCollectionRomanSuffix, RomanNumeral } from "./chords.ts";
 
 /** A broad musical category for organizing built-in chord progressions in UIs. */
 export type ChordProgressionCategoryKey =

@@ -1,4 +1,4 @@
-import type { ChordCollection } from "../../types/note-collections.d.ts";
+import type { ChordCollection } from "../../types/note-collections.ts";
 
 const minor: ChordCollection = {
   category: "chord",

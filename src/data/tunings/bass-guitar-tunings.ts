@@ -1,7 +1,7 @@
 import type {
   StringInstrumentKey,
   StringInstrumentTuning,
-} from "../../types/string-instruments.d.ts";
+} from "../../types/string-instruments.ts";
 
 /** Instrument keys covered by the bass guitar tuning catalog. */
 export type BassGuitarInstrumentKey = Extract<

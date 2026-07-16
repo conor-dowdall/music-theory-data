@@ -22,7 +22,7 @@ import type {
   StringInstrumentFamily,
   StringInstrumentKey,
   StringInstrumentTuning,
-} from "../../types/string-instruments.d.ts";
+} from "../../types/string-instruments.ts";
 
 /** Exact built-in string instrument tuning data keyed by tuning id. */
 export const builtInStringInstrumentTunings: StringInstrumentTunings = {

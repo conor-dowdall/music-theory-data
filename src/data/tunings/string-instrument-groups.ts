@@ -1,4 +1,4 @@
-import type { StringInstrumentGroup } from "../../types/string-instruments.d.ts";
+import type { StringInstrumentGroup } from "../../types/string-instruments.ts";
 
 /** Curated group for guitar tunings and fretboard use cases. */
 export const guitarInstrumentGroup: StringInstrumentGroup = {

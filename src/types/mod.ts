@@ -1,5 +1,5 @@
-export type * from "./chords.d.ts";
-export type * from "./chord-progressions.d.ts";
-export type * from "./midi.d.ts";
-export type * from "./note-collections.d.ts";
-export type * from "./string-instruments.d.ts";
+export type * from "./chords.ts";
+export type * from "./chord-progressions.ts";
+export type * from "./midi.ts";
+export type * from "./note-collections.ts";
+export type * from "./string-instruments.ts";

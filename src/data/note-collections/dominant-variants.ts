@@ -2,7 +2,7 @@ import type {
   ChordCollection,
   NonModalScaleCollection,
   NoteCollection,
-} from "../../types/note-collections.d.ts";
+} from "../../types/note-collections.ts";
 
 const dominant7: ChordCollection = {
   category: "chord",
