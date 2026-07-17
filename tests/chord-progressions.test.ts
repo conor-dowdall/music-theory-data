@@ -4,7 +4,13 @@ import {
   chordProgressionCategoryGroups,
   chordProgressions,
 } from "../src/data/chord-progressions/mod.ts";
-import type { RootNote } from "../src/data/labels/note-labels.ts";
+import {
+  noteNameToIntegerMap,
+  type RootNote,
+  rootNotes,
+  rootNotesSet,
+  rootNoteToIntegerMap,
+} from "../src/data/labels/note-labels.ts";
 import {
   type ChordProgression,
   chordProgression,
@@ -28,48 +34,64 @@ import {
 
 const cMajorReference = {
   rootNote: "C",
+  practicalRootNote: "C",
+  pitchClass: 0,
   chordName: "CM",
   chordCollectionKey: "major",
 } as const;
 
 const fMajorReference = {
   rootNote: "F",
+  practicalRootNote: "F",
+  pitchClass: 5,
   chordName: "FM",
   chordCollectionKey: "major",
 } as const;
 
 const fMinorReference = {
   rootNote: "F",
+  practicalRootNote: "F",
+  pitchClass: 5,
   chordName: "Fm",
   chordCollectionKey: "minor",
 } as const;
 
 const gMajorReference = {
   rootNote: "G",
+  practicalRootNote: "G",
+  pitchClass: 7,
   chordName: "GM",
   chordCollectionKey: "major",
 } as const;
 
 const cDominant7Reference = {
   rootNote: "C",
+  practicalRootNote: "C",
+  pitchClass: 0,
   chordName: "C7",
   chordCollectionKey: "dominant7",
 } as const;
 
 const fDominant7Reference = {
   rootNote: "F",
+  practicalRootNote: "F",
+  pitchClass: 5,
   chordName: "F7",
   chordCollectionKey: "dominant7",
 } as const;
 
 const gDominant7Reference = {
   rootNote: "G",
+  practicalRootNote: "G",
+  pitchClass: 7,
   chordName: "G7",
   chordCollectionKey: "dominant7",
 } as const;
 
 const aMinorReference = {
   rootNote: "A",
+  practicalRootNote: "A",
+  pitchClass: 9,
   chordName: "Am",
   chordCollectionKey: "minor",
 } as const;
@@ -413,7 +435,7 @@ Deno.test("built-in progression events and practice relationships stay coherent"
   );
   assertEquals(
     chordProgressions.autumnLeavesC.chords[3].degree,
-    "7",
+    "♭1",
   );
   assertEquals(
     chordProgressions.minorCircleOfFifths.chords.slice(1).map((chord) => ({
@@ -696,7 +718,7 @@ Deno.test("progression helpers expose chord names and total duration", () => {
   );
   assertEquals(
     getChordProgressionDirectRomanSymbols("autumnLeavesC"),
-    ["iiø7", "V7", "im7", "VII7", "♭viim7", "VI7", "♭VIM7", "V7", "i"],
+    ["iiø7", "V7", "im7", "♭I7", "♭viim7", "VI7", "♭VIM7", "V7", "i"],
   );
   assertEquals(
     getChordProgressionDirectRomanSymbols("rhythmChangesA"),
@@ -736,7 +758,7 @@ Deno.test("progression helpers expose chord names and total duration", () => {
   );
   assertEquals(
     getChordProgressionRomanSymbols("autumnLeavesC"),
-    ["iiø7", "V7", "im7", "VII7", "♭viim7", "VI7", "♭VIM7", "V7", "i"],
+    ["iiø7", "V7", "im7", "♭I7", "♭viim7", "VI7", "♭VIM7", "V7", "i"],
   );
   assertEquals(
     getChordProgressionRomanSymbols("rhythmChangesA"),
@@ -781,6 +803,34 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     ],
   );
 
+  const cSharpJazzBluesSharpFourReference =
+    getChordProgressionChordChangeReferences("C♯", "jazzBlues")[4];
+  assertEquals(cSharpJazzBluesSharpFourReference, {
+    rootNote: "F𝄪",
+    practicalRootNote: "G",
+    pitchClass: rootNoteToIntegerMap.get("G"),
+    chordName: "F𝄪°7",
+    chordCollectionKey: "diminished7",
+  });
+  assertEquals(getChordProgressionRomanSymbols("jazzBlues")[4], "♯iv°7");
+
+  const flatOneProgression = {
+    chords: [
+      { degree: "♭1", chordCollectionKey: "major", durationInBars: 1 },
+    ],
+  } satisfies ChordProgression;
+  assertEquals(
+    getChordProgressionChordChangeReferences("B♭", flatOneProgression),
+    [{
+      rootNote: "B𝄫",
+      practicalRootNote: "A",
+      pitchClass: rootNoteToIntegerMap.get("A"),
+      chordName: "B𝄫M",
+      chordCollectionKey: "major",
+    }],
+  );
+  assertEquals(getChordProgressionRomanSymbols(flatOneProgression), ["♭I"]);
+
   const richerChordCollectionProgression = {
     chords: [
       { degree: "1", chordCollectionKey: "major6", durationInBars: 1 },
@@ -820,6 +870,8 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     ),
     [{
       rootNote: "F𝄪",
+      practicalRootNote: "G",
+      pitchClass: 7,
       chordName: "F𝄪M",
       chordCollectionKey: "major",
     }],
@@ -967,7 +1019,7 @@ Deno.test("progression helpers expose chord names and total duration", () => {
   );
   assertEquals(
     getChordProgressionChordNames("G", "autumnLeavesC"),
-    ["Aø7", "D7", "Gm7", "F♯7", "Fm7", "E7", "E♭M7", "D7", "Gm"],
+    ["Aø7", "D7", "Gm7", "G♭7", "Fm7", "E7", "E♭M7", "D7", "Gm"],
   );
   assertEquals(
     ([
@@ -981,7 +1033,7 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     ] as const satisfies readonly RootNote[]).map((rootNote) =>
       getChordProgressionChordNames(rootNote, "autumnLeavesC")[3]
     ),
-    ["C7", "D7", "E♭7", "F7", "G7", "A7", "B♭7"],
+    ["D𝄫7", "E𝄫7", "F𝄫7", "G𝄫7", "A𝄫7", "B𝄫7", "C𝄫7"],
   );
   assertEquals(
     getChordProgressionUniqueChordNames("G", "oneOneFiveFiveDominant7"),
@@ -999,16 +1051,22 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     [
       {
         rootNote: "G",
+        practicalRootNote: "G",
+        pitchClass: 7,
         chordName: "GM",
         chordCollectionKey: "major",
       },
       {
         rootNote: "D",
+        practicalRootNote: "D",
+        pitchClass: 2,
         chordName: "DM",
         chordCollectionKey: "major",
       },
       {
         rootNote: "D",
+        practicalRootNote: "D",
+        pitchClass: 2,
         chordName: "D7",
         chordCollectionKey: "dominant7",
       },
@@ -1244,6 +1302,35 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     getChordProgressionTotalDurationInBars("oneFourOneFiveSplitReturn"),
     8,
   );
+});
+
+Deno.test("all built-in progression references preserve practical-root pitch", () => {
+  for (const rootNote of rootNotes) {
+    for (const progression of Object.values(chordProgressions)) {
+      for (
+        const reference of getChordProgressionChordChangeReferences(
+          rootNote,
+          progression,
+        )
+      ) {
+        const theoreticalPitchClass = noteNameToIntegerMap.get(
+          reference.rootNote,
+        );
+        const practicalPitchClass = rootNoteToIntegerMap.get(
+          reference.practicalRootNote,
+        );
+        const context = `${rootNote}: ${reference.chordName}`;
+
+        assertEquals(
+          rootNotesSet.has(reference.practicalRootNote),
+          true,
+          context,
+        );
+        assertEquals(reference.pitchClass, theoreticalPitchClass, context);
+        assertEquals(practicalPitchClass, theoreticalPitchClass, context);
+      }
+    }
+  }
 });
 
 Deno.test("chord progression focus object exposes progression derivations", () => {

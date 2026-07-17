@@ -1,10 +1,17 @@
-import { assertEquals } from "@std/assert";
+import { assertEquals, assertThrows } from "@std/assert";
 import {
   getNoteIntegerFromString,
   normalizeNoteNameString,
   normalizeNoteNameStringArray,
   normalizeRootNoteStringArray,
-} from "../src/utils/note-names.ts";
+  type NoteName,
+  noteNames,
+  noteNameToIntegerMap,
+  resolvePracticalRootNote,
+  rootNotes,
+  rootNotesSet,
+  rootNoteToIntegerMap,
+} from "../src/mod.ts";
 
 Deno.test("natural notes", () => {
   assertEquals(getNoteIntegerFromString("C"), 0);
@@ -151,4 +158,41 @@ Deno.test("normalize array of potential root note strings", () => {
   // E## normalizes to E𝄪, which IS NOT a valid RootNote.
   const expected = ["C", "D♭", "B♯"];
   assertEquals(normalizeRootNoteStringArray(input), expected);
+});
+
+Deno.test("practical root resolution preserves every note name's pitch", () => {
+  for (const noteName of noteNames) {
+    const practicalRootNote = resolvePracticalRootNote(noteName);
+
+    assertEquals(rootNotesSet.has(practicalRootNote), true, noteName);
+    assertEquals(
+      rootNoteToIntegerMap.get(practicalRootNote),
+      noteNameToIntegerMap.get(noteName),
+      noteName,
+    );
+  }
+});
+
+Deno.test("practical root resolution preserves every existing root spelling", () => {
+  for (const rootNote of rootNotes) {
+    assertEquals(resolvePracticalRootNote(rootNote), rootNote);
+  }
+});
+
+Deno.test("practical root resolution deterministically respells theoretical notes", () => {
+  assertEquals(resolvePracticalRootNote("F𝄪"), "G");
+  assertEquals(resolvePracticalRootNote("B𝄫"), "A");
+  assertEquals(resolvePracticalRootNote("B𝄪"), "C♯");
+  assertEquals(resolvePracticalRootNote("E𝄫"), "D");
+  assertEquals(resolvePracticalRootNote("C♯"), "C♯");
+  assertEquals(resolvePracticalRootNote("D♭"), "D♭");
+  assertEquals(resolvePracticalRootNote("C♮"), "C");
+});
+
+Deno.test("practical root resolution rejects missing canonical mappings", () => {
+  assertThrows(
+    () => resolvePracticalRootNote("not-a-note" as NoteName),
+    Error,
+    "No chromatic index mapping",
+  );
 });

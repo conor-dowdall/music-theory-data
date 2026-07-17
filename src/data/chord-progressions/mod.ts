@@ -424,7 +424,7 @@ const autumnLeavesC: BuiltInChordProgression = {
     chord("2", "halfDiminished7", 1),
     chord("5", "dominant7", 1),
     chord("1", "minor7", 0.5),
-    chord("7", "dominant7", 0.5),
+    chord("♭1", "dominant7", 0.5),
     chord("♭7", "minor7", 0.5),
     chord("6", "dominant7", 0.5),
     chord("♭6", "major7", 1),

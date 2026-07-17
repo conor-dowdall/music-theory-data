@@ -5,6 +5,7 @@ import {
   chordProgressions,
 } from "../data/chord-progressions/mod.ts";
 import { getChordCollectionChordSuffix } from "../data/chords/mod.ts";
+import { noteNameToIntegerMap } from "../data/labels/note-labels.ts";
 import type {
   ChordProgression,
   ChordProgressionAnalysisRomanSymbol,
@@ -14,8 +15,12 @@ import type {
   ChordProgressionRomanSymbol,
 } from "../types/chord-progressions.ts";
 import type { NoteName, RootNote } from "../data/labels/note-labels.ts";
+import type { ChromaticIndex } from "../data/chromatic.ts";
 import type { ChordCollectionKey } from "../data/note-collections/mod.ts";
-import { getNoteNamesForRootAndIntervals } from "./note-names.ts";
+import {
+  getNoteNamesForRootAndIntervals,
+  resolvePracticalRootNote,
+} from "./note-names.ts";
 import { getRomanNumeralForScaleIndexAndChordCollectionKey } from "./chords.ts";
 
 /** A resolved chord in a progression, including its root and chord collection. */
@@ -26,6 +31,10 @@ export interface ChordProgressionChordReference {
    * correct transpositions may produce double accidentals.
    */
   readonly rootNote: NoteName;
+  /** A supported playable/editable root with the same pitch class as `rootNote`. */
+  readonly practicalRootNote: RootNote;
+  /** The definitive chromatic pitch class shared by both root spellings. */
+  readonly pitchClass: ChromaticIndex;
   /** The rendered chord name, combining root note and chord suffix. */
   readonly chordName: string;
   /** The chord collection key that supplies the chord quality. */
@@ -59,8 +68,17 @@ function createChordProgressionChordReference(
   chord: ChordProgressionChord,
   chordRootNote: NoteName,
 ): ChordProgressionChordReference {
+  const pitchClass = noteNameToIntegerMap.get(chordRootNote);
+  if (pitchClass === undefined) {
+    throw new Error(
+      `No chromatic index mapping for note name: ${chordRootNote}`,
+    );
+  }
+
   return {
     rootNote: chordRootNote,
+    practicalRootNote: resolvePracticalRootNote(chordRootNote),
+    pitchClass,
     chordName: chordRootNote +
       getChordCollectionChordSuffix(chord.chordCollectionKey),
     chordCollectionKey: chord.chordCollectionKey,

@@ -12,6 +12,14 @@ const publicTypeDeclarations = {
   "note-collections": ["NoteCollection"],
   "string-instruments": ["StringInstrumentTuning"],
 } as const;
+const publicUtilityDeclarations = {
+  "chord-progressions": [
+    "ChordProgressionChordReference",
+    "practicalRootNote",
+    "pitchClass",
+  ],
+  "note-names": ["resolvePracticalRootNote"],
+} as const;
 
 function assertPublicTypesEmitted(moduleFormat: "esm" | "script") {
   const entryDeclarationPath =
@@ -24,6 +32,12 @@ function assertPublicTypesEmitted(moduleFormat: "esm" | "script") {
   if (!entryDeclaration.includes("types/mod")) {
     throw new Error(
       `${entryDeclarationPath} does not publicly export the type index`,
+    );
+  }
+
+  if (!entryDeclaration.includes("utils/mod")) {
+    throw new Error(
+      `${entryDeclarationPath} does not publicly export the utility index`,
     );
   }
 
@@ -43,6 +57,36 @@ function assertPublicTypesEmitted(moduleFormat: "esm" | "script") {
     for (const typeName of typeNames) {
       if (!typeDeclaration.includes(` ${typeName}`)) {
         throw new Error(`${typeDeclarationPath} does not emit ${typeName}`);
+      }
+    }
+  }
+
+  const utilityIndexDeclarationPath =
+    `${npmOutputDirectory}/${moduleFormat}/src/utils/mod.d.ts`;
+  const utilityIndexDeclaration = Deno.readTextFileSync(
+    utilityIndexDeclarationPath,
+  );
+
+  for (
+    const [moduleName, declarationNames] of Object.entries(
+      publicUtilityDeclarations,
+    )
+  ) {
+    if (!utilityIndexDeclaration.includes(moduleName)) {
+      throw new Error(
+        `${utilityIndexDeclarationPath} does not export ${moduleName}`,
+      );
+    }
+
+    const utilityDeclarationPath =
+      `${npmOutputDirectory}/${moduleFormat}/src/utils/${moduleName}.d.ts`;
+    const utilityDeclaration = Deno.readTextFileSync(utilityDeclarationPath);
+
+    for (const declarationName of declarationNames) {
+      if (!utilityDeclaration.includes(declarationName)) {
+        throw new Error(
+          `${utilityDeclarationPath} does not emit ${declarationName}`,
+        );
       }
     }
   }

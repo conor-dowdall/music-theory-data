@@ -1,5 +1,6 @@
 import {
   enharmonicNoteNameGroups,
+  enharmonicRootNoteGroups,
   type Interval,
   intervalToIntegerMap,
   type NoteLetter,
@@ -10,6 +11,7 @@ import {
   type RootNote,
   type RootNoteInteger,
   rootNotesSet,
+  rootNoteToIntegerMap,
 } from "../data/labels/note-labels.ts";
 import type { ChromaticIndex, ChromaticTuple } from "../data/chromatic.ts";
 import {
@@ -112,6 +114,66 @@ export function normalizeRootNoteStringArray(
   return names
     .map((name) => normalizeRootNoteString(name))
     .filter((name): name is RootNote => name !== undefined);
+}
+
+type PracticalRootSpelling = "flat" | "natural" | "sharp";
+
+function getPracticalRootSpelling(rootNote: RootNote): PracticalRootSpelling {
+  if (rootNote.includes("♭")) return "flat";
+  if (rootNote.includes("♯")) return "sharp";
+  return "natural";
+}
+
+/**
+ * Resolves a theoretically spelled note name to a supported practical root.
+ *
+ * Existing `RootNote` spellings are preserved. Double sharps prefer a sharp,
+ * then natural, then flat root; double flats prefer flat, then natural, then
+ * sharp. Explicit naturals prefer a natural root. If no preference matches,
+ * the first root in the existing `enharmonicRootNoteGroups` order is used.
+ *
+ * The returned spelling may sacrifice theoretical notation, but it always
+ * preserves the input note's chromatic pitch class. A missing canonical
+ * mapping throws instead of returning an unrelated fallback.
+ */
+export function resolvePracticalRootNote(noteName: NoteName): RootNote {
+  if (rootNotesSet.has(noteName as RootNote)) {
+    return noteName as RootNote;
+  }
+
+  const pitchClass = noteNameToIntegerMap.get(noteName);
+  if (pitchClass === undefined) {
+    throw new Error(`No chromatic index mapping for note name: ${noteName}`);
+  }
+
+  const candidates =
+    enharmonicRootNoteGroups[pitchClass] as readonly RootNote[];
+  const spellingPreferences: readonly PracticalRootSpelling[] = noteName
+      .includes("𝄪")
+    ? ["sharp", "natural", "flat"]
+    : noteName.includes("𝄫")
+    ? ["flat", "natural", "sharp"]
+    : noteName.includes("♮")
+    ? ["natural"]
+    : [];
+
+  const practicalRootNote = spellingPreferences
+    .flatMap((spelling) =>
+      candidates.filter((candidate) =>
+        getPracticalRootSpelling(candidate) === spelling
+      )
+    )[0] ?? candidates[0];
+
+  if (
+    practicalRootNote === undefined ||
+    rootNoteToIntegerMap.get(practicalRootNote) !== pitchClass
+  ) {
+    throw new Error(
+      `No pitch-preserving practical root for note name: ${noteName}`,
+    );
+  }
+
+  return practicalRootNote;
 }
 
 /**
