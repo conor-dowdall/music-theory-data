@@ -41,12 +41,58 @@ export interface ChordProgressionChordReference {
   readonly chordCollectionKey: ChordCollectionKey;
 }
 
+/** One authored progression event with all root, analysis, and timing data resolved. */
+export interface ResolvedChordProgressionEvent {
+  /** Zero-based position in the authored `progression.chords` array. */
+  readonly eventIndex: number;
+  /** The original authored chord event. */
+  readonly chord: ChordProgressionChord;
+  /** The chord resolved for the requested tonic. */
+  readonly reference: ChordProgressionChordReference;
+  /** The tonic-relative symbol derived directly from degree and chord quality. */
+  readonly directRomanSymbol: ChordProgressionRomanSymbol;
+  /** The display/analysis symbol, preferring authored functional analysis. */
+  readonly romanSymbol: ChordProgressionAnalysisRomanSymbol;
+  /** Absolute event start measured from the beginning of the progression. */
+  readonly startInBars: number;
+  /** Authored duration, measured in meter-neutral bars. */
+  readonly durationInBars: number;
+}
+
+/** A bar-relative grouping of resolved progression events. */
+export interface ChordProgressionBar {
+  /** Zero-based bar position in the resolved progression. */
+  readonly barIndex: number;
+  /** Absolute start of this bar in the progression. */
+  readonly startInBars: number;
+  /** One full bar, except when the progression ends with a partial bar. */
+  readonly durationInBars: number;
+  /**
+   * Resolved event indexes that overlap this bar, in authored order.
+   * An event lasting multiple bars therefore appears in multiple bar groups.
+   */
+  readonly eventIndexes: readonly number[];
+}
+
+/** A canonical, duration-aware realization of an authored chord progression. */
+export interface ResolvedChordProgression {
+  /** Ordered events preserving every authored chord relationship by index. */
+  readonly events: readonly ResolvedChordProgressionEvent[];
+  /** Events grouped by each bar they overlap. */
+  readonly bars: readonly ChordProgressionBar[];
+  /** Sum of all authored event durations. */
+  readonly totalDurationInBars: number;
+  /** Smallest equal bar subdivision that represents every event duration. */
+  readonly requiredBarDivision: number;
+}
+
 interface ResolvedChordProgressionChordReference {
   readonly chord: ChordProgressionChord;
   readonly reference: ChordProgressionChordReference;
 }
 
 const BAR_DURATION_EPSILON = 0.000000001;
+const MAX_REQUIRED_BAR_DIVISION = 1_000_000;
 const DIATONIC_SCALE_DEGREES = 7;
 const INTERVAL_LABEL_REGEX = /^(𝄫|♭|♮|♯|𝄪)?(\d+)$/;
 
@@ -97,14 +143,100 @@ function getResolvedChordProgressionChordReferences(
     progression.chords.map((chord) => chord.degree),
   );
 
-  return progression.chords.flatMap((chord, index) => {
+  return progression.chords.map((chord, index) => {
     const chordRootNote = chordRootNotes[index];
-    if (!chordRootNote) return [];
+    if (!chordRootNote) {
+      throw new Error(`Unable to resolve chord root for event ${index}`);
+    }
 
-    return [{
+    return {
       chord,
       reference: createChordProgressionChordReference(chord, chordRootNote),
-    }];
+    };
+  });
+}
+
+function greatestCommonDivisor(left: number, right: number): number {
+  let a = Math.abs(left);
+  let b = Math.abs(right);
+
+  while (b > 0) {
+    const next = a % b;
+    a = b;
+    b = next;
+  }
+
+  return a || 1;
+}
+
+function leastCommonMultiple(left: number, right: number): number {
+  const result = (left / greatestCommonDivisor(left, right)) * right;
+  if (!Number.isSafeInteger(result)) {
+    throw new Error("Chord progression requires an unsafe bar division");
+  }
+  return result;
+}
+
+function getSimpleFractionDenominator(value: number): number {
+  let previousNumerator = 0;
+  let numerator = 1;
+  let previousDenominator = 1;
+  let denominator = 0;
+  let remainderValue = value;
+
+  for (let iteration = 0; iteration < 64; iteration += 1) {
+    const whole = Math.floor(remainderValue);
+    const nextNumerator = whole * numerator + previousNumerator;
+    const nextDenominator = whole * denominator + previousDenominator;
+
+    if (nextDenominator > MAX_REQUIRED_BAR_DIVISION) break;
+
+    if (
+      Math.abs(value - nextNumerator / nextDenominator) <=
+        BAR_DURATION_EPSILON
+    ) {
+      return nextDenominator;
+    }
+
+    previousNumerator = numerator;
+    numerator = nextNumerator;
+    previousDenominator = denominator;
+    denominator = nextDenominator;
+
+    const fractionalRemainder = remainderValue - whole;
+    if (fractionalRemainder <= Number.EPSILON) break;
+    remainderValue = 1 / fractionalRemainder;
+  }
+
+  throw new Error(
+    `Chord duration cannot be represented with a practical bar division: ${value}`,
+  );
+}
+
+function createResolvedChordProgressionBars(
+  events: readonly ResolvedChordProgressionEvent[],
+  totalDurationInBars: number,
+): ChordProgressionBar[] {
+  const barCount = Math.ceil(totalDurationInBars - BAR_DURATION_EPSILON);
+
+  return Array.from({ length: barCount }, (_, barIndex) => {
+    const startInBars = barIndex;
+    const endInBars = Math.min(barIndex + 1, totalDurationInBars);
+
+    return {
+      barIndex,
+      startInBars,
+      durationInBars: endInBars - startInBars,
+      eventIndexes: events.flatMap((event) => {
+        const eventEndInBars = event.startInBars + event.durationInBars;
+        const startsBeforeBarEnds = event.startInBars <
+          endInBars - BAR_DURATION_EPSILON;
+        const endsAfterBarStarts = eventEndInBars >
+          startInBars + BAR_DURATION_EPSILON;
+        const overlapsBar = startsBeforeBarEnds && endsAfterBarStarts;
+        return overlapsBar ? [event.eventIndex] : [];
+      }),
+    };
   });
 }
 
@@ -157,15 +289,66 @@ export function getChordProgressionChordDirectRomanSymbol(
   return `${accidental}${romanSymbol}` as ChordProgressionRomanSymbol;
 }
 
+/**
+ * Resolves a progression into one canonical event timeline for the requested
+ * tonic. The result keeps authored chords, concrete chord references, Roman
+ * analysis, and meter-neutral timing together instead of in parallel arrays.
+ */
+export function resolveChordProgression(
+  rootNote: RootNote,
+  progressionOrKey: ChordProgression | ChordProgressionKey,
+): ResolvedChordProgression {
+  let startInBars = 0;
+  let requiredBarDivision = 1;
+
+  const events = getResolvedChordProgressionChordReferences(
+    rootNote,
+    progressionOrKey,
+  ).map(({ chord, reference }, eventIndex) => {
+    if (
+      !Number.isFinite(chord.durationInBars) ||
+      chord.durationInBars <= BAR_DURATION_EPSILON
+    ) {
+      throw new Error(
+        `Invalid duration for chord progression event ${eventIndex}: ${chord.durationInBars}`,
+      );
+    }
+
+    requiredBarDivision = leastCommonMultiple(
+      requiredBarDivision,
+      getSimpleFractionDenominator(chord.durationInBars),
+    );
+
+    const directRomanSymbol = getChordProgressionChordDirectRomanSymbol(chord);
+    const event: ResolvedChordProgressionEvent = {
+      eventIndex,
+      chord,
+      reference,
+      directRomanSymbol,
+      romanSymbol: chord.analysis?.romanSymbol ?? directRomanSymbol,
+      startInBars,
+      durationInBars: chord.durationInBars,
+    };
+    startInBars += chord.durationInBars;
+    return event;
+  });
+
+  return {
+    events,
+    bars: createResolvedChordProgressionBars(events, startInBars),
+    totalDurationInBars: startInBars,
+    requiredBarDivision,
+  };
+}
+
 /** Returns the spelled chord names for a progression in the requested root. */
 export function getChordProgressionChordNames(
   rootNote: RootNote,
   progressionOrKey: ChordProgression | ChordProgressionKey,
 ): string[] {
-  return getResolvedChordProgressionChordReferences(
-    rootNote,
-    progressionOrKey,
-  ).map(({ reference }) => reference.chordName);
+  return resolveChordProgression(rootNote, progressionOrKey).events.map(
+    ({ reference }) => reference.chordName,
+  );
 }
 
 /**
@@ -241,10 +424,9 @@ export function getChordProgressionChordChangeReferences(
   rootNote: RootNote,
   progressionOrKey: ChordProgression | ChordProgressionKey,
 ): ChordProgressionChordReference[] {
-  return getResolvedChordProgressionChordReferences(
-    rootNote,
-    progressionOrKey,
-  ).map(({ reference }) => reference);
+  return resolveChordProgression(rootNote, progressionOrKey).events.map(
+    ({ reference }) => reference,
+  );
 }
 
 /**
@@ -284,54 +466,10 @@ export function getChordProgressionChordReferencesByBar(
   rootNote: RootNote,
   progressionOrKey: ChordProgression | ChordProgressionKey,
 ): ChordProgressionChordReference[][] {
-  const bars: ChordProgressionChordReference[][] = [];
-  let currentBar: ChordProgressionChordReference[] = [];
-  let remainingBarDuration = 1;
-
-  const pushCurrentBar = () => {
-    if (currentBar.length > 0) {
-      bars.push(currentBar);
-    }
-
-    currentBar = [];
-    remainingBarDuration = 1;
-  };
-
-  for (
-    const { chord, reference } of getResolvedChordProgressionChordReferences(
-      rootNote,
-      progressionOrKey,
-    )
-  ) {
-    let remainingChordDuration = chord.durationInBars;
-
-    if (
-      !Number.isFinite(remainingChordDuration) ||
-      remainingChordDuration <= BAR_DURATION_EPSILON
-    ) {
-      continue;
-    }
-
-    while (remainingChordDuration > BAR_DURATION_EPSILON) {
-      currentBar.push(reference);
-
-      const filledDuration = Math.min(
-        remainingChordDuration,
-        remainingBarDuration,
-      );
-
-      remainingChordDuration -= filledDuration;
-      remainingBarDuration -= filledDuration;
-
-      if (remainingBarDuration <= BAR_DURATION_EPSILON) {
-        pushCurrentBar();
-      }
-    }
-  }
-
-  pushCurrentBar();
-
-  return bars;
+  const resolved = resolveChordProgression(rootNote, progressionOrKey);
+  return resolved.bars.map((bar) =>
+    bar.eventIndexes.map((eventIndex) => resolved.events[eventIndex]!.reference)
+  );
 }
 
 /**

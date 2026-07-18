@@ -11,6 +11,7 @@ import {
   getChordProgressionUniqueChordNames,
   getChordProgressionUniqueChordReferences,
   isValidChordProgressionKey,
+  resolveChordProgression,
 } from "./chord-progressions.ts";
 
 /**
@@ -21,6 +22,8 @@ import {
 export const chordProgression = {
   /** Returns whether a string is one of the built-in chord progression keys. */
   isValidKey: isValidChordProgressionKey,
+  /** Resolves authored, rooted, analyzed, and timed event data together. */
+  resolve: resolveChordProgression,
   /** Resolves chord names for a progression in the requested root. */
   getChordNames: getChordProgressionChordNames,
   /** Resolves distinct chord names in first-seen order. */

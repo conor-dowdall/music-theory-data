@@ -16,6 +16,7 @@ import {
   chordProgression,
   type ChordProgressionChord,
   type ChordProgressionDegree,
+  type ResolvedChordProgression,
 } from "../src/mod.ts";
 import {
   getChordProgressionChordChangeReferences,
@@ -30,6 +31,7 @@ import {
   getChordProgressionUniqueChordNames,
   getChordProgressionUniqueChordReferences,
   isValidChordProgressionKey,
+  resolveChordProgression,
 } from "../src/utils/chord-progressions.ts";
 
 const cMajorReference = {
@@ -1333,9 +1335,113 @@ Deno.test("all built-in progression references preserve practical-root pitch", (
   }
 });
 
+Deno.test("canonical progression resolver keeps event relationships together", () => {
+  const resolved: ResolvedChordProgression = resolveChordProgression(
+    "C",
+    "oneFourOneFiveSplitReturn",
+  );
+
+  assertEquals(resolved.totalDurationInBars, 8);
+  assertEquals(resolved.requiredBarDivision, 2);
+  assertEquals(resolved.events.length, 9);
+  assertEquals(resolved.events[6], {
+    eventIndex: 6,
+    chord: chordProgressions.oneFourOneFiveSplitReturn.chords[6],
+    reference: cMajorReference,
+    directRomanSymbol: "I",
+    romanSymbol: "I",
+    startInBars: 6,
+    durationInBars: 0.5,
+  });
+  assertEquals(resolved.events[7], {
+    eventIndex: 7,
+    chord: chordProgressions.oneFourOneFiveSplitReturn.chords[7],
+    reference: gMajorReference,
+    directRomanSymbol: "V",
+    romanSymbol: "V",
+    startInBars: 6.5,
+    durationInBars: 0.5,
+  });
+  assertEquals(resolved.bars[6], {
+    barIndex: 6,
+    startInBars: 6,
+    durationInBars: 1,
+    eventIndexes: [6, 7],
+  });
+  assertEquals(resolved.bars[7], {
+    barIndex: 7,
+    startInBars: 7,
+    durationInBars: 1,
+    eventIndexes: [8],
+  });
+});
+
+Deno.test("canonical progression resolver distinguishes direct and analysis symbols", () => {
+  const event = resolveChordProgression("C", "jazzBlues").events[6];
+
+  assertEquals(event.directRomanSymbol, "VI7");
+  assertEquals(event.romanSymbol, "V7/ii");
+});
+
+Deno.test("canonical progression resolver handles rational and partial bars", () => {
+  const thirds = resolveChordProgression("C", {
+    chords: [
+      { degree: "1", chordCollectionKey: "major", durationInBars: 1 / 3 },
+      { degree: "4", chordCollectionKey: "major", durationInBars: 1 / 3 },
+      { degree: "5", chordCollectionKey: "major", durationInBars: 1 / 3 },
+    ],
+  });
+  assertEquals(thirds.requiredBarDivision, 3);
+  assertEquals(thirds.totalDurationInBars, 1);
+  assertEquals(thirds.bars[0]?.eventIndexes, [0, 1, 2]);
+
+  const partial = resolveChordProgression("C", {
+    chords: [
+      { degree: "1", chordCollectionKey: "major", durationInBars: 0.75 },
+      { degree: "5", chordCollectionKey: "major", durationInBars: 0.5 },
+    ],
+  });
+  assertEquals(partial.requiredBarDivision, 4);
+  assertEquals(partial.totalDurationInBars, 1.25);
+  assertEquals(partial.bars, [
+    {
+      barIndex: 0,
+      startInBars: 0,
+      durationInBars: 1,
+      eventIndexes: [0, 1],
+    },
+    {
+      barIndex: 1,
+      startInBars: 1,
+      durationInBars: 0.25,
+      eventIndexes: [1],
+    },
+  ]);
+});
+
+Deno.test("canonical progression resolver rejects invalid event durations", () => {
+  const invalidProgression = {
+    chords: [
+      { degree: "1", chordCollectionKey: "major", durationInBars: 0 },
+    ],
+  } as ChordProgression;
+
+  assertThrows(
+    () => resolveChordProgression("C", invalidProgression),
+    Error,
+    "Invalid duration for chord progression event 0",
+  );
+});
+
 Deno.test("chord progression focus object exposes progression derivations", () => {
   assertEquals(chordProgression.isValidKey("autumnLeavesA"), true);
   assertEquals(chordProgression.isValidKey("ionian"), false);
+  assertEquals(
+    chordProgression.resolve("C", "authenticCadence").bars.map((bar) =>
+      bar.eventIndexes
+    ),
+    [[0], [0], [1], [1]],
+  );
   assertEquals(chordProgression.getDirectRomanSymbols("autumnLeavesA"), [
     "ivm7",
     "♭VII7",

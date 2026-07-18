@@ -196,6 +196,18 @@ import {
 console.log(chordProgression.getRomanSymbols("oneSixFourFive"));
 // ["I", "vi", "IV", "V"]
 
+const resolved = chordProgression.resolve("C", "oneSixFourFive");
+console.log(resolved.events[1]);
+// {
+//   eventIndex: 1,
+//   chord: { degree: "6", chordCollectionKey: "minor", durationInBars: 1 },
+//   reference: { rootNote: "A", practicalRootNote: "A", ... },
+//   directRomanSymbol: "vi",
+//   romanSymbol: "vi",
+//   startInBars: 1,
+//   durationInBars: 1,
+// }
+
 console.log(getChordProgressionChordNames("C", "oneSixFourFive"));
 // ["CM", "Am", "FM", "GM"]
 
@@ -207,6 +219,13 @@ Use `getChordProgressionDirectRomanSymbols` when you want symbols derived only
 from degree and chord quality. Use `getChordProgressionRomanSymbols` when you
 want authored analysis labels, such as secondary-function symbols, where they
 exist.
+
+Use `chordProgression.resolve()` when an app needs chord references, Roman
+symbols, authored events, and bar timing together. Its `events` are the
+canonical ordered timeline; `bars` point back to those events by index, and
+`requiredBarDivision` reports the smallest equal subdivision needed by the
+authored durations. The model remains independent of tempo, beats, notation, and
+playback.
 
 ## Package Links
 

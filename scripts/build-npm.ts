@@ -14,9 +14,13 @@ const publicTypeDeclarations = {
 } as const;
 const publicUtilityDeclarations = {
   "chord-progressions": [
+    "ChordProgressionBar",
     "ChordProgressionChordReference",
+    "ResolvedChordProgression",
+    "ResolvedChordProgressionEvent",
     "practicalRootNote",
     "pitchClass",
+    "resolveChordProgression",
   ],
   "note-names": ["resolvePracticalRootNote"],
 } as const;
