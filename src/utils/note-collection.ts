@@ -1,9 +1,11 @@
 import {
   getRomanSeventhChordsForNoteCollectionKey,
   getRomanTriadsForNoteCollectionKey,
-  getSeventhChordsForNoteCollectionKey,
-  getTriadsForNoteCollectionKey,
-  hasAuthoredNoteCollectionHarmony,
+  getSeventhChordCollectionKeysForNoteCollectionKey,
+  getSeventhChordSuffixesForNoteCollectionKey,
+  getTriadChordCollectionKeysForNoteCollectionKey,
+  getTriadChordSuffixesForNoteCollectionKey,
+  hasNoteCollectionHarmony,
 } from "./chords.ts";
 import {
   getCompoundIntervalsForNoteCollectionKey,
@@ -21,7 +23,7 @@ import { getQualitiesForNoteCollectionKey } from "./qualities.ts";
 /**
  * Curated helpers for the common catalog workflow:
  * start with a note-collection key or search criteria, then inspect intervals,
- * qualities, display names, or authored modal harmony before choosing a root.
+ * qualities, display names, or supported modal harmony before choosing a root.
  */
 export const noteCollection = {
   /** Returns whether a string is one of the built-in note collection keys. */
@@ -40,14 +42,19 @@ export const noteCollection = {
   getCompoundIntervals: getCompoundIntervalsForNoteCollectionKey,
   /** Resolves interval qualities for a note collection key. */
   getQualities: getQualitiesForNoteCollectionKey,
-  /** Returns whether the collection has authored modal harmony data. */
-  hasAuthoredHarmony: hasAuthoredNoteCollectionHarmony,
-  /** Resolves authored triad qualities for a note collection key. */
-  getTriads: getTriadsForNoteCollectionKey,
-  /** Resolves authored seventh-chord qualities for a note collection key. */
-  getSeventhChords: getSeventhChordsForNoteCollectionKey,
-  /** Resolves authored Roman numeral triads for a note collection key. */
+  /** Returns whether the collection belongs to a supported harmony system. */
+  hasHarmony: hasNoteCollectionHarmony,
+  /** Resolves canonical triad chord identities for a note collection key. */
+  getTriadChordCollectionKeys: getTriadChordCollectionKeysForNoteCollectionKey,
+  /** Resolves canonical seventh-chord identities for a note collection key. */
+  getSeventhChordCollectionKeys:
+    getSeventhChordCollectionKeysForNoteCollectionKey,
+  /** Resolves rendered triad suffixes for a note collection key. */
+  getTriadChordSuffixes: getTriadChordSuffixesForNoteCollectionKey,
+  /** Resolves rendered seventh-chord suffixes for a note collection key. */
+  getSeventhChordSuffixes: getSeventhChordSuffixesForNoteCollectionKey,
+  /** Resolves Roman numeral triads for a supported harmony system. */
   getRomanTriads: getRomanTriadsForNoteCollectionKey,
-  /** Resolves authored Roman numeral seventh chords for a note collection key. */
+  /** Resolves Roman numeral seventh chords for a supported harmony system. */
   getRomanSeventhChords: getRomanSeventhChordsForNoteCollectionKey,
 } as const;

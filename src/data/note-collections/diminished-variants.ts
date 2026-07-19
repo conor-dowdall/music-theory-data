@@ -6,6 +6,7 @@ import type {
 
 const diminishedTriad: ChordCollection = {
   category: "chord",
+  classification: { family: "diminished", structure: "triad" },
   mostSimilarScale: "locrian",
   primaryName: "dim",
   names: ["dim", "°", "Diminished Triad"],
@@ -20,6 +21,7 @@ const diminishedTriad: ChordCollection = {
 
 const diminished7: ChordCollection = {
   category: "chord",
+  classification: { family: "diminished", structure: "seventh" },
   mostSimilarScale: "wholeHalfDiminished",
   primaryName: "dim7",
   names: ["dim7", "°7", "Diminished 7th"],
@@ -34,6 +36,7 @@ const diminished7: ChordCollection = {
 
 const halfDiminished7: ChordCollection = {
   category: "chord",
+  classification: { family: "diminished", structure: "seventh" },
   mostSimilarScale: "locrian",
   primaryName: "m7♭5",
   names: ["m7♭5", "ø7", "Half Diminished 7th"],

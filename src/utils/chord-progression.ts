@@ -7,11 +7,22 @@ import {
   getChordProgressionKeysForTotalBars,
   getChordProgressionRomanSymbols,
   getChordProgressionSongChordReferences,
+  getChordProgressionTiming,
   getChordProgressionTotalDurationInBars,
   getChordProgressionUniqueChordNames,
   getChordProgressionUniqueChordReferences,
+  isChordCollectionKey,
+  isChordProgressionAnalysisRomanSymbol,
+  isChordProgressionRomanSymbol,
+  isChordProgressionSecondaryRomanSymbol,
+  isChordRootDegree,
   isValidChordProgressionKey,
+  normalizeChordRootDegree,
+  parseChordProgression,
+  parseChordProgressionDefinition,
   resolveChordProgression,
+  validateChordProgression,
+  validateChordProgressionDefinition,
 } from "./chord-progressions.ts";
 
 /**
@@ -22,8 +33,30 @@ import {
 export const chordProgression = {
   /** Returns whether a string is one of the built-in chord progression keys. */
   isValidKey: isValidChordProgressionKey,
+  /** Returns whether a runtime value is a canonical chord root degree. */
+  isRootDegree: isChordRootDegree,
+  /** Normalizes ASCII or Unicode accidentals in a chord root degree. */
+  normalizeRootDegree: normalizeChordRootDegree,
+  /** Returns whether a runtime value identifies a chord collection. */
+  isChordCollectionKey,
+  /** Returns whether a runtime value is a supported analysis symbol. */
+  isAnalysisRomanSymbol: isChordProgressionAnalysisRomanSymbol,
+  /** Returns whether a runtime value is a supported direct Roman symbol. */
+  isRomanSymbol: isChordProgressionRomanSymbol,
+  /** Returns whether a runtime value is a secondary-function Roman symbol. */
+  isSecondaryRomanSymbol: isChordProgressionSecondaryRomanSymbol,
+  /** Parses unknown persisted progression data with diagnostics. */
+  parse: parseChordProgression,
+  /** Parses unknown persisted catalog-definition data with diagnostics. */
+  parseDefinition: parseChordProgressionDefinition,
+  /** Returns diagnostics for unknown progression data. */
+  validate: validateChordProgression,
+  /** Returns diagnostics for unknown progression catalog-definition data. */
+  validateDefinition: validateChordProgressionDefinition,
   /** Resolves authored, rooted, analyzed, and timed event data together. */
   resolve: resolveChordProgression,
+  /** Compiles root-independent bar timing and source-linked segments. */
+  getTiming: getChordProgressionTiming,
   /** Resolves chord names for a progression in the requested root. */
   getChordNames: getChordProgressionChordNames,
   /** Resolves distinct chord names in first-seen order. */
@@ -40,7 +73,7 @@ export const chordProgression = {
   getChordReferencesByBar: getChordProgressionChordReferencesByBar,
   /** Returns duration-aware chord references in song/practice order. */
   getSongChordReferences: getChordProgressionSongChordReferences,
-  /** Returns the authored total duration in bars. */
+  /** Returns the normalized total duration in bars. */
   getTotalDurationInBars: getChordProgressionTotalDurationInBars,
   /** Returns built-in progression keys with the requested total bar count. */
   getKeysForTotalBars: getChordProgressionKeysForTotalBars,

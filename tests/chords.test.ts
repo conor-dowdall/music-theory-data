@@ -1,35 +1,53 @@
 import { assertEquals } from "@std/assert";
 import {
   getRomanNumeralForScaleIndexAndChordCollectionKey,
-  getRomanNumeralForScaleIndexAndChordQuality,
   getRomanSeventhChordsForNoteCollectionKey,
   getRomanSeventhChordsForRootAndNoteCollectionKey,
   getRomanTriadsForNoteCollectionKey,
   getRomanTriadsForRootAndNoteCollectionKey,
-  getSeventhChordsForNoteCollectionKey,
-  getSeventhChordsForRootAndNoteCollectionKey,
-  getTriadsForNoteCollectionKey,
-  getTriadsForRootAndNoteCollectionKey,
+  getSeventhChordCollectionKeysForNoteCollectionKey,
+  getSeventhChordNamesForRootAndNoteCollectionKey,
+  getSeventhChordSuffixesForNoteCollectionKey,
+  getTriadChordCollectionKeysForNoteCollectionKey,
+  getTriadChordNamesForRootAndNoteCollectionKey,
+  getTriadChordSuffixesForNoteCollectionKey,
+  hasNoteCollectionHarmony,
 } from "../src/utils/chords.ts";
 import {
+  chordCollectionChordSuffixes,
+  chordCollectionClassifications,
+  chordCollectionFamilies,
+  chordCollectionKeys,
+  chordCollectionRomanSuffixes,
+  chordCollectionStructures,
   chordCollectionSymbolRenderings,
-  chordQualityRomanRenderings,
   getChordCollectionChordSuffix,
+  getChordCollectionClassification,
+  getChordCollectionKeysByClassification,
   getChordCollectionRomanSuffix,
-  getChordQualityChordCollectionKey,
+  isChordCollectionChordSuffix,
+  isChordCollectionFamily,
+  isChordCollectionRomanSuffix,
+  isChordCollectionStructure,
+  isSeventhChordCollectionKey,
+  isSupportedHarmonyParentKey,
+  isTriadChordCollectionKey,
+  noteCollectionHarmonyByParentKey,
+  seventhChordCollectionKeys,
+  supportedHarmonyParentKeys,
+  triadChordCollectionKeys,
 } from "../src/data/chords/mod.ts";
 import { noteCollections } from "../src/data/note-collections/mod.ts";
 import type {
   RomanSeventhChord,
   RomanTriad,
-  SeventhChord,
-  Triad,
+  SeventhChordSuffix,
+  TriadChordSuffix,
 } from "../src/types/chords.ts";
 
-Deno.test("chord quality and chord collection rendering stay distinct", () => {
-  assertEquals(getChordQualityChordCollectionKey("+M7"), "augmentedMajor7");
-  assertEquals(getChordQualityChordCollectionKey("M7♯5"), "augmentedMajor7");
+Deno.test("chord collection identity and rendering stay distinct", () => {
   assertEquals(getChordCollectionChordSuffix("augmentedMajor7"), "+M7");
+  assertEquals(getChordCollectionChordSuffix("augmented7"), "+7");
   assertEquals(getChordCollectionRomanSuffix("augmentedMajor7"), "+M7");
   assertEquals(
     getRomanNumeralForScaleIndexAndChordCollectionKey(2, "augmentedMajor7"),
@@ -46,32 +64,173 @@ Deno.test("chord quality and chord collection rendering stay distinct", () => {
     chordCollectionSymbolRenderings.halfDiminished7,
     halfDiminished7.symbol,
   );
+});
+
+Deno.test("parent-scale harmony is compiled to canonical chord identities", () => {
+  assertEquals(supportedHarmonyParentKeys, [
+    "ionian",
+    "harmonicMinor",
+    "melodicMinor",
+  ]);
+  assertEquals(triadChordCollectionKeys, [
+    "major",
+    "minor",
+    "diminishedTriad",
+    "augmentedTriad",
+  ]);
+  assertEquals(seventhChordCollectionKeys, [
+    "major7",
+    "minor7",
+    "minorMajor7",
+    "dominant7",
+    "diminished7",
+    "halfDiminished7",
+    "augmented7",
+    "augmentedMajor7",
+  ]);
+  assertEquals(noteCollectionHarmonyByParentKey.ionian, {
+    triads: [
+      "major",
+      "minor",
+      "minor",
+      "major",
+      "major",
+      "minor",
+      "diminishedTriad",
+    ],
+    sevenths: [
+      "major7",
+      "minor7",
+      "minor7",
+      "major7",
+      "dominant7",
+      "minor7",
+      "halfDiminished7",
+    ],
+  });
+  assertEquals(noteCollectionHarmonyByParentKey.harmonicMinor.sevenths, [
+    "minorMajor7",
+    "halfDiminished7",
+    "augmentedMajor7",
+    "minor7",
+    "dominant7",
+    "major7",
+    "diminished7",
+  ]);
+});
+
+Deno.test("chord collection Roman suffix vocabulary covers every rendering", () => {
+  const renderedChordSuffixes = [
+    ...new Set(
+      Object.values(chordCollectionSymbolRenderings).map((rendering) =>
+        rendering.chordSuffix
+      ),
+    ),
+  ];
+  const renderedSuffixes = [
+    ...new Set(
+      Object.values(chordCollectionSymbolRenderings).map((rendering) =>
+        rendering.romanSuffix
+      ),
+    ),
+  ].sort();
+
+  assertEquals(renderedChordSuffixes, [...chordCollectionChordSuffixes]);
+  assertEquals(renderedSuffixes, [...chordCollectionRomanSuffixes].sort());
+  assertEquals(isChordCollectionChordSuffix("+7"), true);
+  assertEquals(isChordCollectionChordSuffix("M7♯5"), false);
+  assertEquals(isChordCollectionRomanSuffix("m6/9"), true);
+  assertEquals(isChordCollectionRomanSuffix("garbage"), false);
+});
+
+Deno.test("chord collection classification is exhaustive and musically stable", () => {
+  assertEquals(chordCollectionFamilies, [
+    "major",
+    "minor",
+    "dominant",
+    "diminished",
+    "augmented",
+  ]);
+  assertEquals(chordCollectionStructures, [
+    "triad",
+    "seventh",
+    "added-tone",
+    "extended",
+  ]);
   assertEquals(
-    getRomanNumeralForScaleIndexAndChordQuality(1, "m7♭5"),
-    "iiø7",
+    Object.keys(chordCollectionClassifications),
+    [...chordCollectionKeys],
+  );
+
+  for (const key of chordCollectionKeys) {
+    const collection = noteCollections[key];
+    if (collection.category !== "chord") {
+      throw new Error(`Expected ${key} to be a chord collection`);
+    }
+    assertEquals(
+      getChordCollectionClassification(key),
+      collection.classification,
+    );
+  }
+
+  assertEquals(getChordCollectionClassification("augmented7"), {
+    family: "augmented",
+    structure: "seventh",
+  });
+  assertEquals(
+    getChordCollectionKeysByClassification({ family: "dominant" }),
+    ["dominant7", "dominant9", "dominant11", "dominant13"],
   );
   assertEquals(
-    getRomanNumeralForScaleIndexAndChordQuality(2, "M7♯5"),
-    "III+M7",
+    getChordCollectionKeysByClassification({
+      family: "dominant",
+      structure: "extended",
+    }),
+    ["dominant9", "dominant11", "dominant13"],
   );
-  assertEquals(chordQualityRomanRenderings.get("m7♭5"), {
-    numeralCase: "lower",
-    suffix: "ø7",
-  });
-  assertEquals(chordQualityRomanRenderings.get("M7♯5"), {
-    numeralCase: "upper",
-    suffix: "+M7",
-  });
+  assertEquals(
+    getChordCollectionKeysByClassification({
+      family: "major",
+      structure: "added-tone",
+    }),
+    ["major6", "majorAdd9", "major6Add9"],
+  );
+  assertEquals(isChordCollectionFamily("augmented"), true);
+  assertEquals(isChordCollectionFamily("common"), false);
+  assertEquals(isChordCollectionStructure("added-tone"), true);
+  assertEquals(isChordCollectionStructure("tetrad"), false);
+  assertEquals(isTriadChordCollectionKey("augmentedTriad"), true);
+  assertEquals(isTriadChordCollectionKey("major7"), false);
+  assertEquals(isSeventhChordCollectionKey("augmented7"), true);
+  assertEquals(isSeventhChordCollectionKey("major9"), false);
+  assertEquals(isSupportedHarmonyParentKey("melodicMinor"), true);
+  assertEquals(isSupportedHarmonyParentKey("minorPentatonic"), false);
 });
 
 Deno.test(
-  "getTriadsForNoteCollectionKey and getSeventhChordsForNoteCollectionKey - Ionian",
+  "rendered triad and seventh-chord suffixes - Ionian",
   () => {
-    const triads = getTriadsForNoteCollectionKey("ionian");
-    const sevenths = getSeventhChordsForNoteCollectionKey("ionian");
+    assertEquals(
+      getTriadChordCollectionKeysForNoteCollectionKey("ionian"),
+      [...noteCollectionHarmonyByParentKey.ionian.triads],
+    );
+    assertEquals(
+      getSeventhChordCollectionKeysForNoteCollectionKey("ionian"),
+      [...noteCollectionHarmonyByParentKey.ionian.sevenths],
+    );
+    const triads = getTriadChordSuffixesForNoteCollectionKey("ionian");
+    const sevenths = getSeventhChordSuffixesForNoteCollectionKey("ionian");
 
-    const expectedTriads: Triad[] = ["M", "m", "m", "M", "M", "m", "°"];
-    const expectedSevenths: SeventhChord[] = [
+    const expectedTriads: TriadChordSuffix[] = [
+      "M",
+      "m",
+      "m",
+      "M",
+      "M",
+      "m",
+      "°",
+    ];
+    const expectedSevenths: SeventhChordSuffix[] = [
       "M7",
       "m7",
       "m7",
@@ -116,9 +275,17 @@ Deno.test(
   },
 );
 
-Deno.test("getTriadsForNoteCollectionKey - Locrian", () => {
-  const triads = getTriadsForNoteCollectionKey("locrian");
-  const expectedTriads: Triad[] = ["°", "M", "m", "m", "M", "M", "m"];
+Deno.test("rendered triad suffixes - Locrian", () => {
+  const triads = getTriadChordSuffixesForNoteCollectionKey("locrian");
+  const expectedTriads: TriadChordSuffix[] = [
+    "°",
+    "M",
+    "m",
+    "m",
+    "M",
+    "M",
+    "m",
+  ];
   assertEquals(triads, expectedTriads);
 });
 
@@ -156,10 +323,10 @@ Deno.test("getRomanTriadsForNoteCollectionKey - Phrygian Dominant", () => {
   assertEquals(romanTriads, expectedRomanTriads);
 });
 
-Deno.test("getSeventhChordsForNoteCollectionKey - Melodic Minor", () => {
-  const sevenths = getSeventhChordsForNoteCollectionKey("melodicMinor");
+Deno.test("rendered seventh-chord suffixes - Melodic Minor", () => {
+  const sevenths = getSeventhChordSuffixesForNoteCollectionKey("melodicMinor");
 
-  const expectedSevenths: SeventhChord[] = [
+  const expectedSevenths: SeventhChordSuffix[] = [
     "m(M7)",
     "m7",
     "+M7",
@@ -192,10 +359,12 @@ Deno.test("getRomanTriadsForNoteCollectionKey - fillChromatic", () => {
   assertEquals(chords[11], "vii°");
 });
 
-Deno.test("Non-authored chord collections return aligned placeholders", () => {
-  const triads = getTriadsForNoteCollectionKey("major");
+Deno.test("Unsupported chord collections return aligned placeholders", () => {
+  const triads = getTriadChordSuffixesForNoteCollectionKey("major");
   const romanTriads = getRomanTriadsForNoteCollectionKey("major");
-  const majorAdd9Triads = getTriadsForNoteCollectionKey("majorAdd9");
+  const majorAdd9Triads = getTriadChordSuffixesForNoteCollectionKey(
+    "majorAdd9",
+  );
   const majorAdd9RomanSevenths = getRomanSeventhChordsForNoteCollectionKey(
     "majorAdd9",
   );
@@ -217,7 +386,7 @@ Deno.test("Non-authored chord collections return aligned placeholders", () => {
 });
 
 Deno.test(
-  "Non-authored chord collections return undefined chromatic placeholders",
+  "Unsupported chord collections return undefined chromatic placeholders",
   () => {
     const romanSevenths = getRomanSeventhChordsForNoteCollectionKey("minor", {
       fillChromatic: true,
@@ -229,7 +398,7 @@ Deno.test(
 );
 
 Deno.test(
-  "Non-authored scale collections return aligned placeholders",
+  "Unsupported scale collections return aligned placeholders",
   () => {
     const minorPentatonicTriads = getRomanTriadsForNoteCollectionKey(
       "minorPentatonic",
@@ -259,9 +428,13 @@ Deno.test(
 Deno.test(
   "Invalid keys gracefully return empty arrays",
   () => {
-    assertEquals(getTriadsForNoteCollectionKey("invalid_key" as never), []);
+    assertEquals(hasNoteCollectionHarmony("invalid_key" as never), false);
     assertEquals(
-      getSeventhChordsForNoteCollectionKey("invalid_key" as never),
+      getTriadChordSuffixesForNoteCollectionKey("invalid_key" as never),
+      [],
+    );
+    assertEquals(
+      getSeventhChordSuffixesForNoteCollectionKey("invalid_key" as never),
       [],
     );
     assertEquals(
@@ -274,7 +447,7 @@ Deno.test(
     );
 
     assertEquals(
-      getTriadsForNoteCollectionKey("invalid_key" as never, {
+      getTriadChordSuffixesForNoteCollectionKey("invalid_key" as never, {
         fillChromatic: true,
       }),
       [] as never,
@@ -282,22 +455,29 @@ Deno.test(
   },
 );
 
-Deno.test("getTriadsForRootAndNoteCollectionKey - C Ionian", () => {
-  const triads = getTriadsForRootAndNoteCollectionKey("C", "ionian");
+Deno.test("rooted triad chord names - C Ionian", () => {
+  const triads = getTriadChordNamesForRootAndNoteCollectionKey("C", "ionian");
   assertEquals(triads, ["CM", "Dm", "Em", "FM", "GM", "Am", "B°"]);
 });
 
-Deno.test("getSeventhChordsForRootAndNoteCollectionKey - G Ionian", () => {
-  const sevenths = getSeventhChordsForRootAndNoteCollectionKey("G", "ionian");
+Deno.test("rooted seventh-chord names - G Ionian", () => {
+  const sevenths = getSeventhChordNamesForRootAndNoteCollectionKey(
+    "G",
+    "ionian",
+  );
   assertEquals(sevenths, ["GM7", "Am7", "Bm7", "CM7", "D7", "Em7", "F♯ø7"]);
 });
 
 Deno.test(
-  "getTriadsForRootAndNoteCollectionKey - C Ionian with fillChromatic",
+  "rooted triad names - C Ionian with fillChromatic",
   () => {
-    const triads = getTriadsForRootAndNoteCollectionKey("C", "ionian", {
-      fillChromatic: true,
-    });
+    const triads = getTriadChordNamesForRootAndNoteCollectionKey(
+      "C",
+      "ionian",
+      {
+        fillChromatic: true,
+      },
+    );
     assertEquals(triads.length, 12);
     assertEquals(triads[0], "CM");
     assertEquals(triads[1], undefined);
@@ -315,11 +495,15 @@ Deno.test(
 );
 
 Deno.test(
-  "getTriadsForRootAndNoteCollectionKey - D Ionian with fillChromatic",
+  "rooted triad names - D Ionian with fillChromatic",
   () => {
-    const triads = getTriadsForRootAndNoteCollectionKey("D", "ionian", {
-      fillChromatic: true,
-    });
+    const triads = getTriadChordNamesForRootAndNoteCollectionKey(
+      "D",
+      "ionian",
+      {
+        fillChromatic: true,
+      },
+    );
     assertEquals(triads.length, 12);
     assertEquals(triads[0], "DM");
     assertEquals(triads[1], undefined);
@@ -337,9 +521,11 @@ Deno.test(
 );
 
 Deno.test(
-  "getTriadsForNoteCollectionKey - rotateRight shifts chord array",
+  "triad chord suffixes rotate with requested layout",
   () => {
-    const triads = getTriadsForNoteCollectionKey("ionian", { rotateRight: 2 });
+    const triads = getTriadChordSuffixesForNoteCollectionKey("ionian", {
+      rotateRight: 2,
+    });
     // Instead of ["M", "m", "m", "M", "M", "m", "°"]
     // Rotating right by 2 shifts the end to the front: ["m", "°", "M", "m", "m", "M", "M"]
     assertEquals(triads, ["m", "°", "M", "m", "m", "M", "M"]);
@@ -376,13 +562,17 @@ Deno.test(
 );
 
 Deno.test(
-  "getTriadsForRootAndNoteCollectionKey - D Dorian with fillChromatic and rotateToRootInteger0",
+  "rooted triad names - D Dorian with chromatic root rotation",
   () => {
     // Similarly, "Dm" should be at index 2
-    const triads = getTriadsForRootAndNoteCollectionKey("D", "dorian", {
-      fillChromatic: true,
-      rotateToRootInteger0: true,
-    });
+    const triads = getTriadChordNamesForRootAndNoteCollectionKey(
+      "D",
+      "dorian",
+      {
+        fillChromatic: true,
+        rotateToRootInteger0: true,
+      },
+    );
 
     assertEquals(triads.length, 12);
     assertEquals(triads[0], "CM");
@@ -479,7 +669,7 @@ Deno.test(
 );
 
 Deno.test(
-  "Non-authored rooted collections return undefined placeholders",
+  "Unsupported rooted collections return undefined placeholders",
   () => {
     const sevenths = getRomanSeventhChordsForRootAndNoteCollectionKey(
       "A",
@@ -489,7 +679,7 @@ Deno.test(
         rotateToRootInteger0: true,
       },
     );
-    const bluesTriads = getTriadsForRootAndNoteCollectionKey(
+    const bluesTriads = getTriadChordNamesForRootAndNoteCollectionKey(
       "C",
       "bluesPentatonic",
     );

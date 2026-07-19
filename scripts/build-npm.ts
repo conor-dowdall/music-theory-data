@@ -2,25 +2,100 @@ import { build, emptyDir } from "@deno/dnt";
 
 const npmOutputDirectory = "./npm";
 const publicTypeDeclarations = {
-  chords: ["ChordQuality"],
+  chords: [
+    "HeptatonicChordCollectionTuple",
+    "LowerCaseChordCollectionRomanSuffix",
+    "NoteCollectionHarmony",
+    "SeventhChordCollectionKey",
+    "SeventhChordSuffix",
+    "TriadChordCollectionKey",
+    "TriadChordSuffix",
+    "UpperCaseChordCollectionRomanSuffix",
+  ],
   "chord-progressions": [
     "ChordProgression",
     "ChordProgressionChord",
-    "ChordProgressionDegree",
+    "ChordProgressionChords",
+    "ChordProgressionDefinition",
+    "ChordProgressionRomanSymbol",
+    "ChordProgressionSecondaryRomanSymbol",
+    "ChordRootDegree",
+    "ScaleDegreeNumber",
   ],
   midi: ["MidiNoteNumber"],
-  "note-collections": ["NoteCollection"],
+  "note-collections": [
+    "ChordCollectionClassification",
+    "ChordCollectionFamily",
+    "ChordCollectionStructure",
+    "NoteCollection",
+  ],
   "string-instruments": ["StringInstrumentTuning"],
 } as const;
+const publicDataDeclarations = {
+  chords: [
+    "chordCollectionClassifications",
+    "chordCollectionFamilies",
+    "chordCollectionKeys",
+    "chordCollectionStructures",
+    "getChordCollectionClassification",
+    "getChordCollectionKeysByClassification",
+    "noteCollectionHarmonyByParentKey",
+    "seventhChordCollectionKeys",
+    "supportedHarmonyParentKeys",
+    "triadChordCollectionKeys",
+  ],
+  "chord-progressions": [
+    "chordProgressionDefinitions",
+    "chordProgressions",
+  ],
+} as const;
+
+function hasNamedExport(declaration: string, name: string): boolean {
+  const escapedName = name.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
+  const directDeclaration = new RegExp(
+    `\\bexport\\s+(?:declare\\s+)?(?:class|const|enum|function|interface|let|type|var)\\s+${escapedName}\\b`,
+    "u",
+  );
+  const namedReExport = new RegExp(
+    `\\bexport\\s+(?:type\\s+)?\\{[^}]*\\b${escapedName}\\b[^}]*\\}`,
+    "su",
+  );
+  return directDeclaration.test(declaration) || namedReExport.test(declaration);
+}
+
 const publicUtilityDeclarations = {
+  chords: [
+    "getSeventhChordCollectionKeysForNoteCollectionKey",
+    "getSeventhChordNamesForRootAndNoteCollectionKey",
+    "getSeventhChordSuffixesForNoteCollectionKey",
+    "getTriadChordCollectionKeysForNoteCollectionKey",
+    "getTriadChordNamesForRootAndNoteCollectionKey",
+    "getTriadChordSuffixesForNoteCollectionKey",
+  ],
   "chord-progressions": [
     "ChordProgressionBar",
+    "ChordProgressionBarSegment",
     "ChordProgressionChordReference",
+    "ChordProgressionDefinitionIssue",
+    "ChordProgressionIssue",
+    "ChordProgressionTiming",
+    "ParseResult",
     "ResolvedChordProgression",
     "ResolvedChordProgressionEvent",
-    "practicalRootNote",
-    "pitchClass",
+    "flatChordRootDegrees",
+    "getChordProgressionTiming",
+    "isChordCollectionKey",
+    "isChordProgressionAnalysisRomanSymbol",
+    "isChordProgressionRomanSymbol",
+    "isChordProgressionSecondaryRomanSymbol",
+    "isChordRootDegree",
+    "normalizeChordRootDegree",
+    "parseChordProgression",
+    "parseChordProgressionDefinition",
     "resolveChordProgression",
+    "sharpChordRootDegrees",
+    "validateChordProgression",
+    "validateChordProgressionDefinition",
   ],
   "note-names": ["resolvePracticalRootNote"],
 } as const;
@@ -59,8 +134,26 @@ function assertPublicTypesEmitted(moduleFormat: "esm" | "script") {
     const typeDeclaration = Deno.readTextFileSync(typeDeclarationPath);
 
     for (const typeName of typeNames) {
-      if (!typeDeclaration.includes(` ${typeName}`)) {
+      if (!hasNamedExport(typeDeclaration, typeName)) {
         throw new Error(`${typeDeclarationPath} does not emit ${typeName}`);
+      }
+    }
+  }
+
+  for (
+    const [moduleName, declarationNames] of Object.entries(
+      publicDataDeclarations,
+    )
+  ) {
+    const dataDeclarationPath =
+      `${npmOutputDirectory}/${moduleFormat}/src/data/${moduleName}/mod.d.ts`;
+    const dataDeclaration = Deno.readTextFileSync(dataDeclarationPath);
+
+    for (const declarationName of declarationNames) {
+      if (!hasNamedExport(dataDeclaration, declarationName)) {
+        throw new Error(
+          `${dataDeclarationPath} does not emit ${declarationName}`,
+        );
       }
     }
   }
@@ -87,7 +180,7 @@ function assertPublicTypesEmitted(moduleFormat: "esm" | "script") {
     const utilityDeclaration = Deno.readTextFileSync(utilityDeclarationPath);
 
     for (const declarationName of declarationNames) {
-      if (!utilityDeclaration.includes(declarationName)) {
+      if (!hasNamedExport(utilityDeclaration, declarationName)) {
         throw new Error(
           `${utilityDeclarationPath} does not emit ${declarationName}`,
         );

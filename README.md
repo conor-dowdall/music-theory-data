@@ -108,7 +108,7 @@ console.log(chordProgression.getChordNames("C", "oneSixFourFive"));
 | Scale/chord catalog         | `noteCollection`, `noteCollections`, `groupedNoteCollections`                   |
 | UI display layers           | `rootAndNoteCollection.displayLayers`                                           |
 | Chord progressions          | `chordProgression`, `chordProgressions`, `getChordProgressionRomanSymbols`      |
-| Theory labels               | `noteNames`, `rootNotes`, `intervalToIntegerMap`, `chordQualities`              |
+| Theory labels               | `noteNames`, `rootNotes`, `intervalToIntegerMap`, chord classification          |
 | Parsing and normalization   | `normalizeNoteNameString`, `normalizeRootNoteString`, `normalizeIntervalString` |
 | MIDI and colors             | `formatMidiNote`, `getNoteColorIndex`, `colorCollections`                       |
 | String instruments          | `stringInstruments`, `stringInstrumentTunings`, tuning key groups               |
@@ -151,6 +151,46 @@ Collections include structured metadata such as category, display names,
 intervals, integer semitone values, type tags, characteristics, and interval
 patterns.
 
+Chord collections additionally expose stable musical classification, separate
+from application-specific labels such as “Common” or “More”:
+
+```ts
+import {
+  getChordCollectionClassification,
+  getChordCollectionKeysByClassification,
+} from "@musodojo/music-theory-data";
+
+console.log(getChordCollectionClassification("augmented7"));
+// { family: "augmented", structure: "seventh" }
+
+console.log(getChordCollectionKeysByClassification({
+  family: "dominant",
+  structure: "extended",
+}));
+// ["dominant9", "dominant11", "dominant13"]
+```
+
+The supported modal harmony systems are compiled from the interval data for
+Ionian, harmonic minor, and melodic minor. Canonical APIs return chord
+collection keys; suffix and rooted-name APIs render those identities through the
+chord catalog:
+
+```ts
+import {
+  noteCollection,
+  rootAndNoteCollection,
+} from "@musodojo/music-theory-data";
+
+console.log(noteCollection.getTriadChordCollectionKeys("ionian"));
+// ["major", "minor", "minor", "major", "major", "minor", "diminishedTriad"]
+
+console.log(noteCollection.getTriadChordSuffixes("ionian"));
+// ["M", "m", "m", "M", "M", "m", "°"]
+
+console.log(rootAndNoteCollection.getTriadChordNames("C", "ionian"));
+// ["CM", "Dm", "Em", "FM", "GM", "Am", "B°"]
+```
+
 ## UI Display Layers
 
 `rootAndNoteCollection.displayLayers` is designed for interfaces that let users
@@ -183,18 +223,23 @@ Each entry includes metadata for app UI, including `name`, `shortName`,
 
 ## Chord Progressions
 
-Progressions are stored as reusable theory data: scale degrees, chord collection
-keys, durations, categories, and optional analysis labels.
+Progression structures contain only a non-empty sequence of relative chord
+events. Catalog names and categories are stored separately in progression
+definitions.
 
 ```ts
 import {
   chordProgression,
+  chordProgressionDefinitions,
   getChordProgressionChordNames,
   getChordProgressionRomanSymbols,
 } from "@musodojo/music-theory-data";
 
 console.log(chordProgression.getRomanSymbols("oneSixFourFive"));
 // ["I", "vi", "IV", "V"]
+
+console.log(chordProgressionDefinitions.oneSixFourFive);
+// { name: "I–vi–IV–V", category: "commonLoops", progression: { chords: [...] } }
 
 const resolved = chordProgression.resolve("C", "oneSixFourFive");
 console.log(resolved.events[1]);
@@ -207,6 +252,19 @@ console.log(resolved.events[1]);
 //   startInBars: 1,
 //   durationInBars: 1,
 // }
+
+const timing = chordProgression.getTiming("oneFourOneFiveSplitReturn");
+console.log(timing.bars[6].segments);
+// Two half-bar segments linked to authored events 6 and 7.
+
+const parsed = chordProgression.parse(persistedValue);
+if (!parsed.success) console.log(parsed.issues);
+
+const parsedDefinition = chordProgression.parseDefinition(savedCatalogEntry);
+if (!parsedDefinition.success) console.log(parsedDefinition.issues);
+
+console.log(chordProgression.normalizeRootDegree("b3"));
+// "♭3"
 
 console.log(getChordProgressionChordNames("C", "oneSixFourFive"));
 // ["CM", "Am", "FM", "GM"]
@@ -222,10 +280,20 @@ exist.
 
 Use `chordProgression.resolve()` when an app needs chord references, Roman
 symbols, authored events, and bar timing together. Its `events` are the
-canonical ordered timeline; `bars` point back to those events by index, and
-`requiredBarDivision` reports the smallest equal subdivision needed by the
-authored durations. The model remains independent of tempo, beats, notation, and
-playback.
+canonical ordered timeline; each bar contains positioned segments linked back to
+those events by `eventIndex`. Use `chordProgression.getTiming()` when rooted
+chord data is not needed. `requiredBarDivision` reports the smallest equal
+subdivision needed by the authored durations. The model remains independent of
+tempo, beats, notation, and playback.
+
+Persisted progression data can be checked with `chordProgression.parse()` or
+`validateChordProgression()`. Diagnostics identify invalid chord events by
+`chordIndex`. Incomplete final bars remain valid; `chordProgression.getTiming()`
+reports them through `endsOnBarBoundary` so each application can apply its own
+policy. Timelines above 100,000 bars are rejected because the resolved model
+materializes its bar segments. Use `chordProgression.parseDefinition()` when
+persisted data includes a catalog name, optional category, and nested
+progression structure.
 
 ## Package Links
 

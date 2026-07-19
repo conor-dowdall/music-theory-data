@@ -274,7 +274,7 @@ Deno.test("root and note collection focus object exposes common derivations", ()
     "3",
     "5",
   ]);
-  assertEquals(rootAndNoteCollection.getTriads("C", "ionian"), [
+  assertEquals(rootAndNoteCollection.getTriadChordNames("C", "ionian"), [
     "CM",
     "Dm",
     "Em",
@@ -309,9 +309,18 @@ Deno.test("note collection focus object exposes catalog derivations", () => {
   ]);
   assertEquals(noteCollection.getCompoundIntervals("major"), ["1", "10", "12"]);
   assertEquals(noteCollection.getQualities("major"), ["P1", "M3", "P5"]);
-  assertEquals(noteCollection.hasAuthoredHarmony("ionian"), true);
-  assertEquals(noteCollection.hasAuthoredHarmony("major"), false);
-  assertEquals(noteCollection.getTriads("ionian"), [
+  assertEquals(noteCollection.hasHarmony("ionian"), true);
+  assertEquals(noteCollection.hasHarmony("major"), false);
+  assertEquals(noteCollection.getTriadChordCollectionKeys("ionian"), [
+    "major",
+    "minor",
+    "minor",
+    "major",
+    "major",
+    "minor",
+    "diminishedTriad",
+  ]);
+  assertEquals(noteCollection.getTriadChordSuffixes("ionian"), [
     "M",
     "m",
     "m",
@@ -320,7 +329,7 @@ Deno.test("note collection focus object exposes catalog derivations", () => {
     "m",
     "°",
   ]);
-  assertEquals(noteCollection.getSeventhChords("ionian"), [
+  assertEquals(noteCollection.getSeventhChordSuffixes("ionian"), [
     "M7",
     "m7",
     "m7",

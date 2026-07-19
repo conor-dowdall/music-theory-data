@@ -6,6 +6,7 @@ import type {
 
 const dominant7: ChordCollection = {
   category: "chord",
+  classification: { family: "dominant", structure: "seventh" },
   mostSimilarScale: "mixolydian",
   primaryName: "7",
   names: ["7", "dom7", "Dominant 7th", "Dominant Seventh"],
@@ -32,6 +33,7 @@ const dominant7: ChordCollection = {
 
 const dominant9: ChordCollection = {
   category: "chord",
+  classification: { family: "dominant", structure: "extended" },
   mostSimilarScale: "mixolydian",
   primaryName: "9",
   names: ["9", "dom9", "Dominant 9th", "Dominant Ninth"],
@@ -54,6 +56,7 @@ const dominant9: ChordCollection = {
 
 const dominant11: ChordCollection = {
   category: "chord",
+  classification: { family: "dominant", structure: "extended" },
   mostSimilarScale: "mixolydian",
   primaryName: "11",
   names: ["11", "dom11", "Dominant 11th", "Dominant Eleventh"],
@@ -84,6 +87,7 @@ const dominant11: ChordCollection = {
 
 const dominant13: ChordCollection = {
   category: "chord",
+  classification: { family: "dominant", structure: "extended" },
   mostSimilarScale: "mixolydian",
   primaryName: "13",
   names: ["13", "dom13", "Dominant 13th", "Dominant Thirteenth"],

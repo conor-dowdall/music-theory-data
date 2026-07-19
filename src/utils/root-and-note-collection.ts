@@ -9,9 +9,9 @@ import type { RomanSeventhChord, RomanTriad } from "../types/chords.ts";
 import {
   getRomanSeventhChordsForRootAndNoteCollectionKey,
   getRomanTriadsForRootAndNoteCollectionKey,
-  getSeventhChordsForRootAndNoteCollectionKey,
-  getTriadsForRootAndNoteCollectionKey,
-  hasAuthoredNoteCollectionHarmony,
+  getSeventhChordNamesForRootAndNoteCollectionKey,
+  getTriadChordNamesForRootAndNoteCollectionKey,
+  hasNoteCollectionHarmony,
 } from "./chords.ts";
 import { createChromaticTuple } from "./chromatic.ts";
 import {
@@ -120,33 +120,33 @@ export interface RootAndNoteCollectionDisplayLayers {
     Interval,
     "compound-intervals"
   >;
-  /** Rooted triad chord names for collections with authored modal harmony. */
+  /** Rooted triad chord names for collections with supported modal harmony. */
   triads: RootAndNoteCollectionDisplayLayerEntry<string, "triads">;
-  /** Rooted seventh-chord names for collections with authored modal harmony. */
+  /** Rooted seventh-chord names for collections with supported modal harmony. */
   seventhChords: RootAndNoteCollectionDisplayLayerEntry<
     string,
     "seventh-chords"
   >;
-  /** Roman numeral triads for collections with authored modal harmony. */
+  /** Roman numeral triads for collections with supported modal harmony. */
   romanTriads: RootAndNoteCollectionDisplayLayerEntry<
     RomanTriad,
     "roman-triads"
   >;
-  /** Roman numeral seventh chords for collections with authored modal harmony. */
+  /** Roman numeral seventh chords for collections with supported modal harmony. */
   romanSeventhChords: RootAndNoteCollectionDisplayLayerEntry<
     RomanSeventhChord,
     "roman-seventh-chords"
   >;
 }
 
-const authoredHarmonyUnavailableReason =
-  "This note collection does not have authored modal harmony data.";
+const supportedHarmonyUnavailableReason =
+  "This note collection does not belong to a supported modal harmony system.";
 
-const isAuthoredHarmonyAvailable:
+const isSupportedHarmonyAvailable:
   RootAndNoteCollectionDisplayLayerAvailabilityFunction = (
     _rootNote,
     noteCollectionKey,
-  ) => hasAuthoredNoteCollectionHarmony(noteCollectionKey);
+  ) => hasNoteCollectionHarmony(noteCollectionKey);
 
 const absolutePitchClassC0: RootAndNoteCollectionDisplayLayerOutputIndexing =
   "absolutePitchClassC0";
@@ -237,7 +237,7 @@ export const rootAndNoteCollectionDisplayLayers:
       name: "Triads",
       shortName: "Triads",
       description:
-        "Returns 12 chromatic triad-name slots for note collections with authored modal harmony.",
+        "Returns 12 chromatic triad-name slots for note collections with supported modal harmony.",
       outputPreview: "CM, Dm, Em...",
       sampleOutput: "CM, -, Dm, -, Em, FM, -, GM, -, Am, -, B°",
       outputKind: "chordNames",
@@ -245,11 +245,11 @@ export const rootAndNoteCollectionDisplayLayers:
       outputIndexing: absolutePitchClassC0,
       allowsEmptySlots: true,
       emptySlot: "undefined",
-      isAvailable: isAuthoredHarmonyAvailable,
-      unavailableReason: authoredHarmonyUnavailableReason,
+      isAvailable: isSupportedHarmonyAvailable,
+      unavailableReason: supportedHarmonyUnavailableReason,
       get: (root, key, opts) =>
         createDisplayLayerResult(
-          getTriadsForRootAndNoteCollectionKey(root, key, opts),
+          getTriadChordNamesForRootAndNoteCollectionKey(root, key, opts),
         ),
     },
     seventhChords: {
@@ -257,7 +257,7 @@ export const rootAndNoteCollectionDisplayLayers:
       name: "Seventh Chords",
       shortName: "Sevenths",
       description:
-        "Returns 12 chromatic seventh-chord-name slots for note collections with authored modal harmony.",
+        "Returns 12 chromatic seventh-chord-name slots for note collections with supported modal harmony.",
       outputPreview: "CM7, Dm7, Em7...",
       sampleOutput: "CM7, -, Dm7, -, Em7, FM7, -, G7, -, Am7, -, Bø7",
       outputKind: "chordNames",
@@ -265,11 +265,11 @@ export const rootAndNoteCollectionDisplayLayers:
       outputIndexing: absolutePitchClassC0,
       allowsEmptySlots: true,
       emptySlot: "undefined",
-      isAvailable: isAuthoredHarmonyAvailable,
-      unavailableReason: authoredHarmonyUnavailableReason,
+      isAvailable: isSupportedHarmonyAvailable,
+      unavailableReason: supportedHarmonyUnavailableReason,
       get: (root, key, opts) =>
         createDisplayLayerResult(
-          getSeventhChordsForRootAndNoteCollectionKey(root, key, opts),
+          getSeventhChordNamesForRootAndNoteCollectionKey(root, key, opts),
         ),
     },
     romanTriads: {
@@ -277,7 +277,7 @@ export const rootAndNoteCollectionDisplayLayers:
       name: "Roman Numeral Triads",
       shortName: "Roman Triads",
       description:
-        "Returns 12 chromatic Roman numeral triad slots for note collections with authored modal harmony.",
+        "Returns 12 chromatic Roman numeral triad slots for note collections with supported modal harmony.",
       outputPreview: "I, ii, iii...",
       sampleOutput: "I, -, ii, -, iii, IV, -, V, -, vi, -, vii°",
       outputKind: "romanNumerals",
@@ -285,8 +285,8 @@ export const rootAndNoteCollectionDisplayLayers:
       outputIndexing: absolutePitchClassC0,
       allowsEmptySlots: true,
       emptySlot: "undefined",
-      isAvailable: isAuthoredHarmonyAvailable,
-      unavailableReason: authoredHarmonyUnavailableReason,
+      isAvailable: isSupportedHarmonyAvailable,
+      unavailableReason: supportedHarmonyUnavailableReason,
       get: (root, key, opts) =>
         createDisplayLayerResult(
           getRomanTriadsForRootAndNoteCollectionKey(root, key, opts),
@@ -297,7 +297,7 @@ export const rootAndNoteCollectionDisplayLayers:
       name: "Roman Numeral Seventh Chords",
       shortName: "Roman Sevenths",
       description:
-        "Returns 12 chromatic Roman numeral seventh-chord slots for note collections with authored modal harmony.",
+        "Returns 12 chromatic Roman numeral seventh-chord slots for note collections with supported modal harmony.",
       outputPreview: "IM7, iim7, iiim7...",
       sampleOutput: "IM7, -, iim7, -, iiim7, IVM7, -, V7, -, vim7, -, viiø7",
       outputKind: "romanNumerals",
@@ -305,8 +305,8 @@ export const rootAndNoteCollectionDisplayLayers:
       outputIndexing: absolutePitchClassC0,
       allowsEmptySlots: true,
       emptySlot: "undefined",
-      isAvailable: isAuthoredHarmonyAvailable,
-      unavailableReason: authoredHarmonyUnavailableReason,
+      isAvailable: isSupportedHarmonyAvailable,
+      unavailableReason: supportedHarmonyUnavailableReason,
       get: (root, key, opts) =>
         createDisplayLayerResult(
           getRomanSeventhChordsForRootAndNoteCollectionKey(root, key, opts),
@@ -367,13 +367,13 @@ export const rootAndNoteCollection = {
   getExtensions: getExtensionsForRootAndNoteCollectionKey,
   /** Resolves interval labels with simple intervals converted to compound equivalents. */
   getCompoundIntervals: getCompoundIntervalsForRootAndNoteCollectionKey,
-  /** Resolves rooted triad chord names for collections with authored modal harmony. */
-  getTriads: getTriadsForRootAndNoteCollectionKey,
-  /** Resolves rooted seventh-chord names for collections with authored modal harmony. */
-  getSeventhChords: getSeventhChordsForRootAndNoteCollectionKey,
-  /** Resolves Roman numeral triads for collections with authored modal harmony. */
+  /** Resolves rooted triad chord names for supported modal harmony. */
+  getTriadChordNames: getTriadChordNamesForRootAndNoteCollectionKey,
+  /** Resolves rooted seventh-chord names for supported modal harmony. */
+  getSeventhChordNames: getSeventhChordNamesForRootAndNoteCollectionKey,
+  /** Resolves Roman numeral triads for supported modal harmony. */
   getRomanTriads: getRomanTriadsForRootAndNoteCollectionKey,
-  /** Resolves Roman numeral seventh chords for collections with authored modal harmony. */
+  /** Resolves Roman numeral seventh chords for supported modal harmony. */
   getRomanSeventhChords: getRomanSeventhChordsForRootAndNoteCollectionKey,
   /** UI-friendly 12-slot display layers. */
   displayLayers: rootAndNoteCollectionDisplayLayers,

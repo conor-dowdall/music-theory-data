@@ -1,6 +1,13 @@
-import type { Interval, NoteAccidental } from "../data/labels/note-labels.ts";
+import type { NoteAccidental } from "../data/labels/note-labels.ts";
 import type { ChordCollectionKey } from "../data/note-collections/mod.ts";
-import type { ChordCollectionRomanSuffix, RomanNumeral } from "./chords.ts";
+import type {
+  ChordCollectionRomanSuffix,
+  LowerCaseChordCollectionRomanSuffix,
+  LowerCaseRomanNumeral,
+  RomanNumeral,
+  UpperCaseChordCollectionRomanSuffix,
+  UpperCaseRomanNumeral,
+} from "./chords.ts";
 
 /** A broad musical category for organizing built-in chord progressions in UIs. */
 export type ChordProgressionCategoryKey =
@@ -21,11 +28,12 @@ export interface ChordProgressionCategoryMetadata {
 /** A supported accidental prefix for authored progression scale degrees. */
 export type ChordProgressionDegreeAccidental = "" | NoteAccidental;
 
+/** A diatonic scale-degree number usable as a chord root. */
+export type ScaleDegreeNumber = "1" | "2" | "3" | "4" | "5" | "6" | "7";
+
 /** A chord root degree relative to the progression tonic, e.g. "1", "♭3", or "♯4". */
-export type ChordProgressionDegree = Extract<
-  Interval,
-  `${ChordProgressionDegreeAccidental}${number}`
->;
+export type ChordRootDegree =
+  `${ChordProgressionDegreeAccidental}${ScaleDegreeNumber}`;
 
 /** A supported accidental prefix for progression Roman symbols. */
 export type ChordProgressionRomanAccidental = ChordProgressionDegreeAccidental;
@@ -35,15 +43,22 @@ export type ChordProgressionRomanChordSuffix = ChordCollectionRomanSuffix;
 
 /** A direct Roman symbol relative to the progression tonic. */
 export type ChordProgressionRomanSymbol =
-  `${ChordProgressionRomanAccidental}${RomanNumeral}${ChordProgressionRomanChordSuffix}`;
+  | `${ChordProgressionRomanAccidental}${UpperCaseRomanNumeral}${UpperCaseChordCollectionRomanSuffix}`
+  | `${ChordProgressionRomanAccidental}${LowerCaseRomanNumeral}${LowerCaseChordCollectionRomanSuffix}`;
 
 /** A target Roman degree in a secondary-function symbol. */
 export type ChordProgressionSecondaryRomanTarget =
   `${ChordProgressionRomanAccidental}${RomanNumeral}`;
 
+type ChordProgressionSecondaryRomanSymbolForTarget<
+  TTarget extends RomanNumeral,
+> =
+  `${ChordProgressionRomanSymbol}/${ChordProgressionRomanAccidental}${TTarget}`;
+
 /** A secondary-function Roman symbol for analysis or display. */
 export type ChordProgressionSecondaryRomanSymbol =
-  `${string}/${ChordProgressionSecondaryRomanTarget}`;
+  | ChordProgressionSecondaryRomanSymbolForTarget<UpperCaseRomanNumeral>
+  | ChordProgressionSecondaryRomanSymbolForTarget<LowerCaseRomanNumeral>;
 
 /** A Roman symbol intended for harmonic-function analysis or display. */
 export type ChordProgressionAnalysisRomanSymbol =
@@ -66,7 +81,7 @@ export interface ChordProgressionChord {
    * The chord root interval relative to the tonic.
    * e.g. "1", "4", "5", "♭7".
    */
-  readonly degree: ChordProgressionDegree;
+  readonly degree: ChordRootDegree;
   /**
    * The chord collection that supplies this event's pitch content and symbol
    * rendering.
@@ -84,14 +99,26 @@ export interface ChordProgressionChord {
   readonly analysis?: ChordProgressionChordAnalysis;
 }
 
-/** A named chord progression template made from ordered chord events. */
+/** A non-empty ordered sequence of authored progression chord events. */
+export type ChordProgressionChords = readonly [
+  ChordProgressionChord,
+  ...ChordProgressionChord[],
+];
+
+/** A harmonic progression structure made from one or more ordered chord events. */
 export interface ChordProgression {
-  /** Optional commonly used name for the progression. */
-  readonly commonName?: string;
-  /** Optional category used for browsing built-in progressions. */
-  readonly category?: ChordProgressionCategoryKey;
   /** Ordered chord events that make up the progression. */
-  readonly chords: readonly ChordProgressionChord[];
+  readonly chords: ChordProgressionChords;
+}
+
+/** Catalog metadata associated with a reusable chord progression structure. */
+export interface ChordProgressionDefinition {
+  /** Human-readable catalog name. */
+  readonly name: string;
+  /** Optional catalog category; applications may define uncategorized entries. */
+  readonly category?: ChordProgressionCategoryKey;
+  /** Harmonic structure described by this catalog entry. */
+  readonly progression: ChordProgression;
 }
 
 /** A group of chord progression keys that share the same total bar count. */

@@ -5,10 +5,11 @@ import type {
   ChordProgressionCategoryKey,
   ChordProgressionCategoryMetadata,
   ChordProgressionChord,
+  ChordProgressionDefinition,
 } from "../../types/chord-progressions.ts";
 
 /** A built-in progression with an assigned package category. */
-export type BuiltInChordProgression = ChordProgression & {
+export type BuiltInChordProgressionDefinition = ChordProgressionDefinition & {
   readonly category: ChordProgressionCategoryKey;
 };
 
@@ -86,16 +87,14 @@ export const chordProgressionCategoryKeys:
 
 // Common Progressions
 
-const oneOneFiveFive: BuiltInChordProgression = {
-  category: "commonLoops",
+const oneOneFiveFive: ChordProgression = {
   chords: [
     chord("1", "major", 2),
     chord("5", "major", 2),
   ],
 };
 
-const oneOneFiveFiveDominant7: BuiltInChordProgression = {
-  category: "commonLoops",
+const oneOneFiveFiveDominant7: ChordProgression = {
   chords: [
     chord("1", "major", 2),
     chord("5", "major", 1),
@@ -103,16 +102,14 @@ const oneOneFiveFiveDominant7: BuiltInChordProgression = {
   ],
 };
 
-const oneOneFourFour: BuiltInChordProgression = {
-  category: "commonLoops",
+const oneOneFourFour: ChordProgression = {
   chords: [
     chord("1", "major", 2),
     chord("4", "major", 2),
   ],
 };
 
-const oneOneFourFiveDominant7: BuiltInChordProgression = {
-  category: "commonLoops",
+const oneOneFourFiveDominant7: ChordProgression = {
   chords: [
     chord("1", "major", 2),
     chord("4", "major", 1),
@@ -120,8 +117,7 @@ const oneOneFourFiveDominant7: BuiltInChordProgression = {
   ],
 };
 
-const oneFourFiveDominant7Six: BuiltInChordProgression = {
-  category: "commonLoops",
+const oneFourFiveDominant7Six: ChordProgression = {
   chords: [
     chord("1", "major", 1),
     chord("4", "major", 1),
@@ -130,8 +126,7 @@ const oneFourFiveDominant7Six: BuiltInChordProgression = {
   ],
 };
 
-const oneFourOneFive: BuiltInChordProgression = {
-  category: "commonLoops",
+const oneFourOneFive: ChordProgression = {
   chords: [
     chord("1", "major", 1),
     chord("4", "major", 1),
@@ -140,8 +135,7 @@ const oneFourOneFive: BuiltInChordProgression = {
   ],
 };
 
-const oneSixFourFive: BuiltInChordProgression = {
-  category: "commonLoops",
+const oneSixFourFive: ChordProgression = {
   chords: [
     chord("1", "major", 1),
     chord("6", "minor", 1),
@@ -150,8 +144,7 @@ const oneSixFourFive: BuiltInChordProgression = {
   ],
 };
 
-const oneFiveSixFour: BuiltInChordProgression = {
-  category: "commonLoops",
+const oneFiveSixFour: ChordProgression = {
   chords: [
     chord("1", "major", 1),
     chord("5", "major", 1),
@@ -160,8 +153,7 @@ const oneFiveSixFour: BuiltInChordProgression = {
   ],
 };
 
-const oneFourOneFiveSplitReturn: BuiltInChordProgression = {
-  category: "commonLoops",
+const oneFourOneFiveSplitReturn: ChordProgression = {
   chords: [
     chord("1", "major", 1),
     chord("4", "major", 1),
@@ -175,9 +167,7 @@ const oneFourOneFiveSplitReturn: BuiltInChordProgression = {
   ],
 };
 
-const pachelbelCanon: BuiltInChordProgression = {
-  commonName: "Pachelbel Progression",
-  category: "commonLoops",
+const pachelbelCanon: ChordProgression = {
   chords: [
     chord("1", "major", 1),
     chord("5", "major", 1),
@@ -190,9 +180,7 @@ const pachelbelCanon: BuiltInChordProgression = {
   ],
 };
 
-const andalusianCadence: BuiltInChordProgression = {
-  commonName: "Andalusian Cadence",
-  category: "commonLoops",
+const andalusianCadence: ChordProgression = {
   chords: [
     chord("1", "minor", 1),
     chord("♭7", "major", 1),
@@ -203,8 +191,7 @@ const andalusianCadence: BuiltInChordProgression = {
 
 // Turnarounds & Cycles
 
-const oneSixTwoFive: BuiltInChordProgression = {
-  category: "turnaroundsAndCycles",
+const oneSixTwoFive: ChordProgression = {
   chords: [
     chord("1", "major", 1),
     chord("6", "minor", 1),
@@ -213,8 +200,7 @@ const oneSixTwoFive: BuiltInChordProgression = {
   ],
 };
 
-const sixTwoFiveOne: BuiltInChordProgression = {
-  category: "turnaroundsAndCycles",
+const sixTwoFiveOne: ChordProgression = {
   chords: [
     chord("6", "minor", 1),
     chord("2", "minor", 1),
@@ -223,9 +209,7 @@ const sixTwoFiveOne: BuiltInChordProgression = {
   ],
 };
 
-const circleOfFifths: BuiltInChordProgression = {
-  commonName: "Circle of Fifths Progression",
-  category: "turnaroundsAndCycles",
+const circleOfFifths: ChordProgression = {
   chords: [
     chord("1", "major", 1),
     chord("4", "major", 1),
@@ -238,9 +222,7 @@ const circleOfFifths: BuiltInChordProgression = {
   ],
 };
 
-const minorCircleOfFifths: BuiltInChordProgression = {
-  commonName: "Minor Circle of Fifths Progression",
-  category: "turnaroundsAndCycles",
+const minorCircleOfFifths: ChordProgression = {
   chords: [
     chord("1", "minor", 1),
     chord("4", "minor7", 1),
@@ -255,36 +237,28 @@ const minorCircleOfFifths: BuiltInChordProgression = {
 
 // Cadences
 
-const authenticCadence: BuiltInChordProgression = {
-  commonName: "Authentic Cadence (V7–I)",
-  category: "cadences",
+const authenticCadence: ChordProgression = {
   chords: [
     chord("5", "dominant7", 2),
     chord("1", "major", 2),
   ],
 };
 
-const plagalCadence: BuiltInChordProgression = {
-  commonName: "Plagal Cadence (IV–I)",
-  category: "cadences",
+const plagalCadence: ChordProgression = {
   chords: [
     chord("4", "major", 2),
     chord("1", "major", 2),
   ],
 };
 
-const minorPlagalCadence: BuiltInChordProgression = {
-  commonName: "Minor Plagal Cadence (iv–I)",
-  category: "cadences",
+const minorPlagalCadence: ChordProgression = {
   chords: [
     chord("4", "minor", 2),
     chord("1", "major", 2),
   ],
 };
 
-const deceptiveCadence: BuiltInChordProgression = {
-  commonName: "Deceptive Cadence (V7–vi)",
-  category: "cadences",
+const deceptiveCadence: ChordProgression = {
   chords: [
     chord("5", "dominant7", 2),
     chord("6", "minor", 2),
@@ -293,9 +267,7 @@ const deceptiveCadence: BuiltInChordProgression = {
 
 // Blues Forms
 
-const twelveBarBlues: BuiltInChordProgression = {
-  commonName: "12-Bar Blues",
-  category: "blues",
+const twelveBarBlues: ChordProgression = {
   chords: [
     chord("1", "dominant7", 4),
     chord("4", "dominant7", 2),
@@ -307,9 +279,7 @@ const twelveBarBlues: BuiltInChordProgression = {
   ],
 };
 
-const twelveBarBluesQuickChange: BuiltInChordProgression = {
-  commonName: "12-Bar Blues (Quick Change)",
-  category: "blues",
+const twelveBarBluesQuickChange: ChordProgression = {
   chords: [
     chord("1", "dominant7", 1),
     chord("4", "dominant7", 1),
@@ -323,9 +293,7 @@ const twelveBarBluesQuickChange: BuiltInChordProgression = {
   ],
 };
 
-const minorBlues: BuiltInChordProgression = {
-  commonName: "Minor Blues",
-  category: "blues",
+const minorBlues: ChordProgression = {
   chords: [
     chord("1", "minor7", 4),
     chord("4", "minor7", 2),
@@ -337,9 +305,7 @@ const minorBlues: BuiltInChordProgression = {
   ],
 };
 
-const jazzBlues: BuiltInChordProgression = {
-  commonName: "Jazz Blues",
-  category: "blues",
+const jazzBlues: ChordProgression = {
   chords: [
     chord("1", "dominant7", 1),
     chord("4", "dominant7", 1),
@@ -359,9 +325,7 @@ const jazzBlues: BuiltInChordProgression = {
 
 // Jazz Progressions
 
-const majorTwoFiveOne: BuiltInChordProgression = {
-  commonName: "Major ii–V–I",
-  category: "jazz",
+const majorTwoFiveOne: ChordProgression = {
   chords: [
     chord("2", "minor7", 1),
     chord("5", "dominant7", 1),
@@ -369,9 +333,7 @@ const majorTwoFiveOne: BuiltInChordProgression = {
   ],
 };
 
-const minorTwoFiveOne: BuiltInChordProgression = {
-  commonName: "Minor ii–V–i",
-  category: "jazz",
+const minorTwoFiveOne: ChordProgression = {
   chords: [
     chord("2", "halfDiminished7", 1),
     chord("5", "dominant7", 1),
@@ -379,9 +341,7 @@ const minorTwoFiveOne: BuiltInChordProgression = {
   ],
 };
 
-const backdoorTwoFiveOne: BuiltInChordProgression = {
-  commonName: "Backdoor ii–V–I",
-  category: "jazz",
+const backdoorTwoFiveOne: ChordProgression = {
   chords: [
     chord("4", "minor7", 1),
     chord("♭7", "dominant7", 1),
@@ -389,9 +349,7 @@ const backdoorTwoFiveOne: BuiltInChordProgression = {
   ],
 };
 
-const autumnLeavesA: BuiltInChordProgression = {
-  commonName: "Autumn Leaves A",
-  category: "jazz",
+const autumnLeavesA: ChordProgression = {
   chords: [
     chord("4", "minor7", 1),
     chord("♭7", "dominant7", 1),
@@ -403,9 +361,7 @@ const autumnLeavesA: BuiltInChordProgression = {
   ],
 };
 
-const autumnLeavesB: BuiltInChordProgression = {
-  commonName: "Autumn Leaves B",
-  category: "jazz",
+const autumnLeavesB: ChordProgression = {
   chords: [
     chord("2", "halfDiminished7", 1),
     chord("5", "dominant7", 1),
@@ -417,9 +373,7 @@ const autumnLeavesB: BuiltInChordProgression = {
   ],
 };
 
-const autumnLeavesC: BuiltInChordProgression = {
-  commonName: "Autumn Leaves C",
-  category: "jazz",
+const autumnLeavesC: ChordProgression = {
   chords: [
     chord("2", "halfDiminished7", 1),
     chord("5", "dominant7", 1),
@@ -433,9 +387,7 @@ const autumnLeavesC: BuiltInChordProgression = {
   ],
 };
 
-const rhythmChangesA: BuiltInChordProgression = {
-  commonName: "Rhythm Changes A",
-  category: "jazz",
+const rhythmChangesA: ChordProgression = {
   chords: [
     chord("1", "major", 0.5),
     chord("6", "minor", 0.5),
@@ -455,9 +407,7 @@ const rhythmChangesA: BuiltInChordProgression = {
   ],
 };
 
-const rhythmChangesBridge: BuiltInChordProgression = {
-  commonName: "Rhythm Changes Bridge",
-  category: "jazz",
+const rhythmChangesBridge: ChordProgression = {
   chords: [
     chord("3", "dominant7", 2, { romanSymbol: "V7/vi" }),
     chord("6", "dominant7", 2, { romanSymbol: "V7/ii" }),
@@ -466,49 +416,178 @@ const rhythmChangesBridge: BuiltInChordProgression = {
   ],
 };
 
-/** Exact built-in chord progression data keyed by progression id. */
-export const builtInChordProgressions = {
-  oneOneFiveFive,
-  oneOneFiveFiveDominant7,
-  oneOneFourFour,
-  oneOneFourFiveDominant7,
-  oneFourFiveDominant7Six,
-  oneFourOneFive,
-  oneSixFourFive,
-  oneFiveSixFour,
-  oneFourOneFiveSplitReturn,
-  pachelbelCanon,
-  andalusianCadence,
-  oneSixTwoFive,
-  sixTwoFiveOne,
-  circleOfFifths,
-  minorCircleOfFifths,
-  authenticCadence,
-  plagalCadence,
-  minorPlagalCadence,
-  deceptiveCadence,
-  twelveBarBlues,
-  twelveBarBluesQuickChange,
-  minorBlues,
-  jazzBlues,
-  majorTwoFiveOne,
-  minorTwoFiveOne,
-  backdoorTwoFiveOne,
-  autumnLeavesA,
-  autumnLeavesB,
-  autumnLeavesC,
-  rhythmChangesA,
-  rhythmChangesBridge,
-} as const;
+/** Built-in catalog definitions are the single authored source for metadata and structure. */
+export const chordProgressionDefinitions = {
+  oneOneFiveFive: {
+    name: "I–V",
+    category: "commonLoops",
+    progression: oneOneFiveFive,
+  },
+  oneOneFiveFiveDominant7: {
+    name: "I–V–V7",
+    category: "commonLoops",
+    progression: oneOneFiveFiveDominant7,
+  },
+  oneOneFourFour: {
+    name: "I–IV",
+    category: "commonLoops",
+    progression: oneOneFourFour,
+  },
+  oneOneFourFiveDominant7: {
+    name: "I–IV–V7",
+    category: "commonLoops",
+    progression: oneOneFourFiveDominant7,
+  },
+  oneFourFiveDominant7Six: {
+    name: "I–IV–V7–vi",
+    category: "commonLoops",
+    progression: oneFourFiveDominant7Six,
+  },
+  oneFourOneFive: {
+    name: "I–IV–I–V",
+    category: "commonLoops",
+    progression: oneFourOneFive,
+  },
+  oneSixFourFive: {
+    name: "I–vi–IV–V",
+    category: "commonLoops",
+    progression: oneSixFourFive,
+  },
+  oneFiveSixFour: {
+    name: "I–V–vi–IV",
+    category: "commonLoops",
+    progression: oneFiveSixFour,
+  },
+  oneFourOneFiveSplitReturn: {
+    name: "I–IV–I–V–I–IV–I–V–I",
+    category: "commonLoops",
+    progression: oneFourOneFiveSplitReturn,
+  },
+  pachelbelCanon: {
+    name: "Pachelbel Progression",
+    category: "commonLoops",
+    progression: pachelbelCanon,
+  },
+  andalusianCadence: {
+    name: "Andalusian Cadence",
+    category: "commonLoops",
+    progression: andalusianCadence,
+  },
+  oneSixTwoFive: {
+    name: "I–vi–ii–V",
+    category: "turnaroundsAndCycles",
+    progression: oneSixTwoFive,
+  },
+  sixTwoFiveOne: {
+    name: "vi–ii–V–I",
+    category: "turnaroundsAndCycles",
+    progression: sixTwoFiveOne,
+  },
+  circleOfFifths: {
+    name: "Circle of Fifths Progression",
+    category: "turnaroundsAndCycles",
+    progression: circleOfFifths,
+  },
+  minorCircleOfFifths: {
+    name: "Minor Circle of Fifths Progression",
+    category: "turnaroundsAndCycles",
+    progression: minorCircleOfFifths,
+  },
+  authenticCadence: {
+    name: "Authentic Cadence (V7–I)",
+    category: "cadences",
+    progression: authenticCadence,
+  },
+  plagalCadence: {
+    name: "Plagal Cadence (IV–I)",
+    category: "cadences",
+    progression: plagalCadence,
+  },
+  minorPlagalCadence: {
+    name: "Minor Plagal Cadence (iv–I)",
+    category: "cadences",
+    progression: minorPlagalCadence,
+  },
+  deceptiveCadence: {
+    name: "Deceptive Cadence (V7–vi)",
+    category: "cadences",
+    progression: deceptiveCadence,
+  },
+  twelveBarBlues: {
+    name: "12-Bar Blues",
+    category: "blues",
+    progression: twelveBarBlues,
+  },
+  twelveBarBluesQuickChange: {
+    name: "12-Bar Blues (Quick Change)",
+    category: "blues",
+    progression: twelveBarBluesQuickChange,
+  },
+  minorBlues: {
+    name: "Minor Blues",
+    category: "blues",
+    progression: minorBlues,
+  },
+  jazzBlues: {
+    name: "Jazz Blues",
+    category: "blues",
+    progression: jazzBlues,
+  },
+  majorTwoFiveOne: {
+    name: "Major ii–V–I",
+    category: "jazz",
+    progression: majorTwoFiveOne,
+  },
+  minorTwoFiveOne: {
+    name: "Minor ii–V–i",
+    category: "jazz",
+    progression: minorTwoFiveOne,
+  },
+  backdoorTwoFiveOne: {
+    name: "Backdoor ii–V–I",
+    category: "jazz",
+    progression: backdoorTwoFiveOne,
+  },
+  autumnLeavesA: {
+    name: "Autumn Leaves A",
+    category: "jazz",
+    progression: autumnLeavesA,
+  },
+  autumnLeavesB: {
+    name: "Autumn Leaves B",
+    category: "jazz",
+    progression: autumnLeavesB,
+  },
+  autumnLeavesC: {
+    name: "Autumn Leaves C",
+    category: "jazz",
+    progression: autumnLeavesC,
+  },
+  rhythmChangesA: {
+    name: "Rhythm Changes A",
+    category: "jazz",
+    progression: rhythmChangesA,
+  },
+  rhythmChangesBridge: {
+    name: "Rhythm Changes Bridge",
+    category: "jazz",
+    progression: rhythmChangesBridge,
+  },
+} as const satisfies Record<string, BuiltInChordProgressionDefinition>;
 
-/** A key for one of the built-in chord progression templates. */
-export type ChordProgressionKey = keyof typeof builtInChordProgressions;
+/** A key for one of the built-in chord progression definitions. */
+export type ChordProgressionKey = keyof typeof chordProgressionDefinitions;
 
-/** Built-in chord progression templates keyed by progression id. */
+/** Built-in chord progression structures derived from the catalog definitions. */
 export const chordProgressions: Record<
   ChordProgressionKey,
-  BuiltInChordProgression
-> = builtInChordProgressions;
+  ChordProgression
+> = Object.fromEntries(
+  Object.entries(chordProgressionDefinitions).map(([key, definition]) => [
+    key,
+    definition.progression,
+  ]),
+) as Record<ChordProgressionKey, ChordProgression>;
 
 const chordProgressionsByTotalBars = Object.entries(chordProgressions)
   .reduce<Map<number, ChordProgressionKey[]>>((groups, [key, progression]) => {
@@ -543,7 +622,10 @@ export const chordProgressionCategoryGroups:
       category,
       ...chordProgressionCategories[category],
       progressionKeys: Object.entries(chordProgressions).flatMap(
-        ([key, progression]) =>
-          progression.category === category ? [key as ChordProgressionKey] : [],
+        ([key]) =>
+          chordProgressionDefinitions[key as ChordProgressionKey].category ===
+              category
+            ? [key as ChordProgressionKey]
+            : [],
       ),
     }));

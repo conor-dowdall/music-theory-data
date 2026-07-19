@@ -18,6 +18,29 @@ export interface ChordCollectionSymbolRendering {
   readonly numeralCase: RomanNumeralCase;
 }
 
+/** Primary construction family of a chord collection. */
+export type ChordCollectionFamily =
+  | "major"
+  | "minor"
+  | "dominant"
+  | "diminished"
+  | "augmented";
+
+/** Structural class of a chord collection beyond its primary family. */
+export type ChordCollectionStructure =
+  | "triad"
+  | "seventh"
+  | "added-tone"
+  | "extended";
+
+/** Stable musical classification for filtering chord collections. */
+export interface ChordCollectionClassification {
+  /** Primary construction family, independent of harmonic function. */
+  readonly family: ChordCollectionFamily;
+  /** Chord construction based on its seventh and extension content. */
+  readonly structure: ChordCollectionStructure;
+}
+
 /** Shared metadata and interval content for a note, dyad, chord, or scale collection. */
 export interface NoteCollectionBase<TInteger extends number = number> {
   /**
@@ -111,6 +134,8 @@ export interface ChordCollection extends NoteCollectionBase {
    * Use the chord symbol rendering helpers for canonical chord-symbol display.
    */
   readonly symbol: ChordCollectionSymbolRendering;
+  /** Stable musical classification for filtering and catalog organization. */
+  readonly classification: ChordCollectionClassification;
   /** Chord collections are not represented as modal rotations. */
   readonly rotation?: never;
 }

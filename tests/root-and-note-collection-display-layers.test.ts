@@ -92,7 +92,7 @@ Deno.test("display layer functions return chromatic tuples", () => {
   }
 });
 
-Deno.test("available display layer helpers filter unavailable authored harmony layers", () => {
+Deno.test("available display layer helpers filter unsupported harmony layers", () => {
   const ionianDisplayLayerIds = getAvailableRootAndNoteCollectionDisplayLayers(
     "C",
     "ionian",

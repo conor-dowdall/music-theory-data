@@ -1,13 +1,16 @@
 import {
-  diatonicSeventhChords,
-  diatonicTriads,
+  getChordCollectionChordSuffix,
   getChordCollectionSymbolRendering,
-  getChordQualityChordCollectionKey,
-  harmonicMinorSeventhChords,
-  harmonicMinorTriads,
+  isSupportedHarmonyParentKey,
   lowerCaseRomanNumerals,
-  melodicMinorSeventhChords,
-  melodicMinorTriads,
+  type NoteCollectionHarmony,
+  noteCollectionHarmonyByParentKey,
+  type RomanSeventhChord,
+  type RomanTriad,
+  type SeventhChordCollectionKey,
+  type SeventhChordSuffix,
+  type TriadChordCollectionKey,
+  type TriadChordSuffix,
   upperCaseRomanNumerals,
 } from "../data/chords/mod.ts";
 import {
@@ -15,31 +18,12 @@ import {
   type NoteCollectionKey,
   noteCollections,
 } from "../data/note-collections/mod.ts";
-import type {
-  ChordQuality,
-  RomanSeventhChord,
-  RomanTriad,
-  SeventhChord,
-  Triad,
-} from "../types/chords.ts";
 import { rotateArrayLeft, rotateArrayRight } from "./rotate-array.ts";
-import {
-  type HarmonicMinorModeKey,
-  harmonicMinorModes,
-} from "../data/note-collections/harmonic-minor-modes.ts";
-import {
-  type MelodicMinorModeKey,
-  melodicMinorModes,
-} from "../data/note-collections/melodic-minor-modes.ts";
 import {
   type Interval,
   intervalToIntegerMap,
 } from "../data/labels/note-labels.ts";
 import type { ChromaticIndex, ChromaticTuple } from "../data/chromatic.ts";
-import {
-  type DiatonicModeKey,
-  diatonicModes,
-} from "../data/note-collections/diatonic-modes.ts";
 import {
   isOctaveInterval,
   type NoteCollectionKeyTransformOptions,
@@ -51,17 +35,6 @@ import {
   noteNameToIntegerMap,
   type RootNote,
 } from "../data/labels/note-labels.ts";
-
-/** Returns a Roman numeral for a scale degree index and chord quality. */
-export function getRomanNumeralForScaleIndexAndChordQuality(
-  scaleIndex: number,
-  quality: ChordQuality,
-): string | undefined {
-  return getRomanNumeralForScaleIndexAndChordCollectionKey(
-    scaleIndex,
-    getChordQualityChordCollectionKey(quality),
-  );
-}
 
 /** Returns a Roman numeral for a scale degree index and chord collection key. */
 export function getRomanNumeralForScaleIndexAndChordCollectionKey(
@@ -79,40 +52,19 @@ export function getRomanNumeralForScaleIndexAndChordCollectionKey(
   return romanNumeral + rendering.romanSuffix;
 }
 
-/**
- * Converts standard triad qualities (e.g., "M", "m") into their corresponding Roman numeral representations
- * based on their scale degree index.
- *
- * @param triads An array of triad qualities in order of scale degree.
- * @returns An array of string-based Roman numeral triads (e.g., "I", "ii", "iii°").
- */
-export function getRomanTriads(triads: Triad[]): RomanTriad[] {
-  return triads.map((quality, i) => {
-    const roman = getRomanNumeralForScaleIndexAndChordQuality(i, quality);
+function getRomanSymbolsForChordCollectionKeys(
+  chordCollectionKeys: readonly ChordCollectionKey[],
+): string[] {
+  return chordCollectionKeys.map((chordCollectionKey, scaleIndex) => {
+    const roman = getRomanNumeralForScaleIndexAndChordCollectionKey(
+      scaleIndex,
+      chordCollectionKey,
+    );
     if (roman === undefined) {
-      throw new Error(`Unhandled triad quality: ${quality}`);
+      throw new Error(`Missing Roman numeral for scale degree ${scaleIndex}`);
     }
     return roman;
-  }) as RomanTriad[];
-}
-
-/**
- * Converts standard seventh chord qualities (e.g., "M7", "m7") into their corresponding Roman numeral representations
- * based on their scale degree index.
- *
- * @param sevenths An array of seventh chord qualities in order of scale degree.
- * @returns An array of string-based Roman numeral seventh chords (e.g., "IM7", "ii7", "vii°7").
- */
-export function getRomanSeventhChords(
-  sevenths: SeventhChord[],
-): RomanSeventhChord[] {
-  return sevenths.map((quality, i) => {
-    const roman = getRomanNumeralForScaleIndexAndChordQuality(i, quality);
-    if (roman === undefined) {
-      throw new Error(`Unhandled seventh chord quality: ${quality}`);
-    }
-    return roman;
-  }) as RomanSeventhChord[];
+  });
 }
 
 function getChromaticArray<T>(
@@ -151,46 +103,31 @@ function getChromaticArray<T>(
 type ModeData = {
   intervals: readonly Interval[];
   rotation: number;
-  triads: readonly Triad[];
-  sevenths: readonly SeventhChord[];
+  harmony: NoteCollectionHarmony;
 };
 
 function getModeData(modeKey: NoteCollectionKey): ModeData | undefined {
-  if (Object.prototype.hasOwnProperty.call(diatonicModes, modeKey)) {
-    const mode = diatonicModes[modeKey as DiatonicModeKey];
-    return {
-      intervals: mode.intervals,
-      rotation: mode.rotation,
-      triads: diatonicTriads,
-      sevenths: diatonicSeventhChords,
-    };
-  }
-  if (Object.prototype.hasOwnProperty.call(harmonicMinorModes, modeKey)) {
-    const mode = harmonicMinorModes[modeKey as HarmonicMinorModeKey];
-    return {
-      intervals: mode.intervals,
-      rotation: mode.rotation,
-      triads: harmonicMinorTriads,
-      sevenths: harmonicMinorSeventhChords,
-    };
-  }
-  if (Object.prototype.hasOwnProperty.call(melodicMinorModes, modeKey)) {
-    const mode = melodicMinorModes[modeKey as MelodicMinorModeKey];
-    return {
-      intervals: mode.intervals,
-      rotation: mode.rotation,
-      triads: melodicMinorTriads,
-      sevenths: melodicMinorSeventhChords,
-    };
-  }
-  return undefined;
+  const mode = noteCollections[modeKey];
+  if (
+    mode === undefined || mode.category !== "scale" ||
+    mode.rotation === undefined || !Number.isInteger(mode.rotation) ||
+    mode.rotation < 0 ||
+    mode.rotation >= mode.integers.length || mode.integers.length !== 7 ||
+    !isSupportedHarmonyParentKey(mode.rotatedScale)
+  ) return undefined;
+
+  return {
+    intervals: mode.intervals,
+    rotation: mode.rotation,
+    harmony: noteCollectionHarmonyByParentKey[mode.rotatedScale],
+  };
 }
 
 /**
- * Checks whether a note collection has authored modal harmony data.
- * Collections without authored harmony intentionally return undefined chord placeholders.
+ * Checks whether a note collection belongs to a supported modal harmony system.
+ * Unsupported collections intentionally return undefined chord placeholders.
  */
-export function hasAuthoredNoteCollectionHarmony(
+export function hasNoteCollectionHarmony(
   noteCollectionKey: NoteCollectionKey,
 ): boolean {
   return getModeData(noteCollectionKey) !== undefined;
@@ -210,21 +147,26 @@ function getUndefinedChordPlaceholders<T>(
 }
 
 /**
- * A generic core helper function to evaluate and return chords for any given NoteCollectionKey.
+ * Resolves canonical harmony values for a note collection and applies layout transformations.
  *
- * @template T The underlying chord type extracted automatically from ModeData (e.g., `Triad` or `SeventhChord`).
- * @template U The final returned array type. If `transformRoman` is provided, this represents the Roman numeral type (e.g., `RomanTriad`). If no transformation is applied, `U` defaults to `T`.
+ * @template TKey The canonical chord collection key type.
+ * @template TOutput The rendered or canonical output type.
  */
-function getChordsForNoteCollectionKey<T, U = T>(
+function getHarmonyValuesForNoteCollectionKey<
+  TKey extends ChordCollectionKey,
+  TOutput = TKey,
+>(
   noteCollectionKey: NoteCollectionKey,
   options: NoteCollectionKeyTransformOptions,
-  extractChords: (data: ModeData) => readonly T[],
-  transformRoman?: (chords: T[]) => U[],
+  extractChordCollectionKeys: (
+    harmony: NoteCollectionHarmony,
+  ) => readonly TKey[],
+  transform?: (chordCollectionKeys: readonly TKey[]) => readonly TOutput[],
   rootOptions?: {
     rotateToRootInteger0?: boolean;
     rootNoteInteger?: ChromaticIndex;
   },
-): (U | undefined)[] {
+): (TOutput | undefined)[] {
   // 1. Verify that the requested note collection exists.
   const collection = noteCollections[noteCollectionKey];
   if (!collection) return [];
@@ -234,7 +176,7 @@ function getChordsForNoteCollectionKey<T, U = T>(
 
   // Helper function to apply requested rotations after the chord array is cleanly generated.
   const applyRotations = (
-    chordsArray: readonly (U | undefined)[],
+    chordsArray: readonly (TOutput | undefined)[],
     isChromatic: boolean,
   ) => {
     let result = [...chordsArray];
@@ -266,12 +208,15 @@ function getChordsForNoteCollectionKey<T, U = T>(
   const data = getModeData(noteCollectionKey);
   if (data) {
     // 2a. Rotate the base mode chords by the mode's inherent rotation (e.g., Dorian is rotation 1 of Diatonic parent).
-    const rotatedChords = rotateArrayLeft(extractChords(data), data.rotation);
+    const rotatedChordCollectionKeys = rotateArrayLeft(
+      extractChordCollectionKeys(data.harmony),
+      data.rotation,
+    );
 
-    // 2b. Map the standard chords to Roman Numerals if a transform function was provided.
-    const processedChords = transformRoman
-      ? transformRoman(rotatedChords)
-      : (rotatedChords as unknown as U[]);
+    // 2b. Render canonical identities only when the caller requested it.
+    const processedChords = transform
+      ? transform(rotatedChordCollectionKeys)
+      : (rotatedChordCollectionKeys as unknown as readonly TOutput[]);
 
     // 2c. If requested, map the sequential chord list into a 12-semitone chromatic sparse array.
     if (fillChromatic) {
@@ -285,77 +230,139 @@ function getChordsForNoteCollectionKey<T, U = T>(
     return applyRotations(processedChords, false);
   }
 
-  // 3. Collections without authored chord systems should not infer harmony from
+  // 3. Collections outside supported harmony systems should not infer harmony from
   // mostSimilarScale. Return undefined placeholders so array positions stay meaningful.
   return applyRotations(
-    getUndefinedChordPlaceholders<U>(collection.intervals, fillChromatic),
+    getUndefinedChordPlaceholders<TOutput>(
+      collection.intervals,
+      fillChromatic,
+    ),
     fillChromatic === true,
   );
 }
 
-/**
- * Retrieves the triads for a given note collection key.
- */
-export function getTriadsForNoteCollectionKey(
+/** Returns canonical triad chord identities for a note collection. */
+export function getTriadChordCollectionKeysForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
   options: NoteCollectionKeyTransformOptions = {},
-): (Triad | undefined)[] {
-  return getChordsForNoteCollectionKey<Triad>(
+): (TriadChordCollectionKey | undefined)[] {
+  return getHarmonyValuesForNoteCollectionKey<TriadChordCollectionKey>(
     noteCollectionKey,
     options,
-    (data) => data.triads,
+    (harmony) => harmony.triads,
   );
 }
 
-/**
- * Retrieves the seventh chords for a given note collection key.
- */
-export function getSeventhChordsForNoteCollectionKey(
+/** Returns canonical seventh-chord identities for a note collection. */
+export function getSeventhChordCollectionKeysForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
   options: NoteCollectionKeyTransformOptions = {},
-): (SeventhChord | undefined)[] {
-  return getChordsForNoteCollectionKey<SeventhChord>(
+): (SeventhChordCollectionKey | undefined)[] {
+  return getHarmonyValuesForNoteCollectionKey<SeventhChordCollectionKey>(
     noteCollectionKey,
     options,
-    (data) => data.sevenths,
+    (harmony) => harmony.sevenths,
   );
 }
 
-/**
- * Retrieves the Roman numeral triads for a given note collection key.
- */
+function getTriadChordSuffix(
+  chordCollectionKey: TriadChordCollectionKey,
+): TriadChordSuffix {
+  const suffix = getChordCollectionChordSuffix(chordCollectionKey);
+  if (suffix === "M" || suffix === "m" || suffix === "°" || suffix === "+") {
+    return suffix;
+  }
+  throw new Error(`Invalid triad suffix for ${chordCollectionKey}: ${suffix}`);
+}
+
+function getSeventhChordSuffix(
+  chordCollectionKey: SeventhChordCollectionKey,
+): SeventhChordSuffix {
+  const suffix = getChordCollectionChordSuffix(chordCollectionKey);
+  switch (suffix) {
+    case "M7":
+    case "m7":
+    case "m(M7)":
+    case "7":
+    case "°7":
+    case "ø7":
+    case "+7":
+    case "+M7":
+      return suffix;
+    default:
+      throw new Error(
+        `Invalid seventh-chord suffix for ${chordCollectionKey}: ${suffix}`,
+      );
+  }
+}
+
+/** Returns rendered triad suffixes for a note collection. */
+export function getTriadChordSuffixesForNoteCollectionKey(
+  noteCollectionKey: NoteCollectionKey,
+  options: NoteCollectionKeyTransformOptions = {},
+): (TriadChordSuffix | undefined)[] {
+  return getHarmonyValuesForNoteCollectionKey<
+    TriadChordCollectionKey,
+    TriadChordSuffix
+  >(
+    noteCollectionKey,
+    options,
+    (harmony) => harmony.triads,
+    (keys) => keys.map(getTriadChordSuffix),
+  );
+}
+
+/** Returns rendered seventh-chord suffixes for a note collection. */
+export function getSeventhChordSuffixesForNoteCollectionKey(
+  noteCollectionKey: NoteCollectionKey,
+  options: NoteCollectionKeyTransformOptions = {},
+): (SeventhChordSuffix | undefined)[] {
+  return getHarmonyValuesForNoteCollectionKey<
+    SeventhChordCollectionKey,
+    SeventhChordSuffix
+  >(
+    noteCollectionKey,
+    options,
+    (harmony) => harmony.sevenths,
+    (keys) => keys.map(getSeventhChordSuffix),
+  );
+}
+
+/** Retrieves Roman numeral triads for a note collection. */
 export function getRomanTriadsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
   options: NoteCollectionKeyTransformOptions = {},
 ): (RomanTriad | undefined)[] {
-  return getChordsForNoteCollectionKey<Triad, RomanTriad>(
+  return getHarmonyValuesForNoteCollectionKey<
+    TriadChordCollectionKey,
+    RomanTriad
+  >(
     noteCollectionKey,
     options,
-    (data) => data.triads,
-    getRomanTriads,
+    (harmony) => harmony.triads,
+    (keys) => getRomanSymbolsForChordCollectionKeys(keys) as RomanTriad[],
   );
 }
 
-/**
- * Retrieves the Roman numeral seventh chords for a given note collection key.
- */
+/** Retrieves Roman numeral seventh chords for a note collection. */
 export function getRomanSeventhChordsForNoteCollectionKey(
   noteCollectionKey: NoteCollectionKey,
   options: NoteCollectionKeyTransformOptions = {},
 ): (RomanSeventhChord | undefined)[] {
-  return getChordsForNoteCollectionKey<SeventhChord, RomanSeventhChord>(
+  return getHarmonyValuesForNoteCollectionKey<
+    SeventhChordCollectionKey,
+    RomanSeventhChord
+  >(
     noteCollectionKey,
     options,
-    (data) => data.sevenths,
-    getRomanSeventhChords,
+    (harmony) => harmony.sevenths,
+    (keys) =>
+      getRomanSymbolsForChordCollectionKeys(keys) as RomanSeventhChord[],
   );
 }
 
-/**
- * Retrieves the triads with prepended note names for a given root note and note collection key.
- * Example: ["CM", "Dm", "Em", "FM", "GM", "Am", "B°"]
- */
-export function getTriadsForRootAndNoteCollectionKey(
+/** Returns rooted triad names, such as `CM`, `Dm`, or `B°`. */
+export function getTriadChordNamesForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
   options: RootAndNoteCollectionKeyTransformOptions = {},
@@ -366,10 +373,12 @@ export function getTriadsForRootAndNoteCollectionKey(
     options,
   );
   const { rotateToRootInteger0, ...restOptions } = options;
-  const chords = getChordsForNoteCollectionKey<Triad>(
+  const chordCollectionKeys = getHarmonyValuesForNoteCollectionKey<
+    TriadChordCollectionKey
+  >(
     noteCollectionKey,
     restOptions,
-    (data) => data.triads,
+    (harmony) => harmony.triads,
     undefined,
     {
       rootNoteInteger: noteNameToIntegerMap.get(rootNote),
@@ -377,17 +386,17 @@ export function getTriadsForRootAndNoteCollectionKey(
     },
   );
 
-  return chords.map((chord, i) => {
-    if (chord === undefined) return undefined;
-    return noteNames[i] + chord;
+  return chordCollectionKeys.map((chordCollectionKey, index) => {
+    const noteName = noteNames[index];
+    if (chordCollectionKey === undefined || noteName === undefined) {
+      return undefined;
+    }
+    return noteName + getChordCollectionChordSuffix(chordCollectionKey);
   });
 }
 
-/**
- * Retrieves the seventh chords with prepended note names for a given root note and note collection key.
- * Example: ["CM7", "Dm7", "Em7", "FM7", "G7", "Am7", "Bø7"]
- */
-export function getSeventhChordsForRootAndNoteCollectionKey(
+/** Returns rooted seventh-chord names, such as `CM7`, `G7`, or `Bø7`. */
+export function getSeventhChordNamesForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
   options: RootAndNoteCollectionKeyTransformOptions = {},
@@ -398,10 +407,12 @@ export function getSeventhChordsForRootAndNoteCollectionKey(
     options,
   );
   const { rotateToRootInteger0, ...restOptions } = options;
-  const chords = getChordsForNoteCollectionKey<SeventhChord>(
+  const chordCollectionKeys = getHarmonyValuesForNoteCollectionKey<
+    SeventhChordCollectionKey
+  >(
     noteCollectionKey,
     restOptions,
-    (data) => data.sevenths,
+    (harmony) => harmony.sevenths,
     undefined,
     {
       rootNoteInteger: noteNameToIntegerMap.get(rootNote),
@@ -409,9 +420,12 @@ export function getSeventhChordsForRootAndNoteCollectionKey(
     },
   );
 
-  return chords.map((chord, i) => {
-    if (chord === undefined) return undefined;
-    return noteNames[i] + chord;
+  return chordCollectionKeys.map((chordCollectionKey, index) => {
+    const noteName = noteNames[index];
+    if (chordCollectionKey === undefined || noteName === undefined) {
+      return undefined;
+    }
+    return noteName + getChordCollectionChordSuffix(chordCollectionKey);
   });
 }
 
@@ -426,11 +440,14 @@ export function getRomanTriadsForRootAndNoteCollectionKey(
   options: RootAndNoteCollectionKeyTransformOptions = {},
 ): (RomanTriad | undefined)[] {
   const { rotateToRootInteger0, ...restOptions } = options;
-  return getChordsForNoteCollectionKey<Triad, RomanTriad>(
+  return getHarmonyValuesForNoteCollectionKey<
+    TriadChordCollectionKey,
+    RomanTriad
+  >(
     noteCollectionKey,
     restOptions,
-    (data) => data.triads,
-    getRomanTriads,
+    (harmony) => harmony.triads,
+    (keys) => getRomanSymbolsForChordCollectionKeys(keys) as RomanTriad[],
     {
       rootNoteInteger: noteNameToIntegerMap.get(rootNote),
       rotateToRootInteger0,
@@ -449,11 +466,15 @@ export function getRomanSeventhChordsForRootAndNoteCollectionKey(
   options: RootAndNoteCollectionKeyTransformOptions = {},
 ): (RomanSeventhChord | undefined)[] {
   const { rotateToRootInteger0, ...restOptions } = options;
-  return getChordsForNoteCollectionKey<SeventhChord, RomanSeventhChord>(
+  return getHarmonyValuesForNoteCollectionKey<
+    SeventhChordCollectionKey,
+    RomanSeventhChord
+  >(
     noteCollectionKey,
     restOptions,
-    (data) => data.sevenths,
-    getRomanSeventhChords,
+    (harmony) => harmony.sevenths,
+    (keys) =>
+      getRomanSymbolsForChordCollectionKeys(keys) as RomanSeventhChord[],
     {
       rootNoteInteger: noteNameToIntegerMap.get(rootNote),
       rotateToRootInteger0,

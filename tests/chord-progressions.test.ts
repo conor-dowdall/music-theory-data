@@ -2,6 +2,7 @@ import { assertEquals, assertThrows } from "@std/assert";
 import {
   chordProgressionBarGroups,
   chordProgressionCategoryGroups,
+  chordProgressionDefinitions,
   chordProgressions,
 } from "../src/data/chord-progressions/mod.ts";
 import {
@@ -11,14 +12,24 @@ import {
   rootNotesSet,
   rootNoteToIntegerMap,
 } from "../src/data/labels/note-labels.ts";
+import { noteLabelCollections } from "../src/data/labels/note-label-collections.ts";
 import {
   type ChordProgression,
   chordProgression,
+  type ChordProgressionBarSegment,
   type ChordProgressionChord,
-  type ChordProgressionDegree,
+  type ChordProgressionDefinition,
+  type ChordProgressionDefinitionIssue,
+  type ChordProgressionIssue,
+  type ChordProgressionRomanSymbol,
+  type ChordProgressionSecondaryRomanSymbol,
+  type ChordProgressionTiming,
+  type ChordRootDegree,
+  type ParseResult,
   type ResolvedChordProgression,
 } from "../src/mod.ts";
 import {
+  flatChordRootDegrees,
   getChordProgressionChordChangeReferences,
   getChordProgressionChordNames,
   getChordProgressionChordReferencesByBar,
@@ -27,11 +38,23 @@ import {
   getChordProgressionKeysForTotalBars,
   getChordProgressionRomanSymbols,
   getChordProgressionSongChordReferences,
+  getChordProgressionTiming,
   getChordProgressionTotalDurationInBars,
   getChordProgressionUniqueChordNames,
   getChordProgressionUniqueChordReferences,
+  isChordCollectionKey,
+  isChordProgressionAnalysisRomanSymbol,
+  isChordProgressionRomanSymbol,
+  isChordProgressionSecondaryRomanSymbol,
+  isChordRootDegree,
   isValidChordProgressionKey,
+  normalizeChordRootDegree,
+  parseChordProgression,
+  parseChordProgressionDefinition,
   resolveChordProgression,
+  sharpChordRootDegrees,
+  validateChordProgression,
+  validateChordProgressionDefinition,
 } from "../src/utils/chord-progressions.ts";
 
 const cMajorReference = {
@@ -99,15 +122,221 @@ const aMinorReference = {
 } as const;
 
 Deno.test("chord progression authoring types are exported publicly", () => {
-  const degree: ChordProgressionDegree = "♭7";
+  const rootDegree: ChordRootDegree = "♭7";
+  const secondaryRomanSymbol: ChordProgressionSecondaryRomanSymbol = "V7/ii";
   const chord: ChordProgressionChord = {
-    degree,
+    degree: rootDegree,
     chordCollectionKey: "dominant7",
     durationInBars: 1,
+    analysis: { romanSymbol: secondaryRomanSymbol },
   };
   const progression: ChordProgression = { chords: [chord] };
+  // @ts-expect-error Augmented Roman suffixes require uppercase numerals.
+  const invalidRomanSymbol: ChordProgressionRomanSymbol = "i+7";
 
   assertEquals(progression.chords[0], chord);
+  assertEquals(isChordProgressionRomanSymbol(invalidRomanSymbol), false);
+});
+
+Deno.test("chord progression runtime guards recognize supported values", () => {
+  assertEquals(isChordRootDegree("♭7"), true);
+  assertEquals(isChordRootDegree("𝄪4"), true);
+  assertEquals(isChordRootDegree("9"), false);
+  assertEquals(isChordRootDegree("♭13"), false);
+  assertEquals(normalizeChordRootDegree("b3"), "♭3");
+  assertEquals(normalizeChordRootDegree("#4"), "♯4");
+  assertEquals(normalizeChordRootDegree("bb7"), "𝄫7");
+  assertEquals(normalizeChordRootDegree("x4"), "𝄪4");
+  assertEquals(normalizeChordRootDegree("♮3"), "♮3");
+  assertEquals(normalizeChordRootDegree("M3"), undefined);
+  assertEquals(normalizeChordRootDegree("♭13"), undefined);
+
+  assertEquals(
+    [...flatChordRootDegrees] as string[],
+    [...noteLabelCollections.intervalsFlat.labels],
+  );
+  assertEquals(
+    [...sharpChordRootDegrees] as string[],
+    [...noteLabelCollections.intervalsSharp.labels],
+  );
+
+  assertEquals(isChordCollectionKey("major"), true);
+  assertEquals(isChordCollectionKey("dominant13"), true);
+  assertEquals(isChordCollectionKey("ionian"), false);
+  assertEquals(isChordCollectionKey(null), false);
+
+  assertEquals(isChordProgressionAnalysisRomanSymbol("I6/9"), true);
+  assertEquals(isChordProgressionAnalysisRomanSymbol("V7/ii"), true);
+  assertEquals(isChordProgressionAnalysisRomanSymbol("V7/♭II"), true);
+  assertEquals(isChordProgressionAnalysisRomanSymbol("nonsense/V"), false);
+  assertEquals(isChordProgressionAnalysisRomanSymbol("V7/nope"), false);
+  assertEquals(isChordProgressionRomanSymbol("I6/9"), true);
+  assertEquals(isChordProgressionRomanSymbol("V7/ii"), false);
+  assertEquals(isChordProgressionSecondaryRomanSymbol("V7/ii"), true);
+  assertEquals(isChordProgressionSecondaryRomanSymbol("I6/9/ii"), true);
+  assertEquals(
+    isChordProgressionSecondaryRomanSymbol("Vgarbage/ii"),
+    false,
+  );
+});
+
+Deno.test("parseChordProgression returns fresh validated package data", () => {
+  const source = {
+    commonName: "Runtime progression",
+    category: "jazz",
+    ignored: "not part of the package model",
+    chords: [
+      {
+        degree: "2",
+        chordCollectionKey: "minor7",
+        durationInBars: 0.5,
+        ignored: true,
+      },
+      {
+        degree: "5",
+        chordCollectionKey: "dominant7",
+        durationInBars: 0.5,
+        analysis: { romanSymbol: "V7/ii", ignored: true },
+      },
+    ],
+  };
+  const result: ParseResult<ChordProgression> = parseChordProgression(source);
+
+  assertEquals(result.success, true);
+  if (!result.success) return;
+  assertEquals(result.value, {
+    chords: [
+      { degree: "2", chordCollectionKey: "minor7", durationInBars: 0.5 },
+      {
+        degree: "5",
+        chordCollectionKey: "dominant7",
+        durationInBars: 0.5,
+        analysis: { romanSymbol: "V7/ii" },
+      },
+    ],
+  });
+  assertEquals(Object.is(result.value, source), false);
+  assertEquals(result.value.chords[0] === source.chords[0], false);
+});
+
+Deno.test("progression definitions parse metadata separately from structure", () => {
+  const source = {
+    name: "Runtime progression",
+    category: "jazz",
+    ignored: true,
+    progression: {
+      ignored: true,
+      chords: [
+        { degree: "2", chordCollectionKey: "minor7", durationInBars: 0.5 },
+        { degree: "5", chordCollectionKey: "dominant7", durationInBars: 0.5 },
+      ],
+    },
+  };
+  const result: ParseResult<
+    ChordProgressionDefinition,
+    ChordProgressionDefinitionIssue
+  > = parseChordProgressionDefinition(source);
+
+  assertEquals(result, {
+    success: true,
+    value: {
+      name: "Runtime progression",
+      category: "jazz",
+      progression: {
+        chords: [
+          { degree: "2", chordCollectionKey: "minor7", durationInBars: 0.5 },
+          {
+            degree: "5",
+            chordCollectionKey: "dominant7",
+            durationInBars: 0.5,
+          },
+        ],
+      },
+    },
+  });
+  assertEquals(
+    validateChordProgressionDefinition({
+      name: " ",
+      category: "not-a-category",
+      progression: { chords: [] },
+    }).map((issue) => issue.code),
+    ["invalid-name", "invalid-category", "empty-progression"],
+  );
+});
+
+Deno.test("progression validation reports indexed diagnostics", () => {
+  const issues: readonly ChordProgressionIssue[] = validateChordProgression({
+    chords: [
+      {
+        degree: "♭13",
+        chordCollectionKey: "ionian",
+        durationInBars: 0,
+        analysis: { romanSymbol: "not-Roman" },
+      },
+      null,
+    ],
+  });
+
+  assertEquals(
+    issues.map((issue) => ({
+      code: issue.code,
+      ...("chordIndex" in issue ? { chordIndex: issue.chordIndex } : {}),
+    })),
+    [
+      { code: "invalid-degree", chordIndex: 0 },
+      { code: "invalid-chord-collection-key", chordIndex: 0 },
+      { code: "invalid-duration", chordIndex: 0 },
+      { code: "invalid-analysis", chordIndex: 0 },
+      { code: "invalid-chord", chordIndex: 1 },
+    ],
+  );
+  assertEquals(parseChordProgression({ chords: [] }).success, false);
+  assertEquals(
+    validateChordProgression({
+      chords: [{
+        degree: "1",
+        chordCollectionKey: "major",
+        durationInBars: Number.MAX_SAFE_INTEGER + 1,
+      }],
+    }).map((issue) => issue.code),
+    ["unrepresentable-duration"],
+  );
+  const oversizedProgression = {
+    chords: [{
+      degree: "1",
+      chordCollectionKey: "major",
+      durationInBars: 100_001,
+    }],
+  } as const;
+  assertEquals(
+    validateChordProgression(oversizedProgression).map((issue) => issue.code),
+    ["timeline-too-large"],
+  );
+  assertEquals(parseChordProgression(oversizedProgression).success, false);
+  assertThrows(
+    () => getChordProgressionTiming(oversizedProgression),
+    Error,
+    "100000-bar materialization limit",
+  );
+});
+
+Deno.test("incomplete final bars are valid and reported as timing metadata", () => {
+  const result = parseChordProgression({
+    chords: [
+      { degree: "1", chordCollectionKey: "major", durationInBars: 0.5 },
+    ],
+  });
+
+  assertEquals(result.success, true);
+  if (!result.success) return;
+  assertEquals(
+    getChordProgressionTiming(result.value).endsOnBarBoundary,
+    false,
+  );
+  assertEquals(
+    getChordProgressionTiming("oneSixFourFive").endsOnBarBoundary,
+    true,
+  );
 });
 
 Deno.test("progression key validation reflects the current dataset", () => {
@@ -143,139 +372,177 @@ Deno.test("progression key validation reflects the current dataset", () => {
 
 Deno.test("progression exports are available directly", () => {
   assertEquals(
-    chordProgressions.authenticCadence.commonName,
+    Object.keys(chordProgressionDefinitions),
+    Object.keys(chordProgressions),
+  );
+  for (
+    const key of Object.keys(chordProgressions) as Array<
+      keyof typeof chordProgressions
+    >
+  ) {
+    assertEquals(
+      Object.is(
+        chordProgressionDefinitions[key].progression,
+        chordProgressions[key],
+      ),
+      true,
+    );
+    assertEquals(chordProgressionDefinitions[key].name.trim().length > 0, true);
+    assertEquals("category" in chordProgressions[key], false);
+    assertEquals("name" in chordProgressions[key], false);
+  }
+  assertEquals(
+    chordProgressionDefinitions.authenticCadence.name,
     "Authentic Cadence (V7–I)",
   );
   assertEquals(
-    chordProgressions.plagalCadence.commonName,
+    chordProgressionDefinitions.plagalCadence.name,
     "Plagal Cadence (IV–I)",
   );
   assertEquals(
-    chordProgressions.minorPlagalCadence.commonName,
+    chordProgressionDefinitions.minorPlagalCadence.name,
     "Minor Plagal Cadence (iv–I)",
   );
   assertEquals(
-    chordProgressions.deceptiveCadence.commonName,
+    chordProgressionDefinitions.deceptiveCadence.name,
     "Deceptive Cadence (V7–vi)",
   );
   assertEquals(
-    chordProgressions.andalusianCadence.commonName,
+    chordProgressionDefinitions.andalusianCadence.name,
     "Andalusian Cadence",
   );
   assertEquals(
     [
-      chordProgressions.oneOneFiveFive.commonName,
-      chordProgressions.oneOneFiveFiveDominant7.commonName,
-      chordProgressions.oneOneFourFour.commonName,
-      chordProgressions.oneOneFourFiveDominant7.commonName,
-      chordProgressions.oneFourFiveDominant7Six.commonName,
-      chordProgressions.oneFourOneFive.commonName,
-      chordProgressions.oneSixFourFive.commonName,
-      chordProgressions.oneFiveSixFour.commonName,
-      chordProgressions.oneSixTwoFive.commonName,
-      chordProgressions.sixTwoFiveOne.commonName,
+      chordProgressionDefinitions.oneOneFiveFive.name,
+      chordProgressionDefinitions.oneOneFiveFiveDominant7.name,
+      chordProgressionDefinitions.oneOneFourFour.name,
+      chordProgressionDefinitions.oneOneFourFiveDominant7.name,
+      chordProgressionDefinitions.oneFourFiveDominant7Six.name,
+      chordProgressionDefinitions.oneFourOneFive.name,
+      chordProgressionDefinitions.oneSixFourFive.name,
+      chordProgressionDefinitions.oneFiveSixFour.name,
+      chordProgressionDefinitions.oneSixTwoFive.name,
+      chordProgressionDefinitions.sixTwoFiveOne.name,
     ],
     [
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
+      "I–V",
+      "I–V–V7",
+      "I–IV",
+      "I–IV–V7",
+      "I–IV–V7–vi",
+      "I–IV–I–V",
+      "I–vi–IV–V",
+      "I–V–vi–IV",
+      "I–vi–ii–V",
+      "vi–ii–V–I",
     ],
   );
   assertEquals(
-    chordProgressions.circleOfFifths.commonName,
+    chordProgressionDefinitions.circleOfFifths.name,
     "Circle of Fifths Progression",
   );
   assertEquals(
-    chordProgressions.minorCircleOfFifths.commonName,
+    chordProgressionDefinitions.minorCircleOfFifths.name,
     "Minor Circle of Fifths Progression",
   );
   assertEquals(
-    chordProgressions.pachelbelCanon.commonName,
+    chordProgressionDefinitions.pachelbelCanon.name,
     "Pachelbel Progression",
   );
   assertEquals(
-    chordProgressions.majorTwoFiveOne.commonName,
+    chordProgressionDefinitions.majorTwoFiveOne.name,
     "Major ii–V–I",
   );
   assertEquals(
-    chordProgressions.minorTwoFiveOne.commonName,
+    chordProgressionDefinitions.minorTwoFiveOne.name,
     "Minor ii–V–i",
   );
   assertEquals(
-    chordProgressions.backdoorTwoFiveOne.commonName,
+    chordProgressionDefinitions.backdoorTwoFiveOne.name,
     "Backdoor ii–V–I",
   );
   assertEquals(
-    chordProgressions.twelveBarBlues.commonName,
+    chordProgressionDefinitions.twelveBarBlues.name,
     "12-Bar Blues",
   );
   assertEquals(
-    chordProgressions.twelveBarBluesQuickChange.commonName,
+    chordProgressionDefinitions.twelveBarBluesQuickChange.name,
     "12-Bar Blues (Quick Change)",
   );
   assertEquals(
-    chordProgressions.minorBlues.commonName,
+    chordProgressionDefinitions.minorBlues.name,
     "Minor Blues",
   );
   assertEquals(
-    chordProgressions.jazzBlues.commonName,
+    chordProgressionDefinitions.jazzBlues.name,
     "Jazz Blues",
   );
   assertEquals(
-    chordProgressions.autumnLeavesA.commonName,
+    chordProgressionDefinitions.autumnLeavesA.name,
     "Autumn Leaves A",
   );
   assertEquals(
-    chordProgressions.autumnLeavesB.commonName,
+    chordProgressionDefinitions.autumnLeavesB.name,
     "Autumn Leaves B",
   );
   assertEquals(
-    chordProgressions.autumnLeavesC.commonName,
+    chordProgressionDefinitions.autumnLeavesC.name,
     "Autumn Leaves C",
   );
   assertEquals(
-    chordProgressions.rhythmChangesA.commonName,
+    chordProgressionDefinitions.rhythmChangesA.name,
     "Rhythm Changes A",
   );
   assertEquals(
-    chordProgressions.rhythmChangesBridge.commonName,
+    chordProgressionDefinitions.rhythmChangesBridge.name,
     "Rhythm Changes Bridge",
   );
-  assertEquals(chordProgressions.authenticCadence.category, "cadences");
-  assertEquals(chordProgressions.minorPlagalCadence.category, "cadences");
-  assertEquals(chordProgressions.andalusianCadence.category, "commonLoops");
-  assertEquals(chordProgressions.oneOneFiveFive.category, "commonLoops");
-  assertEquals(chordProgressions.oneSixFourFive.category, "commonLoops");
   assertEquals(
-    chordProgressions.oneSixTwoFive.category,
+    chordProgressionDefinitions.authenticCadence.category,
+    "cadences",
+  );
+  assertEquals(
+    chordProgressionDefinitions.minorPlagalCadence.category,
+    "cadences",
+  );
+  assertEquals(
+    chordProgressionDefinitions.andalusianCadence.category,
+    "commonLoops",
+  );
+  assertEquals(
+    chordProgressionDefinitions.oneOneFiveFive.category,
+    "commonLoops",
+  );
+  assertEquals(
+    chordProgressionDefinitions.oneSixFourFive.category,
+    "commonLoops",
+  );
+  assertEquals(
+    chordProgressionDefinitions.oneSixTwoFive.category,
     "turnaroundsAndCycles",
   );
   assertEquals(
-    chordProgressions.sixTwoFiveOne.category,
+    chordProgressionDefinitions.sixTwoFiveOne.category,
     "turnaroundsAndCycles",
   );
   assertEquals(
-    chordProgressions.circleOfFifths.category,
+    chordProgressionDefinitions.circleOfFifths.category,
     "turnaroundsAndCycles",
   );
   assertEquals(
-    chordProgressions.minorCircleOfFifths.category,
+    chordProgressionDefinitions.minorCircleOfFifths.category,
     "turnaroundsAndCycles",
   );
-  assertEquals(chordProgressions.autumnLeavesA.category, "jazz");
-  assertEquals(chordProgressions.autumnLeavesC.category, "jazz");
-  assertEquals(chordProgressions.backdoorTwoFiveOne.category, "jazz");
-  assertEquals(chordProgressions.rhythmChangesA.category, "jazz");
-  assertEquals(chordProgressions.twelveBarBlues.category, "blues");
-  assertEquals(chordProgressions.minorBlues.category, "blues");
-  assertEquals(chordProgressions.jazzBlues.category, "blues");
+  assertEquals(chordProgressionDefinitions.autumnLeavesA.category, "jazz");
+  assertEquals(chordProgressionDefinitions.autumnLeavesC.category, "jazz");
+  assertEquals(
+    chordProgressionDefinitions.backdoorTwoFiveOne.category,
+    "jazz",
+  );
+  assertEquals(chordProgressionDefinitions.rhythmChangesA.category, "jazz");
+  assertEquals(chordProgressionDefinitions.twelveBarBlues.category, "blues");
+  assertEquals(chordProgressionDefinitions.minorBlues.category, "blues");
+  assertEquals(chordProgressionDefinitions.jazzBlues.category, "blues");
   assertEquals(
     chordProgressions.autumnLeavesA.chords.map((chord) =>
       chord.analysis?.romanSymbol
@@ -382,6 +649,17 @@ Deno.test("progression exports are available directly", () => {
 
 Deno.test("built-in progression events and practice relationships stay coherent", () => {
   for (const [key, progression] of Object.entries(chordProgressions)) {
+    assertEquals(
+      validateChordProgression(progression),
+      [],
+      `${key} must pass runtime validation`,
+    );
+    assertEquals(
+      parseChordProgression(progression).success,
+      true,
+      `${key} must be runtime parseable`,
+    );
+
     const totalBars = progression.chords.reduce(
       (total, chord) => total + chord.durationInBars,
       0,
@@ -415,16 +693,19 @@ Deno.test("built-in progression events and practice relationships stay coherent"
 
   assertEquals(
     chordProgressions.autumnLeavesA.chords.slice(-3),
-    chordProgressions.minorTwoFiveOne.chords,
+    [...chordProgressions.minorTwoFiveOne.chords],
   );
   assertEquals(
     chordProgressions.autumnLeavesB.chords.slice(0, 3),
-    chordProgressions.minorTwoFiveOne.chords,
+    [...chordProgressions.minorTwoFiveOne.chords],
   );
-  assertEquals(chordProgressions.autumnLeavesB.chords, [
-    ...chordProgressions.autumnLeavesA.chords.slice(4),
-    ...chordProgressions.autumnLeavesA.chords.slice(0, 4),
-  ]);
+  assertEquals(
+    [...chordProgressions.autumnLeavesB.chords],
+    [
+      ...chordProgressions.autumnLeavesA.chords.slice(4),
+      ...chordProgressions.autumnLeavesA.chords.slice(0, 4),
+    ],
+  );
   assertEquals(
     chordProgressions.autumnLeavesC.chords.slice(0, 2),
     chordProgressions.minorTwoFiveOne.chords.slice(0, 2),
@@ -451,7 +732,7 @@ Deno.test("built-in progression events and practice relationships stay coherent"
   );
   assertEquals(
     chordProgressions.circleOfFifths.chords.slice(-4),
-    chordProgressions.sixTwoFiveOne.chords,
+    [...chordProgressions.sixTwoFiveOne.chords],
   );
   assertEquals(
     chordProgressions.oneFourFiveDominant7Six.chords.slice(-2).map((chord) => ({
@@ -639,7 +920,7 @@ Deno.test("progression helpers expose chord names and total duration", () => {
   ) {
     const formula = getChordProgressionDirectRomanSymbols(key).join("–");
     assertEquals(
-      chordProgressions[key].commonName?.endsWith(`(${formula})`),
+      chordProgressionDefinitions[key].name.endsWith(`(${formula})`),
       true,
       `${key} title must include its exact Roman formula`,
     );
@@ -1366,13 +1647,37 @@ Deno.test("canonical progression resolver keeps event relationships together", (
     barIndex: 6,
     startInBars: 6,
     durationInBars: 1,
-    eventIndexes: [6, 7],
+    segments: [
+      {
+        eventIndex: 6,
+        barIndex: 6,
+        offsetInBar: 0,
+        durationInBars: 0.5,
+        continuesFromPreviousBar: false,
+        continuesIntoNextBar: false,
+      },
+      {
+        eventIndex: 7,
+        barIndex: 6,
+        offsetInBar: 0.5,
+        durationInBars: 0.5,
+        continuesFromPreviousBar: false,
+        continuesIntoNextBar: false,
+      },
+    ],
   });
   assertEquals(resolved.bars[7], {
     barIndex: 7,
     startInBars: 7,
     durationInBars: 1,
-    eventIndexes: [8],
+    segments: [{
+      eventIndex: 8,
+      barIndex: 7,
+      offsetInBar: 0,
+      durationInBars: 1,
+      continuesFromPreviousBar: false,
+      continuesIntoNextBar: false,
+    }],
   });
 });
 
@@ -1393,7 +1698,18 @@ Deno.test("canonical progression resolver handles rational and partial bars", ()
   });
   assertEquals(thirds.requiredBarDivision, 3);
   assertEquals(thirds.totalDurationInBars, 1);
-  assertEquals(thirds.bars[0]?.eventIndexes, [0, 1, 2]);
+  assertEquals(
+    thirds.bars[0]?.segments.map((segment) => ({
+      eventIndex: segment.eventIndex,
+      offsetInBar: segment.offsetInBar,
+      durationInBars: segment.durationInBars,
+    })),
+    [
+      { eventIndex: 0, offsetInBar: 0, durationInBars: 1 / 3 },
+      { eventIndex: 1, offsetInBar: 1 / 3, durationInBars: 1 / 3 },
+      { eventIndex: 2, offsetInBar: 2 / 3, durationInBars: 1 / 3 },
+    ],
+  );
 
   const partial = resolveChordProgression("C", {
     chords: [
@@ -1408,13 +1724,84 @@ Deno.test("canonical progression resolver handles rational and partial bars", ()
       barIndex: 0,
       startInBars: 0,
       durationInBars: 1,
-      eventIndexes: [0, 1],
+      segments: [
+        {
+          eventIndex: 0,
+          barIndex: 0,
+          offsetInBar: 0,
+          durationInBars: 0.75,
+          continuesFromPreviousBar: false,
+          continuesIntoNextBar: false,
+        },
+        {
+          eventIndex: 1,
+          barIndex: 0,
+          offsetInBar: 0.75,
+          durationInBars: 0.25,
+          continuesFromPreviousBar: false,
+          continuesIntoNextBar: true,
+        },
+      ],
     },
     {
       barIndex: 1,
       startInBars: 1,
       durationInBars: 0.25,
-      eventIndexes: [1],
+      segments: [{
+        eventIndex: 1,
+        barIndex: 1,
+        offsetInBar: 0,
+        durationInBars: 0.25,
+        continuesFromPreviousBar: true,
+        continuesIntoNextBar: false,
+      }],
+    },
+  ]);
+});
+
+Deno.test("root-independent timing preserves multi-bar event continuation", () => {
+  const timing: ChordProgressionTiming = getChordProgressionTiming(
+    "authenticCadence",
+  );
+  const segments: readonly ChordProgressionBarSegment[] = timing.bars.flatMap(
+    (bar) => bar.segments,
+  );
+
+  assertEquals(timing.totalDurationInBars, 4);
+  assertEquals(timing.requiredBarDivision, 1);
+  assertEquals(timing.endsOnBarBoundary, true);
+  assertEquals(segments, [
+    {
+      eventIndex: 0,
+      barIndex: 0,
+      offsetInBar: 0,
+      durationInBars: 1,
+      continuesFromPreviousBar: false,
+      continuesIntoNextBar: true,
+    },
+    {
+      eventIndex: 0,
+      barIndex: 1,
+      offsetInBar: 0,
+      durationInBars: 1,
+      continuesFromPreviousBar: true,
+      continuesIntoNextBar: false,
+    },
+    {
+      eventIndex: 1,
+      barIndex: 2,
+      offsetInBar: 0,
+      durationInBars: 1,
+      continuesFromPreviousBar: false,
+      continuesIntoNextBar: true,
+    },
+    {
+      eventIndex: 1,
+      barIndex: 3,
+      offsetInBar: 0,
+      durationInBars: 1,
+      continuesFromPreviousBar: true,
+      continuesIntoNextBar: false,
     },
   ]);
 });
@@ -1429,16 +1816,48 @@ Deno.test("canonical progression resolver rejects invalid event durations", () =
   assertThrows(
     () => resolveChordProgression("C", invalidProgression),
     Error,
-    "Invalid duration for chord progression event 0",
+    "Chord progression chord 0 must have a finite positive durationInBars",
   );
 });
 
 Deno.test("chord progression focus object exposes progression derivations", () => {
   assertEquals(chordProgression.isValidKey("autumnLeavesA"), true);
   assertEquals(chordProgression.isValidKey("ionian"), false);
+  assertEquals(chordProgression.isRootDegree("♯4"), true);
+  assertEquals(chordProgression.isRootDegree("9"), false);
+  assertEquals(chordProgression.normalizeRootDegree("b3"), "♭3");
+  assertEquals(chordProgression.isChordCollectionKey("major7"), true);
+  assertEquals(chordProgression.isRomanSymbol("V7"), true);
+  assertEquals(chordProgression.isSecondaryRomanSymbol("V7/IV"), true);
+  assertEquals(chordProgression.isAnalysisRomanSymbol("V7/IV"), true);
+  assertEquals(chordProgression.parse({ chords: [] }).success, false);
   assertEquals(
-    chordProgression.resolve("C", "authenticCadence").bars.map((bar) =>
-      bar.eventIndexes
+    chordProgression.parseDefinition({
+      name: "Cadence",
+      progression: {
+        chords: [{
+          degree: "5",
+          chordCollectionKey: "dominant7",
+          durationInBars: 1,
+        }],
+      },
+    }).success,
+    true,
+  );
+  assertEquals(
+    chordProgression.validate({ chords: [] })[0]?.code,
+    "empty-progression",
+  );
+  assertEquals(
+    chordProgression.validateDefinition({
+      name: "",
+      progression: { chords: [] },
+    }).map((issue) => issue.code),
+    ["invalid-name", "empty-progression"],
+  );
+  assertEquals(
+    chordProgression.getTiming("authenticCadence").bars.map((bar) =>
+      bar.segments.map((segment) => segment.eventIndex)
     ),
     [[0], [0], [1], [1]],
   );

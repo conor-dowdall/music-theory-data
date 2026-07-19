@@ -2,6 +2,7 @@ import type { ChordCollection } from "../../types/note-collections.ts";
 
 const minor: ChordCollection = {
   category: "chord",
+  classification: { family: "minor", structure: "triad" },
   mostSimilarScale: "aeolian",
   primaryName: "m",
   names: ["m", "min", "Minor", "Minor Triad", "-"],
@@ -16,6 +17,7 @@ const minor: ChordCollection = {
 
 const minor6: ChordCollection = {
   category: "chord",
+  classification: { family: "minor", structure: "added-tone" },
   mostSimilarScale: "dorian",
   primaryName: "m6",
   names: ["m6", "min6", "Minor 6th", "Minor Sixth"],
@@ -35,6 +37,7 @@ const minor6: ChordCollection = {
 
 const minor7: ChordCollection = {
   category: "chord",
+  classification: { family: "minor", structure: "seventh" },
   mostSimilarScale: "aeolian",
   primaryName: "m7",
   names: ["m7", "min7", "Minor 7th", "Minor Seventh", "-7"],
@@ -49,6 +52,7 @@ const minor7: ChordCollection = {
 
 const minorMajor7: ChordCollection = {
   category: "chord",
+  classification: { family: "minor", structure: "seventh" },
   mostSimilarScale: "harmonicMinor",
   primaryName: "m(M7)",
   names: [
@@ -71,6 +75,7 @@ const minorMajor7: ChordCollection = {
 
 const minor9: ChordCollection = {
   category: "chord",
+  classification: { family: "minor", structure: "extended" },
   mostSimilarScale: "aeolian",
   primaryName: "m9",
   names: ["m9", "min9", "Minor 9th", "Minor Ninth", "-9"],
@@ -85,6 +90,7 @@ const minor9: ChordCollection = {
 
 const minorAdd9: ChordCollection = {
   category: "chord",
+  classification: { family: "minor", structure: "added-tone" },
   mostSimilarScale: "aeolian",
   primaryName: "m(add9)",
   names: ["m(add9)", "min(add9)", "Minor add 9"],
@@ -108,6 +114,7 @@ const minorAdd9: ChordCollection = {
 
 const minor6Add9: ChordCollection = {
   category: "chord",
+  classification: { family: "minor", structure: "added-tone" },
   mostSimilarScale: "dorian",
   primaryName: "m6/9",
   names: ["m6/9", "min6/9", "Minor 6/9", "-6/9"],
