@@ -19,6 +19,10 @@ import {
   searchNoteCollections,
 } from "./note-collections.ts";
 import { getQualitiesForNoteCollectionKey } from "./qualities.ts";
+import {
+  getNoteCollectionToneAtPosition,
+  getNoteCollectionToneSequence,
+} from "./note-collection-tones.ts";
 
 /**
  * Curated helpers for the common catalog workflow:
@@ -57,4 +61,8 @@ export const noteCollection = {
   getRomanTriads: getRomanTriadsForNoteCollectionKey,
   /** Resolves Roman numeral seventh chords for a supported harmony system. */
   getRomanSeventhChords: getRomanSeventhChordsForNoteCollectionKey,
+  /** Returns the immutable authored tone sequence for a collection. */
+  getToneSequence: getNoteCollectionToneSequence,
+  /** Resolves a signed integer as a cyclic position in a collection. */
+  getToneAtPosition: getNoteCollectionToneAtPosition,
 } as const;

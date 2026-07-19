@@ -5,6 +5,7 @@ import {
 } from "./bass-guitar-tunings.ts";
 import {
   type FolkFrettedStringTuningKey,
+  type FolkFrettedStringTuningKeysByInstrument,
   folkFrettedStringTuningKeysByInstrument,
   folkFrettedStringTunings,
 } from "./folk-fretted-string-tunings.ts";
@@ -15,6 +16,7 @@ import {
 } from "./guitar-tunings.ts";
 import {
   type OrchestralStringTuningKey,
+  type OrchestralStringTuningKeysByInstrument,
   orchestralStringTuningKeysByInstrument,
   orchestralStringTunings,
 } from "./orchestral-string-tunings.ts";
@@ -124,6 +126,32 @@ export const stringInstrumentKeys: readonly StringInstrumentKey[] = Object.keys(
   stringInstruments,
 ) as readonly StringInstrumentKey[];
 
+/** Returns whether a value is a supported string instrument key. */
+export function isStringInstrumentKey(
+  value: unknown,
+): value is StringInstrumentKey {
+  return typeof value === "string" &&
+    Object.prototype.hasOwnProperty.call(stringInstruments, value);
+}
+
+interface StringInstrumentTuningKeyByInstrument {
+  readonly guitar: GuitarTuningKey;
+  readonly bassGuitar: BassGuitarTuningKey;
+  readonly mandolin:
+    FolkFrettedStringTuningKeysByInstrument["mandolin"][number];
+  readonly ukulele: FolkFrettedStringTuningKeysByInstrument["ukulele"][number];
+  readonly violin: OrchestralStringTuningKeysByInstrument["violin"][number];
+  readonly viola: OrchestralStringTuningKeysByInstrument["viola"][number];
+  readonly cello: OrchestralStringTuningKeysByInstrument["cello"][number];
+  readonly doubleBass:
+    OrchestralStringTuningKeysByInstrument["doubleBass"][number];
+}
+
+/** The tuning keys that belong to a particular supported instrument. */
+export type StringInstrumentTuningKeyFor<
+  TInstrument extends StringInstrumentKey,
+> = StringInstrumentTuningKeyByInstrument[TInstrument];
+
 /** Tuning keys grouped by supported string instrument. */
 export type StringInstrumentTuningKeysByInstrument = Readonly<
   Record<StringInstrumentKey, readonly StringInstrumentTuningKey[]>
@@ -133,7 +161,31 @@ export type StringInstrumentTuningKeysByInstrument = Readonly<
 export const stringInstrumentTuningKeysByInstrument:
   StringInstrumentTuningKeysByInstrument = {
     guitar: guitarTuningKeys,
-    ...bassGuitarTuningKeysByInstrument,
+    bassGuitar: bassGuitarTuningKeysByInstrument.bassGuitar,
     ...folkFrettedStringTuningKeysByInstrument,
     ...orchestralStringTuningKeysByInstrument,
   };
+
+/** Returns whether a value is any built-in string instrument tuning key. */
+export function isStringInstrumentTuningKey(
+  value: unknown,
+): value is StringInstrumentTuningKey {
+  return typeof value === "string" &&
+    Object.prototype.hasOwnProperty.call(stringInstrumentTunings, value);
+}
+
+/**
+ * Returns whether a value is a built-in tuning key for the supplied instrument.
+ */
+export function isStringInstrumentTuningKeyForInstrument<
+  TInstrument extends StringInstrumentKey,
+>(
+  instrument: TInstrument,
+  value: unknown,
+): value is StringInstrumentTuningKeyFor<TInstrument> {
+  if (!isStringInstrumentKey(instrument) || typeof value !== "string") {
+    return false;
+  }
+  return isStringInstrumentTuningKey(value) &&
+    stringInstrumentTunings[value].instrument === instrument;
+}

@@ -8,6 +8,7 @@ export * from "./midi-note-sequences.ts";
 export * from "./midi.ts";
 export * from "./note-colors.ts";
 export * from "./note-collection.ts";
+export * from "./note-collection-tones.ts";
 export * from "./note-collections.ts";
 export * from "./note-names.ts";
 export * from "./rotate-array.ts";

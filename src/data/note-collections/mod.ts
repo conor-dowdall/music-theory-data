@@ -116,6 +116,18 @@ export const groupedNoteCollections = {
 /** A strictly typed generic string representing the key of a top-level note collection category array. */
 export type NoteCollectionGroupKey = keyof typeof groupedNoteCollections;
 
+/** Ordered keys for the built-in note collection groups. */
+export const noteCollectionGroupKeys: readonly NoteCollectionGroupKey[] = Object
+  .keys(groupedNoteCollections) as NoteCollectionGroupKey[];
+
+/** Returns whether a value is a built-in note collection group key. */
+export function isNoteCollectionGroupKey(
+  value: unknown,
+): value is NoteCollectionGroupKey {
+  return typeof value === "string" &&
+    Object.prototype.hasOwnProperty.call(groupedNoteCollections, value);
+}
+
 /** Human-readable DisplayName and Description metadata representing the mathematical traits of a Collection Group. */
 export const noteCollectionGroupsMetadata: Record<
   NoteCollectionGroupKey,

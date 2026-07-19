@@ -9,6 +9,14 @@ import { noteLabelCollections } from "../data/labels/note-label-collections.ts";
 import type { MidiNoteNumber } from "../types/midi.ts";
 import { normalizeChromaticIndex } from "./chromatic.ts";
 
+/** Returns whether a value is an integer in the standard MIDI note range. */
+export function isMidiNoteNumber(value: unknown): value is MidiNoteNumber {
+  return typeof value === "number" &&
+    Number.isInteger(value) &&
+    value >= 0 &&
+    value <= 127;
+}
+
 /** Returns the scientific pitch octave for a MIDI note number. */
 export function getScientificPitchOctaveForMidiNote(midi: number): number {
   return Math.floor(midi / 12) - 1;

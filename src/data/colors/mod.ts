@@ -181,3 +181,16 @@ export const colorCollections: ColorCollections = {
     ],
   },
 } as const;
+
+/** Ordered keys for the built-in note color collections. */
+export const colorCollectionKeys: readonly ColorCollectionKey[] = Object.keys(
+  colorCollections,
+) as ColorCollectionKey[];
+
+/** Returns whether a value is a built-in note color collection key. */
+export function isColorCollectionKey(
+  value: unknown,
+): value is ColorCollectionKey {
+  return typeof value === "string" &&
+    Object.prototype.hasOwnProperty.call(colorCollections, value);
+}

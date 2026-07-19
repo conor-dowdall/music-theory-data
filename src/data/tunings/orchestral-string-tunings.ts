@@ -66,9 +66,24 @@ export const orchestralStringTunings: OrchestralStringTunings =
   builtInOrchestralStringTunings;
 
 /** Orchestral string tuning keys grouped by instrument. */
-export type OrchestralStringTuningKeysByInstrument = Readonly<
-  Record<OrchestralStringInstrumentKey, readonly OrchestralStringTuningKey[]>
->;
+export interface OrchestralStringTuningKeysByInstrument {
+  readonly violin: readonly Extract<
+    OrchestralStringTuningKey,
+    "violinStandardGdae"
+  >[];
+  readonly viola: readonly Extract<
+    OrchestralStringTuningKey,
+    "violaStandardCgda"
+  >[];
+  readonly cello: readonly Extract<
+    OrchestralStringTuningKey,
+    "celloStandardCgda"
+  >[];
+  readonly doubleBass: readonly Extract<
+    OrchestralStringTuningKey,
+    "doubleBassStandardEadg"
+  >[];
+}
 
 /** Built-in orchestral string tuning keys grouped by instrument. */
 export const orchestralStringTuningKeysByInstrument:

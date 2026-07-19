@@ -32,6 +32,7 @@ const publicTypeDeclarations = {
   "string-instruments": ["StringInstrumentTuning"],
 } as const;
 const publicDataDeclarations = {
+  colors: ["colorCollectionKeys", "isColorCollectionKey"],
   chords: [
     "chordCollectionClassifications",
     "chordCollectionFamilies",
@@ -47,6 +48,29 @@ const publicDataDeclarations = {
   "chord-progressions": [
     "chordProgressionDefinitions",
     "chordProgressions",
+  ],
+  "note-collections": [
+    "isNoteCollectionGroupKey",
+    "noteCollectionGroupKeys",
+  ],
+} as const;
+const publicNestedDataDeclarations = {
+  "rhythm/beat-subdivisions": [
+    "BeatSubdivision",
+    "BeatSubdivisionCount",
+    "BeatSubdivisionKey",
+    "BeatSubdivisionStep",
+    "beatSubdivisionKeys",
+    "beatSubdivisions",
+    "getBeatSubdivisionCount",
+    "getBeatSubdivisionStep",
+    "isBeatSubdivisionKey",
+  ],
+  "tunings/string-instrument-tunings": [
+    "StringInstrumentTuningKeyFor",
+    "isStringInstrumentKey",
+    "isStringInstrumentTuningKey",
+    "isStringInstrumentTuningKeyForInstrument",
   ],
 } as const;
 
@@ -96,6 +120,15 @@ const publicUtilityDeclarations = {
     "sharpChordRootDegrees",
     "validateChordProgression",
     "validateChordProgressionDefinition",
+  ],
+  midi: ["isMidiNoteNumber"],
+  "note-collection-tones": [
+    "NoteCollectionTone",
+    "NoteCollectionToneSequence",
+    "PositionedNoteCollectionTone",
+    "createNoteCollectionToneSequence",
+    "getNoteCollectionToneAtPosition",
+    "getNoteCollectionToneSequence",
   ],
   "note-names": ["resolvePracticalRootNote"],
 } as const;
@@ -147,6 +180,24 @@ function assertPublicTypesEmitted(moduleFormat: "esm" | "script") {
   ) {
     const dataDeclarationPath =
       `${npmOutputDirectory}/${moduleFormat}/src/data/${moduleName}/mod.d.ts`;
+    const dataDeclaration = Deno.readTextFileSync(dataDeclarationPath);
+
+    for (const declarationName of declarationNames) {
+      if (!hasNamedExport(dataDeclaration, declarationName)) {
+        throw new Error(
+          `${dataDeclarationPath} does not emit ${declarationName}`,
+        );
+      }
+    }
+  }
+
+  for (
+    const [modulePath, declarationNames] of Object.entries(
+      publicNestedDataDeclarations,
+    )
+  ) {
+    const dataDeclarationPath =
+      `${npmOutputDirectory}/${moduleFormat}/src/data/${modulePath}.d.ts`;
     const dataDeclaration = Deno.readTextFileSync(dataDeclarationPath);
 
     for (const declarationName of declarationNames) {

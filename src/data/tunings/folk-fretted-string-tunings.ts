@@ -58,9 +58,16 @@ export const folkFrettedStringTuningKeys:
   ) as readonly FolkFrettedStringTuningKey[];
 
 /** Folk and fretted string tuning keys grouped by instrument. */
-export type FolkFrettedStringTuningKeysByInstrument = Readonly<
-  Record<FolkFrettedStringInstrumentKey, readonly FolkFrettedStringTuningKey[]>
->;
+export interface FolkFrettedStringTuningKeysByInstrument {
+  readonly mandolin: readonly Extract<
+    FolkFrettedStringTuningKey,
+    "mandolinStandardGdae"
+  >[];
+  readonly ukulele: readonly Extract<
+    FolkFrettedStringTuningKey,
+    "ukuleleStandardGcea"
+  >[];
+}
 
 /** Built-in folk and fretted string tuning keys grouped by instrument. */
 export const folkFrettedStringTuningKeysByInstrument:

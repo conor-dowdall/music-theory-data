@@ -110,8 +110,9 @@ console.log(chordProgression.getChordNames("C", "oneSixFourFive"));
 | Chord progressions          | `chordProgression`, `chordProgressions`, `getChordProgressionRomanSymbols`      |
 | Theory labels               | `noteNames`, `rootNotes`, `intervalToIntegerMap`, chord classification          |
 | Parsing and normalization   | `normalizeNoteNameString`, `normalizeRootNoteString`, `normalizeIntervalString` |
-| MIDI and colors             | `formatMidiNote`, `getNoteColorIndex`, `colorCollections`                       |
-| String instruments          | `stringInstruments`, `stringInstrumentTunings`, tuning key groups               |
+| MIDI and colors             | `isMidiNoteNumber`, `getNoteColorIndex`, `colorCollections`                     |
+| String instruments          | `stringInstruments`, `stringInstrumentTunings`, tuning key guards               |
+| Meter-neutral rhythm        | `beatSubdivisions`, `getBeatSubdivisionStep`                                    |
 
 For the full exported API, use the
 [JSR API documentation](https://jsr.io/@musodojo/music-theory-data/doc). The
@@ -150,6 +151,30 @@ console.log(dominantArpeggios.map((collection) => collection.primaryName));
 Collections include structured metadata such as category, display names,
 intervals, integer semitone values, type tags, characteristics, and interval
 patterns.
+
+Catalogs that need stable iteration expose ordered key arrays such as
+`colorCollectionKeys`, `noteCollectionGroupKeys`, `stringInstrumentKeys`, and
+`stringInstrumentTuningKeys`. Matching runtime guards safely validate unknown
+persisted values without accepting inherited JavaScript property names.
+
+### Addressing Collection Tones
+
+Use a tone sequence when an app needs authored interval identity, compound
+semitone distance, and normalized pitch class together:
+
+```ts
+const sequence = noteCollection.getToneSequence("dominant9");
+console.log(sequence.tones.at(-1));
+// { collectionIndex: 4, semitones: 14, pitchClass: 2, interval: "9", ... }
+
+console.log(noteCollection.getToneAtPosition("major", -1));
+// The fifth one cycle below: { collectionIndex: 2, cycle: -1, resolvedSemitones: -5, ... }
+```
+
+Positions are signed cyclic addresses over authored tones. They are not
+guaranteed to form an ascending pitch sequence: an authored extension can
+overlap the following cycle. `createNoteCollectionToneSequence()` provides the
+same derivation for custom `NoteCollection` values.
 
 Chord collections additionally expose stable musical classification, separate
 from application-specific labels such as “Common” or “More”:
@@ -285,6 +310,11 @@ those events by `eventIndex`. Use `chordProgression.getTiming()` when rooted
 chord data is not needed. `requiredBarDivision` reports the smallest equal
 subdivision needed by the authored durations. The model remains independent of
 tempo, beats, notation, and playback.
+
+Equal beat subdivisions are similarly meter-neutral. For example,
+`getBeatSubdivisionStep("3-per-beat")` returns the exact ratio
+`{ numerator: 1, denominator: 3 }`; the package does not decide whether those
+steps are triplets, compound-meter pulses, swing, or UI density choices.
 
 Persisted progression data can be checked with `chordProgression.parse()` or
 `validateChordProgression()`. Diagnostics identify invalid chord events by
