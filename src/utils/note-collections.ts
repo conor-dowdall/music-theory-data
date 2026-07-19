@@ -93,7 +93,7 @@ export interface RootAndNoteCollectionIdentity {
   collectionName: string;
   /** Whether the collection was recognized as a chord collection. */
   isChord: boolean;
-  /** Compact visual label, such as `CM`, `F♯ø7`, or `B♭ Major`. */
+  /** Compact visual label, such as `C`, `F♯ø7`, or `B♭ Major`. */
   label: string;
   /** The normalized root note when recognized, otherwise the original input string. */
   rootNote: string;
@@ -104,7 +104,7 @@ export interface RootAndNoteCollectionIdentity {
 /**
  * Formats the display identity for a root note and note collection.
  * Chord collections use their authored chord-symbol suffix with no separator
- * (e.g. "CM", "F♯ø7"), while notes, dyads, scales, and unknown collection
+ * (e.g. "C", "F♯ø7"), while notes, dyads, scales, and unknown collection
  * keys use a spaced display name (e.g. "C Major").
  */
 export function getIdentityForRootAndNoteCollection({
@@ -122,9 +122,12 @@ export function getIdentityForRootAndNoteCollection({
       getNoteCollectionDisplayName(noteCollectionKey);
   const separator = isChord ? "" : " ";
   const label = `${normalizedRootNote}${separator}${collectionName}`;
+  const accessibleCollectionName = isChord && collectionName === ""
+    ? "major chord"
+    : collectionName;
 
   return {
-    accessibleLabel: `${normalizedRootNote} ${collectionName}`,
+    accessibleLabel: `${normalizedRootNote} ${accessibleCollectionName}`,
     collectionName,
     isChord,
     label,

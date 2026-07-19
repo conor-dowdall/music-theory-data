@@ -10,7 +10,7 @@ export type RomanNumeralCase = "upper" | "lower";
 
 /** Rendering metadata for converting a chord collection into chord/roman symbols. */
 export interface ChordCollectionSymbolRendering {
-  /** The suffix used after a root note in a chord symbol, e.g. "m7" in "Dm7". */
+  /** The suffix used after a root note in a chord symbol, e.g. "m7" in "Dm7"; empty for a major triad such as "D". */
   readonly chordSuffix: string;
   /** The suffix used after a roman numeral, e.g. "ø7" in "iiø7". */
   readonly romanSuffix: string;

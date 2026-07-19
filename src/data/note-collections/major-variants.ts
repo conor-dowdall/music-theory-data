@@ -6,7 +6,7 @@ const major: ChordCollection = {
   mostSimilarScale: "ionian",
   primaryName: "M",
   names: ["M", "maj", "Major", "Major Triad", "Δ"],
-  symbol: { chordSuffix: "M", romanSuffix: "", numeralCase: "upper" },
+  symbol: { chordSuffix: "", romanSuffix: "", numeralCase: "upper" },
   intervals: ["1", "3", "5"],
   integers: [0, 4, 7],
   type: ["major", "chord", "arpeggio", "triad"],

@@ -30,7 +30,7 @@ const _upperCaseRomanNumerals = [
 ] as const;
 
 const _chordCollectionChordSuffixes = [
-  "M",
+  "",
   "6",
   "M7",
   "M9",
@@ -150,7 +150,7 @@ export type SeventhChordCollectionKey =
   (typeof _seventhChordCollectionKeys)[number];
 
 /** Canonical rendered suffix for a triad chord collection. */
-export type TriadChordSuffix = "M" | "m" | "°" | "+";
+export type TriadChordSuffix = "" | "m" | "°" | "+";
 
 /** Canonical rendered suffix for a seventh-chord collection. */
 export type SeventhChordSuffix =

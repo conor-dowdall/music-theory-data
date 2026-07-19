@@ -213,10 +213,10 @@ Deno.test("root and note collection identities format app-facing labels", () => 
       noteCollectionKey: "major",
     }),
     {
-      accessibleLabel: "C M",
-      collectionName: "M",
+      accessibleLabel: "C major chord",
+      collectionName: "",
       isChord: true,
-      label: "CM",
+      label: "C",
       rootNote: "C",
       separator: "",
     },
@@ -275,11 +275,11 @@ Deno.test("root and note collection focus object exposes common derivations", ()
     "5",
   ]);
   assertEquals(rootAndNoteCollection.getTriadChordNames("C", "ionian"), [
-    "CM",
+    "C",
     "Dm",
     "Em",
-    "FM",
-    "GM",
+    "F",
+    "G",
     "Am",
     "B°",
   ]);
@@ -321,11 +321,11 @@ Deno.test("note collection focus object exposes catalog derivations", () => {
     "diminishedTriad",
   ]);
   assertEquals(noteCollection.getTriadChordSuffixes("ionian"), [
-    "M",
+    "",
     "m",
     "m",
-    "M",
-    "M",
+    "",
+    "",
     "m",
     "°",
   ]);

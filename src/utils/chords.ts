@@ -32,9 +32,18 @@ import {
 import { createChromaticTuple, normalizeChromaticIndex } from "./chromatic.ts";
 import { getNoteNamesForRootAndNoteCollectionKey } from "./note-names.ts";
 import {
+  type NoteName,
   noteNameToIntegerMap,
   type RootNote,
 } from "../data/labels/note-labels.ts";
+
+/** Formats a rooted chord symbol using the chord collection's symbol suffix. */
+export function getChordNameForRootAndChordCollectionKey(
+  rootNote: NoteName,
+  chordCollectionKey: ChordCollectionKey,
+): string {
+  return rootNote + getChordCollectionChordSuffix(chordCollectionKey);
+}
 
 /** Returns a Roman numeral for a scale degree index and chord collection key. */
 export function getRomanNumeralForScaleIndexAndChordCollectionKey(
@@ -269,7 +278,7 @@ function getTriadChordSuffix(
   chordCollectionKey: TriadChordCollectionKey,
 ): TriadChordSuffix {
   const suffix = getChordCollectionChordSuffix(chordCollectionKey);
-  if (suffix === "M" || suffix === "m" || suffix === "°" || suffix === "+") {
+  if (suffix === "" || suffix === "m" || suffix === "°" || suffix === "+") {
     return suffix;
   }
   throw new Error(`Invalid triad suffix for ${chordCollectionKey}: ${suffix}`);
@@ -361,7 +370,7 @@ export function getRomanSeventhChordsForNoteCollectionKey(
   );
 }
 
-/** Returns rooted triad names, such as `CM`, `Dm`, or `B°`. */
+/** Returns rooted triad names, such as `C`, `Dm`, or `B°`. */
 export function getTriadChordNamesForRootAndNoteCollectionKey(
   rootNote: RootNote,
   noteCollectionKey: NoteCollectionKey,
@@ -391,7 +400,10 @@ export function getTriadChordNamesForRootAndNoteCollectionKey(
     if (chordCollectionKey === undefined || noteName === undefined) {
       return undefined;
     }
-    return noteName + getChordCollectionChordSuffix(chordCollectionKey);
+    return getChordNameForRootAndChordCollectionKey(
+      noteName,
+      chordCollectionKey,
+    );
   });
 }
 
@@ -425,7 +437,10 @@ export function getSeventhChordNamesForRootAndNoteCollectionKey(
     if (chordCollectionKey === undefined || noteName === undefined) {
       return undefined;
     }
-    return noteName + getChordCollectionChordSuffix(chordCollectionKey);
+    return getChordNameForRootAndChordCollectionKey(
+      noteName,
+      chordCollectionKey,
+    );
   });
 }
 

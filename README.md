@@ -17,7 +17,7 @@ This package is a good fit if you need to:
   numerals
 - browse or search a catalog of scales, modes, chords, dyads, and single-note
   collections
-- render compact labels such as `CM`, `F♯ø7`, or `B♭ Major`
+- render compact labels such as `C`, `F♯ø7`, or `B♭ Major`
 - offer selectable 12-slot display layers for fretboards, keyboards, grids, or
   note-color interfaces
 - resolve common chord progressions into roman symbols or concrete chord names
@@ -66,7 +66,7 @@ const identity = rootAndNoteCollection.getIdentity({
 });
 
 console.log(identity.label);
-// "CM"
+// "C"
 
 console.log(rootAndNoteCollection.getNoteNames("F", "ionian"));
 // ["F", "G", "A", "B♭", "C", "D", "E", "F"]
@@ -91,7 +91,7 @@ console.log(noteCollection.getIntervals("major"));
 // ["1", "3", "5"]
 
 console.log(chordProgression.getChordNames("C", "oneSixFourFive"));
-// ["CM", "Am", "FM", "GM"]
+// ["C", "Am", "F", "G"]
 ```
 
 | Starting point                  | Use                     | Example                            |
@@ -210,11 +210,17 @@ console.log(noteCollection.getTriadChordCollectionKeys("ionian"));
 // ["major", "minor", "minor", "major", "major", "minor", "diminishedTriad"]
 
 console.log(noteCollection.getTriadChordSuffixes("ionian"));
-// ["M", "m", "m", "M", "M", "m", "°"]
+// ["", "m", "m", "", "", "m", "°"]
 
 console.log(rootAndNoteCollection.getTriadChordNames("C", "ionian"));
-// ["CM", "Dm", "Em", "FM", "GM", "Am", "B°"]
+// ["C", "Dm", "Em", "F", "G", "Am", "B°"]
 ```
+
+Collection titles and rooted chord symbols are intentionally separate. The
+major-triad collection keeps its catalog title `M`, while its rooted symbol has
+an empty suffix, so `getChordNameForRootAndChordCollectionKey("A", "major")`
+returns `"A"` rather than `"AM"`. Roman rendering remains independent as well:
+the same collection renders as `I`, `IV`, or `V` according to scale degree.
 
 ## UI Display Layers
 
@@ -263,8 +269,14 @@ import {
 console.log(chordProgression.getRomanSymbols("oneSixFourFive"));
 // ["I", "vi", "IV", "V"]
 
+console.log(chordProgression.getRomanSymbolsByBar("oneOneFiveFive"));
+// [["I"], ["I"], ["V"], ["V"]]
+
+console.log(chordProgression.getRomanSymbolsByBar("majorTwoFiveOne"));
+// [["iim7"], ["V7"], ["IM7"], ["IM7"]]
+
 console.log(chordProgressionDefinitions.oneSixFourFive);
-// { name: "I–vi–IV–V", category: "commonLoops", progression: { chords: [...] } }
+// { name: "I | vi | IV | V", category: "commonLoops", progression: { chords: [...] } }
 
 const resolved = chordProgression.resolve("C", "oneSixFourFive");
 console.log(resolved.events[1]);
@@ -292,7 +304,7 @@ console.log(chordProgression.normalizeRootDegree("b3"));
 // "♭3"
 
 console.log(getChordProgressionChordNames("C", "oneSixFourFive"));
-// ["CM", "Am", "FM", "GM"]
+// ["C", "Am", "F", "G"]
 
 console.log(getChordProgressionRomanSymbols("autumnLeavesA"));
 // ["ivm7", "♭VII7", "♭IIIM7", "♭VIM7", "iiø7", "V7", "i"]
@@ -301,7 +313,11 @@ console.log(getChordProgressionRomanSymbols("autumnLeavesA"));
 Use `getChordProgressionDirectRomanSymbols` when you want symbols derived only
 from degree and chord quality. Use `getChordProgressionRomanSymbols` when you
 want authored analysis labels, such as secondary-function symbols, where they
-exist.
+exist. `getChordProgressionRomanSymbolsByBar` expands sustained chords across
+bars while preserving multiple changes within a bar as a nested array. An app
+can then choose its own bar and within-bar separators. Built-in structural names
+use the conventional `|` bar line and ordinary spaces within a bar; recognizable
+catalog names such as `Major ii–V–I` remain concise names.
 
 Use `chordProgression.resolve()` when an app needs chord references, Roman
 symbols, authored events, and bar timing together. Its `events` are the

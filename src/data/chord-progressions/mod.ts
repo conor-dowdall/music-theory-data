@@ -455,47 +455,47 @@ export const chordProgressionDefinitions: Readonly<
   Record<ChordProgressionKey, BuiltInChordProgressionDefinition>
 > = {
   oneOneFiveFive: {
-    name: "I–V",
+    name: "I | I | V | V",
     category: "commonLoops",
     progression: oneOneFiveFive,
   },
   oneOneFiveFiveDominant7: {
-    name: "I–V–V7",
+    name: "I | I | V | V7",
     category: "commonLoops",
     progression: oneOneFiveFiveDominant7,
   },
   oneOneFourFour: {
-    name: "I–IV",
+    name: "I | I | IV | IV",
     category: "commonLoops",
     progression: oneOneFourFour,
   },
   oneOneFourFiveDominant7: {
-    name: "I–IV–V7",
+    name: "I | I | IV | V7",
     category: "commonLoops",
     progression: oneOneFourFiveDominant7,
   },
   oneFourFiveDominant7Six: {
-    name: "I–IV–V7–vi",
+    name: "I | IV | V7 | vi",
     category: "commonLoops",
     progression: oneFourFiveDominant7Six,
   },
   oneFourOneFive: {
-    name: "I–IV–I–V",
+    name: "I | IV | I | V",
     category: "commonLoops",
     progression: oneFourOneFive,
   },
   oneSixFourFive: {
-    name: "I–vi–IV–V",
+    name: "I | vi | IV | V",
     category: "commonLoops",
     progression: oneSixFourFive,
   },
   oneFiveSixFour: {
-    name: "I–V–vi–IV",
+    name: "I | V | vi | IV",
     category: "commonLoops",
     progression: oneFiveSixFour,
   },
   oneFourOneFiveSplitReturn: {
-    name: "I–IV–I–V–I–IV–I–V–I",
+    name: "I | IV | I | V | I | IV | I V | I",
     category: "commonLoops",
     progression: oneFourOneFiveSplitReturn,
   },
@@ -510,12 +510,12 @@ export const chordProgressionDefinitions: Readonly<
     progression: andalusianCadence,
   },
   oneSixTwoFive: {
-    name: "I–vi–ii–V",
+    name: "I | vi | ii | V",
     category: "turnaroundsAndCycles",
     progression: oneSixTwoFive,
   },
   sixTwoFiveOne: {
-    name: "vi–ii–V–I",
+    name: "vi | ii | V | I",
     category: "turnaroundsAndCycles",
     progression: sixTwoFiveOne,
   },

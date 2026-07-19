@@ -1,5 +1,6 @@
 import { assertEquals } from "@std/assert";
 import {
+  getChordNameForRootAndChordCollectionKey,
   getRomanNumeralForScaleIndexAndChordCollectionKey,
   getRomanSeventhChordsForNoteCollectionKey,
   getRomanSeventhChordsForRootAndNoteCollectionKey,
@@ -46,6 +47,18 @@ import type {
 } from "../src/types/chords.ts";
 
 Deno.test("chord collection identity and rendering stay distinct", () => {
+  assertEquals(noteCollections.major.primaryName, "M");
+  assertEquals(getChordCollectionChordSuffix("major"), "");
+  assertEquals(getChordCollectionRomanSuffix("major"), "");
+  assertEquals(getChordNameForRootAndChordCollectionKey("C", "major"), "C");
+  assertEquals(
+    getChordNameForRootAndChordCollectionKey("C", "major7"),
+    "CM7",
+  );
+  assertEquals(
+    getRomanNumeralForScaleIndexAndChordCollectionKey(0, "major"),
+    "I",
+  );
   assertEquals(getChordCollectionChordSuffix("augmentedMajor7"), "+M7");
   assertEquals(getChordCollectionChordSuffix("augmented7"), "+7");
   assertEquals(getChordCollectionRomanSuffix("augmentedMajor7"), "+M7");
@@ -138,6 +151,8 @@ Deno.test("chord collection Roman suffix vocabulary covers every rendering", () 
   assertEquals(renderedChordSuffixes, [...chordCollectionChordSuffixes]);
   assertEquals(renderedSuffixes, [...chordCollectionRomanSuffixes].sort());
   assertEquals(isChordCollectionChordSuffix("+7"), true);
+  assertEquals(isChordCollectionChordSuffix(""), true);
+  assertEquals(isChordCollectionChordSuffix("M"), false);
   assertEquals(isChordCollectionChordSuffix("M7♯5"), false);
   assertEquals(isChordCollectionRomanSuffix("m6/9"), true);
   assertEquals(isChordCollectionRomanSuffix("garbage"), false);
@@ -222,11 +237,11 @@ Deno.test(
     const sevenths = getSeventhChordSuffixesForNoteCollectionKey("ionian");
 
     const expectedTriads: TriadChordSuffix[] = [
-      "M",
+      "",
       "m",
       "m",
-      "M",
-      "M",
+      "",
+      "",
       "m",
       "°",
     ];
@@ -279,11 +294,11 @@ Deno.test("rendered triad suffixes - Locrian", () => {
   const triads = getTriadChordSuffixesForNoteCollectionKey("locrian");
   const expectedTriads: TriadChordSuffix[] = [
     "°",
-    "M",
+    "",
     "m",
     "m",
-    "M",
-    "M",
+    "",
+    "",
     "m",
   ];
   assertEquals(triads, expectedTriads);
@@ -457,7 +472,7 @@ Deno.test(
 
 Deno.test("rooted triad chord names - C Ionian", () => {
   const triads = getTriadChordNamesForRootAndNoteCollectionKey("C", "ionian");
-  assertEquals(triads, ["CM", "Dm", "Em", "FM", "GM", "Am", "B°"]);
+  assertEquals(triads, ["C", "Dm", "Em", "F", "G", "Am", "B°"]);
 });
 
 Deno.test("rooted seventh-chord names - G Ionian", () => {
@@ -479,14 +494,14 @@ Deno.test(
       },
     );
     assertEquals(triads.length, 12);
-    assertEquals(triads[0], "CM");
+    assertEquals(triads[0], "C");
     assertEquals(triads[1], undefined);
     assertEquals(triads[2], "Dm");
     assertEquals(triads[3], undefined);
     assertEquals(triads[4], "Em");
-    assertEquals(triads[5], "FM");
+    assertEquals(triads[5], "F");
     assertEquals(triads[6], undefined);
-    assertEquals(triads[7], "GM");
+    assertEquals(triads[7], "G");
     assertEquals(triads[8], undefined);
     assertEquals(triads[9], "Am");
     assertEquals(triads[10], undefined);
@@ -505,14 +520,14 @@ Deno.test(
       },
     );
     assertEquals(triads.length, 12);
-    assertEquals(triads[0], "DM");
+    assertEquals(triads[0], "D");
     assertEquals(triads[1], undefined);
     assertEquals(triads[2], "Em");
     assertEquals(triads[3], undefined);
     assertEquals(triads[4], "F♯m");
-    assertEquals(triads[5], "GM");
+    assertEquals(triads[5], "G");
     assertEquals(triads[6], undefined);
-    assertEquals(triads[7], "AM");
+    assertEquals(triads[7], "A");
     assertEquals(triads[8], undefined);
     assertEquals(triads[9], "Bm");
     assertEquals(triads[10], undefined);
@@ -526,9 +541,9 @@ Deno.test(
     const triads = getTriadChordSuffixesForNoteCollectionKey("ionian", {
       rotateRight: 2,
     });
-    // Instead of ["M", "m", "m", "M", "M", "m", "°"]
-    // Rotating right by 2 shifts the end to the front: ["m", "°", "M", "m", "m", "M", "M"]
-    assertEquals(triads, ["m", "°", "M", "m", "m", "M", "M"]);
+    // Instead of ["", "m", "m", "", "", "m", "°"]
+    // Rotating right by 2 shifts the end to the front: ["m", "°", "", "m", "m", "", ""]
+    assertEquals(triads, ["m", "°", "", "m", "m", "", ""]);
   },
 );
 
@@ -575,14 +590,14 @@ Deno.test(
     );
 
     assertEquals(triads.length, 12);
-    assertEquals(triads[0], "CM");
+    assertEquals(triads[0], "C");
     assertEquals(triads[1], undefined);
     assertEquals(triads[2], "Dm");
     assertEquals(triads[3], undefined);
     assertEquals(triads[4], "Em");
-    assertEquals(triads[5], "FM");
+    assertEquals(triads[5], "F");
     assertEquals(triads[6], undefined);
-    assertEquals(triads[7], "GM");
+    assertEquals(triads[7], "G");
     assertEquals(triads[8], undefined);
     assertEquals(triads[9], "Am");
     assertEquals(triads[10], undefined);

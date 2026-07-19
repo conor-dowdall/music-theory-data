@@ -238,8 +238,8 @@ export const rootAndNoteCollectionDisplayLayers:
       shortName: "Triads",
       description:
         "Returns 12 chromatic triad-name slots for note collections with supported modal harmony.",
-      outputPreview: "CM, Dm, Em...",
-      sampleOutput: "CM, -, Dm, -, Em, FM, -, GM, -, Am, -, B°",
+      outputPreview: "C, Dm, Em...",
+      sampleOutput: "C, -, Dm, -, Em, F, -, G, -, Am, -, B°",
       outputKind: "chordNames",
       outputShape: "chromatic-12",
       outputIndexing: absolutePitchClassC0,
@@ -355,7 +355,7 @@ export function getAvailableRootAndNoteCollectionDisplayLayers(
  * intervals, harmony, identity labels, or selectable display layers.
  */
 export const rootAndNoteCollection = {
-  /** Formats a compact display identity such as `CM`, `F♯ø7`, or `B♭ Major`. */
+  /** Formats a compact display identity such as `C`, `F♯ø7`, or `B♭ Major`. */
   getIdentity: getIdentityForRootAndNoteCollection,
   /** Resolves the absolute chromatic pitch classes in the rooted collection. */
   getPitchClasses: getNoteCollectionPitchClasses,

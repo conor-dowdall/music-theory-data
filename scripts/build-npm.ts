@@ -89,6 +89,7 @@ function hasNamedExport(declaration: string, name: string): boolean {
 
 const publicUtilityDeclarations = {
   chords: [
+    "getChordNameForRootAndChordCollectionKey",
     "getSeventhChordCollectionKeysForNoteCollectionKey",
     "getSeventhChordNamesForRootAndNoteCollectionKey",
     "getSeventhChordSuffixesForNoteCollectionKey",
@@ -107,6 +108,7 @@ const publicUtilityDeclarations = {
     "ResolvedChordProgression",
     "ResolvedChordProgressionEvent",
     "flatChordRootDegrees",
+    "getChordProgressionRomanSymbolsByBar",
     "getChordProgressionTiming",
     "isChordCollectionKey",
     "isChordProgressionAnalysisRomanSymbol",

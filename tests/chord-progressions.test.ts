@@ -37,6 +37,7 @@ import {
   getChordProgressionKeysForCategory,
   getChordProgressionKeysForTotalBars,
   getChordProgressionRomanSymbols,
+  getChordProgressionRomanSymbolsByBar,
   getChordProgressionSongChordReferences,
   getChordProgressionTiming,
   getChordProgressionTotalDurationInBars,
@@ -61,7 +62,7 @@ const cMajorReference = {
   rootNote: "C",
   practicalRootNote: "C",
   pitchClass: 0,
-  chordName: "CM",
+  chordName: "C",
   chordCollectionKey: "major",
 } as const;
 
@@ -69,7 +70,7 @@ const fMajorReference = {
   rootNote: "F",
   practicalRootNote: "F",
   pitchClass: 5,
-  chordName: "FM",
+  chordName: "F",
   chordCollectionKey: "major",
 } as const;
 
@@ -85,7 +86,7 @@ const gMajorReference = {
   rootNote: "G",
   practicalRootNote: "G",
   pitchClass: 7,
-  chordName: "GM",
+  chordName: "G",
   chordCollectionKey: "major",
 } as const;
 
@@ -421,20 +422,22 @@ Deno.test("progression exports are available directly", () => {
       chordProgressionDefinitions.oneFourOneFive.name,
       chordProgressionDefinitions.oneSixFourFive.name,
       chordProgressionDefinitions.oneFiveSixFour.name,
+      chordProgressionDefinitions.oneFourOneFiveSplitReturn.name,
       chordProgressionDefinitions.oneSixTwoFive.name,
       chordProgressionDefinitions.sixTwoFiveOne.name,
     ],
     [
-      "I–V",
-      "I–V–V7",
-      "I–IV",
-      "I–IV–V7",
-      "I–IV–V7–vi",
-      "I–IV–I–V",
-      "I–vi–IV–V",
-      "I–V–vi–IV",
-      "I–vi–ii–V",
-      "vi–ii–V–I",
+      "I | I | V | V",
+      "I | I | V | V7",
+      "I | I | IV | IV",
+      "I | I | IV | V7",
+      "I | IV | V7 | vi",
+      "I | IV | I | V",
+      "I | vi | IV | V",
+      "I | V | vi | IV",
+      "I | IV | I | V | I | IV | I V | I",
+      "I | vi | ii | V",
+      "vi | ii | V | I",
     ],
   );
   assertEquals(
@@ -1108,7 +1111,7 @@ Deno.test("progression helpers expose chord names and total duration", () => {
       rootNote: "B𝄫",
       practicalRootNote: "A",
       pitchClass: rootNoteToIntegerMap.get("A"),
-      chordName: "B𝄫M",
+      chordName: "B𝄫",
       chordCollectionKey: "major",
     }],
   );
@@ -1133,7 +1136,7 @@ Deno.test("progression helpers expose chord names and total duration", () => {
   );
   assertEquals(
     getChordProgressionChordNames("C", richerChordCollectionProgression),
-    ["C6", "Am6", "E+M7", "B♭M"],
+    ["C6", "Am6", "E+M7", "B♭"],
   );
 
   const doubleAccidentalProgression = {
@@ -1144,7 +1147,7 @@ Deno.test("progression helpers expose chord names and total duration", () => {
 
   assertEquals(
     getChordProgressionChordNames("B", doubleAccidentalProgression),
-    ["F𝄪M"],
+    ["F𝄪"],
   );
   assertEquals(
     getChordProgressionChordChangeReferences(
@@ -1155,7 +1158,7 @@ Deno.test("progression helpers expose chord names and total duration", () => {
       rootNote: "F𝄪",
       practicalRootNote: "G",
       pitchClass: 7,
-      chordName: "F𝄪M",
+      chordName: "F𝄪",
       chordCollectionKey: "major",
     }],
   );
@@ -1266,23 +1269,23 @@ Deno.test("progression helpers expose chord names and total duration", () => {
   ]);
   assertEquals(
     getChordProgressionChordNames("C", "andalusianCadence"),
-    ["Cm", "B♭M", "A♭M", "GM"],
+    ["Cm", "B♭", "A♭", "G"],
   );
   assertEquals(
     getChordProgressionChordNames("G", "oneOneFiveFiveDominant7"),
-    ["GM", "DM", "D7"],
+    ["G", "D", "D7"],
   );
   assertEquals(
     getChordProgressionChordNames("C", "oneFourOneFiveSplitReturn"),
-    ["CM", "FM", "CM", "GM", "CM", "FM", "CM", "GM", "CM"],
+    ["C", "F", "C", "G", "C", "F", "C", "G", "C"],
   );
   assertEquals(
     getChordProgressionChordNames("C", "sixTwoFiveOne"),
-    ["Am", "Dm", "GM", "CM"],
+    ["Am", "Dm", "G", "C"],
   );
   assertEquals(
     getChordProgressionChordNames("C", "circleOfFifths"),
-    ["CM", "FM", "B°", "Em", "Am", "Dm", "GM", "CM"],
+    ["C", "F", "B°", "Em", "Am", "Dm", "G", "C"],
   );
   assertEquals(
     getChordProgressionChordNames("C", "minorCircleOfFifths"),
@@ -1290,7 +1293,7 @@ Deno.test("progression helpers expose chord names and total duration", () => {
   );
   assertEquals(
     getChordProgressionChordNames("C", "pachelbelCanon"),
-    ["CM", "GM", "Am", "Em", "FM", "CM", "FM", "GM"],
+    ["C", "G", "Am", "Em", "F", "C", "F", "G"],
   );
   assertEquals(
     getChordProgressionChordNames("C", "backdoorTwoFiveOne"),
@@ -1320,11 +1323,11 @@ Deno.test("progression helpers expose chord names and total duration", () => {
   );
   assertEquals(
     getChordProgressionUniqueChordNames("G", "oneOneFiveFiveDominant7"),
-    ["GM", "DM", "D7"],
+    ["G", "D", "D7"],
   );
   assertEquals(
     getChordProgressionUniqueChordNames("C", "oneFourOneFiveSplitReturn"),
-    ["CM", "FM", "GM"],
+    ["C", "F", "G"],
   );
   assertEquals(
     getChordProgressionChordChangeReferences(
@@ -1336,14 +1339,14 @@ Deno.test("progression helpers expose chord names and total duration", () => {
         rootNote: "G",
         practicalRootNote: "G",
         pitchClass: 7,
-        chordName: "GM",
+        chordName: "G",
         chordCollectionKey: "major",
       },
       {
         rootNote: "D",
         practicalRootNote: "D",
         pitchClass: 2,
-        chordName: "DM",
+        chordName: "D",
         chordCollectionKey: "major",
       },
       {
@@ -1585,6 +1588,53 @@ Deno.test("progression helpers expose chord names and total duration", () => {
     getChordProgressionTotalDurationInBars("oneFourOneFiveSplitReturn"),
     8,
   );
+});
+
+Deno.test("bar-aware Roman groups preserve bars and within-bar changes", () => {
+  assertEquals(getChordProgressionRomanSymbolsByBar("oneOneFiveFive"), [
+    ["I"],
+    ["I"],
+    ["V"],
+    ["V"],
+  ]);
+  assertEquals(
+    getChordProgressionRomanSymbolsByBar("oneFourOneFiveSplitReturn")[6],
+    ["I", "V"],
+  );
+  assertEquals(getChordProgressionRomanSymbolsByBar("majorTwoFiveOne"), [
+    ["iim7"],
+    ["V7"],
+    ["IM7"],
+    ["IM7"],
+  ]);
+  assertEquals(
+    chordProgressionDefinitions.majorTwoFiveOne.name,
+    "Major ii–V–I",
+  );
+
+  for (
+    const key of [
+      "oneOneFiveFive",
+      "oneOneFiveFiveDominant7",
+      "oneOneFourFour",
+      "oneOneFourFiveDominant7",
+      "oneFourFiveDominant7Six",
+      "oneFourOneFive",
+      "oneSixFourFive",
+      "oneFiveSixFour",
+      "oneFourOneFiveSplitReturn",
+      "oneSixTwoFive",
+      "sixTwoFiveOne",
+    ] as const
+  ) {
+    assertEquals(
+      chordProgressionDefinitions[key].name,
+      getChordProgressionRomanSymbolsByBar(key)
+        .map((symbols) => symbols.join(" "))
+        .join(" | "),
+      `${key} title must match its exact bar structure`,
+    );
+  }
 });
 
 Deno.test("all built-in progression references preserve practical-root pitch", () => {
@@ -1879,16 +1929,22 @@ Deno.test("chord progression focus object exposes progression derivations", () =
     "V7",
     "i",
   ]);
+  assertEquals(chordProgression.getRomanSymbolsByBar("oneOneFiveFive"), [
+    ["I"],
+    ["I"],
+    ["V"],
+    ["V"],
+  ]);
   assertEquals(chordProgression.getChordNames("C", "oneSixFourFive"), [
-    "CM",
+    "C",
     "Am",
-    "FM",
-    "GM",
+    "F",
+    "G",
   ]);
   assertEquals(chordProgression.getUniqueChordNames("C", "oneFourOneFive"), [
-    "CM",
-    "FM",
-    "GM",
+    "C",
+    "F",
+    "G",
   ]);
   assertEquals(
     chordProgression.getChordChangeReferences("C", "oneOneFiveFive"),

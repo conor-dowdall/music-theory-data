@@ -6,6 +6,7 @@ import {
   getChordProgressionKeysForCategory,
   getChordProgressionKeysForTotalBars,
   getChordProgressionRomanSymbols,
+  getChordProgressionRomanSymbolsByBar,
   getChordProgressionSongChordReferences,
   getChordProgressionTiming,
   getChordProgressionTotalDurationInBars,
@@ -65,6 +66,8 @@ export const chordProgression = {
   getDirectRomanSymbols: getChordProgressionDirectRomanSymbols,
   /** Resolves display Roman symbols, preferring authored analysis labels. */
   getRomanSymbols: getChordProgressionRomanSymbols,
+  /** Returns Roman symbols grouped by their exact bar positions. */
+  getRomanSymbolsByBar: getChordProgressionRomanSymbolsByBar,
   /** Returns one chord reference for each authored chord change. */
   getChordChangeReferences: getChordProgressionChordChangeReferences,
   /** Returns distinct chord references in first-seen order. */

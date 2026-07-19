@@ -7,7 +7,6 @@ import {
 } from "../data/chord-progressions/mod.ts";
 import {
   chordCollectionKeys,
-  getChordCollectionChordSuffix,
   lowerCaseRomanNumerals,
   upperCaseRomanNumerals,
 } from "../data/chords/mod.ts";
@@ -35,7 +34,10 @@ import {
   getNoteNamesForRootAndIntervals,
   resolvePracticalRootNote,
 } from "./note-names.ts";
-import { getRomanNumeralForScaleIndexAndChordCollectionKey } from "./chords.ts";
+import {
+  getChordNameForRootAndChordCollectionKey,
+  getRomanNumeralForScaleIndexAndChordCollectionKey,
+} from "./chords.ts";
 import { normalizeAccidentalString } from "./accidentals.ts";
 
 /** A resolved chord in a progression, including its root and chord collection. */
@@ -540,8 +542,10 @@ function createChordProgressionChordReference(
     rootNote: chordRootNote,
     practicalRootNote: resolvePracticalRootNote(chordRootNote),
     pitchClass,
-    chordName: chordRootNote +
-      getChordCollectionChordSuffix(chord.chordCollectionKey),
+    chordName: getChordNameForRootAndChordCollectionKey(
+      chordRootNote,
+      chord.chordCollectionKey,
+    ),
     chordCollectionKey: chord.chordCollectionKey,
   };
 }
@@ -1003,6 +1007,19 @@ export function getChordProgressionRomanSymbols(
     chord.analysis?.romanSymbol ?? getChordProgressionChordDirectRomanSymbol(
       chord,
     )
+  );
+}
+
+/**
+ * Returns Roman symbols grouped by bar. Sustained chords are repeated in each
+ * bar they occupy; multiple changes within one bar remain grouped together.
+ */
+export function getChordProgressionRomanSymbolsByBar(
+  progressionOrKey: ChordProgression | ChordProgressionKey,
+): readonly (readonly ChordProgressionAnalysisRomanSymbol[])[] {
+  const romanSymbols = getChordProgressionRomanSymbols(progressionOrKey);
+  return getChordProgressionTiming(progressionOrKey).bars.map((bar) =>
+    bar.segments.map((segment) => romanSymbols[segment.eventIndex]!)
   );
 }
 
