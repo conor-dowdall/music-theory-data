@@ -37,7 +37,7 @@ async function run(cmd: string, args: string[]) {
 
 // Run quality checks
 console.log("Running quality checks (fmt, lint, check, test)...");
-await run("deno", ["task", "ok"]);
+await run("deno", ["task", "check"]);
 
 // Check git status (capture output)
 const statusCmd = new Deno.Command("git", { args: ["status", "--porcelain"] });

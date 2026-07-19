@@ -4,7 +4,8 @@
   "license": "CC0-1.0",
   "exports": "./src/mod.ts",
   "tasks": {
-    "ok": "deno fmt && deno lint && deno check && deno test",
+    "check": "deno fmt && deno lint && deno check && deno task check:publish && deno test",
+    "check:publish": "deno publish --dry-run --allow-dirty --quiet",
     "release": "deno run -A scripts/release.ts"
   },
   "imports": {

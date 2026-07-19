@@ -416,8 +416,44 @@ const rhythmChangesBridge: ChordProgression = {
   ],
 };
 
+/** A key for one of the built-in chord progression definitions. */
+export type ChordProgressionKey =
+  | "oneOneFiveFive"
+  | "oneOneFiveFiveDominant7"
+  | "oneOneFourFour"
+  | "oneOneFourFiveDominant7"
+  | "oneFourFiveDominant7Six"
+  | "oneFourOneFive"
+  | "oneSixFourFive"
+  | "oneFiveSixFour"
+  | "oneFourOneFiveSplitReturn"
+  | "pachelbelCanon"
+  | "andalusianCadence"
+  | "oneSixTwoFive"
+  | "sixTwoFiveOne"
+  | "circleOfFifths"
+  | "minorCircleOfFifths"
+  | "authenticCadence"
+  | "plagalCadence"
+  | "minorPlagalCadence"
+  | "deceptiveCadence"
+  | "twelveBarBlues"
+  | "twelveBarBluesQuickChange"
+  | "minorBlues"
+  | "jazzBlues"
+  | "majorTwoFiveOne"
+  | "minorTwoFiveOne"
+  | "backdoorTwoFiveOne"
+  | "autumnLeavesA"
+  | "autumnLeavesB"
+  | "autumnLeavesC"
+  | "rhythmChangesA"
+  | "rhythmChangesBridge";
+
 /** Built-in catalog definitions are the single authored source for metadata and structure. */
-export const chordProgressionDefinitions = {
+export const chordProgressionDefinitions: Readonly<
+  Record<ChordProgressionKey, BuiltInChordProgressionDefinition>
+> = {
   oneOneFiveFive: {
     name: "I–V",
     category: "commonLoops",
@@ -573,10 +609,7 @@ export const chordProgressionDefinitions = {
     category: "jazz",
     progression: rhythmChangesBridge,
   },
-} as const satisfies Record<string, BuiltInChordProgressionDefinition>;
-
-/** A key for one of the built-in chord progression definitions. */
-export type ChordProgressionKey = keyof typeof chordProgressionDefinitions;
+};
 
 /** Built-in chord progression structures derived from the catalog definitions. */
 export const chordProgressions: Record<

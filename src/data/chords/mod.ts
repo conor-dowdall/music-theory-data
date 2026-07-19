@@ -109,14 +109,19 @@ const _chordCollectionStructures = [
   "extended",
 ] as const satisfies readonly ChordCollectionStructure[];
 
-const _triadChordCollectionKeys = [
+const _triadChordCollectionKeys: readonly [
   "major",
   "minor",
   "diminishedTriad",
   "augmentedTriad",
-] as const satisfies readonly ChordCollectionKey[];
+] = [
+  "major",
+  "minor",
+  "diminishedTriad",
+  "augmentedTriad",
+] as const;
 
-const _seventhChordCollectionKeys = [
+const _seventhChordCollectionKeys: readonly [
   "major7",
   "minor7",
   "minorMajor7",
@@ -125,7 +130,16 @@ const _seventhChordCollectionKeys = [
   "halfDiminished7",
   "augmented7",
   "augmentedMajor7",
-] as const satisfies readonly ChordCollectionKey[];
+] = [
+  "major7",
+  "minor7",
+  "minorMajor7",
+  "dominant7",
+  "diminished7",
+  "halfDiminished7",
+  "augmented7",
+  "augmentedMajor7",
+] as const;
 
 /** A chord collection that can result from stacking two thirds. */
 export type TriadChordCollectionKey =
@@ -470,11 +484,15 @@ export function isSeventhChordCollectionKey(
     (seventhChordCollectionKeys as readonly string[]).includes(value);
 }
 
-const _supportedHarmonyParentKeys = [
+const _supportedHarmonyParentKeys: readonly [
   "ionian",
   "harmonicMinor",
   "melodicMinor",
-] as const satisfies readonly NoteCollectionKey[];
+] = [
+  "ionian",
+  "harmonicMinor",
+  "melodicMinor",
+] as const;
 
 /** A parent scale whose tertian harmony is supported by the package. */
 export type SupportedHarmonyParentKey =
